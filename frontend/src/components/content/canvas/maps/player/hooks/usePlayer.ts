@@ -91,6 +91,7 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
     });
 
     useFrame(({ camera }) => {
+        console.log(camera.position);
         if (!player) return;
         if (!playerRef.current) return;
         if (playerRef.current.position.distanceTo(position) > 0.1) {
