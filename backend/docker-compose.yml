@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  member_service:
+    container_name: member_service
+    build:
+      context: ./member_service
+      dockerfile: Dockerfile
+    image: member_service
+    environment:
+      - TZ=Asia/Seoul
+    ports:
+      - "8001:8001"
+  
+  game_service:
+    container_name: game_service
+    build:
+      context: ./game_service
+      dockerfile: Dockerfile
+    image: game_service
+    environment:
+      - TZ=Asia/Seoul
+    ports:
+      - "8002:8002"
