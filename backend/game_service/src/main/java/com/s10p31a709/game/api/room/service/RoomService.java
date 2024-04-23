@@ -41,16 +41,4 @@ public class RoomService {
         if(!room.getIsPublic() && !room.getRoomPassword().equals(password)) throw new CustomException(400, "비밀번호가 틀렸습니다.");
     }
 
-    public Player enterPlayer(String roomId, String nickname){
-        Room room = roomRepository.getRoom(roomId);
-        if(room == null) throw new CustomException(404, "방이 존재하지 않습니다");
-        if(room.getRoomPlayers().size() > 6) throw new CustomException(400, "방이 가득 찼습니다.");
-        return roomRepository.addPlayer(roomId, nickname);
-    }
-
-    public void exitPlayer(String roomId, String nickname){
-        roomRepository.deletePlayer(roomId, nickname);
-    }
-
-
 }

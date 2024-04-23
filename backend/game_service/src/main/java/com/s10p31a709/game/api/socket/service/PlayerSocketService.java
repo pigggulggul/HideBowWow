@@ -24,6 +24,7 @@ public class PlayerSocketService {
 
     public void exitPlayer(String sessionId){
         Map<String, String> map = roomRepository.deletePlayerBySessionId(sessionId);
+        if(map == null) return;
         String roomId = map.get("roomId");
         String nickname = map.get("nickname");
         StompPayload<Player> payload = new StompPayload<>();
