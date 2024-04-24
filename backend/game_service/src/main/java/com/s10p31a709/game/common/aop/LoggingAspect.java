@@ -1,16 +1,16 @@
-package com.s10p31a709.game.common.aop;
-
-import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.*;
-import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.stereotype.Component;
-
-@Component
-@Aspect
-@Slf4j
-public class LoggingAspect {
-
+//package com.s10p31a709.game.common.aop;
+//
+//import lombok.extern.slf4j.Slf4j;
+//import org.aspectj.lang.JoinPoint;
+//import org.aspectj.lang.annotation.*;
+//import org.aspectj.lang.reflect.MethodSignature;
+//import org.springframework.stereotype.Component;
+//
+//@Component
+//@Aspect
+//@Slf4j
+//public class LoggingAspect {
+//
 //    @Pointcut("execution(* com.s10p31a709..*.*(..))")
 //    public void allMethods() {
 //    }
@@ -61,5 +61,5 @@ public class LoggingAspect {
 //        String method = joinPoint.getSignature().getName();
 //        log.error("{}.{}() => {}", file, method, exception.toString());
 //    }
-
-}
+//
+//}

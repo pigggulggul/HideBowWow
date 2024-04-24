@@ -35,6 +35,12 @@ public class RoomSocketController {
         roomSocketService.modifyRoom(message);
     }
 
+    @MessageMapping("/room.changeAdmin") @DeleteMapping("/room.changeAdmin")
+    @Operation(summary = "방장 자동 위임(서버 판단)", description = "바뀐 방의 정보를 Room객체로 전송")
+    public void changeAdmin(@Payload StompPayload<Room> message){
+        // 시스템에서 판단 후 전송
+    }
+
     @MessageMapping("/room.gameInit") @DeleteMapping("/room.gameInit")
     @Operation(summary = "게임 입장(클라 요청 필요)", description = "요청만 보내주면 Players(술래여부, 생존여부, 초기위치)를 포함한 Room객체(시간:10, 룸상태:1)")
     public void gameInit(@Payload StompPayload<Room> message){

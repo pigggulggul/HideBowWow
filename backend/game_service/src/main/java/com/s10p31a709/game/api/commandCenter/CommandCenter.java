@@ -56,11 +56,26 @@ public class CommandCenter {
                     }
                     if(aliveHider == 0 || aliveSeeker == 0) roomSocketService.gameFinish(room.getRoomId());
                 }
-
             }
         }
     }
 
+    @Scheduled(fixedRate = 5000)
+    public void roomSchedule(){
+        List<Room> rooms = roomRepository.findAllRoom();
+
+        for (Room room : rooms){
+            // 방들의 상태 체크. 비었으면 삭제, 호스트가 없으면 교체
+            if(room.getRoomPlayers().isEmpty()) roomSocketService.deleteRoom(room.getRoomId());
+            else {
+                String host = null;
+                for (Player player : room.getRoomPlayers()){
+                    if (room.getRoomAdmin().equals(player.getNickname())) host = player.getNickname();
+                }
+                if(host == null) roomSocketService.changeAdmin(room);
+            }
+        }
+    }
 
     @Scheduled(fixedRate = 500)
     public void positionSchedule(){

@@ -12,12 +12,11 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @RequiredArgsConstructor
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-//	private final SubscriptionInterceptor subscriptionInterceptor;
-
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry endpointRegistry) {
 		endpointRegistry.addEndpoint("/ws")
 				.setAllowedOriginPatterns("*");
+//				.withSockJS();
 	}
 
 	@Override

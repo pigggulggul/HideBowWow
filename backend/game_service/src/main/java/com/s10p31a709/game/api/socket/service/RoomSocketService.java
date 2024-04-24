@@ -76,6 +76,17 @@ public class RoomSocketService {
         simpMessagingTemplate.convertAndSend("/sub/room/"+roomId, payload);
     }
 
+    public void deleteRoom(String roomId){
+        roomRepository.deleteRoomByRoomId(roomId);
+    }
+
+    public void changeAdmin(Room room){
+        room.setRoomAdmin(room.getRoomPlayers().get(0).getNickname());
+
+        StompPayload<Room> payload = new StompPayload<>("room.changeAdmin", room.getRoomId(), "system", room);
+        simpMessagingTemplate.convertAndSend("/sub/room/"+room.getRoomId(), payload);
+    }
+
     public void sendPosition(Room room){
         StompPayload<Room> payload = new StompPayload<>("room.gameState", room.getRoomId(), "system", room);
         simpMessagingTemplate.convertAndSend("/sub/room/"+room.getRoomId(), payload);

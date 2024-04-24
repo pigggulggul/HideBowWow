@@ -6,6 +6,7 @@ import com.s10p31a709.game.api.room.repository.RoomRepository;
 import com.s10p31a709.game.api.socket.model.StompPayload;
 import com.s10p31a709.game.common.feign.service.MemberServiceClient;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PlayerSocketService {
 
     private final RoomRepository roomRepository;
@@ -28,7 +30,11 @@ public class PlayerSocketService {
 
         StompPayload<Player> payload = new StompPayload<>("player.exit", room.getRoomId(), "system", player);
         simpMessagingTemplate.convertAndSend("/sub/room/"+room.getRoomId(), payload);
-        memberServiceClient.deleteGuest(player.getNickname());
+        try {
+            memberServiceClient.deleteGuest(player.getNickname());
+        }catch (Exception e){
+            log.error(e.toString());
+        }
         roomRepository.deletePlayerByNickname(player.getNickname());
     }
 
