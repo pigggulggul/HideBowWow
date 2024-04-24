@@ -10,6 +10,8 @@ import { useThree } from '@react-three/fiber';
 import { useEffect, useRef } from 'react';
 import { Vector3 } from 'three';
 import { Player } from './player/Player';
+import { ObjectPlayer } from './player/ObjectPlayer';
+import { AttackRules } from './player/AttackRules';
 
 export function RootMap() {
     const characterSelectFinished = useRecoilValue(CharacterSelectFinishedAtom);
@@ -34,23 +36,49 @@ export function RootMap() {
                 <>
                     <GroundElements />
                     {players.map((player) => {
-                        return (
-                            <>
-                                <Player
-                                    key={player.id}
-                                    player={player}
-                                    position={
-                                        new Vector3(
-                                            player.position[0],
-                                            player.position[1],
-                                            player.position[2]
-                                        )
-                                    }
-                                    modelIndex={selectedCharacterGlbNameIndex}
-                                />
-                            </>
-                        );
+                        if (player.isSeeker && !player.isDead) {
+                            return (
+                                <>
+                                    <Player
+                                        key={player.id}
+                                        player={player}
+                                        position={
+                                            new Vector3(
+                                                player.position[0],
+                                                player.position[1],
+                                                player.position[2]
+                                            )
+                                        }
+                                        modelIndex={
+                                            selectedCharacterGlbNameIndex
+                                        }
+                                    />
+                                </>
+                            );
+                        } else {
+                            if (player.selectedIndex !== -1 && !player.isDead) {
+                                return (
+                                    <>
+                                        <ObjectPlayer
+                                            key={player.id}
+                                            player={player}
+                                            position={
+                                                new Vector3(
+                                                    player.position[0],
+                                                    player.position[1],
+                                                    player.position[2]
+                                                )
+                                            }
+                                            modelIndex={player.selectedIndex}
+                                        />
+                                    </>
+                                );
+                            } else {
+                                return <></>;
+                            }
+                        }
                     })}
+                    <AttackRules />
                 </>
             )}
         </>
