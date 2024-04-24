@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class LoggingAspect {
 
-    @Pointcut("execution(* com.s10p31a709..*.*(..))")
+    @Pointcut("execution(* com.s10p31a709.game.api..controller.*.*(..))")
     public void allMethods() {
     }
 
@@ -24,7 +24,9 @@ public class LoggingAspect {
         String returnType = ((MethodSignature) joinPoint.getSignature()).getReturnType().getSimpleName();
         Object[] list = joinPoint.getArgs();
         for (Object o : list) {
-            args.append(o.getClass().getSimpleName()).append(",");
+            if (o != null){
+                args.append(o.getClass().getSimpleName()).append(",");
+            }
         }
         if (!args.isEmpty()) {
             args.deleteCharAt(args.length() - 1);
@@ -42,7 +44,9 @@ public class LoggingAspect {
         String returnType = ((MethodSignature) joinPoint.getSignature()).getReturnType().getSimpleName();
         Object[] list = joinPoint.getArgs();
         for (Object o : list) {
-            args.append(o.getClass().getSimpleName()).append(",");
+            if (o != null){
+                args.append(o.getClass().getSimpleName()).append(",");
+            }
         }
         if (!args.isEmpty()) {
             args.deleteCharAt(args.length() - 1);

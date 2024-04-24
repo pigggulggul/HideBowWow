@@ -45,4 +45,11 @@ public class MemberController {
         return BaseResponse.success(200, "삭제 성공");
     }
 
+    @DeleteMapping("/guest/{nickname}")
+    @Operation(summary = "게스트 로그아웃")
+    public ResponseEntity<?> deleteGuest(@PathVariable String nickname){
+        memberService.deleteGuest(nickname);
+        return BaseResponse.success(200, "삭제 성공");
+    }
+
 }

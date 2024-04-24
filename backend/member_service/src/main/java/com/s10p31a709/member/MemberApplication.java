@@ -44,11 +44,6 @@ public class MemberApplication {
 	}
 
 	@Bean
-	public ObjectMapper objectMapper() {
-		return new ObjectMapper();
-	}
-
-	@Bean
 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
 		return new BCryptPasswordEncoder();
 	}

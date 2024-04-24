@@ -9,10 +9,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
-public class MemberApplication {
+@EnableFeignClients
+@EnableScheduling
+public class GameApplication {
 
 	@Value("${server.domain}")
 	private String domain;
@@ -24,7 +28,7 @@ public class MemberApplication {
 	private String contextPath;
 
 	public static void main(String[] args) {
-		SpringApplication.run(MemberApplication.class, args);
+		SpringApplication.run(GameApplication.class, args);
 	}
 
 	@Bean
@@ -37,11 +41,6 @@ public class MemberApplication {
 						.version("1.0")
 						.description("게임 기능")
 						.contact(new Contact().name("김종범").email("")));
-	}
-
-	@Bean
-	public ObjectMapper objectMapper() {
-		return new ObjectMapper();
 	}
 
 }

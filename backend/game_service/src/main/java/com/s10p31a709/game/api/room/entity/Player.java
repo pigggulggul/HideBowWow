@@ -21,6 +21,8 @@ public class Player {
 
     private Integer[] position;
 
+    private Integer[] direction;
+
     @JsonIgnore
     private String sessionId;
 
