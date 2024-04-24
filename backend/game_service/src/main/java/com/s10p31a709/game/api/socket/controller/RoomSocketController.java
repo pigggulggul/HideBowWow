@@ -24,7 +24,7 @@ public class RoomSocketController {
 
 
     @MessageMapping("/room") @DeleteMapping("/room")
-    @Operation(summary = "범용적 테스트용", description = "받은 payload 를 그대로 방 사람들에게 전달한다. roomState: {0:대기, 1:로딩, 2:게임중(숨기), 3: 게임중(찾기), 4:결과}")
+    @Operation(summary = "범용적 테스트용", description = "받은 payload 를 그대로 방 사람들에게 전달한다. roomState: {0:대기, 1:로딩, 2:게임중(숨기), 3: 게임중(찾기), 4:찾는팀승 5:숨는팀승}")
     public void roomBaseMessage(@Payload StompPayload<Room> message) {
         simpMessagingTemplate.convertAndSend("/sub/room/"+message.getRoomId(), message);
     }
@@ -65,9 +65,15 @@ public class RoomSocketController {
         // 시스템에서 판단 후 전송
     }
 
-    @MessageMapping("/room.gameFinish") @DeleteMapping("/room.finish")
-    @Operation(summary = "게임 종료(서버판단)", description = "Room객체 반환(시간:10, 룸상태:4)")
-    public void gameFinish(@Payload StompPayload<Room> message){
+    @MessageMapping("/room.seekerWin") @DeleteMapping("/room.seekerWin")
+    @Operation(summary = "찾는팀 승리(서버판단)", description = "Room객체 반환(시간:10, 룸상태:4)")
+    public void seekerWin(@Payload StompPayload<Room> message){
+        // 시스템에서 판단 후 전송
+    }
+
+    @MessageMapping("/room.hiderWin") @DeleteMapping("/room.hiderWin")
+    @Operation(summary = "숨는팀 승리(서버판단)", description = "Room객체 반환(시간:10, 룸상태:5)")
+    public void hiderWin(@Payload StompPayload<Room> message){
         // 시스템에서 판단 후 전송
     }
 

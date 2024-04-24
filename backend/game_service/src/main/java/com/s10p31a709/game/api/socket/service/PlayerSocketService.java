@@ -11,6 +11,7 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
@@ -73,4 +74,9 @@ public class PlayerSocketService {
         simpMessagingTemplate.convertAndSend("/sub/room/"+message.getRoomId(), payload);
     }
 
+    public void choosePlayer(StompPayload<Player> message) {
+        int[] arr = new int[]{new Random().nextInt(20), new Random().nextInt(20), new Random().nextInt(20)};
+        StompPayload<int[]> payload = new StompPayload<>("player.choose", message.getRoomId(), "system", arr);
+        simpMessagingTemplate.convertAndSend("/sub/room/"+message.getRoomId(), payload);
+    }
 }

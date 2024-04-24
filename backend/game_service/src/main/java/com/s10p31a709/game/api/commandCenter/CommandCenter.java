@@ -39,15 +39,15 @@ public class CommandCenter {
                     }else if(room.getRoomState() == 2){
                         roomSocketService.findStart(room.getRoomId());
                     }else if(room.getRoomState() == 3){
-                        roomSocketService.gameFinish(room.getRoomId());
-                    }else if(room.getRoomState() == 4){
+                        roomSocketService.hiderWin(room.getRoomId());
+                    }else if(room.getRoomState() == 4 || room.getRoomState() == 5){
                         roomSocketService.backRoom(room.getRoomId());
                     }
                     continue;
                 }
 
                 // 한쪽팀이 다 죽어서 게임이 끝났는지 확인
-                if(room.getRoomState() == 2){
+                if(room.getRoomState() == 3){
                     int aliveSeeker = 0;
                     int aliveHider = 0;
                     for (Player player : room.getRoomPlayers()){
@@ -59,7 +59,8 @@ public class CommandCenter {
                             }
                         }
                     }
-                    if(aliveHider == 0 || aliveSeeker == 0) roomSocketService.gameFinish(room.getRoomId());
+                    if(aliveHider == 0) roomSocketService.seekerWin(room.getRoomId());
+                    if(aliveSeeker == 0) roomSocketService.hiderWin(room.getRoomId());
                 }
             }
         }

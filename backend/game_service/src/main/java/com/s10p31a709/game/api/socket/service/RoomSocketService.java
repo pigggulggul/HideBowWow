@@ -68,12 +68,21 @@ public class RoomSocketService {
         simpMessagingTemplate.convertAndSend("/sub/room/"+roomId, payload);
     }
 
-    public void gameFinish(String roomId){
+    public void seekerWin(String roomId){
         Room room = roomRepository.findRoomByRoomId(roomId);
         room.setRoomTime(10);
         room.setRoomState(4);
 
-        StompPayload<Room> payload = new StompPayload<>("room.gameFinish", roomId, "system", room);
+        StompPayload<Room> payload = new StompPayload<>("room.seekerWin", roomId, "system", room);
+        simpMessagingTemplate.convertAndSend("/sub/room/"+roomId, payload);
+    }
+
+    public void hiderWin(String roomId){
+        Room room = roomRepository.findRoomByRoomId(roomId);
+        room.setRoomTime(10);
+        room.setRoomState(5);
+
+        StompPayload<Room> payload = new StompPayload<>("room.hiderWin", roomId, "system", room);
         simpMessagingTemplate.convertAndSend("/sub/room/"+roomId, payload);
     }
 
