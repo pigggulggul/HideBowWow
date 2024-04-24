@@ -24,7 +24,9 @@ public class LoggingAspect {
         String returnType = ((MethodSignature) joinPoint.getSignature()).getReturnType().getSimpleName();
         Object[] list = joinPoint.getArgs();
         for (Object o : list) {
-            args.append(o.getClass().getSimpleName()).append(",");
+            if (o != null){
+                args.append(o.getClass().getSimpleName()).append(",");
+            }
         }
         if (!args.isEmpty()) {
             args.deleteCharAt(args.length() - 1);
@@ -42,7 +44,9 @@ public class LoggingAspect {
         String returnType = ((MethodSignature) joinPoint.getSignature()).getReturnType().getSimpleName();
         Object[] list = joinPoint.getArgs();
         for (Object o : list) {
-            args.append(o.getClass().getSimpleName()).append(",");
+            if (o != null){
+                args.append(o.getClass().getSimpleName()).append(",");
+            }
         }
         if (!args.isEmpty()) {
             args.deleteCharAt(args.length() - 1);

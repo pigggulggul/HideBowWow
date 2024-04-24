@@ -38,7 +38,7 @@ public class RoomService {
         Room room = roomRepository.findRoomByRoomId(roomId);
         if(room == null) throw new CustomException(404, "방이 존재하지 않습니다");
         if(room.getRoomPlayers().size() > 6) throw new CustomException(400, "방이 가득 찼습니다.");
-        if(!room.getIsPublic() && !room.getRoomPassword().equals(password)) throw new CustomException(400, "비밀번호가 틀렸습니다.");
+        if(!room.getIsPublic() && password != null && !room.getRoomPassword().equals(password)) throw new CustomException(400, "비밀번호가 틀렸습니다.");
     }
 
 }

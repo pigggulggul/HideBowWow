@@ -21,7 +21,6 @@ public class Room {
     @JsonProperty("isPublic")
     private Boolean isPublic;
 
-    @JsonIgnore
     private String roomPassword;
 
     private Integer roomState;
