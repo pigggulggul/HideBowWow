@@ -43,8 +43,7 @@ public class PlayerSocketService {
         Player player = roomRepository.findPlayerByNickname(message.getData().getNickname());
         player.setPosition(message.getData().getPosition());
 
-        StompPayload<Player> payload = new StompPayload<>("player.move", message.getRoomId(), "system", player);
-        simpMessagingTemplate.convertAndSend("/sub/room/"+message.getRoomId(), payload);
+//        이동 후 변화값을 전송하지 않고, commandCenter에서 30ms마다 따로 전송한다.
     }
 
     public void deadPlayer(StompPayload<Player> message){

@@ -47,6 +47,12 @@ public class RoomSocketController {
         // 시스템에서 판단 후 전송
     }
 
+    @MessageMapping("/room.gameState") @DeleteMapping("/room.gameState")
+    @Operation(summary = "게임중 플레이어 위치정보 및 시간 반환", description = "Room객체 반환")
+    public void gameState(@Payload StompPayload<Room> message){
+        // 시스템에서 판단 후 전송
+    }
+
     @MessageMapping("/room.gameFinish") @DeleteMapping("/room.finish")
     @Operation(summary = "게임 종료(서버판단)", description = "Room객체 반환(시간:10, 룸상태:3)")
     public void gameFinish(@Payload StompPayload<Room> message){

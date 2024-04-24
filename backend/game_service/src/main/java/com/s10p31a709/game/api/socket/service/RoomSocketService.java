@@ -76,8 +76,9 @@ public class RoomSocketService {
         simpMessagingTemplate.convertAndSend("/sub/room/"+roomId, payload);
     }
 
-    public void sendRoomInfo(String RoomId){
-
+    public void sendPosition(Room room){
+        StompPayload<Room> payload = new StompPayload<>("room.gameState", room.getRoomId(), "system", room);
+        simpMessagingTemplate.convertAndSend("/sub/room/"+room.getRoomId(), payload);
     }
 
 }

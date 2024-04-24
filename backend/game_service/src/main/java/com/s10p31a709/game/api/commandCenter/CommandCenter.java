@@ -62,15 +62,14 @@ public class CommandCenter {
     }
 
 
-//    @Scheduled(fixedRate = 30)
-//    public void positionSchedule(){
-//        List<Room> rooms = roomRepository.findAllRoom();
-//        for (Room room : rooms){
-//            if (room.getRoomState() != null && room.getRoomState().equals(2)) {
-//                StompPayload<Room> payload = new StompPayload<>("room.players", room.getRoomId(), "system", room);
-//                simpMessagingTemplate.convertAndSend("/sub/room/"+room.getRoomId(), payload);
-//            }
-//        }
-//    }
+    @Scheduled(fixedRate = 500)
+    public void positionSchedule(){
+        List<Room> rooms = roomRepository.findAllRoom();
+        for (Room room : rooms){
+            if (room.getRoomState() != null && !room.getRoomState().equals(0)) {
+                roomSocketService.sendPosition(room);
+            }
+        }
+    }
 
 }
