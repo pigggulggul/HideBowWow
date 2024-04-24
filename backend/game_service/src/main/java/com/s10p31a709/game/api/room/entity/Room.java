@@ -31,5 +31,8 @@ public class Room {
 
     private List<Player> roomPlayers;
 
+    @JsonIgnore
+    private boolean flag;
+
 }
 

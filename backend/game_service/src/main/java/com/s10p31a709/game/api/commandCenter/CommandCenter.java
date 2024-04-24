@@ -30,14 +30,17 @@ public class CommandCenter {
 
                 // 시간 1초씩 감소
                 room.setRoomTime(room.getRoomTime()-1);
+                room.setFlag(true);
 
                 // 시간이 다되면 다음 상태로 변경후 알림 전송
                 if (room.getRoomTime() <= 0){
                     if(room.getRoomState() == 1){
-                        roomSocketService.gameStart(room.getRoomId());
+                        roomSocketService.hideStart(room.getRoomId());
                     }else if(room.getRoomState() == 2){
-                        roomSocketService.gameFinish(room.getRoomId());
+                        roomSocketService.findStart(room.getRoomId());
                     }else if(room.getRoomState() == 3){
+                        roomSocketService.gameFinish(room.getRoomId());
+                    }else if(room.getRoomState() == 4){
                         roomSocketService.backRoom(room.getRoomId());
                     }
                     continue;
@@ -85,12 +88,13 @@ public class CommandCenter {
         }
     }
 
-    @Scheduled(fixedRate = 500)
+    @Scheduled(fixedRate = 100)
     public void positionSchedule(){
         List<Room> rooms = roomRepository.findAllRoom();
         for (Room room : rooms){
-            if (room.getRoomState() != null && !room.getRoomState().equals(0)) {
+            if (room.getRoomState() != null && !room.getRoomState().equals(0) && room.isFlag()) {
                 roomSocketService.sendPosition(room);
+                room.setFlag(false);
             }
         }
     }
