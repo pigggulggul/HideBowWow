@@ -115,12 +115,12 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
 
     useFrame(({ camera }) => {
         const moveVector = new Vector3(
-            (keyState.current['a'] ? 1 : 0) - (keyState.current['d'] ? 1 : 0),
+            (keyState.current['d'] ? 1 : 0) - (keyState.current['a'] ? 1 : 0),
             0,
-            (keyState.current['w'] ? 1 : 0) - (keyState.current['s'] ? 1 : 0)
+            (keyState.current['s'] ? 1 : 0) - (keyState.current['w'] ? 1 : 0)
         );
         if (!moveVector.equals(new Vector3(0, 0, 0))) {
-            moveVector.normalize().multiplyScalar(0.4);
+            moveVector.normalize().multiplyScalar(0.2);
             setIsWalking(true);
             setAnimation(
                 'CharacterArmature|CharacterArmature|CharacterArmature|Run'

@@ -7,11 +7,13 @@ import {
     Group,
     MeshStandardMaterial,
     SkinnedMesh,
+    Vector3,  
 } from 'three';
 import { GLTF, SkeletonUtils } from 'three-stdlib';
 import { PlayerInitType } from '../../../../../../types/GameType';
 import { useRecoilValue } from 'recoil';
 import { MeAtom } from '../../../../../../store/PlayersAtom';
+import { socket } from '../../../../../../sockets/clientSocket';
 
 interface GLTFAction extends AnimationClip {
     name: ActionName;
@@ -27,6 +29,11 @@ type GLTFResult = GLTF & {
     };
     animations: GLTFAction[];
 };
+
+interface PlayerRef extends Group {
+    viewUpDown?: number; 
+}
+
 type ActionName =
     | 'CharacterArmature|CharacterArmature|CharacterArmature|Death'
     | 'CharacterArmature|CharacterArmature|CharacterArmature|Duck'
@@ -47,14 +54,19 @@ type ActionName =
     | 'CharacterArmature|CharacterArmature|CharacterArmature|Wave'
     | 'CharacterArmature|CharacterArmature|CharacterArmature|Yes';
 
+/** 플레이어의 행동과 모델을 제어한다 */
 export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
+    const [isWalking, setIsWalking] = useState(false);
+    // const camera = useRef<ThreePerspectiveCamera>(null);
+    const keyState = useRef<{ [key: string]: boolean }>({});
     const playerId = player?.id;
     const me = useRecoilValue(MeAtom);
 
     const memoizedPosition = useMemo(() => position, []);
 
-    const playerRef = useRef<Group>(null);
-    const nicknameRef = useRef<Group>(null);
+    const playerRef = useRef<PlayerRef>(null);
+    
+    const nicknameRef = useRef<Group>(null);   
 
     const { scene, materials, animations } = useGLTF(
         (() => {
@@ -80,38 +92,141 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
     const [animation, setAnimation] = useState<ActionName>(
         'CharacterArmature|CharacterArmature|CharacterArmature|Idle'
     );
-    const group = useRef<Group>(null);
-    const { actions } = useAnimations(animations, playerRef);
+    const { actions } = useAnimations(animations, playerRef); 
 
-    useEffect(() => {
-        actions[animation]?.reset().fadeIn(0.5).play();
+    const lockPointer = () => {
+        const element = document.body;
+        const requestPointerLock = element.requestPointerLock;
+        requestPointerLock.call(element);
+    };
+    const unlockPointer = () => {
+        document.exitPointerLock();
+    };
+    
+    // lockPointer();
+    // unlockPointer();   
+
+    const updateRotationX = (movementY: number) => {
+        const rotationAmount = movementY * 0.0017; // 회전 속도 조절을 위해 상수를 곱합니다.
+    
+        if (playerRef.current) {
+            // 최대 최소값을 설정하여 너무 높거나 낮지 않도록 제한합니다.
+            const maxRotationX = Math.PI / 4; // 45도
+            const minRotationX = -Math.PI / 4; // -45도
+            if(playerRef.current.viewUpDown) { 
+                playerRef.current.viewUpDown = Math.max(
+                    minRotationX,
+                    Math.min(
+                        maxRotationX,
+                        playerRef.current.viewUpDown - rotationAmount
+                    )
+                );
+            } else {
+                playerRef.current.viewUpDown = playerRef.current.rotation.x 
+                playerRef.current.viewUpDown = Math.max(
+                    minRotationX,
+                    Math.min(
+                        maxRotationX,
+                        playerRef.current.viewUpDown - rotationAmount
+                    )
+                );
+            }
+        }
+    };
+
+    const updateRotationY = (movementX: number) => {
+        const rotationAmount = movementX * 0.0017; // 회전 속도 조절을 위해 상수를 곱합니다.
+
+        if (playerRef.current) {
+            playerRef.current.rotation.y -= rotationAmount;
+        }
+    };
+
+    useEffect(() => { 
+        const handleMouseMove = (event: MouseEvent) => {
+            // 마우스 포인터가 고정된 상태에서의 마우스 이동량을 감지합니다.
+            const movementX = event.movementX || 0;  
+            const movementY = event.movementY || 0;  
+            updateRotationY(movementX); 
+            updateRotationX(movementY);
+        };
+
+        document.addEventListener('mousemove', handleMouseMove);
+
+        return () => {
+            document.removeEventListener('mousemove', handleMouseMove);
+        };
+    }, []);
+
+    // 이동
+    useEffect(() => { 
+        if (isWalking) { 
+            lockPointer();  
+            actions[animation]?.reset().fadeIn(0.2).play();
+        }
         return () => {
             actions[animation]?.fadeOut(0.5);
         };
-    });
+    }, [isWalking, animation, actions]);
 
-    useFrame(({ camera }) => {
-        if (!player) return;
-        if (!playerRef.current) return;
-        if (playerRef.current.position.distanceTo(position) > 0.1) {
-            const direction = playerRef.current.position
-                .clone()
-                .sub(position)
-                .normalize()
-                .multiplyScalar(0.04);
+    // 키 입력 
+    useEffect(() => {
+        const handleKeyDown = (event: any) => {
+            keyState.current[event.key] = true;
+        };
 
-            playerRef.current.position.sub(direction);
-            playerRef.current.lookAt(position);
+        const handleKeyUp = (event: any) => {
+            keyState.current[event.key] = false;
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener('keyup', handleKeyUp);
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener('keyup', handleKeyUp);
+        };
+    }, [isWalking]);
+
+    // Frame
+    useFrame(({ camera }) => {   
+        const moveVector = new Vector3(
+            (keyState.current['a'] ? 1 : 0) - (keyState.current['d'] ? 1 : 0),
+            0,
+            (keyState.current['s'] ? 1 : 0) - (keyState.current['w'] ? 1 : 0)
+        );
+
+        if (!moveVector.equals(new Vector3(0, 0, 0))) {
+            moveVector.normalize().multiplyScalar(0.2); // 속도조절 
+
+            setIsWalking(true);
             setAnimation(
                 'CharacterArmature|CharacterArmature|CharacterArmature|Run'
-            );
+            ); 
+
+            if (playerRef.current) {
+                // 캐릭터가 바라보는 방향으로 이동 벡터를 회전시킵니다.
+                const forward = new Vector3(0, 0, -1).applyQuaternion(playerRef.current.quaternion);
+                const moveDirection = forward.clone().multiplyScalar(moveVector.z).add(
+                    new Vector3(-forward.z, 0, forward.x).multiplyScalar(moveVector.x)
+                );  
+
+                playerRef.current.position.add(moveDirection);
+                socket.emit('move', [
+                    playerRef.current.position.x,
+                    0,
+                    playerRef.current.position.z,
+                ]); 
+            }
         } else {
+            setIsWalking(false);
             setAnimation(
                 'CharacterArmature|CharacterArmature|CharacterArmature|Idle'
             );
         }
 
-        if (nicknameRef.current) {
+        if (!player || !playerRef.current) return;
+
+        if (nicknameRef.current) { 
             nicknameRef.current.position.set(
                 playerRef.current.position.x,
                 playerRef.current.position.y + 3.5,
@@ -119,13 +234,24 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
             );
             nicknameRef.current.lookAt(10000, 10000, 10000);
         }
-        if (me?.id === playerId) {
+
+        if (me?.id === playerId && playerRef.current) {   
+            const playerPosition = playerRef.current.position.clone();   
+            playerPosition.setY(+3)
+
+            const playerDirection = new Vector3( // 플레이어가 바라보는 곳
+                Math.sin(playerRef.current.rotation.y),
+                playerRef.current.viewUpDown,  // 아래 위
+                Math.cos(playerRef.current.rotation.y)
+            );  
+   
             camera.position.set(
-                playerRef.current.position.x + 12,
-                playerRef.current.position.y + 12,
-                playerRef.current.position.z + 12
-            );
-            camera.lookAt(playerRef.current.position);
+                playerPosition.x + playerDirection.x,  
+                playerPosition.y,
+                playerPosition.z + playerDirection.z,
+            )
+            const cameraTarget = playerPosition.clone().add(playerDirection.multiplyScalar(3)); 
+            camera.lookAt(cameraTarget); // 정면보다 더 앞으로 설정!  
         }
     });
 
@@ -136,6 +262,6 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
         playerId,
         nodes,
         materials,
-        nicknameRef,
+        nicknameRef, 
     };
 };
