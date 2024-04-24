@@ -9,7 +9,18 @@ const io = new Server({
 
 io.listen(4000);
 
-const players = [];
+let players = [];
+const room = {
+    roomTime: 90,
+    roomState: 0,
+    roomTitle: '',
+    roomPassword: '',
+    isPublic: false,
+    roomMap: 0,
+    roomId: '',
+    roomAdmin: '',
+    roomPlayers: [''],
+};
 
 io.on('connection', (socket) => {
     console.log('연결됨!');
@@ -22,12 +33,17 @@ io.on('connection', (socket) => {
             const newPlayer = {
                 id: socket.id,
                 position: [0, 0, 0],
+                // lookPosition: [0, 0, 0],
                 nickname: tempNickname,
-                jobPosition: tempJobPosition,
-                selectedCharacterGlbNameIndex,
-                myRoom: {
-                    objects: [],
-                },
+                // jobPosition: tempJobPosition,
+                // selectedCharacterGlbNameIndex,
+                selectedIndex: -1,
+                isDead: false,
+                isSeeker: false,
+                // isFixed: false,
+                // myRoom: {
+                //     objects: [],
+                // },
             };
             players.push(newPlayer);
 
@@ -72,12 +88,68 @@ io.on('connection', (socket) => {
         }
     });
 
+    socket.on('objChange', (user, index) => {
+        console.log('obj 바꾼다?');
+        console.log(user);
+        console.log(index);
+        const updatedPlayers = players.map((player) => {
+            if (player.id === user.id) {
+                return { ...player, selectedIndex: index };
+            }
+            return player;
+        });
+        players = updatedPlayers;
+        io.emit('players', players);
+        console.log(players);
+    });
+    socket.on('dead', (user) => {
+        console.log('죽는다?');
+        console.log(user);
+        const updatedPlayers = players.map((player) => {
+            if (player.id === user.id) {
+                return { ...player, isDead: true };
+            }
+            return player;
+        });
+        players = updatedPlayers;
+        io.emit('players', players);
+        console.log(players);
+    });
+
     socket.on('myRoomChange', (myRoom, otherPlayerId) => {
         console.log('방이 바뀌었나?');
         const id = otherPlayerId || socket.id;
         const player = players.find((p) => p.id === id);
         player.myRoom = myRoom;
         io.emit('players', players);
+    });
+
+    socket.on('roundStart', () => {
+        console.log('라운드가 시작되었습니다.');
+        room.roomState = 2;
+        // 플레이어 초기화
+        players.map((player) => {
+            player.isDead = false;
+            player.isSeeker = false;
+            player.selectedIndex = -1;
+            player.isFixed = false;
+        });
+        // 플레이어 인원수 분배 0~players.length까지. 일단 술래는 무조건 1명
+        // 초기화 해주고 캐릭터도 초기화
+        if (players.length > 0) {
+            const seeker = Math.floor(Math.random() * players.length);
+            players[seeker].isSeeker = true;
+            players[seeker].selectedIndex = Math.floor(Math.random() * 3);
+            io.emit('players', players);
+            io.emit('roundStart', room);
+            console.log(room);
+            console.log(players);
+        }
+    });
+    socket.on('roundFinish', () => {
+        room.roomState = 3;
+        console.log('라운드가 끝났습니다.');
+        io.emit('roundFinish', room);
     });
 
     socket.on('disconnecting', () => {

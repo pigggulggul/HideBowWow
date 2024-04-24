@@ -10,6 +10,10 @@
     text-align: center;
     overflow-x: hidden;
     overflow-y: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 body {
     font-family: 'DNFBitBitv2';

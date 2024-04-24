@@ -1,21 +1,99 @@
-import { useRecoilValue } from 'recoil';
-import { CharacterSelectFinishedAtom, MeAtom } from '../../store/PlayersAtom';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import {
+    CharacterSelectFinishedAtom,
+    MeAtom,
+    PlayerAtom,
+    RoomAtom,
+} from '../../store/PlayersAtom';
 import { MainCanvas } from './canvas/MainCanvas';
 import { CanvasLayout } from './canvasLayout/Layout';
 import { Lobby } from './lobby/Lobby';
+import { socket } from '../../sockets/clientSocket';
 
 export function Content() {
     const characterSelectedFinished = useRecoilValue(
         CharacterSelectFinishedAtom
     );
-    const me = useRecoilValue(MeAtom);
+    const roomState = useRecoilValue(RoomAtom);
+    const [me, setMe] = useRecoilState(MeAtom);
+    const [players, setPlayers] = useRecoilState(PlayerAtom);
+
+    const handleSelectedIndex = (index: number) => {
+        setMe((prevMe) => ({ ...prevMe, selectedIndex: index })); // 새 객체를 반환하여 selectedIndex 업데이트
+
+        const updatedPlayers = players.map((player) => {
+            if (player.id === me.id) {
+                return { ...player, selectedIndex: index };
+            }
+            return player;
+        });
+        setPlayers(updatedPlayers);
+        socket.emit('objChange', me, index);
+    };
+
+    const selectedList: number[] = [
+        Math.floor(Math.random() * 19 + 1),
+        Math.floor(Math.random() * 19 + 1),
+        Math.floor(Math.random() * 19 + 1),
+    ];
 
     if (characterSelectedFinished && me) {
         return (
             <CanvasLayout>
+                {roomState.roomState === 2 &&
+                !me.isSeeker &&
+                me.selectedIndex === -1 ? (
+                    <div className="absolute flex items-center justify-between w-[80%] h-[80%] z-10">
+                        <div className="w-[30%] h-[80%] flex flex-col justify-center items-center bg-white border-[0.4vw] rounded-[0.6vw] border-gray-700">
+                            나무
+                            <p
+                                className="bg-red-200 px-[2vw] py-[1vw] rounded-[0.6vw] border-[0.2vw] border-red-500 cursor-pointer"
+                                onClick={() => {
+                                    handleSelectedIndex(selectedList[0]);
+                                }}
+                            >
+                                선택하기
+                            </p>
+                            <p className=" py-[1vw] px-[1vw] bg-sky-200 border-[0.2vw] border-sky-400 rounded-[0.6vw] my-[0.4vw] cursor-pointer">
+                                리롤하기
+                            </p>
+                        </div>
+                        <div className="w-[30%] h-[80%] flex flex-col justify-center items-center bg-white border-[0.4vw] rounded-[0.6vw] border-gray-700">
+                            트리
+                            <p
+                                className="bg-red-200 px-[2vw] py-[1vw] rounded-[0.6vw] border-[0.2vw] border-red-500 cursor-pointer"
+                                onClick={() => {
+                                    handleSelectedIndex(selectedList[1]);
+                                }}
+                            >
+                                선택하기
+                            </p>{' '}
+                            <p className=" py-[1vw] px-[1vw] bg-sky-200 border-[0.2vw] border-sky-400 rounded-[0.6vw] my-[0.4vw] cursor-pointer">
+                                리롤하기
+                            </p>
+                        </div>
+                        <div className="w-[30%] h-[80%] flex flex-col justify-center items-center bg-white border-[0.4vw] rounded-[0.6vw] border-gray-700">
+                            미끄럼틀
+                            <p
+                                className="bg-red-200 px-[2vw] py-[1vw] rounded-[0.6vw] border-[0.2vw] border-red-500 cursor-pointer"
+                                onClick={() => {
+                                    handleSelectedIndex(selectedList[2]);
+                                }}
+                            >
+                                선택하기
+                            </p>{' '}
+                            <p className=" py-[1vw] px-[1vw] bg-sky-200 border-[0.2vw] border-sky-400 rounded-[0.6vw] my-[0.4vw] cursor-pointer">
+                                리롤하기
+                            </p>
+                        </div>
+                    </div>
+                ) : (
+                    <></>
+                )}
                 <MainCanvas />
             </CanvasLayout>
         );
     }
+
     return <Lobby></Lobby>;
 }

@@ -11,13 +11,16 @@ export default defineConfig({
             'Cross-Origin-Embedder-Policy': 'require-corp',
         },
         proxy: {
-            '/api': {
-                target: 'http://localhost:8080/',
+            '/api/member-service': {
+                target: 'http://jongbum.site:8001/',
                 changeOrigin: true,
-                rewrite: (path) => path.replace(/^\/api/, ''),
+            },
+            '/api/game-service': {
+                target: 'http://jongbum.site:8002/',
+                changeOrigin: true,
             },
         },
     },
     //env dir
-    envDir: '../',
+    envDir: '',
 });

@@ -25,29 +25,10 @@ type GLTFResult = GLTF & {
         Atlas: MeshStandardMaterial;
         'Atlas.001'?: MeshStandardMaterial;
     };
-    animations: GLTFAction[];
 };
-type ActionName =
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Death'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Duck'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|HitReact'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Idle'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Idle_Attack'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Idle_Hold'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Jump'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Jump_Idle'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Jump_Land'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|No'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Punch'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Run'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Run_Attack'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Run_Hold'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Walk'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Walk_Hold'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Wave'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Yes';
+type ActionName = '';
 
-export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
+export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const playerId = player?.id;
     const me = useRecoilValue(MeAtom);
 
@@ -55,40 +36,92 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
 
     const playerRef = useRef<Group>(null);
     const nicknameRef = useRef<Group>(null);
-
-    const { scene, materials, animations } = useGLTF(
+    const { scene: scene_ } = useGLTF(
         (() => {
             switch (modelIndex) {
-                case 0:
-                    return '/models/CubeGuyCharacter.glb';
                 case 1:
-                    return '/models/CubeWomanCharacter.glb';
+                    return '/models/Chest with Gold.glb';
                 case 2:
-                    return '/models/Steve.glb';
+                    return '/models/CuteRedDino.glb';
+                case 3:
+                    return '/models/Doorway.glb';
+                case 4:
+                    return '/models/furniture-bed.glb';
+                case 5:
+                    return '/models/furniture-bookcase.glb';
+                case 6:
+                    return '/models/furniture-chair.glb';
+                case 7:
+                    return '/models/furniture-coatRack.glb';
+                case 8:
+                    return '/models/furniture-couch.glb';
+                case 9:
+                    return '/models/furniture-fridge.glb';
+                case 10:
+                    return '/models/furniture-gamingComputer.glb';
+                case 11:
+                    return '/models/furniture-officeChair.glb';
+                case 12:
+                    return '/models/furniture-standingDesk.glb';
+                case 13:
+                    return '/models/Jungle gym.glb';
+                case 14:
+                    return '/models/Little Man.glb';
+                case 15:
+                    return '/models/Pine Trees.glb';
+                case 16:
+                    return '/models/Slide.glb';
+                case 17:
+                    return '/models/Steak.glb';
+                case 18:
+                    return '/models/Tree.glb';
+                case 19:
+                    return '/models/Wood Chest.glb';
+                case 20:
+                    return '/models/Swing.glb';
                 default:
                     return '';
             }
         })()
     ) as GLTFResult;
+    const getScaleByModelIndex = (index: number | undefined) => {
+        const scaleValues: any = {
+            1: 1,
+            2: 2,
+            3: 4,
+            4: 2,
+            5: 2,
+            6: 2,
+            7: 2,
+            8: 2,
+            9: 1,
+            10: 3,
+            11: 2,
+            12: 2,
+            13: 0.4,
+            14: 3,
+            15: 4,
+            16: 1,
+            17: 1,
+            18: 1,
+            19: 1,
+            20: 0.04,
+        };
+        if (index) {
+            return scaleValues[index] || 1; // modelIndex에 해당하는 값이 없다면 기본값으로 1 사용
+        } else {
+            return -1;
+        }
+    };
+
+    const scale = getScaleByModelIndex(modelIndex);
 
     //개별 모델링을 통하여 다른 객체임을 알려줘야한다.
-    const clone = useMemo(() => SkeletonUtils.clone(scene), []);
+    const scene = useMemo(() => {
+        return SkeletonUtils.clone(scene_);
+    }, []);
 
-    const objectMap = useGraph(clone);
-    const nodes = objectMap.nodes;
-
-    const [animation, setAnimation] = useState<ActionName>(
-        'CharacterArmature|CharacterArmature|CharacterArmature|Idle'
-    );
-    const group = useRef<Group>(null);
-    const { actions } = useAnimations(animations, playerRef);
-
-    useEffect(() => {
-        actions[animation]?.reset().fadeIn(0.5).play();
-        return () => {
-            actions[animation]?.fadeOut(0.5);
-        };
-    });
+    useEffect(() => {});
 
     useFrame(({ camera }) => {
         if (!player) return;
@@ -102,13 +135,7 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
 
             playerRef.current.position.sub(direction);
             playerRef.current.lookAt(position);
-            setAnimation(
-                'CharacterArmature|CharacterArmature|CharacterArmature|Run'
-            );
         } else {
-            setAnimation(
-                'CharacterArmature|CharacterArmature|CharacterArmature|Idle'
-            );
         }
 
         if (nicknameRef.current) {
@@ -134,8 +161,8 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
         playerRef,
         memoizedPosition,
         playerId,
-        nodes,
-        materials,
+        scene,
         nicknameRef,
+        scale,
     };
 };
