@@ -32,6 +32,16 @@ dependencies {
 
 	// swagger
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+
+	// openFeign
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+}
+
+dependencyManagement {
+
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:2023.0.0"
+	}
 }
 
 tasks.named('test') {

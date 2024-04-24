@@ -51,21 +51,19 @@ public class PlayerSocketController {
     @Operation(summary = "플레이어 이동", description = "Player의 좌표, 방향 정보 수정")
     public void playerMove(@Payload StompPayload<Player> message) {
         playerSocketService.movePlayer(message);
-        simpMessagingTemplate.convertAndSend("/sub/room/"+message.getRoomId(), message);
     }
 
     @MessageMapping("/player.object") @DeleteMapping("/player.object")
     @Operation(summary = "플레이어의 object 변경", description = "Player의 objectType 정보 수정")
     public void playerObject(@Payload StompPayload<Player> message) {
-        simpMessagingTemplate.convertAndSend("/sub/room/"+message.getRoomId(), message);
+        playerSocketService.objectPlayer(message);
     }
 
     @MessageMapping("/player.dead") @DeleteMapping("/player.dead")
     @Operation(summary = "플레이어 사망", description = "Player의 isDead 정보 수정")
     public void playerDead(@Payload StompPayload<Player> message) {
-        simpMessagingTemplate.convertAndSend("/sub/room/"+message.getRoomId(), message);
+        playerSocketService.deadPlayer(message);
     }
-
 
 
 }

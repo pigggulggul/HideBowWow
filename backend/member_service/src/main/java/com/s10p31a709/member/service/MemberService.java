@@ -49,4 +49,10 @@ public class MemberService {
         memberRepository.delete(member);
     }
 
+    @Transactional
+    public void deleteGuest(String nickname){
+        Member member = memberRepository.findByNickname(nickname, Member.class).orElse(null);
+        if(member != null && member.getPassword().isEmpty()) memberRepository.delete(member);
+    }
+
 }

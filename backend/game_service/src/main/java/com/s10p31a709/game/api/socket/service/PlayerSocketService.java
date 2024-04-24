@@ -1,8 +1,10 @@
 package com.s10p31a709.game.api.socket.service;
 
 import com.s10p31a709.game.api.room.entity.Player;
+import com.s10p31a709.game.api.room.entity.Room;
 import com.s10p31a709.game.api.room.repository.RoomRepository;
 import com.s10p31a709.game.api.socket.model.StompPayload;
+import com.s10p31a709.game.common.feign.service.MemberServiceClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -13,35 +15,52 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 @RequiredArgsConstructor
 public class PlayerSocketService {
-    private final Map<String, Map<String, String>> sessions = new ConcurrentHashMap<>();
 
     private final RoomRepository roomRepository;
     private final SimpMessagingTemplate simpMessagingTemplate;
-
-    public void setSessions(String session, Map<String, String> map){
-        sessions.put(session, map);
-    }
+    private final MemberServiceClient memberServiceClient;
 
     public void exitPlayer(String sessionId){
-        Map<String, String> map = roomRepository.deletePlayerBySessionId(sessionId);
-        if(map == null) return;
-        String roomId = map.get("roomId");
-        String nickname = map.get("nickname");
-        StompPayload<Player> payload = new StompPayload<>();
-        payload.setType("player.exit");
-        payload.setRoomId(roomId);
-        payload.setSender("system");
-        payload.setData(new Player(nickname, null, null, null, null, null));
-        simpMessagingTemplate.convertAndSend("/sub/room/"+roomId, payload);
+        Player player = roomRepository.findPlayerBySessionId(sessionId);
+        if (player == null) return;
+        Room room = roomRepository.findRoomByNickname(player.getNickname());
+        if (room == null) return;
+
+        StompPayload<Player> payload = new StompPayload<>("player.exit", room.getRoomId(), "system", player);
+        simpMessagingTemplate.convertAndSend("/sub/room/"+room.getRoomId(), payload);
+        memberServiceClient.deleteGuest(player.getNickname());
+        roomRepository.deletePlayerByNickname(sessionId);
     }
 
     public void enterPlayer(StompPayload<Player> message){
-        roomRepository.addPlayer(message.getRoomId(), message.getData().getNickname(), message.getData().getSessionId());
+        Player player = roomRepository.savePlayer(message.getRoomId(), message.getData());
+
+        StompPayload<Player> payload = new StompPayload<>("player.enter", message.getRoomId(), "system", player);
+        simpMessagingTemplate.convertAndSend("/sub/room/"+message.getRoomId(), payload);
     }
 
     public void movePlayer(StompPayload<Player> message){
-        String roomId = message.getRoomId();
-        Player player = message.getData();
+        Player player = roomRepository.findPlayerByNickname(message.getData().getNickname());
+        player.setPosition(message.getData().getPosition());
+
+        StompPayload<Player> payload = new StompPayload<>("player.move", message.getRoomId(), "system", player);
+        simpMessagingTemplate.convertAndSend("/sub/room/"+message.getRoomId(), payload);
+    }
+
+    public void deadPlayer(StompPayload<Player> message){
+        Player player = roomRepository.findPlayerByNickname(message.getData().getNickname());
+        player.setIsDead(true);
+
+        StompPayload<Player> payload = new StompPayload<>("player.dead", message.getRoomId(), "system", player);
+        simpMessagingTemplate.convertAndSend("/sub/room/"+message.getRoomId(), payload);
+    }
+
+    public void objectPlayer(StompPayload<Player> message){
+        Player player = roomRepository.findPlayerByNickname(message.getData().getNickname());
+        player.setSelectedIndex(message.getData().getSelectedIndex());
+
+        StompPayload<Player> payload = new StompPayload<>("player.object", message.getRoomId(), "system", player);
+        simpMessagingTemplate.convertAndSend("/sub/room/"+message.getRoomId(), payload);
     }
 
 }

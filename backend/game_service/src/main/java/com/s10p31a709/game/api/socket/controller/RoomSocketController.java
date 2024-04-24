@@ -2,6 +2,7 @@ package com.s10p31a709.game.api.socket.controller;
 
 import com.s10p31a709.game.api.room.entity.Room;
 import com.s10p31a709.game.api.socket.model.StompPayload;
+import com.s10p31a709.game.api.socket.service.RoomSocketService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RoomSocketController {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
+    private final RoomSocketService roomSocketService;
 
 
     @MessageMapping("/room") @DeleteMapping("/room")
@@ -30,7 +32,7 @@ public class RoomSocketController {
     @MessageMapping("/room.modify") @DeleteMapping("/room.modify")
     @Operation(summary = "방 정보 수정", description = "title, password, public, time, map, roomState: {0:대기, 1:로딩, 2:게임중, 3:결과} 를 수정")
     public void roomModify(@Payload StompPayload<Room> message){
-        simpMessagingTemplate.convertAndSend("/sub/room/"+message.getRoomId(), message);
+        roomSocketService.modifyRoom(message);
     }
 
     @MessageMapping("/room.start") @DeleteMapping("/room.start")
