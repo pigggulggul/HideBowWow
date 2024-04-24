@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { RecoilRoot } from 'recoil';
 
 export default function MainPage() {
     return (

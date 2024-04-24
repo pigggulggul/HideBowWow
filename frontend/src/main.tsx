@@ -33,7 +33,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                     ></Route>
                     <Route path="/lobby" element={<LobbyPage />}></Route>
                     <Route path="/room/:id" element={<RoomPage />}></Route>
-                    <Route path="/game" element={<GamePage />}></Route>
+                    <Route path="/game/:id" element={<GamePage />}></Route>
                 </Routes>
             </BrowserRouter>
         </PersistGate>
