@@ -1,5 +1,5 @@
 import { atom, selector } from 'recoil';
-import { CurrentPlayersInfo, MeInfo } from '../types/GameType';
+import { CurrentPlayersInfo, MeInfo, RoomInfo } from '../types/GameType';
 
 // 내정보
 export const MeAtom = atom<MeInfo>({
@@ -23,6 +23,21 @@ export const SelectedCharacterGlbNameIndexAtom = atom({
 export const PlayerAtom = atom<CurrentPlayersInfo[]>({
     key: 'PlayerAtom',
     default: [],
+});
+
+// 현재 있는 플레이어 정보
+export const RoomAtom = atom<RoomInfo>({
+    key: 'RoomAtom',
+    default: {
+        roomTime: 90,
+        roomState: 0,
+        roomTitle: '',
+        roomPassword: '',
+        isPublic: false,
+        roomMap: '',
+        roomId: '',
+        roomPlayers: [],
+    },
 });
 
 // export const PlayGroundStructuresBoundingBoxAtom = atom({

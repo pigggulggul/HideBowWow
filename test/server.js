@@ -9,9 +9,9 @@ const io = new Server({
 
 io.listen(4000);
 
-const players = [];
+let players = [];
 const room = {
-    time: 90,
+    roomTime: 90,
     roomState: 0,
     roomTitle: '',
     roomPassword: '',
@@ -88,6 +88,34 @@ io.on('connection', (socket) => {
         }
     });
 
+    socket.on('objChange', (user, index) => {
+        console.log('obj 바꾼다?');
+        console.log(user);
+        console.log(index);
+        const updatedPlayers = players.map((player) => {
+            if (player.id === user.id) {
+                return { ...player, selectedIndex: index };
+            }
+            return player;
+        });
+        players = updatedPlayers;
+        io.emit('players', players);
+        console.log(players);
+    });
+    socket.on('dead', (user) => {
+        console.log('죽는다?');
+        console.log(user);
+        const updatedPlayers = players.map((player) => {
+            if (player.id === user.id) {
+                return { ...player, isDead: true };
+            }
+            return player;
+        });
+        players = updatedPlayers;
+        io.emit('players', players);
+        console.log(players);
+    });
+
     socket.on('myRoomChange', (myRoom, otherPlayerId) => {
         console.log('방이 바뀌었나?');
         const id = otherPlayerId || socket.id;
@@ -108,13 +136,15 @@ io.on('connection', (socket) => {
         });
         // 플레이어 인원수 분배 0~players.length까지. 일단 술래는 무조건 1명
         // 초기화 해주고 캐릭터도 초기화
-        const seeker = Math.floor(Math.random() * players.length);
-        players[seeker].isSeeker = true;
-        players[seeker].selectedIndex = Math.floor(Math.random() * 3);
-        io.emit('players', players);
-        io.emit('roundStart', room);
-        console.log(room);
-        console.log(players);
+        if (players.length > 0) {
+            const seeker = Math.floor(Math.random() * players.length);
+            players[seeker].isSeeker = true;
+            players[seeker].selectedIndex = Math.floor(Math.random() * 3);
+            io.emit('players', players);
+            io.emit('roundStart', room);
+            console.log(room);
+            console.log(players);
+        }
     });
     socket.on('roundFinish', () => {
         room.roomState = 3;

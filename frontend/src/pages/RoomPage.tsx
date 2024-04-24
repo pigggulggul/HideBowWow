@@ -1,12 +1,30 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { RoomInfo } from '../types/GameType';
+import { getRoom } from '../api/rooms';
+import { httpStatusCode } from '../components/utils/http-status';
 
 export default function RoomPage() {
     const [settingRoomFlag, setSettingRoomFlag] = useState<boolean>(false);
-
+    const [room, setRoom] = useState<RoomInfo>();
+    const { state } = useLocation();
     const changeSettingRoomFlag = () => {
         setSettingRoomFlag(!settingRoomFlag);
     };
+
+    const loadRoom = async (state: string) => {
+        const res = await getRoom(state);
+        if (res.status === httpStatusCode.OK) {
+            console.log(res.data);
+            setRoom(res.data.data);
+        }
+    };
+
+    useEffect(() => {
+        if (state) {
+            loadRoom(state);
+        }
+    }, [state]);
     return (
         <section
             className="relative w-full h-full flex flex-col items-center justify-center"
@@ -18,7 +36,7 @@ export default function RoomPage() {
             <div className="relative w-[80%] h-[90%] p-[1vw] flex justify-between border-[0.3vw] rounded-[0.6vw] border-gray-950 bg-white ">
                 <div className="w-[60%] h-full flex-col justify-center">
                     <div className="w-full h-[14%] flex justify-between items-center mx-auto my-[1vw] px-[1vw] py-[1.2vw] text-[1.2vw] border-[0.2vw] border-gray-950 rounded-[0.6vw] ">
-                        <p>1.아무나 와라</p>
+                        <p>{room?.roomTitle}</p>
                         <p
                             className="cursor-pointer"
                             onClick={() => {

@@ -13,13 +13,13 @@ export default function MainPage() {
             <h5 className="text-blue-600 text-[11vw]">숨구멍</h5>
             <div className="flex justify-between w-[40%]">
                 <Link
-                    to={'/selectchannel'}
+                    to={'/guestlogin'}
                     className="border-[0.3vw] color-border-main rounded-[0.6vw] px-[2vw] py-[0.4vw] color-text-main bg-white text-[2.6vw] cursor-pointer hover:color-bg-main hover:text-white"
                 >
                     Guest
                 </Link>
                 <Link
-                    to={'/selectchannel'}
+                    to={'/userlogin'}
                     className="border-[0.3vw] color-border-main rounded-[0.6vw] px-[2vw] py-[0.4vw] color-text-main bg-white text-[2.6vw] cursor-pointer hover:color-bg-main hover:text-white"
                 >
                     Login
