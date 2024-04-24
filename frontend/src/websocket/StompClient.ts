@@ -1,7 +1,7 @@
 import { Client } from '@stomp/stompjs';
 import { handshake } from './client';
 import { useDispatch, useSelector } from 'react-redux';
-import { readyState } from '../store/user-slice';
+import { currentRoomState, readyState } from '../store/user-slice';
 import { store } from '../store/store';
 
 class StompClient {
@@ -49,6 +49,11 @@ class StompClient {
                             case 'room.gameInit': {
                                 console.log('게임 입장', msg);
                                 store.dispatch(readyState(true));
+                                store.dispatch(currentRoomState(msg.data));
+                                break;
+                            }
+                            case 'player.object': {
+                                console.log('물체 변경', msg);
                                 break;
                             }
                             /** 플레이어 위치 정보 반환 */

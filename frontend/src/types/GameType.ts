@@ -6,20 +6,23 @@ export interface PlayerInitType {
     modelIndex?: number;
 }
 export interface CurrentPlayersInfo {
-    id: string;
-    selectedIndex?: number;
+    id?: string;
+    nickname?: string;
+    selectedIndex?: number | null;
     position: number[];
-    isDead?: boolean;
-    isSeeker?: boolean;
+    direction?: number[];
+    isDead?: boolean | null;
+    isSeeker?: boolean | null;
     isFixed?: boolean;
 }
 export interface MeInfo {
     id: string;
     selectedIndex?: number;
-    isDead?: boolean;
-    isSeeker?: boolean;
-    isFixed?: boolean;
+    isDead?: boolean | null;
+    isSeeker?: boolean | null;
+    isFixed?: boolean | null;
 }
+
 export interface RoomInfo {
     isPublic: boolean;
     roomId: string;
