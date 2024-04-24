@@ -8,6 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Random;
+
 @Service
 @RequiredArgsConstructor
 public class RoomSocketService {
@@ -24,18 +27,53 @@ public class RoomSocketService {
         if(message.getData().getRoomMap() != null) room.setRoomMap(message.getData().getRoomMap());
         if(message.getData().getRoomAdmin() != null) room.setRoomAdmin(message.getData().getRoomAdmin());
         if(message.getData().getRoomTitle() != null) room.setRoomTitle(message.getData().getRoomTitle());
-        if(message.getData().getRoomState() != null) room.setRoomState(message.getData().getRoomState());
 
         StompPayload<Room> payload = new StompPayload<>("room.modify", message.getRoomId(), "system", room);
         simpMessagingTemplate.convertAndSend("/sub/room/"+message.getRoomId(), payload);
     }
 
-    public void startRoom(Room room){
-        // 방 상태 변경, 시간부여, 플레이어들에게 역할 부여
+    public void gameInit(StompPayload<Room> message){
+        Room room = roomRepository.findRoomByRoomId(message.getRoomId());
+        room.setRoomTime(10);
+        room.setRoomState(1);
+
+        int seekerNumber = new Random().nextInt(room.getRoomPlayers().size());
+        for (int i = 0; i < room.getRoomPlayers().size(); i++) {
+            Player player = room.getRoomPlayers().get(i);
+            player.setPosition(new Integer[]{0, 0, 0});
+            player.setIsDead(false);
+            player.setIsSeeker(i == seekerNumber);
+        }
+
+        StompPayload<Room> payload = new StompPayload<>("room.gameInit", message.getRoomId(), "system", room);
+        simpMessagingTemplate.convertAndSend("/sub/room/"+message.getRoomId(), payload);
     }
 
-    public void finishRoom(Room room){
-        // 방정보를 확인 후 끝난 방의 상태를 변경하고, 결과 전송
+    public void gameStart(String roomId){
+        Room room = roomRepository.findRoomByRoomId(roomId);
+        room.setRoomTime(120);
+        room.setRoomState(2);
+
+        StompPayload<Room> payload = new StompPayload<>("room.gameStart", roomId, "system", room);
+        simpMessagingTemplate.convertAndSend("/sub/room/"+roomId, payload);
+    }
+
+    public void gameFinish(String roomId){
+        Room room = roomRepository.findRoomByRoomId(roomId);
+        room.setRoomTime(10);
+        room.setRoomState(3);
+
+        StompPayload<Room> payload = new StompPayload<>("room.gameFinish", roomId, "system", room);
+        simpMessagingTemplate.convertAndSend("/sub/room/"+roomId, payload);
+    }
+
+    public void backRoom(String roomId){
+        Room room = roomRepository.findRoomByRoomId(roomId);
+        room.setRoomTime(0);
+        room.setRoomState(0);
+
+        StompPayload<Room> payload = new StompPayload<>("room.backRoom", roomId, "system", room);
+        simpMessagingTemplate.convertAndSend("/sub/room/"+roomId, payload);
     }
 
     public void sendRoomInfo(String RoomId){

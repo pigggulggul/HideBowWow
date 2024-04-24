@@ -29,7 +29,7 @@ public class PlayerSocketService {
         StompPayload<Player> payload = new StompPayload<>("player.exit", room.getRoomId(), "system", player);
         simpMessagingTemplate.convertAndSend("/sub/room/"+room.getRoomId(), payload);
         memberServiceClient.deleteGuest(player.getNickname());
-        roomRepository.deletePlayerByNickname(sessionId);
+        roomRepository.deletePlayerByNickname(player.getNickname());
     }
 
     public void enterPlayer(StompPayload<Player> message){

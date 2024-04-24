@@ -42,10 +42,10 @@ public class RoomController {
     @Operation(summary = "방 입장", description = "roomId, password, nickname을 json으로 보내주세요")
     public ResponseEntity<?> enterRoom(@RequestBody Map<String, String> map){
         String roomId = map.get("roomId");
-        String password = map.get("password");
+        String password = map.get("roomPassword");
         String nickname = map.get("nickname");
         roomService.checkEnter(roomId, password, nickname);
-        return BaseResponse.success(201, "", roomService.getRoom(roomId));
+        return BaseResponse.success(200, "", roomService.getRoom(roomId));
     }
 
 }
