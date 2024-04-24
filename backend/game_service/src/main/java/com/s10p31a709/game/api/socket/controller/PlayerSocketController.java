@@ -48,7 +48,7 @@ public class PlayerSocketController {
     }
 
     @MessageMapping("/player.move") @DeleteMapping("/player.move")
-    @Operation(summary = "플레이어 이동", description = "Player의 좌표, 방향 정보 수정")
+    @Operation(summary = "플레이어 이동", description = "Player의 좌표(position), 방향정보(direction) 수정")
     public void playerMove(@Payload StompPayload<Player> message) {
         playerSocketService.movePlayer(message);
     }

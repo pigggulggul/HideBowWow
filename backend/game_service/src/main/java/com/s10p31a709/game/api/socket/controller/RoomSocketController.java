@@ -42,7 +42,7 @@ public class RoomSocketController {
     }
 
     @MessageMapping("/room.gameInit") @DeleteMapping("/room.gameInit")
-    @Operation(summary = "게임 입장(클라 요청 필요)", description = "요청만 보내주면 Players(술래여부, 생존여부, 초기위치)를 포함한 Room객체(시간:10, 룸상태:1)")
+    @Operation(summary = "게임 입장(클라 요청 필요)", description = "요청만 보내주면 Players(술래여부, 생존여부, 초기위치, 방향)를 포함한 Room객체(시간:10, 룸상태:1)")
     public void gameInit(@Payload StompPayload<Room> message){
         roomSocketService.gameInit(message);
     }

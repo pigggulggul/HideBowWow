@@ -41,6 +41,7 @@ public class RoomSocketService {
         for (int i = 0; i < room.getRoomPlayers().size(); i++) {
             Player player = room.getRoomPlayers().get(i);
             player.setPosition(new Integer[]{0, 0, 0});
+            player.setDirection(new Integer[]{0, 0, 0});
             player.setIsDead(false);
             player.setIsSeeker(i == seekerNumber);
         }

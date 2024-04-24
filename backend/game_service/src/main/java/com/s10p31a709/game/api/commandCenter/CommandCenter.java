@@ -6,6 +6,7 @@ import com.s10p31a709.game.api.room.repository.RoomRepository;
 import com.s10p31a709.game.api.socket.model.StompPayload;
 import com.s10p31a709.game.api.socket.service.RoomSocketService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class CommandCenter {
 
     private final RoomRepository roomRepository;
@@ -66,13 +68,19 @@ public class CommandCenter {
 
         for (Room room : rooms){
             // 방들의 상태 체크. 비었으면 삭제, 호스트가 없으면 교체
-            if(room.getRoomPlayers().isEmpty()) roomSocketService.deleteRoom(room.getRoomId());
+            if(room.getRoomPlayers().isEmpty()) {
+                roomSocketService.deleteRoom(room.getRoomId());
+                log.info("방 삭제 (roomId : {})", room.getRoomId());
+            }
             else {
                 String host = null;
                 for (Player player : room.getRoomPlayers()){
                     if (room.getRoomAdmin().equals(player.getNickname())) host = player.getNickname();
                 }
-                if(host == null) roomSocketService.changeAdmin(room);
+                if(host == null) {
+                    log.info("방장 교체 (roomId : {})", room.getRoomId());
+                    roomSocketService.changeAdmin(room);
+                }
             }
         }
     }
