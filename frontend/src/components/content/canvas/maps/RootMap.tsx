@@ -12,6 +12,8 @@ import { Vector3 } from 'three';
 import { Player } from './player/Player';
 import { ObjectPlayer } from './player/ObjectPlayer';
 import { AttackRules } from './player/AttackRules';
+import { useDispatch, useSelector } from 'react-redux';
+import { CurrentPlayersInfo } from '../../../../types/GameType';
 
 export function RootMap() {
     const characterSelectFinished = useRecoilValue(CharacterSelectFinishedAtom);
@@ -21,6 +23,11 @@ export function RootMap() {
     const selectedCharacterGlbNameIndex = useRecoilValue(
         SelectedCharacterGlbNameIndexAtom
     );
+
+    const currentRoom = useSelector(
+        (state: any) => state.reduxFlag.userSlice.currentRoom
+    );
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (!controls.current) return;
@@ -35,31 +42,12 @@ export function RootMap() {
             ) : (
                 <>
                     <GroundElements />
-                    {players.map((player) => {
-                        if (player.isSeeker && !player.isDead) {
-                            return (
-                                <>
-                                    <Player
-                                        key={player.id}
-                                        player={player}
-                                        position={
-                                            new Vector3(
-                                                player.position[0],
-                                                player.position[1],
-                                                player.position[2]
-                                            )
-                                        }
-                                        modelIndex={
-                                            selectedCharacterGlbNameIndex
-                                        }
-                                    />
-                                </>
-                            );
-                        } else {
-                            if (player.selectedIndex !== -1 && !player.isDead) {
+                    {currentRoom.roomPlayers.map(
+                        (player: CurrentPlayersInfo) => {
+                            if (player.isSeeker && !player.isDead) {
                                 return (
                                     <>
-                                        <ObjectPlayer
+                                        <Player
                                             key={player.id}
                                             player={player}
                                             position={
@@ -69,15 +57,42 @@ export function RootMap() {
                                                     player.position[2]
                                                 )
                                             }
-                                            modelIndex={player.selectedIndex}
+                                            modelIndex={
+                                                selectedCharacterGlbNameIndex
+                                            }
                                         />
                                     </>
                                 );
                             } else {
-                                return <></>;
+                                if (
+                                    player.selectedIndex !== null &&
+                                    !player.isDead
+                                ) {
+                                    console.log('player not seeker', player);
+                                    return (
+                                        <>
+                                            <ObjectPlayer
+                                                key={player.id}
+                                                player={player}
+                                                position={
+                                                    new Vector3(
+                                                        player.position[0],
+                                                        player.position[1],
+                                                        player.position[2]
+                                                    )
+                                                }
+                                                selectedIndex={
+                                                    player.selectedIndex
+                                                }
+                                            />
+                                        </>
+                                    );
+                                } else {
+                                    return <></>;
+                                }
                             }
                         }
-                    })}
+                    )}
                     <AttackRules />
                 </>
             )}

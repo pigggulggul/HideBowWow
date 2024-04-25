@@ -1,7 +1,11 @@
 import { Client } from '@stomp/stompjs';
 import { handshake } from './client';
 import { useDispatch, useSelector } from 'react-redux';
-import { currentRoomState, readyState } from '../store/user-slice';
+import {
+    addPeopleRoomState,
+    currentRoomState,
+    readyState,
+} from '../store/user-slice';
 import { store } from '../store/store';
 
 class StompClient {
@@ -28,17 +32,17 @@ class StompClient {
             this.client = handshake();
             this.client.onConnect = () => {
                 //public subscribe
-                console.log('소켓 연결.');
+                // console.log('소켓 연결.');
                 setFlag(true);
 
                 this.isConnected = true;
                 if (this.client !== null) {
                     this.client.subscribe(`/sub/room/${roomId}`, (message) => {
-                        console.log(message);
                         const msg = JSON.parse(message.body);
                         switch (msg.type) {
                             case 'player.enter': {
                                 console.log('플레이어 입장', msg);
+                                store.dispatch(addPeopleRoomState(msg.data));
                                 break;
                             }
                             case 'player.dead': {
@@ -58,16 +62,19 @@ class StompClient {
                             }
                             /** 플레이어 위치 정보 반환 */
                             case 'room.gameState': {
-                                console.log('위치 정보', msg);
+                                // console.log('위치 정보', msg);
+                                store.dispatch(currentRoomState(msg.data));
                                 break;
                             }
                             /** 숨기 시작 */
                             case 'room.hideStart': {
                                 console.log('숨기 시작', msg);
+                                store.dispatch(currentRoomState(msg.data));
                                 break;
                             }
                             case 'room.findStart': {
                                 console.log('찾기 시작', msg);
+                                store.dispatch(currentRoomState(msg.data));
                                 break;
                             }
                             case 'room.hiderWin': {

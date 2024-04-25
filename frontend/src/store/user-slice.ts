@@ -16,6 +16,7 @@ const initialState: UserState = {
     currentRoom: {
         isPublic: true,
         roomId: '',
+        roomAdmin: '',
         roomMap: null,
         roomPassword: '',
         roomPlayers: [],
@@ -50,8 +51,14 @@ export const userSlice = createSlice({
         currentRoomState: (state, action) => {
             state.currentRoom = action.payload;
         },
+        addPeopleRoomState: (state, action) => {
+            state.currentRoom.roomPlayers.push(action.payload);
+        },
         meInfoState: (state, action) => {
             state.meInfo = action.payload;
+        },
+        meSelectedInfoState: (state, action) => {
+            state.meInfo.selectedIndex = action.payload;
         },
     },
 });
@@ -61,5 +68,7 @@ export const {
     readyState,
     currentRoomState,
     meInfoState,
+    addPeopleRoomState,
+    meSelectedInfoState,
 } = userSlice.actions;
 export default userSlice.reducer;

@@ -12,6 +12,7 @@ import { GLTF, SkeletonUtils } from 'three-stdlib';
 import { PlayerInitType } from '../../../../../../types/GameType';
 import { useRecoilValue } from 'recoil';
 import { MeAtom } from '../../../../../../store/PlayersAtom';
+import { useSelector } from 'react-redux';
 
 interface GLTFAction extends AnimationClip {
     name: ActionName;
@@ -29,8 +30,13 @@ type GLTFResult = GLTF & {
 type ActionName = '';
 
 export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
-    const playerId = player?.id;
-    const me = useRecoilValue(MeAtom);
+    const playerNickname = player?.nickname;
+    const meName = useSelector(
+        (state: any) => state.reduxFlag.userSlice.userNickname
+    );
+    const meInfo = useSelector(
+        (state: any) => state.reduxFlag.userSlice.meInfo
+    );
 
     const memoizedPosition = useMemo(() => position, []);
 
@@ -146,7 +152,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             );
             nicknameRef.current.lookAt(10000, 10000, 10000);
         }
-        if (me?.id === playerId) {
+        if (meInfo?.nickname === playerNickname) {
             camera.position.set(
                 playerRef.current.position.x + 12,
                 playerRef.current.position.y + 12,
@@ -157,10 +163,10 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     });
 
     return {
-        me,
+        meInfo,
         playerRef,
         memoizedPosition,
-        playerId,
+        playerNickname,
         scene,
         nicknameRef,
         scale,
