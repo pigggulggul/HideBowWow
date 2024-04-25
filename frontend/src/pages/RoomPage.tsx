@@ -6,6 +6,7 @@ import { httpStatusCode } from '../components/utils/http-status';
 import { useDispatch, useSelector } from 'react-redux';
 import StompClient from '../websocket/StompClient';
 import { readyState } from '../store/user-slice';
+import { current } from '@reduxjs/toolkit';
 
 export default function RoomPage() {
     const [settingRoomFlag, setSettingRoomFlag] = useState<boolean>(false);
@@ -22,6 +23,9 @@ export default function RoomPage() {
     );
     const isReady = useSelector(
         (state: any) => state.reduxFlag.userSlice.isReady
+    );
+    const currentRoom = useSelector(
+        (state: any) => state.reduxFlag.userSlice.currentRoom
     );
     const dispatch = useDispatch();
     const loadRoom = async (state: string) => {
@@ -61,6 +65,9 @@ export default function RoomPage() {
             navigate(`/game/${state}`, { state: state });
         }
     }, [isReady]);
+    useEffect(() => {
+        setRoom(currentRoom);
+    }, [currentRoom]);
 
     return (
         <section
@@ -84,24 +91,25 @@ export default function RoomPage() {
                         </p>
                     </div>
                     <div className="w-full h-[86%] flex flex-wrap content-start ">
-                        <div className="w-[45%] h-[15%] px-[1vw] my-[0.6vw] mx-[0.4vw] flex justify-between items-center border-[0.3vw] rounded-[0.6vw] border-black bg-white cursor-pointer hover:bg-sky-500 ">
-                            <p className="text-[1.4vw]">정은수</p>
-                            <div className="flex flex-col">
-                                <p className="text-[1.6vw]">방장</p>
-                            </div>
-                        </div>
-                        <div className="w-[45%] h-[15%] px-[1vw] my-[0.6vw] mx-[0.4vw] flex justify-between items-center border-[0.3vw] rounded-[0.6vw] border-black bg-white cursor-pointer hover:bg-sky-500 ">
-                            <p className="text-[1.4vw]">이제헌</p>
-                            <div className="flex flex-col">
-                                <p className="text-[1.6vw]"></p>
-                            </div>
-                        </div>
-                        <div className="w-[45%] h-[15%] px-[1vw] my-[0.6vw] mx-[0.4vw] flex justify-between items-center border-[0.3vw] rounded-[0.6vw] border-black bg-white cursor-pointer hover:bg-sky-500 ">
-                            <p className="text-[1.4vw]">최창호</p>
-                            <div className="flex flex-col">
-                                <p className="text-[1.6vw]"></p>
-                            </div>
-                        </div>
+                        {room?.roomPlayers.map((item, index) => {
+                            return (
+                                <div
+                                    key={'currentPeople' + index}
+                                    className="w-[45%] h-[15%] px-[1vw] my-[0.6vw] mx-[0.4vw] flex justify-between items-center border-[0.3vw] rounded-[0.6vw] border-black bg-white cursor-pointer hover:bg-sky-500 "
+                                >
+                                    <p className="text-[1.4vw]">
+                                        {item.nickname}
+                                    </p>
+                                    {room?.roomAdmin === item.nickname ? (
+                                        <div className="flex flex-col">
+                                            <p className="text-[1.6vw]">방장</p>
+                                        </div>
+                                    ) : (
+                                        <></>
+                                    )}
+                                </div>
+                            );
+                        })}
                     </div>
                 </div>
 

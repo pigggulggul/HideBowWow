@@ -12,7 +12,7 @@ import { socket } from '../../sockets/clientSocket';
 import { useDispatch, useSelector } from 'react-redux';
 import { CurrentPlayersInfo, RoomInfo } from '../../types/GameType';
 import { useEffect, useState } from 'react';
-import { meInfoState } from '../../store/user-slice';
+import { meInfoState, meSelectedInfoState } from '../../store/user-slice';
 import StompClient from '../../websocket/StompClient';
 
 export function Content() {
@@ -38,15 +38,56 @@ export function Content() {
         isDead: null,
         isSeeker: null,
         nickname: '',
-        selectedIndex: null,
+        selectedIndex: 5,
     });
     //플레이어 전체정보
     const [players, setPlayers] = useState<CurrentPlayersInfo[]>(
         roomState.roomPlayers
     );
     useEffect(() => {
-        setMe(meInfo);
+        if (meInfo.nickname !== '') {
+            setMe(meInfo);
+        }
     }, [meInfo]);
+    useEffect(() => {
+        setPlayers(roomState.roomPlayers);
+    }, [roomState]);
+    useEffect(() => {
+        if (me.nickname !== '' && me.selectedIndex !== null) {
+            console.log('보낼게욧', me);
+            console.log(
+                JSON.stringify({
+                    type: 'player.object',
+                    roomId: roomState.roomId,
+                    sender: meName,
+                    data: {
+                        nickname: me.nickname,
+                        selectedIndex: me.selectedIndex,
+                        position: me.position,
+                        direction: me.direction,
+                        isDead: me.isDead,
+                        isSeeker: me.isSeeker,
+                    },
+                })
+            );
+            stompClient.sendMessage(
+                `/player.object`,
+                JSON.stringify({
+                    type: 'player.object',
+                    roomId: roomState.roomId,
+                    sender: meName,
+                    data: {
+                        nickname: me.nickname,
+                        selectedIndex: me.selectedIndex,
+                        position: me.position,
+                        direction: me.direction,
+                        isDead: me.isDead,
+                        isSeeker: me.isSeeker,
+                    },
+                })
+            );
+        }
+    }, [me]);
     useEffect(() => {
         if (roomState) {
             roomState.roomPlayers.map((item: CurrentPlayersInfo) => {
@@ -60,25 +101,17 @@ export function Content() {
     const handleSelectedIndex = (index: number) => {
         setMe((prevMe) => ({ ...prevMe, selectedIndex: index })); // 새 객체를 반환하여 selectedIndex 업데이트
 
+        console.log('처음 players', players);
         const updatedPlayers = players.map((player) => {
-            if (player.id === me.id) {
+            if (player.nickname === me.nickname) {
+                setMe((prev) => ({ ...prev, selectedIndex: index }));
                 return { ...player, selectedIndex: index };
             }
             return player;
         });
         setPlayers(updatedPlayers);
-
-        stompClient.sendMessage(
-            `/player.object`,
-            JSON.stringify({
-                type: 'player.object',
-                roomId: roomState.roomId,
-                sender: meName,
-                data: {
-                    me,
-                },
-            })
-        );
+        console.log('바뀐 Player정보', updatedPlayers);
+        dispatch(meSelectedInfoState(index));
     };
 
     const selectedList: number[] = [
@@ -90,7 +123,7 @@ export function Content() {
     if (characterSelectedFinished && me) {
         return (
             <CanvasLayout>
-                {roomState.roomState === 1 &&
+                {(roomState.roomState === 1 || roomState.roomState === 2) &&
                 !me.isSeeker &&
                 me.selectedIndex === null ? (
                     <div className="absolute flex items-center justify-between w-[80%] h-[80%] z-10">

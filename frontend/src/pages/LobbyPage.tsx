@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { enterRoom, roomList, roomMake } from '../api/rooms';
 import { EnterRoomState, MakeRoomState, RoomInfo } from '../types/GameType';
@@ -112,9 +112,27 @@ export default function LobbyPage() {
         }
     };
 
+    /** 일정 시간마다 방 조회 */
+    const [count, setCount] = useState(0);
+    const value = useRef(0);
+
     useEffect(() => {
         console.log(meName);
         showRoomListAPI();
+        const interval = setInterval(() => {
+            console.log('방 조회'); // value의 현재 값인 vaule.current를 가져오도록 한다.
+            setCount((prev) => prev + 1);
+            value.current++; // value.current에 1씩 더한다.
+            showRoomListAPI();
+            if (!window.location.pathname.includes('lobby')) {
+                clearInterval(interval);
+            }
+        }, 5000);
+
+        return () => {
+            console.log('방 조회 제거');
+            clearInterval(interval);
+        };
     }, []);
 
     useEffect(() => {

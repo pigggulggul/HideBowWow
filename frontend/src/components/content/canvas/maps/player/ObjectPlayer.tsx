@@ -37,14 +37,14 @@ type ContextType = Record<
 export function ObjectPlayer({
     player,
     position,
-    modelIndex: mIdx,
+    selectedIndex: mIdx,
 }: PlayerInitType) {
     const modelIndex = mIdx ?? player.selectedIndex;
     const {
-        me,
+        meInfo,
         playerRef,
         memoizedPosition,
-        playerId,
+        playerNickname,
         scene,
         nicknameRef,
         scale,
@@ -56,14 +56,14 @@ export function ObjectPlayer({
 
     return (
         <>
-            {me && (
+            {meInfo && (
                 <NicknameBoard ref={nicknameRef} text={`${player?.nickname}`} />
             )}
             <primitive
                 ref={playerRef}
                 visible
                 scale={scale}
-                name={playerId ?? ''}
+                name={playerNickname ?? ''}
                 position={memoizedPosition}
                 dispose={null}
                 object={scene}

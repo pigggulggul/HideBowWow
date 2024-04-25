@@ -4,6 +4,11 @@ export interface PlayerInitType {
     player: any;
     position: Vector3;
     modelIndex?: number;
+    selectedIndex?: number | null;
+    direction?: number[];
+    isDead?: boolean | null;
+    isSeeker?: boolean | null;
+    isFixed?: boolean;
 }
 export interface CurrentPlayersInfo {
     id?: string;
@@ -26,9 +31,10 @@ export interface MeInfo {
 export interface RoomInfo {
     isPublic: boolean;
     roomId: string;
+    roomAdmin?: string;
     roomMap: string | null;
     roomPassword: string;
-    roomPlayers: [];
+    roomPlayers: CurrentPlayersInfo[];
     roomState: number | null;
     roomTime: number | null;
     roomTitle: string;
