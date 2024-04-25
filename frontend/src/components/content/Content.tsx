@@ -9,14 +9,53 @@ import { MainCanvas } from './canvas/MainCanvas';
 import { CanvasLayout } from './canvasLayout/Layout';
 import { Lobby } from './lobby/Lobby';
 import { socket } from '../../sockets/clientSocket';
+import { useDispatch, useSelector } from 'react-redux';
+import { CurrentPlayersInfo, RoomInfo } from '../../types/GameType';
+import { useEffect, useState } from 'react';
+import { meInfoState } from '../../store/user-slice';
+import StompClient from '../../websocket/StompClient';
 
 export function Content() {
+    const dispatch = useDispatch();
+    const stompClient = StompClient.getInstance();
     const characterSelectedFinished = useRecoilValue(
         CharacterSelectFinishedAtom
     );
-    const roomState = useRecoilValue(RoomAtom);
-    const [me, setMe] = useRecoilState(MeAtom);
-    const [players, setPlayers] = useRecoilState(PlayerAtom);
+    //방정보.
+    const roomState: RoomInfo = useSelector(
+        (state: any) => state.reduxFlag.userSlice.currentRoom
+    );
+    const meName = useSelector(
+        (state: any) => state.reduxFlag.userSlice.userNickname
+    );
+    const meInfo = useSelector(
+        (state: any) => state.reduxFlag.userSlice.meInfo
+    );
+    //내정보.
+    const [me, setMe] = useState<CurrentPlayersInfo>({
+        direction: [0, 0, 0],
+        position: [0, 0, 0],
+        isDead: null,
+        isSeeker: null,
+        nickname: '',
+        selectedIndex: null,
+    });
+    //플레이어 전체정보
+    const [players, setPlayers] = useState<CurrentPlayersInfo[]>(
+        roomState.roomPlayers
+    );
+    useEffect(() => {
+        setMe(meInfo);
+    }, [meInfo]);
+    useEffect(() => {
+        if (roomState) {
+            roomState.roomPlayers.map((item: CurrentPlayersInfo) => {
+                if (item.nickname == meName) {
+                    dispatch(meInfoState(item));
+                }
+            });
+        }
+    }, [roomState]);
 
     const handleSelectedIndex = (index: number) => {
         setMe((prevMe) => ({ ...prevMe, selectedIndex: index })); // 새 객체를 반환하여 selectedIndex 업데이트
@@ -28,7 +67,18 @@ export function Content() {
             return player;
         });
         setPlayers(updatedPlayers);
-        socket.emit('objChange', me, index);
+
+        stompClient.sendMessage(
+            `/player.object`,
+            JSON.stringify({
+                type: 'player.object',
+                roomId: roomState.roomId,
+                sender: meName,
+                data: {
+                    me,
+                },
+            })
+        );
     };
 
     const selectedList: number[] = [
@@ -40,9 +90,9 @@ export function Content() {
     if (characterSelectedFinished && me) {
         return (
             <CanvasLayout>
-                {roomState.roomState === 2 &&
+                {roomState.roomState === 1 &&
                 !me.isSeeker &&
-                me.selectedIndex === -1 ? (
+                me.selectedIndex === null ? (
                     <div className="absolute flex items-center justify-between w-[80%] h-[80%] z-10">
                         <div className="w-[30%] h-[80%] flex flex-col justify-center items-center bg-white border-[0.4vw] rounded-[0.6vw] border-gray-700">
                             나무

@@ -1,6 +1,31 @@
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { RecoilRoot } from 'recoil';
+import {
+    currentRoomState,
+    readyState,
+    roomIdState,
+    userNicknameState,
+} from '../store/user-slice';
 
 export default function MainPage() {
+    const dispatch = useDispatch();
+    dispatch(readyState(false));
+    dispatch(roomIdState(''));
+    dispatch(userNicknameState(''));
+    dispatch(
+        currentRoomState({
+            isPublic: true,
+            roomId: '',
+            roomMap: null,
+            roomPassword: '',
+            roomPlayers: [],
+            roomState: null,
+            roomTime: null,
+            roomTitle: '',
+        })
+    );
+
     return (
         <section
             className="w-full h-full flex flex-col items-center justify-center"

@@ -1,17 +1,29 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { RoomInfo } from '../types/GameType';
 import { getRoom } from '../api/rooms';
 import { httpStatusCode } from '../components/utils/http-status';
+import { useDispatch, useSelector } from 'react-redux';
+import StompClient from '../websocket/StompClient';
+import { readyState } from '../store/user-slice';
 
 export default function RoomPage() {
     const [settingRoomFlag, setSettingRoomFlag] = useState<boolean>(false);
+    const [enterGameFlag, setEnterGameFlag] = useState<boolean>(false);
     const [room, setRoom] = useState<RoomInfo>();
+    const stompClient = StompClient.getInstance();
     const { state } = useLocation();
+    const navigate = useNavigate();
     const changeSettingRoomFlag = () => {
         setSettingRoomFlag(!settingRoomFlag);
     };
-
+    const meName = useSelector(
+        (state: any) => state.reduxFlag.userSlice.userNickname
+    );
+    const isReady = useSelector(
+        (state: any) => state.reduxFlag.userSlice.isReady
+    );
+    const dispatch = useDispatch();
     const loadRoom = async (state: string) => {
         const res = await getRoom(state);
         if (res.status === httpStatusCode.OK) {
@@ -20,11 +32,36 @@ export default function RoomPage() {
         }
     };
 
+    const playGame = () => {
+        stompClient.sendMessage(
+            `/room.gameInit`,
+            JSON.stringify({
+                type: 'room.gameInit',
+                roomId: state,
+                sender: meName,
+                data: {
+                    room,
+                },
+            })
+        );
+
+        navigate(`/game/${state}`, { state: state });
+    };
+
+    useEffect(() => {
+        dispatch(readyState(false));
+    }, []);
     useEffect(() => {
         if (state) {
             loadRoom(state);
         }
     }, [state]);
+    useEffect(() => {
+        if (isReady) {
+            navigate(`/game/${state}`, { state: state });
+        }
+    }, [isReady]);
+
     return (
         <section
             className="relative w-full h-full flex flex-col items-center justify-center"
@@ -90,12 +127,14 @@ export default function RoomPage() {
                         >
                             <p className="text-[1.4vw]">나가기</p>
                         </Link>
-                        <Link
-                            to={'/game'}
+                        <div
                             className="w-[45%] h-full px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] border-black cursor-pointer hover:bg-sky-500 hover:text-white hover:border-sky-500"
+                            onClick={() => {
+                                playGame();
+                            }}
                         >
                             <p className="text-[1.4vw]">게임시작</p>
-                        </Link>
+                        </div>
                     </div>
                 </div>
             </div>

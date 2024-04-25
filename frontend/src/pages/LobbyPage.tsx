@@ -3,7 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { enterRoom, roomList, roomMake } from '../api/rooms';
 import { EnterRoomState, MakeRoomState, RoomInfo } from '../types/GameType';
 import { httpStatusCode } from '../components/utils/http-status';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { roomIdState } from '../store/user-slice';
+import StompClient from '../websocket/StompClient';
 
 export default function LobbyPage() {
     const [makeRoomFlag, setMakeRoomFlag] = useState<boolean>(false);
@@ -15,6 +17,11 @@ export default function LobbyPage() {
     const [makeRoomPassword, setMakeRoomPassword] = useState<string>('');
     const [makeRoomIsPublic, setMakeRoomIsPublic] = useState<boolean>(true);
     const [room, setRoom] = useState<RoomInfo[]>([]);
+    const [roomId, setRoomId] = useState<string>('');
+    const dispatch = useDispatch();
+    const [websocketFlag, setWebsocketFlag] = useState<boolean>(false);
+    const stompClient = StompClient.getInstance();
+
     const meName = useSelector(
         (state: any) => state.reduxFlag.userSlice.userNickname
     );
@@ -63,11 +70,11 @@ export default function LobbyPage() {
         };
         const makeRes = await roomMake(makeRoomInfo);
         console.log(makeRes);
-        if (makeRes.status === httpStatusCode.OK) {
+        if (makeRes.status === httpStatusCode.CREATE) {
             console.log('만들어졌습니다.');
-            navigate(`/room/${makeRes.data.data.roomId}`, {
-                state: makeRes.data.data.roomId,
-            });
+            setRoomId(makeRes.data.data.roomId);
+            dispatch(roomIdState(makeRes.data.data.roomId));
+            stompClient.connect(makeRes.data.data.roomId, setWebsocketFlag);
             showRoomListAPI();
         }
         changeMakeRoomFlag();
@@ -75,15 +82,14 @@ export default function LobbyPage() {
     const makeRoom = () => {
         makeRoomAPI();
     };
-    const moveGameRoom = (id: string) => {
-        navigate(`/room/${id}`, { state: id });
-    };
     const checkPublicRoom = async (id: string) => {
         const checkData: EnterRoomState = { roomId: id, nickname: meName };
         const res = await enterRoom(checkData);
         console.log(res);
         if (res.status === httpStatusCode.OK) {
-            moveGameRoom(id);
+            setRoomId(id);
+            dispatch(roomIdState(id));
+            stompClient.connect(id, setWebsocketFlag);
         }
     };
     const checkPrivateRoom = (id: string) => {
@@ -100,7 +106,9 @@ export default function LobbyPage() {
         console.log('비번데이터', checkData);
         console.log(res);
         if (res.status === httpStatusCode.OK) {
-            moveGameRoom(privateRoomId);
+            setRoomId(privateRoomId);
+            dispatch(roomIdState(privateRoomId));
+            stompClient.connect(privateRoomId, setWebsocketFlag);
         }
     };
 
@@ -108,6 +116,24 @@ export default function LobbyPage() {
         console.log(meName);
         showRoomListAPI();
     }, []);
+
+    useEffect(() => {
+        console.log(websocketFlag);
+        if (websocketFlag) {
+            stompClient.sendMessage(
+                `/player.enter`,
+                JSON.stringify({
+                    type: 'player.enter',
+                    roomId: roomId,
+                    sender: meName,
+                    data: {
+                        nickname: meName,
+                    },
+                })
+            );
+            navigate(`/room/${roomId}`, { state: roomId });
+        }
+    }, [websocketFlag]);
     useEffect(() => {}, [room]);
     return (
         <section
@@ -150,14 +176,14 @@ export default function LobbyPage() {
                                         checkPublicRoom(item.roomId);
                                     }}
                                 >
-                                    <p className="text-[1.8vw] flex items-center">
+                                    <div className="text-[1.8vw] flex items-center">
                                         <p>
                                             {index}.{item.roomTitle}
                                         </p>
                                         <p className="mx-[1vw] text-[1vw]">
                                             공개
                                         </p>
-                                    </p>
+                                    </div>
                                     <div className="flex flex-col">
                                         <p className="text-[1.6vw]">
                                             {item.roomPlayers.length}/6
@@ -177,14 +203,14 @@ export default function LobbyPage() {
                                         checkPrivateRoom(item.roomId);
                                     }}
                                 >
-                                    <p className="text-[1.8vw] flex items-center">
+                                    <div className="text-[1.8vw] flex items-center">
                                         <p>
                                             {index}.{item.roomTitle}
                                         </p>
                                         <p className="mx-[1vw] text-[1vw]">
                                             비공개
                                         </p>
-                                    </p>
+                                    </div>
                                     <div className="flex flex-col">
                                         <p className="text-[1.6vw]">
                                             {item.roomPlayers.length}/6
@@ -245,22 +271,22 @@ export default function LobbyPage() {
                     </div>
 
                     <div className="relative w-[90%] flex justify-between items-center my-[1vw]">
-                        <p
+                        <div
                             className="w-[30%] h-full px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] border-black cursor-pointer hover:bg-sky-500 hover:text-white hover:border-sky-500"
                             onClick={() => {
                                 makeRoom();
                             }}
                         >
                             <p className="text-[1.4vw]">방 만들기</p>
-                        </p>
-                        <p
+                        </div>
+                        <div
                             className="w-[30%] h-full px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] border-black cursor-pointer hover:bg-sky-500 hover:text-white hover:border-sky-500"
                             onClick={() => {
                                 changeMakeRoomFlag();
                             }}
                         >
                             <p className="text-[1.4vw]">취소</p>
-                        </p>
+                        </div>
                     </div>
                 </div>
             ) : (

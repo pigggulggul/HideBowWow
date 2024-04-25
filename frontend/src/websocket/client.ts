@@ -3,7 +3,7 @@ import { Client } from '@stomp/stompjs';
 
 let stompClient: Stomp.Client;
 
-export const handshake = (websocketId: string) => {
+export const handshake = () => {
     stompClient = new Client({
         brokerURL: `${import.meta.env.VITE_REACT_WEBSOCKET_URL}`,
         debug: function (str) {
