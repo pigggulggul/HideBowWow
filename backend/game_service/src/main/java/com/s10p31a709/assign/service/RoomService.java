@@ -17,7 +17,7 @@ public class RoomService {
     private final RoomRepository roomRepository;
 
     public List<Room> getRoomList(){
-
+        return null;
     }
 
     public List<Room> getRoom(long roomId){
