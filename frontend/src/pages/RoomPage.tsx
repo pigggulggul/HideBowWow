@@ -5,12 +5,11 @@ import { getRoom } from '../api/rooms';
 import { httpStatusCode } from '../components/utils/http-status';
 import { useDispatch, useSelector } from 'react-redux';
 import StompClient from '../websocket/StompClient';
-import { readyState } from '../store/user-slice';
+import { currentRoomState, readyState, roomIdState } from '../store/user-slice';
 import { current } from '@reduxjs/toolkit';
 
 export default function RoomPage() {
     const [settingRoomFlag, setSettingRoomFlag] = useState<boolean>(false);
-    const [enterGameFlag, setEnterGameFlag] = useState<boolean>(false);
     const [room, setRoom] = useState<RoomInfo>();
     const stompClient = StompClient.getInstance();
     const { state } = useLocation();
@@ -33,23 +32,27 @@ export default function RoomPage() {
         if (res.status === httpStatusCode.OK) {
             console.log(res.data);
             setRoom(res.data.data);
+            dispatch(currentRoomState(res.data.data));
         }
     };
 
     const playGame = () => {
-        stompClient.sendMessage(
-            `/room.gameInit`,
-            JSON.stringify({
-                type: 'room.gameInit',
-                roomId: state,
-                sender: meName,
-                data: {
-                    room,
-                },
-            })
-        );
-
-        navigate(`/game/${state}`, { state: state });
+        if (currentRoom.roomAdmin === meName) {
+            stompClient.sendMessage(
+                `/room.gameInit`,
+                JSON.stringify({
+                    type: 'room.gameInit',
+                    roomId: state,
+                    sender: meName,
+                    data: {
+                        room,
+                    },
+                })
+            );
+            navigate(`/game/${state}`, { state: state });
+        } else {
+            alert('반장만 시작 할 수 있습니다.');
+        }
     };
 
     useEffect(() => {
@@ -66,8 +69,24 @@ export default function RoomPage() {
         }
     }, [isReady]);
     useEffect(() => {
+        console.log('방정보', currentRoom);
         setRoom(currentRoom);
     }, [currentRoom]);
+
+    const outRoom = () => {
+        stompClient.sendMessage(
+            `/player.exit`,
+            JSON.stringify({
+                type: 'player.exit',
+                roomId: state,
+                sender: meName,
+                data: {
+                    nickname: meName,
+                },
+            })
+        );
+        navigate('/lobby');
+    };
 
     return (
         <section
@@ -129,12 +148,14 @@ export default function RoomPage() {
                     </div>
 
                     <div className="w-full flex justify-between">
-                        <Link
-                            to={'/lobby'}
+                        <div
                             className="w-[45%] h-full px-[1vw] bg-red-400  py-[1vw] border-[0.3vw] rounded-[0.6vw] border-black cursor-pointer hover:bg-red-500 hover:text-white hover:border-red-500 "
+                            onClick={() => {
+                                outRoom();
+                            }}
                         >
                             <p className="text-[1.4vw]">나가기</p>
-                        </Link>
+                        </div>
                         <div
                             className="w-[45%] h-full px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] border-black cursor-pointer hover:bg-sky-500 hover:text-white hover:border-sky-500"
                             onClick={() => {

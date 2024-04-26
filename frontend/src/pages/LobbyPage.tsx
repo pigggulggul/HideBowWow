@@ -4,7 +4,7 @@ import { enterRoom, roomList, roomMake } from '../api/rooms';
 import { EnterRoomState, MakeRoomState, RoomInfo } from '../types/GameType';
 import { httpStatusCode } from '../components/utils/http-status';
 import { useDispatch, useSelector } from 'react-redux';
-import { roomIdState } from '../store/user-slice';
+import { currentRoomState, roomIdState } from '../store/user-slice';
 import StompClient from '../websocket/StompClient';
 
 export default function LobbyPage() {
@@ -24,6 +24,9 @@ export default function LobbyPage() {
 
     const meName = useSelector(
         (state: any) => state.reduxFlag.userSlice.userNickname
+    );
+    const currentRoom = useSelector(
+        (state: any) => state.reduxFlag.userSlice.currentRoom
     );
     const navigate = useNavigate();
     // const [room,setRoom] = useState<>();
@@ -71,10 +74,11 @@ export default function LobbyPage() {
         const makeRes = await roomMake(makeRoomInfo);
         console.log(makeRes);
         if (makeRes.status === httpStatusCode.CREATE) {
-            console.log('만들어졌습니다.');
+            console.log('만들어졌습니다.', makeRes.data.data.roomId);
             setRoomId(makeRes.data.data.roomId);
             dispatch(roomIdState(makeRes.data.data.roomId));
             stompClient.connect(makeRes.data.data.roomId, setWebsocketFlag);
+            console.log(websocketFlag);
             showRoomListAPI();
         }
         changeMakeRoomFlag();
@@ -117,6 +121,19 @@ export default function LobbyPage() {
     const value = useRef(0);
 
     useEffect(() => {
+        dispatch(roomIdState(''));
+        dispatch(
+            currentRoomState({
+                isPublic: true,
+                roomId: '',
+                roomMap: null,
+                roomPassword: '',
+                roomPlayers: [],
+                roomState: null,
+                roomTime: null,
+                roomTitle: '',
+            })
+        );
         console.log(meName);
         showRoomListAPI();
         const interval = setInterval(() => {
@@ -152,7 +169,7 @@ export default function LobbyPage() {
             navigate(`/room/${roomId}`, { state: roomId });
         }
     }, [websocketFlag]);
-    useEffect(() => {}, [room]);
+    useEffect(() => {}, [currentRoom]);
     return (
         <section
             className="relative w-full h-full flex flex-col items-center justify-center"
