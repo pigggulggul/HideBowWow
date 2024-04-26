@@ -44,6 +44,7 @@ public class RoomSocketService {
             player.setDirection(new Double[]{0.0, 0.0, 0.0});
             player.setIsDead(false);
             player.setIsSeeker(i == seekerNumber);
+            player.setSelectedIndex(null);
         }
 
         StompPayload<Room> payload = new StompPayload<>("room.gameInit", message.getRoomId(), "system", room);
@@ -52,7 +53,7 @@ public class RoomSocketService {
 
     public void hideStart(String roomId){
         Room room = roomRepository.findRoomByRoomId(roomId);
-        room.setRoomTime(20);
+        room.setRoomTime(60);
         room.setRoomState(2);
 
         StompPayload<Room> payload = new StompPayload<>("room.hideStart", roomId, "system", room);
@@ -61,7 +62,7 @@ public class RoomSocketService {
 
     public void findStart(String roomId){
         Room room = roomRepository.findRoomByRoomId(roomId);
-        room.setRoomTime(20);
+        room.setRoomTime(120);
         room.setRoomState(3);
 
         StompPayload<Room> payload = new StompPayload<>("room.findStart", roomId, "system", room);
