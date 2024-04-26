@@ -70,16 +70,18 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
     );
     const roomId = useSelector(
         (state: any) => state.reduxFlag.userSlice.roomId
+    );   
+    const roomState = useSelector(
+        (state: any) => state.reduxFlag.userSlice.currentRoom
     );
 
     const stompClient = StompClient.getInstance();
 
-    const memoizedPosition = useMemo(() => position, []);
+    const memoizedPosition = useMemo(() => position, []); 
+    const playerRef = useRef<PlayerRef>(null); 
+    const nicknameRef = useRef<Group>(null);     
 
-    const playerRef = useRef<PlayerRef>(null);
-
-    const nicknameRef = useRef<Group>(null);
-
+ 
     const { scene, materials, animations } = useGLTF(
         (() => {
             switch (modelIndex) {
@@ -202,9 +204,12 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
     }, [isWalking]);
 
     // Frame
-    useFrame(({ camera }) => {
-        if (playerRef.current && meInfo?.nickname === playerNickname) {
-            // 내 캐릭터의 경우
+    useFrame(({ camera }) => {       
+
+        if (!player || !playerRef.current) return; 
+ 
+        if(meInfo?.nickname === playerNickname) { // 내 캐릭터의 경우
+            console.log("!!! " + JSON.stringify(roomState.roomPlayers))
             const moveVector = new Vector3(
                 (keyState.current['a'] ? 1 : 0) -
                     (keyState.current['d'] ? 1 : 0),
@@ -276,18 +281,22 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
             camera.position.set(
                 playerPosition.x + playerDirection.x,
                 playerPosition.y,
-                playerPosition.z + playerDirection.z
-            );
-            const cameraTarget = playerPosition
-                .clone()
-                .add(playerDirection.multiplyScalar(3));
-            camera.lookAt(cameraTarget); // 정면보다 더 앞으로 설정!
-        } else {
-            // 다른 플레이어의 캐릭터
-        }
-
-        if (!player || !playerRef.current) return;
-        if (nicknameRef.current) {
+                playerPosition.z + playerDirection.z,
+            )
+            const cameraTarget = playerPosition.clone().add(playerDirection.multiplyScalar(3)); 
+            camera.lookAt(cameraTarget); // 정면보다 더 앞으로 설정!   
+            
+        } else { // 다른 플레이어의 캐릭터 
+            roomState.roomPlayers.forEach((otherPlayer : any) => {
+                if (otherPlayer.nickname !== meInfo?.nickname && otherPlayer.isSeeker === true) {
+                    const otherPlayerRef = playerRef.current;
+                    otherPlayerRef?.position.set(otherPlayer.position[0], otherPlayer.position[1], otherPlayer.position[2]);
+                    // 회전 로직을 추가해야 할 수도 있습니다.
+                }
+            });
+        } 
+  
+        if (nicknameRef.current) { 
             nicknameRef.current.position.set(
                 playerRef.current.position.x,
                 playerRef.current.position.y + 3.5,
