@@ -20,7 +20,7 @@ public class RoomService {
 
     }
 
-    public Room getRoom(long roomId){
+    public List<Room> getRoom(long roomId){
         List<Room> list = roomRepository.findAllByRoomId(roomId);
         if (list.isEmpty()) throw new CustomException(404, "방이 존재하지 않습니다");
 
