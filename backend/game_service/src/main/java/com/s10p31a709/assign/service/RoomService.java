@@ -28,23 +28,15 @@ public class RoomService {
     }
 
     public Room registerRoom(String nickname){
-        Room room = new Room();
-        room.setRoomId(UUID.randomUUID().variant());
-        room.setNickname(nickname);
-        return roomRepository.save(room);
+        return null;
     }
 
     public List<Room> enterRoom(Room room){
-        List<Room> list = roomRepository.findAllByRoomId(room.getRoomId());
-        if (list.isEmpty()) throw new CustomException(404, "방이 존재하지 않습니다");
-        if (list.size() >= 6) throw new CustomException(400, "정원이 초과되었습니다");
-        roomRepository.save(room);
-        return roomRepository.findAllByRoomId(room.getRoomId());
+        return null;
     }
 
     public void exitRoom(Room room){
-        room = roomRepository.findByRoomIdAndNickname(room.getRoomId(), room.getNickname());
-        roomRepository.delete(room);
+        return null;
     }
 
 }
