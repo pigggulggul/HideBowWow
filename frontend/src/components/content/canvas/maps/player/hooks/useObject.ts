@@ -7,12 +7,13 @@ import {
     Group,
     MeshStandardMaterial,
     SkinnedMesh,
-    Vector3,  
+    Vector3,
 } from 'three';
 import { GLTF, SkeletonUtils } from 'three-stdlib';
-import { PlayerInitType } from '../../../../../../types/GameType'; 
+import { PlayerInitType } from '../../../../../../types/GameType';
 import StompClient from '../../../../../../websocket/StompClient';
 import { useSelector } from 'react-redux';
+import { useBox } from '@react-three/cannon';
 
 interface GLTFAction extends AnimationClip {
     name: ActionName;
@@ -30,8 +31,8 @@ type GLTFResult = GLTF & {
 type ActionName = '';
 
 export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
-    const playerNickname = player?.nickname;  
-    const keyState = useRef<{ [key: string]: boolean }>({}); 
+    const playerNickname = player?.nickname;
+    const keyState = useRef<{ [key: string]: boolean }>({});
 
     const stompClient = StompClient.getInstance();
     const meName = useSelector(
@@ -41,9 +42,9 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         (state: any) => state.reduxFlag.userSlice.meInfo
     );
 
-    const roomId = useSelector( 
+    const roomId = useSelector(
         (state: any) => state.reduxFlag.userSlice.roomId
-    )
+    );
     const memoizedPosition = useMemo(() => position, []);
 
     const playerRef = useRef<Group>(null);
@@ -132,8 +133,13 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const scene = useMemo(() => {
         return SkeletonUtils.clone(scene_);
     }, []);
- 
-    // 키 입력 
+
+    const [ref, api] = useBox(() => ({
+        mass: 0,
+        args: [1, 1, 1],
+        position: [position.x, position.y + 1, position.z], // 초기 위치를 useRef의 현재 값으로 설정
+    }));
+    // 키 입력
     useEffect(() => {
         const handleKeyDown = (event: any) => {
             keyState.current[event.key] = true;
@@ -152,51 +158,58 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     }, []);
 
     useFrame(({ camera }) => {
-
-        if(playerRef.current && meInfo?.nickname === playerNickname) { // 내 캐릭터의 경우 
+        if (playerRef.current && meInfo?.nickname === playerNickname) {
+            // 내 캐릭터의 경우
             const moveVector = new Vector3(
-                (keyState.current['a'] ? 1 : 0) - (keyState.current['d'] ? 1 : 0),
+                (keyState.current['a'] ? 1 : 0) -
+                    (keyState.current['d'] ? 1 : 0),
                 0,
-                (keyState.current['s'] ? 1 : 0) - (keyState.current['w'] ? 1 : 0)
+                (keyState.current['s'] ? 1 : 0) -
+                    (keyState.current['w'] ? 1 : 0)
             );
 
-            
-            if (!moveVector.equals(new Vector3(0, 0, 0))) { 
+            if (!moveVector.equals(new Vector3(0, 0, 0))) {
                 moveVector.normalize().multiplyScalar(0.2);
             }
-            
-            const forward = new Vector3(0, 0, -1).applyQuaternion(playerRef.current.quaternion);
-            const moveDirection = forward.clone().multiplyScalar(moveVector.z).add(
-                new Vector3(-forward.z, 0, forward.x).multiplyScalar(moveVector.x)
-            );  
-            playerRef.current.position.add(moveDirection);   
-             
-            
-            // stomp로 이전  
+
+            const forward = new Vector3(0, 0, -1).applyQuaternion(
+                playerRef.current.quaternion
+            );
+            const moveDirection = forward
+                .clone()
+                .multiplyScalar(moveVector.z)
+                .add(
+                    new Vector3(-forward.z, 0, forward.x).multiplyScalar(
+                        moveVector.x
+                    )
+                );
+            playerRef.current.position.add(moveDirection);
+
+            if (!moveVector.equals(new Vector3(0, 0, 0))) {
+                moveVector.normalize().multiplyScalar(0.2);
+                api.velocity.set(moveVector.x, moveVector.y, moveVector.z); // 물리 바디의 속도를 업데이트
+            }
+
+            // stomp로 이전
             stompClient.sendMessage(
                 `/player.move`,
                 JSON.stringify({
-                    type: "player.move",
+                    type: 'player.move',
                     roomId: roomId,
                     sender: meName,
                     data: {
-                        nickname: meName, 
+                        nickname: meName,
                         position: [
-                        playerRef.current.position.x,
-                        playerRef.current.position.y,
-                        playerRef.current.position.z
+                            playerRef.current.position.x,
+                            playerRef.current.position.y,
+                            playerRef.current.position.z,
                         ],
-                        direction: [
-                            0,
-                            0,
-                            0,
-                        ],
-                    }
+                        direction: [0, 0, 0],
+                    },
                 })
             );
-            console.log("me Name (사물)=> " + meName)
-        } 
- 
+            console.log('me Name (사물)=> ' + meName);
+        }
 
         if (!player) return;
         if (!playerRef.current) return;
@@ -211,8 +224,8 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         //     playerRef.current.position.sub(direction);
         //     playerRef.current.lookAt(position);
         // } else {
-        // } 
- 
+        // }
+
         if (nicknameRef.current) {
             nicknameRef.current.position.set(
                 playerRef.current.position.x,

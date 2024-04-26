@@ -13,18 +13,22 @@ export default function UserLoginPage() {
     const dispatch = useDispatch();
 
     const login = async () => {
-        const userLoginInfo: UserLoginInfo = {
-            nickname: userNickname,
-            password: userPassword,
-        };
-
-        const res = await userLogin(userLoginInfo);
-        if (res.status === httpStatusCode.OK) {
-            console.log('로그인 성공');
-            dispatch(userNicknameState(userLoginInfo.nickname));
-            navigate('/selectchannel');
+        if (userNickname === '' || userPassword === '') {
+            alert('1글자 이상 입력해주세요.');
         } else {
-            console.log('로그인 실패');
+            const userLoginInfo: UserLoginInfo = {
+                nickname: userNickname,
+                password: userPassword,
+            };
+
+            const res = await userLogin(userLoginInfo);
+            if (res.status === httpStatusCode.OK) {
+                console.log('로그인 성공');
+                dispatch(userNicknameState(userLoginInfo.nickname));
+                navigate('/selectchannel');
+            } else {
+                console.log('로그인 실패');
+            }
         }
     };
     return (

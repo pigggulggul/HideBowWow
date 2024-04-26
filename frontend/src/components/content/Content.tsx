@@ -120,63 +120,65 @@ export function Content() {
         Math.floor(Math.random() * 19 + 1),
     ];
 
-    if (characterSelectedFinished && me) {
-        return (
-            <CanvasLayout>
-                {(roomState.roomState === 1 || roomState.roomState === 2) &&
-                !me.isSeeker &&
-                me.selectedIndex === null ? (
-                    <div className="absolute flex items-center justify-between w-[80%] h-[80%] z-10">
-                        <div className="w-[30%] h-[80%] flex flex-col justify-center items-center bg-white border-[0.4vw] rounded-[0.6vw] border-gray-700">
-                            나무
-                            <p
-                                className="bg-red-200 px-[2vw] py-[1vw] rounded-[0.6vw] border-[0.2vw] border-red-500 cursor-pointer"
-                                onClick={() => {
-                                    handleSelectedIndex(selectedList[0]);
-                                }}
-                            >
-                                선택하기
-                            </p>
-                            <p className=" py-[1vw] px-[1vw] bg-sky-200 border-[0.2vw] border-sky-400 rounded-[0.6vw] my-[0.4vw] cursor-pointer">
-                                리롤하기
-                            </p>
+    return (
+        <>
+            {me ? (
+                <CanvasLayout>
+                    {(roomState.roomState === 1 || roomState.roomState === 2) &&
+                    !me.isSeeker &&
+                    me.selectedIndex === null ? (
+                        <div className="absolute flex items-center justify-between w-[80%] h-[80%] z-10">
+                            <div className="w-[30%] h-[80%] flex flex-col justify-center items-center bg-white border-[0.4vw] rounded-[0.6vw] border-gray-700">
+                                나무
+                                <p
+                                    className="bg-red-200 px-[2vw] py-[1vw] rounded-[0.6vw] border-[0.2vw] border-red-500 cursor-pointer"
+                                    onClick={() => {
+                                        handleSelectedIndex(selectedList[0]);
+                                    }}
+                                >
+                                    선택하기
+                                </p>
+                                <p className=" py-[1vw] px-[1vw] bg-sky-200 border-[0.2vw] border-sky-400 rounded-[0.6vw] my-[0.4vw] cursor-pointer">
+                                    리롤하기
+                                </p>
+                            </div>
+                            <div className="w-[30%] h-[80%] flex flex-col justify-center items-center bg-white border-[0.4vw] rounded-[0.6vw] border-gray-700">
+                                트리
+                                <p
+                                    className="bg-red-200 px-[2vw] py-[1vw] rounded-[0.6vw] border-[0.2vw] border-red-500 cursor-pointer"
+                                    onClick={() => {
+                                        handleSelectedIndex(selectedList[1]);
+                                    }}
+                                >
+                                    선택하기
+                                </p>{' '}
+                                <p className=" py-[1vw] px-[1vw] bg-sky-200 border-[0.2vw] border-sky-400 rounded-[0.6vw] my-[0.4vw] cursor-pointer">
+                                    리롤하기
+                                </p>
+                            </div>
+                            <div className="w-[30%] h-[80%] flex flex-col justify-center items-center bg-white border-[0.4vw] rounded-[0.6vw] border-gray-700">
+                                미끄럼틀
+                                <p
+                                    className="bg-red-200 px-[2vw] py-[1vw] rounded-[0.6vw] border-[0.2vw] border-red-500 cursor-pointer"
+                                    onClick={() => {
+                                        handleSelectedIndex(selectedList[2]);
+                                    }}
+                                >
+                                    선택하기
+                                </p>{' '}
+                                <p className=" py-[1vw] px-[1vw] bg-sky-200 border-[0.2vw] border-sky-400 rounded-[0.6vw] my-[0.4vw] cursor-pointer">
+                                    리롤하기
+                                </p>
+                            </div>
                         </div>
-                        <div className="w-[30%] h-[80%] flex flex-col justify-center items-center bg-white border-[0.4vw] rounded-[0.6vw] border-gray-700">
-                            트리
-                            <p
-                                className="bg-red-200 px-[2vw] py-[1vw] rounded-[0.6vw] border-[0.2vw] border-red-500 cursor-pointer"
-                                onClick={() => {
-                                    handleSelectedIndex(selectedList[1]);
-                                }}
-                            >
-                                선택하기
-                            </p>{' '}
-                            <p className=" py-[1vw] px-[1vw] bg-sky-200 border-[0.2vw] border-sky-400 rounded-[0.6vw] my-[0.4vw] cursor-pointer">
-                                리롤하기
-                            </p>
-                        </div>
-                        <div className="w-[30%] h-[80%] flex flex-col justify-center items-center bg-white border-[0.4vw] rounded-[0.6vw] border-gray-700">
-                            미끄럼틀
-                            <p
-                                className="bg-red-200 px-[2vw] py-[1vw] rounded-[0.6vw] border-[0.2vw] border-red-500 cursor-pointer"
-                                onClick={() => {
-                                    handleSelectedIndex(selectedList[2]);
-                                }}
-                            >
-                                선택하기
-                            </p>{' '}
-                            <p className=" py-[1vw] px-[1vw] bg-sky-200 border-[0.2vw] border-sky-400 rounded-[0.6vw] my-[0.4vw] cursor-pointer">
-                                리롤하기
-                            </p>
-                        </div>
-                    </div>
-                ) : (
-                    <></>
-                )}
-                <MainCanvas />
-            </CanvasLayout>
-        );
-    }
-
-    return <Lobby></Lobby>;
+                    ) : (
+                        <></>
+                    )}
+                    <MainCanvas />
+                </CanvasLayout>
+            ) : (
+                <></>
+            )}
+        </>
+    );
 }
