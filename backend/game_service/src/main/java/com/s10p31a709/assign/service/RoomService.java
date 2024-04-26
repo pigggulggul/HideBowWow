@@ -36,7 +36,6 @@ public class RoomService {
     }
 
     public void exitRoom(Room room){
-        return null;
     }
 
 }
