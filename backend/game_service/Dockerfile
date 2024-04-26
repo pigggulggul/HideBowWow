@@ -6,6 +6,6 @@ RUN gradle build --no-daemon
 
 # 패키지 스테이지
 FROM openjdk:17-jdk
-EXPOSE 8001
+EXPOSE 8002
 COPY --from=build /home/gradle/src/build/libs/*.jar /app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]

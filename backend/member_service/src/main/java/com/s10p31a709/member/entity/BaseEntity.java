@@ -28,6 +28,4 @@ public abstract class BaseEntity {
 	@LastModifiedDate
 	private LocalDateTime updatedTime;
 
-	private int state;
-
 }

@@ -27,9 +27,18 @@ public class MemberService {
         return member;
     }
 
+    public Member guestLogin(String nickname){
+        Member member = memberRepository.findByNickname(nickname, Member.class).orElse(null);
+        if (member != null) throw new CustomException(409, "이미 사용중인 닉네임 입니다");
+        member = memberRepository.save(new Member(nickname, ""));
+        return member;
+    }
+
     public Member registerMember(String nickname, String password){
         Member member = memberRepository.findByNickname(nickname, Member.class).orElse(null);
-        if (member != null) throw new CustomException(400, "이미 존재하는 아이디 입니다.");
+        if (member != null) {
+            throw new CustomException(400, "이미 존재하는 아이디 입니다.");
+        }
         password = bCryptPasswordEncoder.encode(password);
         return memberRepository.save(new Member(nickname, password));
     }
@@ -37,7 +46,13 @@ public class MemberService {
     @Transactional
     public void deleteMember(String nickname){
         Member member = memberRepository.findByNickname(nickname, Member.class).orElseThrow(() -> new CustomException(404, "유저를 찾을 수 없습니다"));
-        member.setState(1);
+        memberRepository.delete(member);
+    }
+
+    @Transactional
+    public void deleteGuest(String nickname){
+        Member member = memberRepository.findByNickname(nickname, Member.class).orElse(null);
+        if(member != null && member.getPassword().isEmpty()) memberRepository.delete(member);
     }
 
 }
