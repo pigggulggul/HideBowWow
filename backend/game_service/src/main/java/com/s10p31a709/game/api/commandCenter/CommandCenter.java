@@ -62,10 +62,9 @@ public class CommandCenter {
                     if(aliveHider == 0) roomSocketService.seekerWin(room.getRoomId());
                     if(aliveSeeker == 0) roomSocketService.hiderWin(room.getRoomId());
                 }
-                
-                // 대기실에서 방 정보 전송
-                roomSocketService.sendPosition(room);
             }
+            // 대기실에서 방 정보 전송
+            roomSocketService.sendPosition(room);
         }
     }
 
