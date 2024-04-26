@@ -65,23 +65,27 @@ export default function LobbyPage() {
         }
     };
     const makeRoomAPI = async () => {
-        const makeRoomInfo: MakeRoomState = {
-            roomTitle: makeRoomTitle,
-            roomPassword: makeRoomPassword,
-            isPublic: makeRoomIsPublic,
-            roomAdmin: meName,
-        };
-        const makeRes = await roomMake(makeRoomInfo);
-        console.log(makeRes);
-        if (makeRes.status === httpStatusCode.CREATE) {
-            console.log('만들어졌습니다.', makeRes.data.data.roomId);
-            setRoomId(makeRes.data.data.roomId);
-            dispatch(roomIdState(makeRes.data.data.roomId));
-            stompClient.connect(makeRes.data.data.roomId, setWebsocketFlag);
-            console.log(websocketFlag);
-            showRoomListAPI();
+        if (makeRoomTitle === '') {
+            alert('방 제목을 1글자 이상 입력해주세요');
+        } else {
+            const makeRoomInfo: MakeRoomState = {
+                roomTitle: makeRoomTitle,
+                roomPassword: makeRoomPassword,
+                isPublic: makeRoomIsPublic,
+                roomAdmin: meName,
+            };
+            const makeRes = await roomMake(makeRoomInfo);
+            console.log(makeRes);
+            if (makeRes.status === httpStatusCode.CREATE) {
+                console.log('만들어졌습니다.', makeRes.data.data.roomId);
+                setRoomId(makeRes.data.data.roomId);
+                dispatch(roomIdState(makeRes.data.data.roomId));
+                stompClient.connect(makeRes.data.data.roomId, setWebsocketFlag);
+                console.log(websocketFlag);
+                showRoomListAPI();
+            }
+            changeMakeRoomFlag();
         }
-        changeMakeRoomFlag();
     };
     const makeRoom = () => {
         makeRoomAPI();
@@ -134,7 +138,7 @@ export default function LobbyPage() {
                 roomTitle: '',
             })
         );
-        console.log(meName);
+        console.log('Lobby 시작', meName);
         showRoomListAPI();
         const interval = setInterval(() => {
             console.log('방 조회'); // value의 현재 값인 vaule.current를 가져오도록 한다.
@@ -169,7 +173,6 @@ export default function LobbyPage() {
             navigate(`/room/${roomId}`, { state: roomId });
         }
     }, [websocketFlag]);
-    useEffect(() => {}, [currentRoom]);
     return (
         <section
             className="relative w-full h-full flex flex-col items-center justify-center"

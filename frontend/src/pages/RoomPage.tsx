@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { RoomInfo } from '../types/GameType';
 import { getRoom } from '../api/rooms';
 import { httpStatusCode } from '../components/utils/http-status';
 import { useDispatch, useSelector } from 'react-redux';
 import StompClient from '../websocket/StompClient';
-import { currentRoomState, readyState, roomIdState } from '../store/user-slice';
-import { current } from '@reduxjs/toolkit';
+import { currentRoomState, readyState } from '../store/user-slice';
 
 export default function RoomPage() {
     const [settingRoomFlag, setSettingRoomFlag] = useState<boolean>(false);
