@@ -52,7 +52,18 @@ export const userSlice = createSlice({
             state.currentRoom = action.payload;
         },
         addPeopleRoomState: (state, action) => {
-            state.currentRoom.roomPlayers.push(action.payload);
+            state.currentRoom = {
+                ...state.currentRoom,
+                roomPlayers: [...state.currentRoom.roomPlayers, action.payload],
+            };
+        },
+        removePeopleRoomState: (state, action) => {
+            state.currentRoom = {
+                ...state.currentRoom,
+                roomPlayers: state.currentRoom.roomPlayers.filter(
+                    (player) => player.nickname !== action.payload.nickname
+                ),
+            };
         },
         meInfoState: (state, action) => {
             state.meInfo = action.payload;
@@ -70,5 +81,6 @@ export const {
     meInfoState,
     addPeopleRoomState,
     meSelectedInfoState,
+    removePeopleRoomState,
 } = userSlice.actions;
 export default userSlice.reducer;

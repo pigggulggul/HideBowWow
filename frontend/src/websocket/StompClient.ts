@@ -5,6 +5,7 @@ import {
     addPeopleRoomState,
     currentRoomState,
     readyState,
+    removePeopleRoomState,
 } from '../store/user-slice';
 import { store } from '../store/store';
 
@@ -30,6 +31,7 @@ class StompClient {
     ): void {
         if (!this.client) {
             this.client = handshake();
+
             this.client.onConnect = () => {
                 //public subscribe
                 // console.log('소켓 연결.');
@@ -39,10 +41,16 @@ class StompClient {
                 if (this.client !== null) {
                     this.client.subscribe(`/sub/room/${roomId}`, (message) => {
                         const msg = JSON.parse(message.body);
+                        console.log(message.body);
                         switch (msg.type) {
                             case 'player.enter': {
                                 console.log('플레이어 입장', msg);
                                 store.dispatch(addPeopleRoomState(msg.data));
+                                break;
+                            }
+                            case 'player.exit': {
+                                console.log('플레이어 퇴장', msg);
+                                store.dispatch(removePeopleRoomState(msg.data));
                                 break;
                             }
                             case 'player.dead': {
@@ -91,6 +99,7 @@ class StompClient {
                             }
                             case 'room.backRoom': {
                                 console.log('대기실로 이동', msg);
+                                store.dispatch(currentRoomState(msg.data));
                                 break;
                             }
                         }
@@ -98,6 +107,8 @@ class StompClient {
                 }
             };
             this.client.activate();
+        } else if (this.client) {
+            setFlag(true);
         }
     }
 

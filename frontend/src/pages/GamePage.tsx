@@ -4,6 +4,8 @@ import { Content } from '../components/content/Content';
 import { socket } from '../sockets/clientSocket';
 import { RoomAtom } from '../store/PlayersAtom';
 import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function GamePage() {
     const meInfo = useSelector(
@@ -16,6 +18,16 @@ export default function GamePage() {
         (state: any) => state.reduxFlag.userSlice.currentRoom
     );
     const dispatch = useDispatch();
+
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (currentRoom.roomState === 0) {
+            document.exitPointerLock();
+            navigate(`/room/${currentRoom.roomId}`, {
+                state: currentRoom.roomId,
+            });
+        }
+    }, [currentRoom.roomState]);
     return (
         <RecoilRoot>
             <Content />
