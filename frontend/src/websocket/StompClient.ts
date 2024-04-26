@@ -41,7 +41,7 @@ class StompClient {
                 if (this.client !== null) {
                     this.client.subscribe(`/sub/room/${roomId}`, (message) => {
                         const msg = JSON.parse(message.body);
-                        console.log(message.body);
+                        // console.log(message.body);
                         switch (msg.type) {
                             case 'player.enter': {
                                 console.log('플레이어 입장', msg);
@@ -70,7 +70,7 @@ class StompClient {
                             }
                             /** 플레이어 위치 정보 반환 */
                             case 'room.gameState': {
-                                console.log('위치 정보', msg);
+                                // console.log('위치 정보', msg);
                                 store.dispatch(currentRoomState(msg.data));
                                 break;
                             }
