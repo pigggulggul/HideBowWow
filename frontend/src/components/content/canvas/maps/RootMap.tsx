@@ -36,66 +36,51 @@ export function RootMap() {
     }, [camera.position]);
     return (
         <>
-            {/* 캐릭터 선택 안 하면 캐릭 선택창. 캐릭 선택 후면 player에서 캐릭 가지고오기 */}
-            {!characterSelectFinished ? (
-                <CharacterInit />
-            ) : (
-                <>
-                    <GroundElements />
-                    {currentRoom.roomPlayers.map(
-                        (player: CurrentPlayersInfo) => {
-                            if (player.isSeeker && !player.isDead) {
-                                return (
-                                    <>
-                                        <Player
-                                            key={player.id}
-                                            player={player}
-                                            position={
-                                                new Vector3(
-                                                    player.position[0],
-                                                    player.position[1],
-                                                    player.position[2]
-                                                )
-                                            }
-                                            modelIndex={
-                                                selectedCharacterGlbNameIndex
-                                            }
-                                        />
-                                    </>
-                                );
-                            } else {
-                                if (
-                                    player.selectedIndex !== null &&
-                                    !player.isDead
-                                ) {
-                                    console.log('player not seeker', player);
-                                    return (
-                                        <>
-                                            <ObjectPlayer
-                                                key={player.id}
-                                                player={player}
-                                                position={
-                                                    new Vector3(
-                                                        player.position[0],
-                                                        player.position[1],
-                                                        player.position[2]
-                                                    )
-                                                }
-                                                selectedIndex={
-                                                    player.selectedIndex
-                                                }
-                                            />
-                                        </>
-                                    );
-                                } else {
-                                    return <></>;
-                                }
-                            }
+            <>
+                <GroundElements />
+                {currentRoom.roomPlayers.map((player: CurrentPlayersInfo) => {
+                    if (player.isSeeker && !player.isDead) {
+                        return (
+                            <>
+                                <Player
+                                    key={player.id}
+                                    player={player}
+                                    position={
+                                        new Vector3(
+                                            player.position[0],
+                                            player.position[1],
+                                            player.position[2]
+                                        )
+                                    }
+                                    modelIndex={selectedCharacterGlbNameIndex}
+                                />
+                            </>
+                        );
+                    } else {
+                        if (player.selectedIndex !== null && !player.isDead) {
+                            return (
+                                <>
+                                    <ObjectPlayer
+                                        key={player.id}
+                                        player={player}
+                                        position={
+                                            new Vector3(
+                                                player.position[0],
+                                                player.position[1],
+                                                player.position[2]
+                                            )
+                                        }
+                                        selectedIndex={player.selectedIndex}
+                                    />
+                                </>
+                            );
+                        } else {
+                            return <></>;
                         }
-                    )}
-                    <AttackRules />
-                </>
-            )}
+                    }
+                })}
+                <AttackRules />
+            </>
         </>
     );
 }

@@ -1,15 +1,24 @@
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { PlayerAtom } from '../../../../../store/PlayersAtom';
-import { Vector2, Vector3 } from 'three';
+import {
+    BufferGeometry,
+    Line,
+    LineBasicMaterial,
+    Vector2,
+    Vector3,
+} from 'three';
 import { socket } from '../../../../../sockets/clientSocket';
 import { useSelector } from 'react-redux';
 import { CurrentPlayersInfo } from '../../../../../types/GameType';
 import { useThree } from '@react-three/fiber';
+import StompClient from '../../../../../websocket/StompClient';
 
 export function AttackRules() {
     const [detectedObject, setDetectedObject] = useState<any>(null);
-    const { camera, scene, raycaster } = useThree();
+    const [rayVisual, setRayVisual] = useState<any>(null); // 레이 시각화 객체 상태
+    const stompClient = StompClient.getInstance();
+    const { camera, scene, raycaster, gl } = useThree();
     const currentRoom = useSelector(
         (state: any) => state.reduxFlag.userSlice.currentRoom
     );
@@ -26,7 +35,7 @@ export function AttackRules() {
 
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [players]);
+    }, [players, rayVisual]);
 
     const handleInteraction = () => {
         console.log('간다 공격!~');
@@ -59,30 +68,46 @@ export function AttackRules() {
                 const closestObject = intersects[0].object;
                 console.log('감지된 객체:', closestObject);
                 setDetectedObject(closestObject);
+                drawRayLine(camera.position, intersects[0].point); // 레이를 그리는 함수 호출
+                currentRoom.roomPlayers.map((item: CurrentPlayersInfo) => {
+                    if (item.nickname === closestObject.parent?.name) {
+                        console.log(
+                            '죽인다 빵야빵야',
+                            closestObject.parent?.name
+                        );
+                        stompClient.sendMessage(
+                            `/player.dead`,
+                            JSON.stringify({
+                                type: 'player.enter',
+                                roomId: currentRoom.roomId,
+                                sender: closestObject.parent?.name,
+                                data: {
+                                    nickname: closestObject.parent?.name,
+                                    isDead: true,
+                                },
+                            })
+                        );
+                    }
+                });
+                // closestObject.parent?.name 지준영
             }
-            // const target = newPlayers.find(
-            //     (p: any) =>
-            //         p.position.distanceTo(forwardPosition) < 2 &&
-            //         !p.isSeeker &&
-            //         !p.isDead
-            // );
-
-            // if (target) {
-            //     target.isDead = true;
-            //     console.log(`${target.id} is now dead.`);
-            //     socket.emit('dead', target);
-            //     const updatedPlayers = newPlayers.map((player) => ({
-            //         ...player,
-            //         position: [
-            //             player.position.x,
-            //             player.position.y,
-            //             player.position.z,
-            //         ], // Vector3에서 배열로 변환
-            //     }));
-
-            //     setPlayers(updatedPlayers);
-            // }
         }
+    };
+    const drawRayLine = (start: any, end: any) => {
+        // 라인 재료와 지오메트리 생성
+        const material = new LineBasicMaterial({
+            color: 0xff0000,
+        });
+        const points = [start, end];
+        const geometry = new BufferGeometry().setFromPoints(points);
+
+        // 기존 라인이 있으면 씬에서 제거
+        if (rayVisual) scene.remove(rayVisual);
+
+        // 새로운 라인 생성
+        const line = new Line(geometry, material);
+        scene.add(line);
+        setRayVisual(line);
     };
     return <></>;
 }

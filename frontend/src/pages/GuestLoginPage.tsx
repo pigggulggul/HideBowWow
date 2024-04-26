@@ -12,15 +12,19 @@ export default function GuestLoginPage() {
     const dispatch = useDispatch();
 
     const login = async () => {
-        const guestLoginInfo: GuestLoginInfo = { nickname: guestNickname };
-
-        const res = await guestLogin(guestLoginInfo);
-        if (res.status === httpStatusCode.OK) {
-            console.log('로그인 성공');
-            dispatch(userNicknameState(guestLoginInfo.nickname));
-            navigate('/selectchannel');
+        if (guestNickname === '') {
+            alert('1글자 이상 입력해주세요.');
         } else {
-            console.log('로그인 실패');
+            const guestLoginInfo: GuestLoginInfo = { nickname: guestNickname };
+
+            const res = await guestLogin(guestLoginInfo);
+            if (res.status === httpStatusCode.OK) {
+                console.log('로그인 성공');
+                dispatch(userNicknameState(guestLoginInfo.nickname));
+                navigate('/selectchannel');
+            } else {
+                console.log('로그인 실패');
+            }
         }
     };
     return (

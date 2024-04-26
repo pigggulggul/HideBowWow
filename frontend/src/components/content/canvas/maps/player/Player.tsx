@@ -55,10 +55,10 @@ type ContextType = Record<
 export function Player({ player, position, modelIndex: mIdx }: PlayerInitType) {
     const modelIndex = mIdx ?? player.selectedCharacterGlbNameIndex;
     const {
-        me,
+        meInfo,
         playerRef,
         memoizedPosition,
-        playerId,
+        playerNickname,
         nodes,
         materials,
         nicknameRef,
@@ -70,13 +70,13 @@ export function Player({ player, position, modelIndex: mIdx }: PlayerInitType) {
 
     return (
         <>
-            {me && (
+            {meInfo && (
                 <NicknameBoard ref={nicknameRef} text={`${player?.nickname}`} />
             )}
             <group
                 ref={playerRef}
                 position={memoizedPosition}
-                name={playerId ?? ''}
+                name={playerNickname ?? ''}
                 dispose={null}
             >
                 <group name="Root_Scene">
