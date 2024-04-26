@@ -10,10 +10,10 @@ import {
     Vector3,  
 } from 'three';
 import { GLTF, SkeletonUtils } from 'three-stdlib';
-import { PlayerInitType } from '../../../../../../types/GameType';
-import { useRecoilValue } from 'recoil';
-import { MeAtom } from '../../../../../../store/PlayersAtom';
+import { PlayerInitType } from '../../../../../../types/GameType'; 
 import { socket } from '../../../../../../sockets/clientSocket';
+import StompClient from '../../../../../../websocket/StompClient';
+import { useSelector } from 'react-redux';
 
 interface GLTFAction extends AnimationClip {
     name: ActionName;
@@ -58,9 +58,21 @@ type ActionName =
 export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
     const [isWalking, setIsWalking] = useState(false);
     // const camera = useRef<ThreePerspectiveCamera>(null);
-    const keyState = useRef<{ [key: string]: boolean }>({});
-    const playerId = player?.id;
-    const me = useRecoilValue(MeAtom);
+    const keyState = useRef<{ [key: string]: boolean }>({}); 
+    
+    // Redux
+    const playerNickname = player?.nickname; 
+    const meName = useSelector(
+        (state: any) => state.reduxFlag.userSlice.userNickname
+    );
+    const meInfo = useSelector(
+        (state: any) => state.reduxFlag.userSlice.meInfo
+    );
+    const roomId = useSelector( 
+        (state: any) => state.reduxFlag.userSlice.roomId
+    );
+
+    const stompClient = StompClient.getInstance();
 
     const memoizedPosition = useMemo(() => position, []);
 
@@ -107,7 +119,7 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
     // unlockPointer();   
 
     const updateRotationX = (movementY: number) => {
-        const rotationAmount = movementY * 0.0017; // 회전 속도 조절을 위해 상수를 곱합니다.
+        const rotationAmount = movementY * 0.001; // 회전 속도 조절을 위해 상수를 곱합니다.
     
         if (playerRef.current) {
             // 최대 최소값을 설정하여 너무 높거나 낮지 않도록 제한합니다.
@@ -135,7 +147,7 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
     };
 
     const updateRotationY = (movementX: number) => {
-        const rotationAmount = movementX * 0.0017; // 회전 속도 조절을 위해 상수를 곱합니다.
+        const rotationAmount = movementX * 0.0013; // 회전 속도 조절을 위해 상수를 곱합니다.
 
         if (playerRef.current) {
             playerRef.current.rotation.y -= rotationAmount;
@@ -145,10 +157,12 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
     useEffect(() => { 
         const handleMouseMove = (event: MouseEvent) => {
             // 마우스 포인터가 고정된 상태에서의 마우스 이동량을 감지합니다.
-            const movementX = event.movementX || 0;  
-            const movementY = event.movementY || 0;  
-            updateRotationY(movementX); 
-            updateRotationX(movementY);
+            if(meInfo?.nickname === playerNickname) {
+                const movementX = event.movementX || 0;  
+                const movementY = event.movementY || 0;  
+                updateRotationY(movementX); 
+                updateRotationX(movementY);
+            }
         };
 
         document.addEventListener('mousemove', handleMouseMove);
@@ -189,53 +203,57 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
 
     // Frame
     useFrame(({ camera }) => {   
-        const moveVector = new Vector3(
-            (keyState.current['a'] ? 1 : 0) - (keyState.current['d'] ? 1 : 0),
-            0,
-            (keyState.current['s'] ? 1 : 0) - (keyState.current['w'] ? 1 : 0)
-        );
 
-        if (!moveVector.equals(new Vector3(0, 0, 0))) {
-            moveVector.normalize().multiplyScalar(0.2); // 속도조절 
+        if(playerRef.current && meInfo?.nickname === playerNickname) { // 내 캐릭터의 경우
+            const moveVector = new Vector3(
+                (keyState.current['a'] ? 1 : 0) - (keyState.current['d'] ? 1 : 0),
+                0,
+                (keyState.current['s'] ? 1 : 0) - (keyState.current['w'] ? 1 : 0)
+            );
 
-            setIsWalking(true);
-            setAnimation(
-                'CharacterArmature|CharacterArmature|CharacterArmature|Run'
-            ); 
-
-            if (playerRef.current) {
+            if (!moveVector.equals(new Vector3(0, 0, 0))) { // 이동중
+                moveVector.normalize().multiplyScalar(0.2); // 속도조절  
+                setIsWalking(true);
+                setAnimation(
+                    'CharacterArmature|CharacterArmature|CharacterArmature|Run'
+                );  
                 // 캐릭터가 바라보는 방향으로 이동 벡터를 회전시킵니다.
                 const forward = new Vector3(0, 0, -1).applyQuaternion(playerRef.current.quaternion);
                 const moveDirection = forward.clone().multiplyScalar(moveVector.z).add(
                     new Vector3(-forward.z, 0, forward.x).multiplyScalar(moveVector.x)
                 );  
 
-                playerRef.current.position.add(moveDirection);
-                socket.emit('move', [
-                    playerRef.current.position.x,
-                    0,
-                    playerRef.current.position.z,
-                ]); 
-            }
-        } else {
-            setIsWalking(false);
-            setAnimation(
-                'CharacterArmature|CharacterArmature|CharacterArmature|Idle'
-            );
-        }
-
-        if (!player || !playerRef.current) return;
-
-        if (nicknameRef.current) { 
-            nicknameRef.current.position.set(
-                playerRef.current.position.x,
-                playerRef.current.position.y + 3.5,
-                playerRef.current.position.z
-            );
-            nicknameRef.current.lookAt(10000, 10000, 10000);
-        }
-
-        if (me?.id === playerId && playerRef.current) {   
+                playerRef.current.position.add(moveDirection);  
+                console.log("me Name (Player)=> " + meName)
+                stompClient.sendMessage(
+                    `/player.move`,
+                    JSON.stringify({
+                        type: "player.move",
+                        roomId: roomId,
+                        sender: meName,
+                        data: {
+                            nickname: meName, 
+                            position: [
+                            playerRef.current.position.x,
+                            playerRef.current.position.y,
+                            playerRef.current.position.z
+                            ],
+                            direction: [
+                            moveDirection.x,
+                            moveDirection.y,
+                            moveDirection.z
+                            ],
+                        }
+                    })
+                ); 
+            } else {
+                setIsWalking(false);
+                setAnimation(
+                    'CharacterArmature|CharacterArmature|CharacterArmature|Idle'
+                );
+            } 
+            
+            // 카메라 설정
             const playerPosition = playerRef.current.position.clone();   
             playerPosition.setY(+3)
 
@@ -244,22 +262,35 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
                 playerRef.current.viewUpDown,  // 아래 위
                 Math.cos(playerRef.current.rotation.y)
             );  
-   
+
             camera.position.set(
                 playerPosition.x + playerDirection.x,  
                 playerPosition.y,
                 playerPosition.z + playerDirection.z,
             )
             const cameraTarget = playerPosition.clone().add(playerDirection.multiplyScalar(3)); 
-            camera.lookAt(cameraTarget); // 정면보다 더 앞으로 설정!  
-        }
+            camera.lookAt(cameraTarget); // 정면보다 더 앞으로 설정!   
+            
+        } else { // 다른 플레이어의 캐릭터
+
+        } 
+ 
+        if (!player || !playerRef.current) return; 
+        if (nicknameRef.current) { 
+            nicknameRef.current.position.set(
+                playerRef.current.position.x,
+                playerRef.current.position.y + 3.5,
+                playerRef.current.position.z
+            );
+            nicknameRef.current.lookAt(10000, 10000, 10000);
+        } 
     });
 
     return {
-        me,
+        meInfo,
         playerRef,
         memoizedPosition,
-        playerId,
+        playerNickname,
         nodes,
         materials,
         nicknameRef, 

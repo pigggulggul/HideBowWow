@@ -7,11 +7,11 @@ import {
     Group,
     MeshStandardMaterial,
     SkinnedMesh,
+    Vector3,  
 } from 'three';
 import { GLTF, SkeletonUtils } from 'three-stdlib';
-import { PlayerInitType } from '../../../../../../types/GameType';
-import { useRecoilValue } from 'recoil';
-import { MeAtom } from '../../../../../../store/PlayersAtom';
+import { PlayerInitType } from '../../../../../../types/GameType'; 
+import StompClient from '../../../../../../websocket/StompClient';
 import { useSelector } from 'react-redux';
 
 interface GLTFAction extends AnimationClip {
@@ -30,7 +30,10 @@ type GLTFResult = GLTF & {
 type ActionName = '';
 
 export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
-    const playerNickname = player?.nickname;
+    const playerNickname = player?.nickname;  
+    const keyState = useRef<{ [key: string]: boolean }>({}); 
+
+    const stompClient = StompClient.getInstance();
     const meName = useSelector(
         (state: any) => state.reduxFlag.userSlice.userNickname
     );
@@ -38,6 +41,9 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         (state: any) => state.reduxFlag.userSlice.meInfo
     );
 
+    const roomId = useSelector( 
+        (state: any) => state.reduxFlag.userSlice.roomId
+    )
     const memoizedPosition = useMemo(() => position, []);
 
     const playerRef = useRef<Group>(null);
@@ -126,24 +132,87 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const scene = useMemo(() => {
         return SkeletonUtils.clone(scene_);
     }, []);
+ 
+    // 키 입력 
+    useEffect(() => {
+        const handleKeyDown = (event: any) => {
+            keyState.current[event.key] = true;
+        };
 
-    useEffect(() => {});
+        const handleKeyUp = (event: any) => {
+            keyState.current[event.key] = false;
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener('keyup', handleKeyUp);
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener('keyup', handleKeyUp);
+        };
+    }, []);
 
     useFrame(({ camera }) => {
+
+        if(playerRef.current && meInfo?.nickname === playerNickname) { // 내 캐릭터의 경우 
+            const moveVector = new Vector3(
+                (keyState.current['a'] ? 1 : 0) - (keyState.current['d'] ? 1 : 0),
+                0,
+                (keyState.current['s'] ? 1 : 0) - (keyState.current['w'] ? 1 : 0)
+            );
+
+            
+            if (!moveVector.equals(new Vector3(0, 0, 0))) { 
+                moveVector.normalize().multiplyScalar(0.2);
+            }
+            
+            const forward = new Vector3(0, 0, -1).applyQuaternion(playerRef.current.quaternion);
+            const moveDirection = forward.clone().multiplyScalar(moveVector.z).add(
+                new Vector3(-forward.z, 0, forward.x).multiplyScalar(moveVector.x)
+            );  
+            playerRef.current.position.add(moveDirection);   
+             
+            
+            // stomp로 이전  
+            stompClient.sendMessage(
+                `/player.move`,
+                JSON.stringify({
+                    type: "player.move",
+                    roomId: roomId,
+                    sender: meName,
+                    data: {
+                        nickname: meName, 
+                        position: [
+                        playerRef.current.position.x,
+                        playerRef.current.position.y,
+                        playerRef.current.position.z
+                        ],
+                        direction: [
+                            0,
+                            0,
+                            0,
+                        ],
+                    }
+                })
+            );
+            console.log("me Name (사물)=> " + meName)
+        } 
+ 
+
         if (!player) return;
         if (!playerRef.current) return;
-        if (playerRef.current.position.distanceTo(position) > 0.1) {
-            const direction = playerRef.current.position
-                .clone()
-                .sub(position)
-                .normalize()
-                .multiplyScalar(0.04);
+        // if (playerRef.current.position.distanceTo(position) > 0.1) {
+        //     const direction = playerRef.current.position
+        //         .clone()
+        //         .sub(position)
+        //         .normalize()
+        //         .multiplyScalar(0.04);
 
-            playerRef.current.position.sub(direction);
-            playerRef.current.lookAt(position);
-        } else {
-        }
-
+        //     playerRef.current.position.add(moveVector);
+        //     playerRef.current.position.sub(direction);
+        //     playerRef.current.lookAt(position);
+        // } else {
+        // } 
+ 
         if (nicknameRef.current) {
             nicknameRef.current.position.set(
                 playerRef.current.position.x,
