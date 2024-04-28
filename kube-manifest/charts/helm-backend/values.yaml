@@ -1,14 +1,6 @@
-replicaCount: 2
-
-image:
-  repository: choichangho514/backend_game_service
-  pullPolicy: IfNotPresent
-  tag: "latest"
-
-service:
-  type: ClusterIP
-  port: 80
-  targetPort: 8080
-
-nameOverride: ""
-fullnameOverride: ""
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://lab.ssafy.com/s10-final/S10P31A709.git
+    targetRevision: manifest

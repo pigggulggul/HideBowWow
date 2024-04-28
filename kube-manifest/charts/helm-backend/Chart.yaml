@@ -1,5 +1,5 @@
 apiVersion: v2
-name: testing-chart
-description: A Helm chart for Kubernetes to deploy the testing application
+name: helm-backend
+description: A Helm chart for Kubernetes to deploy the backend application
 version: 0.1.0
 appVersion: "1.0"

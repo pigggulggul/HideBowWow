@@ -1,7 +1,8 @@
+#service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "frontend.fullname" . }}
+  name: {{ include "member-service.fullname" . }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -9,4 +10,4 @@ spec:
       targetPort: {{ .Values.service.targetPort }}
       protocol: TCP
   selector:
-    app: {{ include "frontend.name" . }}
+    app: {{ include "member-service.fullname" . }}
