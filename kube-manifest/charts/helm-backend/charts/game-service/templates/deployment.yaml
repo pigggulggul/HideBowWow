@@ -1,19 +1,18 @@
 #deployment.yaml
 # jenkins.build.number=44444
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "frontend.fullname" . }}
+  name: {{ include "game-service.fullname" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "frontend.name" . }}
+      app: {{ include "game-service.fullname" . }}
   template:
     metadata:
       labels:
-        app: {{ include "frontend.name" . }}
+        app: {{ include "game-service.fullname" . }}
     spec:
       containers:
         - name: {{ .Chart.Name }}

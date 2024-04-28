@@ -3,4 +3,4 @@ spec:
     server: https://kubernetes.default.svc
   source:
     repoURL: https://lab.ssafy.com/s10-final/S10P31A709.git
-    targetRevision: develop
+    targetRevision: manifest
