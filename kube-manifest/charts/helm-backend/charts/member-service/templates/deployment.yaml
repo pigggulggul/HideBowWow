@@ -20,3 +20,5 @@ spec:
           ports:
             - containerPort: {{ .Values.service.targetPort }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+      imagePullSecrets:
+        - name: docker-key
