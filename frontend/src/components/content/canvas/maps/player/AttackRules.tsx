@@ -1,31 +1,24 @@
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { PlayerAtom } from '../../../../../store/PlayersAtom';
-import {
-    BufferGeometry,
-    Line,
-    LineBasicMaterial,
-    Vector2,
-    Vector3,
-} from 'three';
-import { socket } from '../../../../../sockets/clientSocket';
+import { BufferGeometry, Line, LineBasicMaterial, Vector3 } from 'three';
 import { useSelector } from 'react-redux';
 import { CurrentPlayersInfo } from '../../../../../types/GameType';
 import { useThree } from '@react-three/fiber';
 import StompClient from '../../../../../websocket/StompClient';
 
 export function AttackRules() {
-    const [detectedObject, setDetectedObject] = useState<any>(null);
+    const [, setDetectedObject] = useState<any>(null);
     const [rayVisual, setRayVisual] = useState<any>(null); // 레이 시각화 객체 상태
     const stompClient = StompClient.getInstance();
-    const { camera, scene, raycaster, gl } = useThree();
+    const { camera, scene, raycaster } = useThree();
     const currentRoom = useSelector(
         (state: any) => state.reduxFlag.userSlice.currentRoom
     );
     const meName = useSelector(
         (state: any) => state.reduxFlag.userSlice.userNickname
     );
-    const [players, setPlayers] = useRecoilState(PlayerAtom);
+    const [players] = useRecoilState(PlayerAtom);
     useEffect(() => {
         const handleKeyDown = (event: any) => {
             if (event.key === 'k') {

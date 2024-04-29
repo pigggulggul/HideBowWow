@@ -1,24 +1,16 @@
-import { useAnimations, useGLTF } from '@react-three/drei';
-import { useFrame, useGraph } from '@react-three/fiber';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import {
-    AnimationClip,
-    Bone,
-    Group,
-    Mesh,
-    MeshStandardMaterial,
-    SkinnedMesh,
-    Vector3,
-} from 'three';
+import { useGLTF } from '@react-three/drei';
+import { useFrame } from '@react-three/fiber';
+import { useEffect, useMemo, useRef } from 'react';
+import { Bone, Group, MeshStandardMaterial, SkinnedMesh, Vector3 } from 'three';
 import { GLTF, SkeletonUtils } from 'three-stdlib';
 import { PlayerInitType } from '../../../../../../types/GameType';
 import StompClient from '../../../../../../websocket/StompClient';
 import { useSelector } from 'react-redux';
 import { useBox } from '@react-three/cannon';
 
-interface GLTFAction extends AnimationClip {
-    name: ActionName;
-}
+// interface GLTFAction extends AnimationClip {
+//     name: ActionName;
+// }
 type GLTFResult = GLTF & {
     nodes: {
         Character: SkinnedMesh;
@@ -29,7 +21,6 @@ type GLTFResult = GLTF & {
         'Atlas.001'?: MeshStandardMaterial;
     };
 };
-type ActionName = '';
 
 export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const playerNickname = player?.nickname;
@@ -141,17 +132,17 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             args: [1, 1, 1],
             position: [position.x, position.y, position.z], // 초기 위치를 useRef의 현재 값으로 설정
             onCollide: (e) => {
-                console.log('충돌');
+                console.log('충돌', e);
             },
         }),
         playerRef
     );
     useEffect(() => {
         if (playerRef.current) {
-            // if (ref.current) {
-            //     ref.current.name = playerNickname;
-            //     console.log(ref.current.name);
-            // }
+            if (ref.current) {
+                ref.current.name = playerNickname;
+                console.log(ref.current.name);
+            }
             playerRef.current.name = playerNickname;
             playerRef.current.userData.physicsName = playerNickname; // userData에 이름 추가
         }

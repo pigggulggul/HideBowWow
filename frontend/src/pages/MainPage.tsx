@@ -1,6 +1,5 @@
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { RecoilRoot } from 'recoil';
 import {
     currentRoomState,
     readyState,

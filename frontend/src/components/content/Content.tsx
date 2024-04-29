@@ -1,14 +1,6 @@
-import { useRecoilState, useRecoilValue } from 'recoil';
-import {
-    CharacterSelectFinishedAtom,
-    MeAtom,
-    PlayerAtom,
-    RoomAtom,
-} from '../../store/PlayersAtom';
 import { MainCanvas } from './canvas/MainCanvas';
 import { CanvasLayout } from './canvasLayout/Layout';
-import { Lobby } from './lobby/Lobby';
-import { socket } from '../../sockets/clientSocket';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { CurrentPlayersInfo, RoomInfo } from '../../types/GameType';
 import { useEffect, useState } from 'react';
@@ -18,9 +10,7 @@ import StompClient from '../../websocket/StompClient';
 export function Content() {
     const dispatch = useDispatch();
     const stompClient = StompClient.getInstance();
-    const characterSelectedFinished = useRecoilValue(
-        CharacterSelectFinishedAtom
-    );
+
     //방정보.
     const roomState: RoomInfo = useSelector(
         (state: any) => state.reduxFlag.userSlice.currentRoom

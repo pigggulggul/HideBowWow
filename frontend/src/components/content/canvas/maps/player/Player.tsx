@@ -4,53 +4,51 @@ Command: npx gltfjsx@6.2.16 public/models/CubeGuyCharacter.glb -t -o src/compone
 */
 
 import * as THREE from 'three';
-import React from 'react';
 import { useGLTF } from '@react-three/drei';
-import { GLTF } from 'three-stdlib';
 import { PlayerInitType } from '../../../../../types/GameType';
 import { usePlayer } from './hooks/usePlayer';
 import { NicknameBoard } from '../structures/ground/3DUIs/NicknameBoard';
 
-type GLTFResult = GLTF & {
-    nodes: {
-        Character: THREE.SkinnedMesh;
-        Root: THREE.Bone;
-    };
-    materials: {
-        Atlas: THREE.MeshStandardMaterial;
-    };
-    animations: GLTFAction[];
-};
+// type GLTFResult = GLTF & {
+//     nodes: {
+//         Character: THREE.SkinnedMesh;
+//         Root: THREE.Bone;
+//     };
+//     materials: {
+//         Atlas: THREE.MeshStandardMaterial;
+//     };
+//     animations: GLTFAction[];
+// };
 
-type ActionName =
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Death'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Duck'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|HitReact'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Idle'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Idle_Attack'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Idle_Hold'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Jump'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Jump_Idle'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Jump_Land'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|No'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Punch'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Run'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Run_Attack'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Run_Hold'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Walk'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Walk_Hold'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Wave'
-    | 'CharacterArmature|CharacterArmature|CharacterArmature|Yes';
-interface GLTFAction extends THREE.AnimationClip {
-    name: ActionName;
-}
+// type ActionName =
+//     | 'CharacterArmature|CharacterArmature|CharacterArmature|Death'
+//     | 'CharacterArmature|CharacterArmature|CharacterArmature|Duck'
+//     | 'CharacterArmature|CharacterArmature|CharacterArmature|HitReact'
+//     | 'CharacterArmature|CharacterArmature|CharacterArmature|Idle'
+//     | 'CharacterArmature|CharacterArmature|CharacterArmature|Idle_Attack'
+//     | 'CharacterArmature|CharacterArmature|CharacterArmature|Idle_Hold'
+//     | 'CharacterArmature|CharacterArmature|CharacterArmature|Jump'
+//     | 'CharacterArmature|CharacterArmature|CharacterArmature|Jump_Idle'
+//     | 'CharacterArmature|CharacterArmature|CharacterArmature|Jump_Land'
+//     | 'CharacterArmature|CharacterArmature|CharacterArmature|No'
+//     | 'CharacterArmature|CharacterArmature|CharacterArmature|Punch'
+//     | 'CharacterArmature|CharacterArmature|CharacterArmature|Run'
+//     | 'CharacterArmature|CharacterArmature|CharacterArmature|Run_Attack'
+//     | 'CharacterArmature|CharacterArmature|CharacterArmature|Run_Hold'
+//     | 'CharacterArmature|CharacterArmature|CharacterArmature|Walk'
+//     | 'CharacterArmature|CharacterArmature|CharacterArmature|Walk_Hold'
+//     | 'CharacterArmature|CharacterArmature|CharacterArmature|Wave'
+//     | 'CharacterArmature|CharacterArmature|CharacterArmature|Yes';
+// interface GLTFAction extends THREE.AnimationClip {
+//     name: ActionName;
+// }
 
-type ContextType = Record<
-    string,
-    React.ForwardRefExoticComponent<
-        JSX.IntrinsicElements['skinnedMesh'] | JSX.IntrinsicElements['bone']
-    >
->;
+// type ContextType = Record<
+//     string,
+//     React.ForwardRefExoticComponent<
+//         JSX.IntrinsicElements['skinnedMesh'] | JSX.IntrinsicElements['bone']
+//     >
+// >;
 
 export function Player({ player, position, modelIndex: mIdx }: PlayerInitType) {
     const modelIndex = mIdx ?? player.selectedCharacterGlbNameIndex;

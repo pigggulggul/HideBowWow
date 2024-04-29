@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { guestLogin, userLogin } from '../api/auth';
-import { GuestLoginInfo, UserLoginInfo } from '../types/GameType';
+import { useNavigate } from 'react-router-dom';
+import { userLogin } from '../api/auth';
+import { UserLoginInfo } from '../types/GameType';
 import { useDispatch } from 'react-redux';
 import { userNicknameState } from '../store/user-slice';
 import { httpStatusCode } from '../components/utils/http-status';

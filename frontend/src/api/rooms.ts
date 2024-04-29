@@ -1,10 +1,5 @@
 import localAxios from '../components/utils/http-common';
-import {
-    EnterRoomState,
-    GuestLoginInfo,
-    MakeRoomState,
-    UserLoginInfo,
-} from '../types/GameType';
+import { EnterRoomState, MakeRoomState } from '../types/GameType';
 
 const local = localAxios();
 
