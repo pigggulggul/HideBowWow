@@ -5,6 +5,7 @@ import {
     AnimationClip,
     Bone,
     Group,
+    Mesh,
     MeshStandardMaterial,
     SkinnedMesh,
     Vector3,
@@ -134,20 +135,27 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         return SkeletonUtils.clone(scene_);
     }, []);
 
-    const [ref, api] = useBox(() => ({
-        mass: 0,
-        args: [1, 1, 1],
-        position: [position.x, position.y + 1, position.z], // 초기 위치를 useRef의 현재 값으로 설정
-        onCollide: (e) => {
-            console.log('충돌');
-        },
-    }));
+    const [ref, api] = useBox(
+        () => ({
+            mass: 0,
+            args: [1, 1, 1],
+            position: [position.x, position.y, position.z], // 초기 위치를 useRef의 현재 값으로 설정
+            onCollide: (e) => {
+                console.log('충돌');
+            },
+        }),
+        playerRef
+    );
     useEffect(() => {
-        if (ref.current) {
-            console.log('object의 이름을 변경합니다', meName);
-            ref.current.name = meName; // 메쉬에 이름 설정
+        if (playerRef.current) {
+            // if (ref.current) {
+            //     ref.current.name = playerNickname;
+            //     console.log(ref.current.name);
+            // }
+            playerRef.current.name = playerNickname;
+            playerRef.current.userData.physicsName = playerNickname; // userData에 이름 추가
         }
-    }, [ref, meName]);
+    }, [playerNickname]);
     // 키 입력
     useEffect(() => {
         const handleKeyDown = (event: any) => {
