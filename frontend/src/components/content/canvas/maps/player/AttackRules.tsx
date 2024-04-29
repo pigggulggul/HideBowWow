@@ -80,6 +80,7 @@ export function AttackRules() {
                                 },
                             })
                         );
+                        item.isDead = true;
                     }
                 });
                 // closestObject.parent?.name 지준영
