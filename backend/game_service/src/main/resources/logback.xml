@@ -1,0 +1,31 @@
+<configuration debug="true">
+    <appender name="KAFKA" class="com.github.danielwegener.logback.kafka.KafkaAppender">
+        <encoder class="com.github.danielwegener.logback.kafka.encoding.LayoutKafkaMessageEncoder">
+            <layout class="ch.qos.logback.classic.PatternLayout">
+                <pattern>%-5p %d{HH:mm:ss} [%t] %c{3}, %M at line %L; %m%n</pattern>
+            </layout>
+        </encoder>
+        <topic>game-server-logs</topic>
+<!--        <keyingStrategy class="com.github.danielwegener.logback.kafka.keying.NoKeyKeyingStrategy"/>-->
+        <deliveryStrategy class="com.github.danielwegener.logback.kafka.delivery.AsynchronousDeliveryStrategy"/>
+        <producerConfig>bootstrap.servers=localhost:19092</producerConfig>
+    </appender>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%-5p %d{HH:mm:ss} [%t] %c{3}, %M at line %L; %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="KAFKA-ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="KAFKA"/>
+    </appender>
+
+
+    <!-- <root> 모든 logger에 대한 기본 설정을 정의 (INFO 레벨 이상의 메시지만 처리) -->
+    <root level="INFO">
+<!--        <appender-ref ref="STDOUT"/>-->
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="KAFKA-ASYNC"/>
+    </root>
+</configuration>
