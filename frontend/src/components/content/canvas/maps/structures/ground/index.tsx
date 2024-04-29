@@ -18,8 +18,7 @@ export function GroundElements() {
             <PineTrees position={[-30, 0, -20]} />
             <PineTrees position={[-20, 0, -20]} />
             <Swing />
-            <Floor />
-            <MapTest />
+            <Floor /> 
         </>
     );
 }
