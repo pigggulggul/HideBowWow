@@ -38,4 +38,10 @@ public class ChatSocketController {
         simpMessagingTemplate.convertAndSend("/sub/room/"+message.getRoomId(), message);
     }
 
+    @MessageMapping("/chat.voice") @DeleteMapping("/chat.voice")
+    @Operation(summary = "음성 채팅 소켓", description="base64로 인코딩된 음성 데이터를 받아 처리한다.")
+    public void chatVoice(@Payload StompPayload<Chat> message) {
+        simpMessagingTemplate.convertAndSend("/sub/room/"+message.getRoomId(), message);
+    }
+
 }

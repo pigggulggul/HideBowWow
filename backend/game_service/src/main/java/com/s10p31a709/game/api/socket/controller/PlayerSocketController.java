@@ -68,7 +68,7 @@ public class PlayerSocketController {
     @MessageMapping("/player.choose") @DeleteMapping("/player.choose")
     @Operation(summary = "Object 선택", description = "0~19까지의 숫자중 3개 배열 리턴")
     public void playerChoose(@Payload StompPayload<Player> message) {
-        playerSocketService.choosePlayer(message);
+        playerSocketService.choosePlayer(message.getRoomId());
     }
 
 }

@@ -47,7 +47,7 @@ public class CommandCenter {
                 }
 
                 // 한쪽팀이 다 죽어서 게임이 끝났는지 확인
-                if(room.getRoomState() == 3){
+                if(room.getRoomState() == 2 || room.getRoomState() == 3){
                     int aliveSeeker = 0;
                     int aliveHider = 0;
                     for (Player player : room.getRoomPlayers()){
@@ -91,7 +91,7 @@ public class CommandCenter {
         }
     }
 
-    @Scheduled(fixedRate = 100)
+    @Scheduled(fixedRate = 30)
     public void positionSchedule(){
         List<Room> rooms = roomRepository.findAllRoom();
         for (Room room : rooms){

@@ -24,4 +24,4 @@ logging:
         web:
           socket: DEBUG
       hibernate.orm.jdbc.bind: TRACE
-    com.s10p31a709.game.common.aop: TRACE
+    com.s10p31a709.game.common.aop: INFO
