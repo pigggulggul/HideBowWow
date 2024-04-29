@@ -141,12 +141,21 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         if (playerRef.current) {
             if (ref.current) {
                 ref.current.name = playerNickname;
-                console.log(ref.current.name);
+                console.log(ref.current);
             }
             playerRef.current.name = playerNickname;
             playerRef.current.userData.physicsName = playerNickname; // userData에 이름 추가
         }
-    }, [playerNickname]);
+        if (ref.current) {
+            // Mesh 객체를 찾아 이름을 할당합니다.
+            const mesh = ref.current.children.find(
+                (child) => child.type === 'Mesh'
+            );
+            if (mesh) {
+                mesh.name = playerNickname;
+            }
+        }
+    }, [playerNickname, ref]);
     // 키 입력
     useEffect(() => {
         const handleKeyDown = (event: any) => {

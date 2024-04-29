@@ -60,7 +60,7 @@ export function ObjectPlayer({
                 ref={playerRef}
                 visible
                 scale={scale}
-                name={playerNickname ?? ''}
+                name={playerNickname}
                 position={memoizedPosition}
                 dispose={null}
                 object={scene}
