@@ -20,8 +20,8 @@ logging:
   level:
     org:
       springframework:
-        messaging: DEBUG
+        messaging: INFO
         web:
-          socket: DEBUG
+          socket: INFO
       hibernate.orm.jdbc.bind: TRACE
     com.s10p31a709.game.common.aop: INFO
