@@ -1,6 +1,6 @@
 import { useAnimations, useGLTF } from '@react-three/drei';
 import { useFrame, useGraph } from '@react-three/fiber';
-import { KeyboardEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
     AnimationClip,
     Bone,

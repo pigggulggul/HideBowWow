@@ -1,7 +1,8 @@
 import { Canvas } from '@react-three/fiber';
-import { Box, OrbitControls } from '@react-three/drei';
+import { OrbitControls } from '@react-three/drei';
 import { RootMap } from './maps/RootMap';
 import { Debug, Physics } from '@react-three/cannon';
+import { Suspense } from 'react';
 export function MainCanvas() {
     const aspectRatio = window.innerWidth / window.innerHeight;
     return (
@@ -31,11 +32,13 @@ export function MainCanvas() {
                 shadow-camera-far={200}
             />
             <OrbitControls />
-            <Physics>
-                <Debug>
-                    <RootMap />
-                </Debug>
-            </Physics>
+            <Suspense>
+                <Physics>
+                    <Debug>
+                        <RootMap />
+                    </Debug>
+                </Physics>
+            </Suspense>
         </Canvas>
     );
 }

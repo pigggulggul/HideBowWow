@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { enterRoom, roomList, roomMake } from '../api/rooms';
 import { EnterRoomState, MakeRoomState, RoomInfo } from '../types/GameType';
 import { httpStatusCode } from '../components/utils/http-status';
@@ -25,9 +25,7 @@ export default function LobbyPage() {
     const meName = useSelector(
         (state: any) => state.reduxFlag.userSlice.userNickname
     );
-    const currentRoom = useSelector(
-        (state: any) => state.reduxFlag.userSlice.currentRoom
-    );
+
     const navigate = useNavigate();
     // const [room,setRoom] = useState<>();
 
@@ -121,7 +119,7 @@ export default function LobbyPage() {
     };
 
     /** 일정 시간마다 방 조회 */
-    const [count, setCount] = useState(0);
+    const [, setCount] = useState(0);
     const value = useRef(0);
 
     useEffect(() => {

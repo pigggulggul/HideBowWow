@@ -1,4 +1,4 @@
-import { atom, selector } from 'recoil';
+import { atom } from 'recoil';
 import { CurrentPlayersInfo, MeInfo, RoomInfo } from '../types/GameType';
 
 // 내정보

@@ -1,31 +1,24 @@
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { PlayerAtom } from '../../../../../store/PlayersAtom';
-import {
-    BufferGeometry,
-    Line,
-    LineBasicMaterial,
-    Vector2,
-    Vector3,
-} from 'three';
-import { socket } from '../../../../../sockets/clientSocket';
+import { BufferGeometry, Line, LineBasicMaterial, Vector3 } from 'three';
 import { useSelector } from 'react-redux';
 import { CurrentPlayersInfo } from '../../../../../types/GameType';
 import { useThree } from '@react-three/fiber';
 import StompClient from '../../../../../websocket/StompClient';
 
 export function AttackRules() {
-    const [detectedObject, setDetectedObject] = useState<any>(null);
+    const [, setDetectedObject] = useState<any>(null);
     const [rayVisual, setRayVisual] = useState<any>(null); // 레이 시각화 객체 상태
     const stompClient = StompClient.getInstance();
-    const { camera, scene, raycaster, gl } = useThree();
+    const { camera, scene, raycaster } = useThree();
     const currentRoom = useSelector(
         (state: any) => state.reduxFlag.userSlice.currentRoom
     );
     const meName = useSelector(
         (state: any) => state.reduxFlag.userSlice.userNickname
     );
-    const [players, setPlayers] = useRecoilState(PlayerAtom);
+    const [players] = useRecoilState(PlayerAtom);
     useEffect(() => {
         const handleKeyDown = (event: any) => {
             if (event.key === 'k') {
@@ -48,19 +41,13 @@ export function AttackRules() {
         const seeker = newPlayers.find(
             (p: CurrentPlayersInfo) => p.isSeeker && !p.isDead
         );
-        console.log(seeker);
+        // console.log(seeker);
 
         if (seeker && seeker.nickname === meName) {
-            const forwardPosition = new Vector3(
-                seeker.position.x,
-                seeker.position.y,
-                seeker.position.z + 1
-            );
-            const forwardLayser = new Vector2(
-                forwardPosition.x,
-                forwardPosition.y
-            );
-            raycaster.setFromCamera(forwardLayser, camera);
+            const direction = new Vector3();
+            camera.getWorldDirection(direction); // 카메라의 방향을 얻음
+
+            raycaster.set(camera.position, direction); // 카메라 위치와 방향을 기반으로 레이캐스터 설정
             const intersects = raycaster.intersectObjects(scene.children, true);
 
             console.log(seeker.position);
@@ -70,23 +57,23 @@ export function AttackRules() {
                 setDetectedObject(closestObject);
                 drawRayLine(camera.position, intersects[0].point); // 레이를 그리는 함수 호출
                 currentRoom.roomPlayers.map((item: CurrentPlayersInfo) => {
-                    if (item.nickname === closestObject.parent?.name) {
-                        console.log(
-                            '죽인다 빵야빵야',
-                            closestObject.parent?.name
-                        );
+                    // 모든 부모 이름을 가져옵니다.
+                    const parentNames = getParentNames(closestObject);
+                    if (!item.isDead && parentNames.includes(item.nickname)) {
+                        console.log('죽인다 빵야빵야');
                         stompClient.sendMessage(
                             `/player.dead`,
                             JSON.stringify({
                                 type: 'player.enter',
                                 roomId: currentRoom.roomId,
-                                sender: closestObject.parent?.name,
+                                sender: item.nickname,
                                 data: {
-                                    nickname: closestObject.parent?.name,
+                                    nickname: item.nickname,
                                     isDead: true,
                                 },
                             })
                         );
+                        // item.isDead = true;
                     }
                 });
                 // closestObject.parent?.name 지준영
@@ -108,6 +95,16 @@ export function AttackRules() {
         const line = new Line(geometry, material);
         scene.add(line);
         setRayVisual(line);
+    };
+
+    const getParentNames = (object: any) => {
+        let names = [];
+        let currentObject = object;
+        while (currentObject.parent) {
+            names.push(currentObject.parent.name);
+            currentObject = currentObject.parent;
+        }
+        return names;
     };
     return <></>;
 }

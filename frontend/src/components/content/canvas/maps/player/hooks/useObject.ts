@@ -1,23 +1,16 @@
-import { useAnimations, useGLTF } from '@react-three/drei';
-import { useFrame, useGraph } from '@react-three/fiber';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import {
-    AnimationClip,
-    Bone,
-    Group,
-    MeshStandardMaterial,
-    SkinnedMesh,
-    Vector3,
-} from 'three';
+import { useGLTF } from '@react-three/drei';
+import { useFrame } from '@react-three/fiber';
+import { useEffect, useMemo, useRef } from 'react';
+import { Bone, Group, MeshStandardMaterial, SkinnedMesh, Vector3 } from 'three';
 import { GLTF, SkeletonUtils } from 'three-stdlib';
 import { PlayerInitType } from '../../../../../../types/GameType';
 import StompClient from '../../../../../../websocket/StompClient';
 import { useSelector } from 'react-redux';
 import { useBox } from '@react-three/cannon';
 
-interface GLTFAction extends AnimationClip {
-    name: ActionName;
-}
+// interface GLTFAction extends AnimationClip {
+//     name: ActionName;
+// }
 type GLTFResult = GLTF & {
     nodes: {
         Character: SkinnedMesh;
@@ -28,7 +21,6 @@ type GLTFResult = GLTF & {
         'Atlas.001'?: MeshStandardMaterial;
     };
 };
-type ActionName = '';
 
 export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const playerNickname = player?.nickname;
@@ -139,11 +131,36 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         return SkeletonUtils.clone(scene_);
     }, []);
 
-    const [ref, api] = useBox(() => ({
-        mass: 0,
-        args: [1, 1, 1],
-        position: [position.x, position.y + 1, position.z], // 초기 위치를 useRef의 현재 값으로 설정
-    }));
+    const [ref, api] = useBox(
+        () => ({
+            mass: 0,
+            args: [1, 1, 1],
+            position: [position.x, position.y, position.z], // 초기 위치를 useRef의 현재 값으로 설정
+            onCollide: (e) => {
+                console.log('충돌', e);
+            },
+        }),
+        playerRef
+    );
+    useEffect(() => {
+        if (playerRef.current) {
+            if (ref.current) {
+                ref.current.name = playerNickname;
+                console.log(ref.current);
+            }
+            playerRef.current.name = playerNickname;
+            playerRef.current.userData.physicsName = playerNickname; // userData에 이름 추가
+        }
+        if (ref.current) {
+            // Mesh 객체를 찾아 이름을 할당합니다.
+            const mesh = ref.current.children.find(
+                (child) => child.type === 'Mesh'
+            );
+            if (mesh) {
+                mesh.name = playerNickname;
+            }
+        }
+    }, [playerNickname, ref]);
     // 키 입력
     useEffect(() => {
         const handleKeyDown = (event: any) => {
@@ -195,7 +212,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
 
             if (!moveVector.equals(new Vector3(0, 0, 0))) {
                 moveVector.normalize().multiplyScalar(0.2);
-                api.velocity.set(moveVector.x, moveVector.y, moveVector.z); // 물리 바디의 속도를 업데이트
+                api.position.set(...playerRef.current.position.toArray()); // 물리 바디의 속도를 업데이트
             }
 
             // stomp로 이전

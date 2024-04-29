@@ -2,12 +2,12 @@ import { useEffect } from 'react';
 import { socket } from '../../sockets/clientSocket';
 import { useRecoilState } from 'recoil';
 import { MeAtom, PlayerAtom, RoomAtom } from '../../store/PlayersAtom';
-import { CurrentPlayersInfo, MeInfo } from '../../types/GameType';
+import { CurrentPlayersInfo } from '../../types/GameType';
 
 export function ClientSocketControls() {
     const [me, setMe] = useRecoilState(MeAtom);
-    const [players, setPlayers] = useRecoilState(PlayerAtom);
-    const [room, setRoom] = useRecoilState(RoomAtom);
+    const [, setPlayers] = useRecoilState(PlayerAtom);
+    const [, setRoom] = useRecoilState(RoomAtom);
     useEffect(() => {
         console.log('등록', me);
     }, [me]);
@@ -47,7 +47,6 @@ export function ClientSocketControls() {
         // console.log(newMe);
         if (newMe) {
             console.log('me 초기화');
-            setMe(newMe);
         }
         console.log('플레이어 관련 이벤트');
     };
