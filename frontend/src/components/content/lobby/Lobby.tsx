@@ -12,7 +12,7 @@ import { MainCanvas } from '../canvas/MainCanvas';
 export function Lobby() {
     const [currentStep, setCurrentStep] = useState(STEPS.NICK_NAME);
     const [tempNickname, setTempNickname] = useState<string>('');
-    const [tempJobPosition, setTempJobPosition] = useState<string>('');
+    const [tempJobPosition] = useState<string>('');
     const [selectedCharacterGlbNameIndex, setSelectedCharacterGlbNameIndex] =
         useRecoilState(SelectedCharacterGlbNameIndexAtom);
 

@@ -1,9 +1,7 @@
-import { RecoilRoot, useRecoilValue } from 'recoil';
+import { RecoilRoot } from 'recoil';
 import { ClientSocketControls } from '../components/utilComponents/ClientSocketControls';
 import { Content } from '../components/content/Content';
-import { socket } from '../sockets/clientSocket';
-import { RoomAtom } from '../store/PlayersAtom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,13 +9,10 @@ export default function GamePage() {
     const meInfo = useSelector(
         (state: any) => state.reduxFlag.userSlice.meInfo
     );
-    const isReady = useSelector(
-        (state: any) => state.reduxFlag.userSlice.isReady
-    );
+
     const currentRoom = useSelector(
         (state: any) => state.reduxFlag.userSlice.currentRoom
     );
-    const dispatch = useDispatch();
 
     const navigate = useNavigate();
     useEffect(() => {

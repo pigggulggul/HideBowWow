@@ -1,23 +1,16 @@
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { GroundElements } from './structures/ground';
-import {
-    CharacterSelectFinishedAtom,
-    PlayerAtom,
-    SelectedCharacterGlbNameIndexAtom,
-} from '../../../../store/PlayersAtom';
-import { CharacterInit } from '../../lobby/CharacterInit';
+import { SelectedCharacterGlbNameIndexAtom } from '../../../../store/PlayersAtom';
 import { useThree } from '@react-three/fiber';
 import { useEffect, useRef } from 'react';
 import { Vector3 } from 'three';
 import { Player } from './player/Player';
 import { ObjectPlayer } from './player/ObjectPlayer';
 import { AttackRules } from './player/AttackRules';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { CurrentPlayersInfo } from '../../../../types/GameType';
 
 export function RootMap() {
-    const characterSelectFinished = useRecoilValue(CharacterSelectFinishedAtom);
-    const [players] = useRecoilState(PlayerAtom);
     const camera = useThree((three) => three.camera);
     const controls = useRef<any>(null);
     const selectedCharacterGlbNameIndex = useRecoilValue(
@@ -27,7 +20,6 @@ export function RootMap() {
     const currentRoom = useSelector(
         (state: any) => state.reduxFlag.userSlice.currentRoom
     );
-    const dispatch = useDispatch();
 
     useEffect(() => {
         if (!controls.current) return;

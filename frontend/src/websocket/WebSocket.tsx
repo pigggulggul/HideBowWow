@@ -1,7 +1,6 @@
 import { Client } from '@stomp/stompjs';
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import { handshake } from './client';
-import { httpStatusCode } from '../components/utils/http-status';
 
 interface Prop {
     setWebSocketClient: Dispatch<SetStateAction<Client>>;

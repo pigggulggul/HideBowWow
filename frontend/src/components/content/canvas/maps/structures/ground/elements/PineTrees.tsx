@@ -1,6 +1,5 @@
 import { useGLTF } from '@react-three/drei';
 import { useEffect, useMemo } from 'react';
-import { Vector3 } from 'three';
 import { SkeletonUtils } from 'three-stdlib';
 
 const name = 'ground-pinetrees';

@@ -1,6 +1,5 @@
 import { Floor } from './elements/Floor';
 import { JungleGym } from './elements/JungleGym';
-import { MapTest } from './elements/MapTest';
 import { PineTrees } from './elements/PineTrees';
 import { Swing } from './elements/Swing';
 import { Tree } from './elements/Tree';
