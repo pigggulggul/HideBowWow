@@ -37,6 +37,11 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const roomId = useSelector(
         (state: any) => state.reduxFlag.userSlice.roomId
     );
+    
+    const roomState = useSelector(
+        (state: any) => state.reduxFlag.userSlice.currentRoom
+    );
+
     const memoizedPosition = useMemo(() => position, []);
 
     const playerRef = useRef<Group>(null);
@@ -175,8 +180,11 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     }, []);
 
     useFrame(({ camera }) => {
-        if (playerRef.current && meInfo?.nickname === playerNickname) {
-            // 내 캐릭터의 경우
+
+        
+        if (!player || !playerRef.current) return; 
+
+        if (meInfo?.nickname === playerNickname) { // 내 캐릭터의 경우
             const moveVector = new Vector3(
                 (keyState.current['a'] ? 1 : 0) -
                     (keyState.current['d'] ? 1 : 0),
@@ -224,12 +232,19 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                         direction: [0, 0, 0],
                     },
                 })
-            );
-            console.log('me Name (사물)=> ' + meName);
+            ); 
+        } else { // 다른 플레이어의 캐릭터 
+            roomState.roomPlayers.forEach((otherPlayer : any) => {
+                if (otherPlayer.nickname !== meInfo?.nickname && otherPlayer.isSeeker === false) {
+                    const otherPlayerRef = playerRef.current;
+                    if(otherPlayerRef) { 
+                        // 위치 적용
+                        otherPlayerRef?.position.set(otherPlayer.position[0], otherPlayer.position[1], otherPlayer.position[2]);
+                    }
+                }
+            });
         }
-
-        if (!player) return;
-        if (!playerRef.current) return;
+ 
         // if (playerRef.current.position.distanceTo(position) > 0.1) {
         //     const direction = playerRef.current.position
         //         .clone()

@@ -8,9 +8,12 @@ import {
     MeshStandardMaterial,
     SkinnedMesh,
     Vector3,
+    Euler,
+    Quaternion,
+    MathUtils,
 } from 'three';
 import { GLTF, SkeletonUtils } from 'three-stdlib';
-import { PlayerInitType } from '../../../../../../types/GameType';
+import { PlayerInitType } from '../../../../../../types/GameType'; 
 import StompClient from '../../../../../../websocket/StompClient';
 import { useSelector } from 'react-redux';
 import { useBox } from '@react-three/cannon';
@@ -56,8 +59,7 @@ type ActionName =
 
 /** 플레이어의 행동과 모델을 제어한다 */
 export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
-    const [isWalking, setIsWalking] = useState(false);
-    // const camera = useRef<ThreePerspectiveCamera>(null);
+    const [isWalking, setIsWalking] = useState(false); 
     const keyState = useRef<{ [key: string]: boolean }>({});
 
     // Redux
@@ -77,9 +79,12 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
 
     const stompClient = StompClient.getInstance();
 
-    const memoizedPosition = useMemo(() => position, []);
-    const playerRef = useRef<PlayerRef>(null);
-    const nicknameRef = useRef<Group>(null);
+    const memoizedPosition = useMemo(() => position, []); 
+    const playerRef = useRef<PlayerRef>(null); 
+    const nicknameRef = useRef<Group>(null);     
+    const prevPosition = useRef<Vector3 | null>(null);
+    const isFirstFrame = useRef(true);
+    
 
     const { scene, materials, animations } = useGLTF(
         (() => {
@@ -182,15 +187,29 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
     }, []);
 
     // 이동
+    // useEffect(() => {
+    //     if (isWalking) {
+    //         lockPointer();
+    //         actions[animation]?.reset().fadeIn(0.2).play();
+    //     }
+    //     return () => {
+    //         actions[animation]?.fadeOut(0.5);
+    //     };
+    // }, [isWalking, animation, actions]);
+
     useEffect(() => {
         if (isWalking) {
-            lockPointer();
-            actions[animation]?.reset().fadeIn(0.2).play();
+            lockPointer(); 
+            if (!actions['CharacterArmature|CharacterArmature|CharacterArmature|Run']?.isRunning()) { // Run 상태가 아닌경우 Run으로
+                actions['CharacterArmature|CharacterArmature|CharacterArmature|Run']?.reset().fadeIn(0.2).play();
+            } 
         }
-        return () => {
-            actions[animation]?.fadeOut(0.5);
-        };
-    }, [isWalking, animation, actions]);
+         else { // not walking
+            if(actions['CharacterArmature|CharacterArmature|CharacterArmature|Run']?.isRunning()) {
+                actions['CharacterArmature|CharacterArmature|CharacterArmature|Idle']?.reset().fadeIn(0.2).play(); 
+            }
+        }
+    }, [isWalking, actions, playerRef.current]); 
 
     // 키 입력
     useEffect(() => {
@@ -211,12 +230,15 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
     }, [isWalking]);
 
     // Frame
-    useFrame(({ camera }) => {
-        if (!player || !playerRef.current) return;
+    useFrame(({ camera }) => {   
+        if (isFirstFrame.current) {
+            isFirstFrame.current = false;
+            prevPosition.current = playerRef.current ? playerRef.current.position.clone() : null; // 처음 프레임에만 이전 포지션 초기화
+        }    
 
-        if (meInfo?.nickname === playerNickname) {
-            // 내 캐릭터의 경우
-            // console.log('!!! ' + JSON.stringify(roomState.roomPlayers));
+        if (!player || !playerRef.current) return; 
+ 
+        if(meInfo?.nickname === playerNickname) { // 내 캐릭터의 경우 
             const moveVector = new Vector3(
                 (keyState.current['a'] ? 1 : 0) -
                     (keyState.current['d'] ? 1 : 0),
@@ -244,26 +266,8 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
                             moveVector.x
                         )
                     );
-                // api.velocity.set(
-                //     moveDirection.x,
-                //     moveDirection.y,
-                //     moveDirection.z
-                // );
-                playerRef.current.position.add(moveDirection);
 
-                if (!moveVector.equals(new Vector3(0, 0, 0))) {
-                    console.log(
-                        '허허',
-                        playerRef.current.position.x,
-                        playerRef.current.position.y,
-                        playerRef.current.position.z
-                    );
-                    boxApi.position.set(
-                        ...playerRef.current.position.toArray()
-                    ); // 물리 바디의 속도를 업데이트
-                    console.log(boxRef.current?.position);
-                }
-                // console.log('me Name (Player)=> ' + meName);
+                playerRef.current.position.add(moveDirection); 
                 stompClient.sendMessage(
                     `/player.move`,
                     JSON.stringify({
@@ -284,7 +288,7 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
                             ],
                         },
                     })
-                );
+                ); 
             } else {
                 setIsWalking(false);
                 setAnimation(
@@ -321,12 +325,27 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
                     otherPlayer.isSeeker === true
                 ) {
                     const otherPlayerRef = playerRef.current;
-                    otherPlayerRef?.position.set(
-                        otherPlayer.position[0],
-                        otherPlayer.position[1],
-                        otherPlayer.position[2]
-                    );
-                    // 회전 로직을 추가해야 할 수도 있습니다.
+                    if(otherPlayerRef) { 
+                        // 위치 적용
+                        otherPlayerRef?.position.set(otherPlayer.position[0], otherPlayer.position[1], otherPlayer.position[2]);
+                     
+                        const rotationVector = new Vector3(otherPlayer.direction[0], otherPlayer.direction[1], otherPlayer.direction[2]);
+                        rotationVector.normalize(); // 회전 벡터를 정규화합니다.
+                        const forward = new Vector3(0, 0, -1).applyQuaternion(
+                            new Quaternion().setFromUnitVectors(new Vector3(0, 0, -1), rotationVector)
+                        );
+                        otherPlayerRef.lookAt(otherPlayerRef.position.clone().add(forward)); 
+
+                        // walking 유무 처리
+                        if (prevPosition.current && !otherPlayerRef.position.equals(prevPosition.current)) { 
+                            setIsWalking(true);  
+                            prevPosition.current = otherPlayerRef.position.clone();
+                            // 부드럽게 보간 처리
+                            otherPlayerRef.position.lerp(prevPosition.current, 0.1); // 두 번째 인수는 보간 비율입니다.
+                        } else {  
+                            setIsWalking(false);
+                        } 
+                    }
                 }
             });
         }

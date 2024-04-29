@@ -140,7 +140,7 @@ class StompClient {
                     /** 플레이어 위치 정보 반환 */
                     case 'room.gameState': {
                         console.log('위치 반환');
-                        console.log(msg);
+                        // console.log(msg);ws
                         store.dispatch(currentRoomState(msg.data));
                         break;
                     }
