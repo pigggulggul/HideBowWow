@@ -1,0 +1,196 @@
+#version: '3.7'
+
+services:
+  setup:
+    profiles:
+      - setup
+    build:
+      context: ./setup
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    init: true
+    volumes:
+      - ./setup/entrypoint.sh:/entrypoint.sh:ro,Z
+      - ./setup/lib.sh:/lib.sh:ro,Z
+      - ./setup/roles:/roles:ro,Z
+      - ./delete-kafka-log-meta-data.sh:/delete-kafka-log-meta-data.sh
+#    entrypoint: ["delete-kafka-log-meta-data.sh"]
+    environment:
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
+      LOGSTASH_INTERNAL_PASSWORD: ${LOGSTASH_INTERNAL_PASSWORD:-}
+      KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-}
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+
+  elasticsearch:
+    container_name: elasticsearch
+    build:
+      context: elasticsearch/
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    volumes:
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml:ro,Z
+      - elasticsearch:/usr/share/elasticsearch/data:Z
+    ports:
+      - "9200:9200"
+
+    environment:
+      node.name: elasticsearch
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+      ELASTIC_PASSWORD: ${ELASTIC_PASSWORD:-}
+      discovery.type: single-node
+    networks:
+      - elk
+    restart: unless-stopped
+
+  logstash:
+    container_name: logstash
+    build:
+      context: logstash/
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    volumes:
+      - ./logstash/config/pipelines.yml:/usr/share/logstash/config/pipelines.yml:ro,Z
+      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro,Z
+      - ./logstash/pipeline/logtest.conf:/usr/share/logstash/usr/share/logstash/pipeline/logtest.conf
+      - ./logstash/pipeline/testserverlogs.conf:/usr/share/logstash/usr/share/logstash/pipeline/testserverlogs.conf
+      - ./logstash/pipeline/gameserverlogs.conf:/usr/share/logstash/usr/share/logstash/pipeline/gameserverlogs.conf
+      - ./logstash/pipeline/memberserverlogs.conf:/usr/share/logstash/usr/share/logstash/pipeline/memberserverlogs.conf
+    ports:
+      - "5044:5044"
+      - "50000:50000/tcp"
+      - "50000:50000/udp"
+      - "9600:9600"
+    environment:
+      LS_JAVA_OPTS: -Xms256m -Xmx256m
+      LOGSTASH_INTERNAL_PASSWORD: ${LOGSTASH_INTERNAL_PASSWORD:-}
+    depends_on:
+      - elasticsearch
+    networks:
+      - elk
+    restart: unless-stopped
+
+  kibana:
+    container_name: kibana
+    build:
+      context: kibana/
+      args:
+        ELASTIC_VERSION: ${ELASTIC_VERSION}
+    volumes:
+      - ./kibana/config/kibana.yml:/usr/share/kibana/config/kibana.yml:ro,Z
+    ports:
+      - "5601:5601"
+    environment:
+      KIBANA_SYSTEM_PASSWORD: ${KIBANA_SYSTEM_PASSWORD:-}
+    depends_on:
+      - elasticsearch
+    networks:
+      - elk
+    restart: unless-stopped
+
+  zookeeper:
+    container_name: zookeeper
+    image: confluentinc/cp-zookeeper:latest
+    ports:
+      - "9900:2181"
+    environment:
+      ZOOKEEPER_SERVER_ID: 1
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_DATA_DIR: /zookeeper/data
+    volumes:
+      - ./zookeeper/data:/zookeeper/data
+    networks:
+      - elk
+
+  kafka1:
+    container_name: kafka1
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - "19092:19092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka1:9092,PLAINTEXT_HOST://localhost:19092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+#      KAFKA_LOG_DIRS: /kafka
+#      KAFKA_CREATE_TOPICS: "ek-log:10:3"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+#      - ./kafka/logs/1:/kafka
+    networks:
+      - elk
+
+  kafka2:
+    container_name: kafka2
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - "29092:29092"
+    environment:
+      KAFKA_BROKER_ID: 2
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka2:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+#      KAFKA_LOG_DIRS: /kafka
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+#      - ./kafka/logs/2:/kafka
+    networks:
+      - elk
+
+  kafka3:
+    container_name: kafka3
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - "39092:39092"
+    environment:
+      KAFKA_BROKER_ID: 3
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka3:9092,PLAINTEXT_HOST://localhost:39092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 3
+#      KAFKA_LOG_DIRS: /kafka
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+#      - ./kafka/logs/3:/kafka
+    networks:
+      - elk
+
+  kafka_manager:
+    image: hlebalbau/kafka-manager
+    container_name: kafka_manager
+    restart: always
+    ports:
+      - "9000:9000"
+    environment:
+      ZK_HOSTS: zookeeper:2181
+      APPLICATION_SECRET: "random-secret"
+    command:
+      - -Dpidfile.path=/dev/null
+    depends_on:
+      - kafka1
+      - kafka2
+      - kafka3
+    networks:
+      - elk
+networks:
+  elk:
+    driver: bridge
+
+
+volumes:
+  elasticsearch:
