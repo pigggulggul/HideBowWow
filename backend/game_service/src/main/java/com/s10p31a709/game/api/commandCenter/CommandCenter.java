@@ -91,7 +91,7 @@ public class CommandCenter {
         }
     }
 
-    @Scheduled(fixedRate = 30)
+    @Scheduled(fixedRate = 70)
     public void positionSchedule(){
         List<Room> rooms = roomRepository.findAllRoom();
         for (Room room : rooms){
