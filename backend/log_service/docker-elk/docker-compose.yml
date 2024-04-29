@@ -31,7 +31,7 @@ services:
       args:
         ELASTIC_VERSION: ${ELASTIC_VERSION}
     volumes:
-      - ./elasticsearch/config/elasticsearch-config.yml:/usr/share/elasticsearch/config/elasticsearch-config.yml:ro,Z
+      - /var/jenkins_home/workspace/CI-CD-PROJECT/backend/log_service/docker-elk/elasticsearch/config/elasticsearch-config.yml:/usr/share/elasticsearch/config/elasticsearch-config.yml:ro,Z
       - elasticsearch:/usr/share/elasticsearch/data:Z
     ports:
       - "9200:9200"
@@ -52,8 +52,8 @@ services:
       args:
         ELASTIC_VERSION: ${ELASTIC_VERSION}
     volumes:
-      - ./logstash/config/pipelines.yml:/usr/share/logstash/config/pipelines.yml:ro,Z
-      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro,Z
+      - /var/jenkins_home/workspace/CI-CD-PROJECT/backend/log_service/docker-elk/logstash/config/pipelines.yml:/usr/share/logstash/config/pipelines.yml:ro,Z
+      - /var/jenkins_home/workspace/CI-CD-PROJECT/backend/log_service/docker-elk/logstash/pipeline:/usr/share/logstash/pipeline:ro,Z
 
     ports:
       - "5044:5044"
@@ -76,7 +76,7 @@ services:
       args:
         ELASTIC_VERSION: ${ELASTIC_VERSION}
     volumes:
-      - ./kibana/config/kibana-config.yml:/usr/share/kibana/config/kibana-config.yml:ro,Z
+      - /var/jenkins_home/workspace/CI-CD-PROJECT/backend/log_service/docker-elk/kibana/config/kibana-config.yml:/usr/share/kibana/config/kibana-config.yml:ro,Z
     ports:
       - "5601:5601"
     environment:
@@ -98,7 +98,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
       ZOOKEEPER_DATA_DIR: /zookeeper/data
     volumes:
-      - ./zookeeper/data:/zookeeper/data
+      - /var/jenkins_home/workspace/CI-CD-PROJECT/backend/log_service/docker-elk/zookeeper/data:/zookeeper/data
     networks:
       - elk
 
