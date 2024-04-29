@@ -1,6 +1,5 @@
 import { Client } from '@stomp/stompjs';
 import { handshake } from './client';
-import { useDispatch, useSelector } from 'react-redux';
 import {
     addPeopleRoomState,
     currentRoomState,

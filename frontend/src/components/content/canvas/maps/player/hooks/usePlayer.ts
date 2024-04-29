@@ -11,7 +11,6 @@ import {
 } from 'three';
 import { GLTF, SkeletonUtils } from 'three-stdlib';
 import { PlayerInitType } from '../../../../../../types/GameType';
-import { socket } from '../../../../../../sockets/clientSocket';
 import StompClient from '../../../../../../websocket/StompClient';
 import { useSelector } from 'react-redux';
 import { useBox } from '@react-three/cannon';
@@ -113,9 +112,9 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
         const requestPointerLock = element.requestPointerLock;
         requestPointerLock.call(element);
     };
-    const unlockPointer = () => {
-        document.exitPointerLock();
-    };
+    // const unlockPointer = () => {
+    //     document.exitPointerLock();
+    // };
 
     // lockPointer();
     // unlockPointer();
