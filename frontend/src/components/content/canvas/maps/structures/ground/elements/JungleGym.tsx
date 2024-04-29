@@ -10,8 +10,10 @@ export function JungleGym() {
     const position = useMemo(() => new Vector3(-12, 0, 6), []);
     const [ref] = useBox<Mesh>(() => ({
         args: [10, 10, 10],
-        mass: 0,
+        mass: 0.1,
         position: [-12, 0, 6],
+        linearFactor: [0, 0, 0], // 모든 축에 대해 이동 제한
+        angularFactor: [0, 0, 0], // 모든 축에 대해 회전 제한
     }));
 
     useEffect(() => {

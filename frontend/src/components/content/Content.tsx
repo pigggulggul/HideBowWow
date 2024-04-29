@@ -54,22 +54,22 @@ export function Content() {
     }, [roomState]);
     useEffect(() => {
         if (me.nickname !== '' && me.selectedIndex !== null) {
-            console.log('보낼게욧', me);
-            console.log(
-                JSON.stringify({
-                    type: 'player.object',
-                    roomId: roomState.roomId,
-                    sender: meName,
-                    data: {
-                        nickname: me.nickname,
-                        selectedIndex: me.selectedIndex,
-                        position: me.position,
-                        direction: me.direction,
-                        isDead: me.isDead,
-                        isSeeker: me.isSeeker,
-                    },
-                })
-            );
+            // console.log('보낼게욧', me);
+            // console.log(
+            //     JSON.stringify({
+            //         type: 'player.object',
+            //         roomId: roomState.roomId,
+            //         sender: meName,
+            //         data: {
+            //             nickname: me.nickname,
+            //             selectedIndex: me.selectedIndex,
+            //             position: me.position,
+            //             direction: me.direction,
+            //             isDead: me.isDead,
+            //             isSeeker: me.isSeeker,
+            //         },
+            //     })
+            // );
             stompClient.sendMessage(
                 `/player.object`,
                 JSON.stringify({

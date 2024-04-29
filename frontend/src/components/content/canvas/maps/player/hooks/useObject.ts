@@ -138,7 +138,16 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         mass: 0,
         args: [1, 1, 1],
         position: [position.x, position.y + 1, position.z], // 초기 위치를 useRef의 현재 값으로 설정
+        onCollide: (e) => {
+            console.log('충돌');
+        },
     }));
+    useEffect(() => {
+        if (ref.current) {
+            console.log('object의 이름을 변경합니다', meName);
+            ref.current.name = meName; // 메쉬에 이름 설정
+        }
+    }, [ref, meName]);
     // 키 입력
     useEffect(() => {
         const handleKeyDown = (event: any) => {
@@ -187,7 +196,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
 
             if (!moveVector.equals(new Vector3(0, 0, 0))) {
                 moveVector.normalize().multiplyScalar(0.2);
-                api.velocity.set(moveVector.x, moveVector.y, moveVector.z); // 물리 바디의 속도를 업데이트
+                api.position.set(...playerRef.current.position.toArray()); // 물리 바디의 속도를 업데이트
             }
 
             // stomp로 이전

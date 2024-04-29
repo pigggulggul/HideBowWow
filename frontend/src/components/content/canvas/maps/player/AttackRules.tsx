@@ -48,19 +48,13 @@ export function AttackRules() {
         const seeker = newPlayers.find(
             (p: CurrentPlayersInfo) => p.isSeeker && !p.isDead
         );
-        console.log(seeker);
+        // console.log(seeker);
 
         if (seeker && seeker.nickname === meName) {
-            const forwardPosition = new Vector3(
-                seeker.position.x,
-                seeker.position.y,
-                seeker.position.z + 1
-            );
-            const forwardLayser = new Vector2(
-                forwardPosition.x,
-                forwardPosition.y
-            );
-            raycaster.setFromCamera(forwardLayser, camera);
+            const direction = new Vector3();
+            camera.getWorldDirection(direction); // 카메라의 방향을 얻음
+
+            raycaster.set(camera.position, direction); // 카메라 위치와 방향을 기반으로 레이캐스터 설정
             const intersects = raycaster.intersectObjects(scene.children, true);
 
             console.log(seeker.position);
@@ -70,19 +64,18 @@ export function AttackRules() {
                 setDetectedObject(closestObject);
                 drawRayLine(camera.position, intersects[0].point); // 레이를 그리는 함수 호출
                 currentRoom.roomPlayers.map((item: CurrentPlayersInfo) => {
-                    if (item.nickname === closestObject.parent?.name) {
-                        console.log(
-                            '죽인다 빵야빵야',
-                            closestObject.parent?.name
-                        );
+                    // 모든 부모 이름을 가져옵니다.
+                    const parentNames = getParentNames(closestObject);
+                    if (!item.isDead && parentNames.includes(item.nickname)) {
+                        console.log('죽인다 빵야빵야');
                         stompClient.sendMessage(
                             `/player.dead`,
                             JSON.stringify({
                                 type: 'player.enter',
                                 roomId: currentRoom.roomId,
-                                sender: closestObject.parent?.name,
+                                sender: item.nickname,
                                 data: {
-                                    nickname: closestObject.parent?.name,
+                                    nickname: item.nickname,
                                     isDead: true,
                                 },
                             })
@@ -108,6 +101,16 @@ export function AttackRules() {
         const line = new Line(geometry, material);
         scene.add(line);
         setRayVisual(line);
+    };
+
+    const getParentNames = (object: any) => {
+        let names = [];
+        let currentObject = object;
+        while (currentObject.parent) {
+            names.push(currentObject.parent.name);
+            currentObject = currentObject.parent;
+        }
+        return names;
     };
     return <></>;
 }

@@ -14,6 +14,7 @@ import { PlayerInitType } from '../../../../../../types/GameType';
 import { socket } from '../../../../../../sockets/clientSocket';
 import StompClient from '../../../../../../websocket/StompClient';
 import { useSelector } from 'react-redux';
+import { useBox } from '@react-three/cannon';
 
 interface GLTFAction extends AnimationClip {
     name: ActionName;
@@ -70,18 +71,17 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
     );
     const roomId = useSelector(
         (state: any) => state.reduxFlag.userSlice.roomId
-    );   
+    );
     const roomState = useSelector(
         (state: any) => state.reduxFlag.userSlice.currentRoom
     );
 
     const stompClient = StompClient.getInstance();
 
-    const memoizedPosition = useMemo(() => position, []); 
-    const playerRef = useRef<PlayerRef>(null); 
-    const nicknameRef = useRef<Group>(null);     
+    const memoizedPosition = useMemo(() => position, []);
+    const playerRef = useRef<PlayerRef>(null);
+    const nicknameRef = useRef<Group>(null);
 
- 
     const { scene, materials, animations } = useGLTF(
         (() => {
             switch (modelIndex) {
@@ -119,6 +119,14 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
 
     // lockPointer();
     // unlockPointer();
+    const [boxRef, boxApi] = useBox(() => ({
+        mass: 0,
+        args: [1, 1, 1],
+        // angularFactor: [0, 0, 0],
+        position: [position.x, position.y + 1, position.z], // 초기 위치를 useRef의 현재 값으로 설정
+    }));
+
+    // useRef에 직접 할당 대신, useEffect를 사용하여 ref를 동기화합니다.
 
     const updateRotationX = (movementY: number) => {
         const rotationAmount = movementY * 0.001; // 회전 속도 조절을 위해 상수를 곱합니다.
@@ -204,12 +212,12 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
     }, [isWalking]);
 
     // Frame
-    useFrame(({ camera }) => {       
+    useFrame(({ camera }) => {
+        if (!player || !playerRef.current) return;
 
-        if (!player || !playerRef.current) return; 
- 
-        if(meInfo?.nickname === playerNickname) { // 내 캐릭터의 경우
-            console.log("!!! " + JSON.stringify(roomState.roomPlayers))
+        if (meInfo?.nickname === playerNickname) {
+            // 내 캐릭터의 경우
+            // console.log('!!! ' + JSON.stringify(roomState.roomPlayers));
             const moveVector = new Vector3(
                 (keyState.current['a'] ? 1 : 0) -
                     (keyState.current['d'] ? 1 : 0),
@@ -237,9 +245,26 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
                             moveVector.x
                         )
                     );
-
+                // api.velocity.set(
+                //     moveDirection.x,
+                //     moveDirection.y,
+                //     moveDirection.z
+                // );
                 playerRef.current.position.add(moveDirection);
-                console.log('me Name (Player)=> ' + meName);
+
+                if (!moveVector.equals(new Vector3(0, 0, 0))) {
+                    console.log(
+                        '허허',
+                        playerRef.current.position.x,
+                        playerRef.current.position.y,
+                        playerRef.current.position.z
+                    );
+                    boxApi.position.set(
+                        ...playerRef.current.position.toArray()
+                    ); // 물리 바디의 속도를 업데이트
+                    console.log(boxRef.current?.position);
+                }
+                // console.log('me Name (Player)=> ' + meName);
                 stompClient.sendMessage(
                     `/player.move`,
                     JSON.stringify({
@@ -281,22 +306,33 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
             camera.position.set(
                 playerPosition.x + playerDirection.x,
                 playerPosition.y,
-                playerPosition.z + playerDirection.z,
-            )
-            const cameraTarget = playerPosition.clone().add(playerDirection.multiplyScalar(3)); 
-            camera.lookAt(cameraTarget); // 정면보다 더 앞으로 설정!   
-            
-        } else { // 다른 플레이어의 캐릭터 
-            roomState.roomPlayers.forEach((otherPlayer : any) => {
-                if (otherPlayer.nickname !== meInfo?.nickname && otherPlayer.isSeeker === true) {
+                playerPosition.z + playerDirection.z
+            );
+            const cameraTarget = playerPosition
+                .clone()
+                .add(playerDirection.multiplyScalar(3));
+            camera.lookAt(cameraTarget); // 정면보다 더 앞으로 설정!
+            camera.zoom = 0.6;
+            camera.updateProjectionMatrix();
+        } else {
+            // 다른 플레이어의 캐릭터
+            roomState.roomPlayers.forEach((otherPlayer: any) => {
+                if (
+                    otherPlayer.nickname !== meInfo?.nickname &&
+                    otherPlayer.isSeeker === true
+                ) {
                     const otherPlayerRef = playerRef.current;
-                    otherPlayerRef?.position.set(otherPlayer.position[0], otherPlayer.position[1], otherPlayer.position[2]);
+                    otherPlayerRef?.position.set(
+                        otherPlayer.position[0],
+                        otherPlayer.position[1],
+                        otherPlayer.position[2]
+                    );
                     // 회전 로직을 추가해야 할 수도 있습니다.
                 }
             });
-        } 
-  
-        if (nicknameRef.current) { 
+        }
+
+        if (nicknameRef.current) {
             nicknameRef.current.position.set(
                 playerRef.current.position.x,
                 playerRef.current.position.y + 3.5,
