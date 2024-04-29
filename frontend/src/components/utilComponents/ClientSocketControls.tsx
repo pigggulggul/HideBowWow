@@ -47,7 +47,6 @@ export function ClientSocketControls() {
         // console.log(newMe);
         if (newMe) {
             console.log('me 초기화');
-            setMe(newMe);
         }
         console.log('플레이어 관련 이벤트');
     };

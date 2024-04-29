@@ -95,6 +95,13 @@ export default function GamePage() {
             ) : (
                 <></>
             )}
+            {meInfo.isSeeker ? (
+                <div className="absolute w-full h-full flex justify-center items-center">
+                    <p className="w-[10px] h-[10px] rounded-full bg-black"></p>
+                </div>
+            ) : (
+                <></>
+            )}
         </RecoilRoot>
     );
 }
