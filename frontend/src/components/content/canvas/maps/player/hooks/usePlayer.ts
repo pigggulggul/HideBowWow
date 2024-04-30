@@ -132,11 +132,11 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
 
     // useRef에 직접 할당 대신, useEffect를 사용하여 ref를 동기화합니다.
 
-    const updateRotationX = (movementY: number) => {
-        const rotationAmount = movementY * 0.001; // 회전 속도 조절을 위해 상수를 곱합니다.
+    const updateRotationX = (movementY: number) => { // 아래 위 
+        const rotationAmount = movementY * 0.001; // 회전 속도 조절 
 
         if (playerRef.current) {
-            // 최대 최소값을 설정하여 너무 높거나 낮지 않도록 제한합니다.
+            // 시야각 제한
             const maxRotationX = Math.PI / 4; // 45도
             const minRotationX = -Math.PI / 4; // -45도
             if (playerRef.current.viewUpDown) {
@@ -160,7 +160,7 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
         }
     };
 
-    const updateRotationY = (movementX: number) => {
+    const updateRotationY = (movementX: number) => { //좌 우
         const rotationAmount = movementX * 0.0013; // 회전 속도 조절을 위해 상수를 곱합니다.
 
         if (playerRef.current) {
@@ -184,19 +184,9 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
         return () => {
             document.removeEventListener('mousemove', handleMouseMove);
         };
-    }, []);
-
-    // 이동
-    // useEffect(() => {
-    //     if (isWalking) {
-    //         lockPointer();
-    //         actions[animation]?.reset().fadeIn(0.2).play();
-    //     }
-    //     return () => {
-    //         actions[animation]?.fadeOut(0.5);
-    //     };
-    // }, [isWalking, animation, actions]);
-
+    }, []); 
+     
+    // // 이동  
     useEffect(() => {
         if (isWalking) {
             lockPointer(); 
@@ -238,7 +228,7 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
 
         if (!player || !playerRef.current) return; 
  
-        if(meInfo?.nickname === playerNickname) { // 내 캐릭터의 경우 
+        if(meInfo?.nickname === playerNickname) { // 내 캐릭터의 경우  
             const moveVector = new Vector3(
                 (keyState.current['a'] ? 1 : 0) -
                     (keyState.current['d'] ? 1 : 0),
@@ -247,13 +237,12 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
                     (keyState.current['w'] ? 1 : 0)
             );
 
-            if (!moveVector.equals(new Vector3(0, 0, 0))) {
-                // 이동중
-                moveVector.normalize().multiplyScalar(0.2); // 속도조절
+            if (!moveVector.equals(new Vector3(0, 0, 0))) {   // 이동 중
+                moveVector.normalize().multiplyScalar(0.15); // 속도조절
                 setIsWalking(true);
-                setAnimation(
-                    'CharacterArmature|CharacterArmature|CharacterArmature|Run'
-                );
+                // setAnimation(
+                //     'CharacterArmature|CharacterArmature|CharacterArmature|Run'
+                // );
                 // 캐릭터가 바라보는 방향으로 이동 벡터를 회전시킵니다.
                 const forward = new Vector3(0, 0, -1).applyQuaternion(
                     playerRef.current.quaternion
@@ -289,14 +278,33 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
                         },
                     })
                 ); 
-            } else {
-                setIsWalking(false);
-                setAnimation(
-                    'CharacterArmature|CharacterArmature|CharacterArmature|Idle'
-                );
+            } else { // 고정된 상태
+                setIsWalking(false);   
+                actions['CharacterArmature|CharacterArmature|CharacterArmature|Idle']?.isRunning()
+                stompClient.sendMessage(
+                    `/player.move`,
+                    JSON.stringify({
+                        type: 'player.move',
+                        roomId: roomId,
+                        sender: meName,
+                        data: {
+                            nickname: meName,
+                            position: [
+                                playerRef.current.position.x,
+                                playerRef.current.position.y,
+                                playerRef.current.position.z,
+                            ],
+                            direction: [  
+                                Math.sin(playerRef.current.rotation.y),
+                                0,
+                                Math.cos(playerRef.current.rotation.y)
+                            ],
+                        },
+                    })
+                ); 
             }
 
-            // 카메라 설정
+            // // 카메라 설정
             const playerPosition = playerRef.current.position.clone();
             playerPosition.setY(+3);
 

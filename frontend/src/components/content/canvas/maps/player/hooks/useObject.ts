@@ -139,8 +139,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             onCollide: (e) => {
                 console.log('충돌', e);
             },
-        }),
-        playerRef
+        }), 
     );
     useEffect(() => {
         if (playerRef.current) {
