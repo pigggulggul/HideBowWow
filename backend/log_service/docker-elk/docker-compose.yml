@@ -31,7 +31,7 @@ services:
       args:
         ELASTIC_VERSION: ${ELASTIC_VERSION}
     volumes:
-      - /var/jenkins_home/workspace/CI-CD-PROJECT/backend/log_service/docker-elk/elasticsearch/config/elasticsearch-config.yml:/usr/share/elasticsearch/config/elasticsearch-config.yml:ro,Z
+      - ./elasticsearch/config/elasticsearch-config.yml:/usr/share/elasticsearch/config/elasticsearch-config.yml:ro,Z
       - elasticsearch:/usr/share/elasticsearch/data:Z
     ports:
       - "9200:9200"
@@ -52,8 +52,8 @@ services:
       args:
         ELASTIC_VERSION: ${ELASTIC_VERSION}
     volumes:
-      - /var/jenkins_home/workspace/CI-CD-PROJECT/backend/log_service/docker-elk/logstash/config/pipelines.yml:/usr/share/logstash/config/pipelines.yml:ro,Z
-      - /var/jenkins_home/workspace/CI-CD-PROJECT/backend/log_service/docker-elk/logstash/pipeline:/usr/share/logstash/pipeline:ro,Z
+      - ./logstash/config:/usr/share/logstash-conf/config:ro,Z
+      - ./logstash/pipeline:/usr/share/logstash-conf/pipeline:ro,Z
 
     ports:
       - "5044:5044"
@@ -76,7 +76,7 @@ services:
       args:
         ELASTIC_VERSION: ${ELASTIC_VERSION}
     volumes:
-      - /var/jenkins_home/workspace/CI-CD-PROJECT/backend/log_service/docker-elk/kibana/config/kibana-config.yml:/usr/share/kibana/config/kibana-config.yml:ro,Z
+      - ./kibana/config/kibana-config.yml:/usr/share/kibana/config/kibana-config.yml:ro,Z
     ports:
       - "5601:5601"
     environment:
@@ -98,7 +98,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
       ZOOKEEPER_DATA_DIR: /zookeeper/data
     volumes:
-      - /var/jenkins_home/workspace/CI-CD-PROJECT/backend/log_service/docker-elk/zookeeper/data:/zookeeper/data
+      - ./zookeeper/data:/zookeeper/data
     networks:
       - elk
 
@@ -112,7 +112,9 @@ services:
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka1:9092,PLAINTEXT_HOST://k10a709.p.ssafy.io:19092
+      JMX_PORT: 9093
+      KAFKA_JMX_OPTS: -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=${EXPOSED_HOSTNAME} -Dcom.sun.management.jmxremote.rmi.port=9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka1:9092,PLAINTEXT_HOST://${EXPOSED_HOSTNAME}:19092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_DEFAULT_REPLICATION_FACTOR: 3
@@ -134,7 +136,9 @@ services:
     environment:
       KAFKA_BROKER_ID: 2
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka2:9092,PLAINTEXT_HOST://k10a709.p.ssafy.io:29092
+      JMX_PORT: 9093
+      KAFKA_JMX_OPTS: -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=${EXPOSED_HOSTNAME} -Dcom.sun.management.jmxremote.rmi.port=9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka2:9092,PLAINTEXT_HOST://${EXPOSED_HOSTNAME}:29092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_DEFAULT_REPLICATION_FACTOR: 3
@@ -156,7 +160,9 @@ services:
     environment:
       KAFKA_BROKER_ID: 3
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka3:9092,PLAINTEXT_HOST://k10a709.p.ssafy.io:39092
+      JMX_PORT: 9093
+      KAFKA_JMX_OPTS: -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=${EXPOSED_HOSTNAME} -Dcom.sun.management.jmxremote.rmi.port=9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka3:9092,PLAINTEXT_HOST://${EXPOSED_HOSTNAME}:39092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_DEFAULT_REPLICATION_FACTOR: 3
@@ -177,7 +183,7 @@ services:
       ZK_HOSTS: zookeeper:2181
       APPLICATION_SECRET: "random-secret"
     command:
-      - -Dpidfile.path=/dev/null
+      - Dpidfile.path=/dev/null
     depends_on:
       - kafka1
       - kafka2
