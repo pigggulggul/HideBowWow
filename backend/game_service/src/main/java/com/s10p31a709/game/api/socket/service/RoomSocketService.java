@@ -49,8 +49,8 @@ public class RoomSocketService {
                 player.setSelectedIndex(new Random().nextInt(14));
             }else {
                 player.setIsSeeker(false);
+                player.setSelectedIndex(null);
             }
-            player.setSelectedIndex(null);
         }
 
         StompPayload<Room> payload = new StompPayload<>("room.gameInit", message.getRoomId(), "system", room);
