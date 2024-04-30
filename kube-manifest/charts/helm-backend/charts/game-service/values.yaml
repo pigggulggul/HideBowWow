@@ -7,7 +7,7 @@ image:
 
 service:
   type: ClusterIP
-  port: 8002
+  port: 80
   targetPort: 8002
 
 #ingress:
