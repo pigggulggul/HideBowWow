@@ -7,10 +7,8 @@ import {
     Group,
     MeshStandardMaterial,
     SkinnedMesh,
-    Vector3,
-    Euler,
-    Quaternion,
-    MathUtils,
+    Vector3, 
+    Quaternion, 
 } from 'three';
 import { GLTF, SkeletonUtils } from 'three-stdlib';
 import { PlayerInitType } from '../../../../../../types/GameType'; 
@@ -77,14 +75,12 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
         (state: any) => state.reduxFlag.userSlice.currentRoom
     );
 
-    const stompClient = StompClient.getInstance();
-
+    const stompClient = StompClient.getInstance(); 
     const memoizedPosition = useMemo(() => position, []); 
     const playerRef = useRef<PlayerRef>(null); 
     const nicknameRef = useRef<Group>(null);     
     const prevPosition = useRef<Vector3 | null>(null);
-    const isFirstFrame = useRef(true);
-    
+    const isFirstFrame = useRef(true); 
 
     const { scene, materials, animations } = useGLTF(
         (() => {
@@ -123,6 +119,7 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
 
     // lockPointer();
     // unlockPointer();
+
     const [boxRef, boxApi] = useBox(() => ({
         mass: 0,
         args: [1, 1, 1],
@@ -161,8 +158,7 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
     };
 
     const updateRotationY = (movementX: number) => { //좌 우
-        const rotationAmount = movementX * 0.0013; // 회전 속도 조절을 위해 상수를 곱합니다.
-
+        const rotationAmount = movementX * 0.0013; // 회전 속도 조절을 위해 상수를 곱합니다. 
         if (playerRef.current) {
             playerRef.current.rotation.y -= rotationAmount;
         }
@@ -186,7 +182,7 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
         };
     }, []); 
      
-    // // 이동  
+    // 이동  
     useEffect(() => {
         if (isWalking) {
             lockPointer(); 
@@ -304,7 +300,7 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
                 ); 
             }
 
-            // // 카메라 설정
+            // 카메라 설정
             const playerPosition = playerRef.current.position.clone();
             playerPosition.setY(+3);
 

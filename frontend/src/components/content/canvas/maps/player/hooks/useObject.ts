@@ -178,25 +178,21 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         };
     }, []);
 
-    useFrame(({ camera }) => {
-
-        
+    useFrame(({ camera }) => {  
         if (!player || !playerRef.current) return; 
 
         if (meInfo?.nickname === playerNickname) { // 내 캐릭터의 경우
             const moveVector = new Vector3(
-                (keyState.current['a'] ? 1 : 0) -
-                    (keyState.current['d'] ? 1 : 0),
+                (keyState.current['d'] ? 1 : 0) - (keyState.current['a'] ? 1 : 0), // 수정: 오른쪽이면 1, 왼쪽이면 -1
                 0,
-                (keyState.current['s'] ? 1 : 0) -
-                    (keyState.current['w'] ? 1 : 0)
+                (keyState.current['w'] ? 1 : 0) - (keyState.current['s'] ? 1 : 0) // 수정: 위쪽이면 1, 아래쪽이면 -1
             );
 
             if (!moveVector.equals(new Vector3(0, 0, 0))) {
                 moveVector.normalize().multiplyScalar(0.2);
             }
 
-            const forward = new Vector3(0, 0, -1).applyQuaternion(
+            const forward = new Vector3(-1, 0, -1).applyQuaternion(
                 playerRef.current.quaternion
             );
             const moveDirection = forward
