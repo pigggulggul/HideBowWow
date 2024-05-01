@@ -74,9 +74,9 @@ public class PlayerSocketService {
         simpMessagingTemplate.convertAndSend("/sub/room/"+message.getRoomId(), payload);
     }
 
-    public void choosePlayer(StompPayload<Player> message) {
+    public void choosePlayer(String roomId) {
         int[] arr = new int[]{new Random().nextInt(20), new Random().nextInt(20), new Random().nextInt(20)};
-        StompPayload<int[]> payload = new StompPayload<>("player.choose", message.getRoomId(), "system", arr);
-        simpMessagingTemplate.convertAndSend("/sub/room/"+message.getRoomId(), payload);
+        StompPayload<int[]> payload = new StompPayload<>("player.choose", roomId, "system", arr);
+        simpMessagingTemplate.convertAndSend("/sub/room/"+roomId, payload);
     }
 }
