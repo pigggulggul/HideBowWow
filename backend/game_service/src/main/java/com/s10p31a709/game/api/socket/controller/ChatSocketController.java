@@ -39,9 +39,9 @@ public class ChatSocketController {
     }
 
     @MessageMapping("/chat.voice") @DeleteMapping("/chat.voice")
-    @Operation(summary = "음성 채팅 소켓", description="base64로 인코딩된 음성 데이터를 받아 처리한다.")
+    @Operation(summary = "음성 채팅 소켓", description="음성채팅 연결 시 /sub/voice/{roomId} 로 구독")
     public void chatVoice(@Payload StompPayload<Chat> message) {
-        simpMessagingTemplate.convertAndSend("/sub/room/"+message.getRoomId(), message);
+        simpMessagingTemplate.convertAndSend("/sub/voice/"+message.getRoomId(), message);
     }
 
 }
