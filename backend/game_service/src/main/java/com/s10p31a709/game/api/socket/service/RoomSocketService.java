@@ -17,6 +17,7 @@ public class RoomSocketService {
 
     private final RoomRepository roomRepository;
     private final SimpMessagingTemplate simpMessagingTemplate;
+    private final PlayerSocketService playerSocketService;
 
 
     public void modifyRoom(StompPayload<Room> message){
@@ -40,19 +41,26 @@ public class RoomSocketService {
         int seekerNumber = new Random().nextInt(room.getRoomPlayers().size());
         for (int i = 0; i < room.getRoomPlayers().size(); i++) {
             Player player = room.getRoomPlayers().get(i);
-            player.setPosition(new Integer[]{0, 0, 0});
-            player.setDirection(new Integer[]{0, 0, 0});
+            player.setPosition(new Double[]{0d, 0d, 0d});
+            player.setDirection(new Double[]{0d, 0d, 0d});
             player.setIsDead(false);
-            player.setIsSeeker(i == seekerNumber);
+            if(i == seekerNumber) {
+                player.setIsSeeker(true);
+                player.setSelectedIndex(new Random().nextInt(14));
+            }else {
+                player.setIsSeeker(false);
+                player.setSelectedIndex(null);
+            }
         }
 
         StompPayload<Room> payload = new StompPayload<>("room.gameInit", message.getRoomId(), "system", room);
         simpMessagingTemplate.convertAndSend("/sub/room/"+message.getRoomId(), payload);
+        playerSocketService.choosePlayer(message.getRoomId());
     }
 
     public void hideStart(String roomId){
         Room room = roomRepository.findRoomByRoomId(roomId);
-        room.setRoomTime(30);
+        room.setRoomTime(60);
         room.setRoomState(2);
 
         StompPayload<Room> payload = new StompPayload<>("room.hideStart", roomId, "system", room);
@@ -61,7 +69,7 @@ public class RoomSocketService {
 
     public void findStart(String roomId){
         Room room = roomRepository.findRoomByRoomId(roomId);
-        room.setRoomTime(90);
+        room.setRoomTime(120);
         room.setRoomState(3);
 
         StompPayload<Room> payload = new StompPayload<>("room.findStart", roomId, "system", room);

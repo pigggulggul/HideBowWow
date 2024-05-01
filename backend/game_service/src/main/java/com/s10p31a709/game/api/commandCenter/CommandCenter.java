@@ -47,7 +47,7 @@ public class CommandCenter {
                 }
 
                 // 한쪽팀이 다 죽어서 게임이 끝났는지 확인
-                if(room.getRoomState() == 3){
+                if(room.getRoomState() == 2 || room.getRoomState() == 3){
                     int aliveSeeker = 0;
                     int aliveHider = 0;
                     for (Player player : room.getRoomPlayers()){
@@ -63,6 +63,8 @@ public class CommandCenter {
                     if(aliveSeeker == 0) roomSocketService.hiderWin(room.getRoomId());
                 }
             }
+            // 대기실에서 방 정보 전송
+            roomSocketService.sendPosition(room);
         }
     }
 
