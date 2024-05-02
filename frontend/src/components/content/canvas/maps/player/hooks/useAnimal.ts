@@ -315,21 +315,21 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                             moveVector.x
                         )
                     );
-                if (collideState.length > 0) {
-                    const newPos =
-                        playerRef.current.position.add(moveDirection);
-                    collideState.map((item: CollideObject, index: number) => {
-                        if (
-                            newPos.x >= item.minX &&
-                            newPos.x <= item.maxX &&
-                            newPos.y >= item.minY &&
-                            newPos.y <= item.maxY &&
-                            newPos.z >= item.minZ &&
-                            newPos.z <= item.maxZ
-                        ) {
-                        }
-                    });
-                }
+                // if (collideState.length > 0) {
+                //     const newPos =
+                //         playerRef.current.position.add(moveDirection);
+                //     collideState.map((item: CollideObject, index: number) => {
+                //         if (
+                //             newPos.x >= item.minX &&
+                //             newPos.x <= item.maxX &&
+                //             newPos.y >= item.minY &&
+                //             newPos.y <= item.maxY &&
+                //             newPos.z >= item.minZ &&
+                //             newPos.z <= item.maxZ
+                //         ) {
+                //         }
+                //     });
+                // }
                 playerRef.current.position.add(moveDirection);
 
                 stompClient.sendMessage(
@@ -356,6 +356,28 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
             } else {
                 setIsWalking(false);
                 setAnimation('Roll');
+                
+                stompClient.sendMessage(
+                    `/player.move`,
+                    JSON.stringify({
+                        type: 'player.move',
+                        roomId: roomId,
+                        sender: meName,
+                        data: {
+                            nickname: meName,
+                            position: [
+                                playerRef.current.position.x,
+                                playerRef.current.position.y,
+                                playerRef.current.position.z,
+                            ],
+                            direction: [  
+                                Math.sin(playerRef.current.rotation.y),
+                                0,
+                                Math.cos(playerRef.current.rotation.y)
+                            ],
+                        },
+                    })
+                ); 
             }
 
             // 카메라 설정

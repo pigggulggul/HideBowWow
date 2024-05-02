@@ -1,7 +1,7 @@
 import { useGLTF } from '@react-three/drei';
 import { useFrame, useGraph } from '@react-three/fiber';
 import { useEffect, useMemo, useRef } from 'react';
-import { Group, Mesh, MeshStandardMaterial, SkinnedMesh, Vector3 } from 'three';
+import { Group, Mesh, MeshStandardMaterial, SkinnedMesh, Vector3, Quaternion } from 'three';
 import { GLTF, SkeletonUtils } from 'three-stdlib';
 import { PlayerInitType } from '../../../../../../types/GameType';
 import StompClient from '../../../../../../websocket/StompClient';
@@ -66,8 +66,8 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
 
     const memoizedPosition = useMemo(() => position, []);
 
-    const playerRef = useRef<Group>(null);
-    const nicknameRef = useRef<Group>(null);
+    const playerRef = useRef<ObjectRef>(null);
+    const nicknameRef = useRef<ObjectRef>(null);
     const { scene: scene_, materials } = useGLTF(
         (() => {
             switch (modelIndex) {
@@ -323,12 +323,36 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                                 playerRef.current.position.y,
                                 playerRef.current.position.z,
                             ],
-                            direction: [0, 0, 0],
+                            direction: [
+                                Math.sin(playerRef.current.rotation.y),
+                                0,
+                                Math.cos(playerRef.current.rotation.y)],
                         },
                     })
                 ); 
             } else { // 고정된 상태
-                // rotation값 stomp
+                // rotation값 stomp 
+                stompClient.sendMessage(
+                    `/player.move`,
+                    JSON.stringify({
+                        type: 'player.move',
+                        roomId: roomId,
+                        sender: meName,
+                        data: {
+                            nickname: meName,
+                            position: [
+                                playerRef.current.position.x,
+                                playerRef.current.position.y,
+                                playerRef.current.position.z,
+                            ],
+                            direction: [
+                                Math.sin(playerRef.current.rotation.y),
+                                0,
+                                Math.cos(playerRef.current.rotation.y)],
+                        },
+                    })
+                ); 
+                console.log("회전값 : " + Math.sin(playerRef.current.rotation.y) + ",," +Math.cos(playerRef.current.rotation.y))
             }  
             // 카메라 설정
             const playerPosition = playerRef.current.position.clone();
@@ -371,6 +395,14 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                             otherPlayer.position[1],
                             otherPlayer.position[2]
                         );
+
+                        // 방향 적용 
+                        const rotationVector = new Vector3(otherPlayer.direction[0], otherPlayer.direction[1], otherPlayer.direction[2]);
+                        rotationVector.normalize(); // 회전 벡터를 정규화합니다.
+                        const forward = new Vector3(0, 0, -1).applyQuaternion(
+                            new Quaternion().setFromUnitVectors(new Vector3(0, 0, -1), rotationVector)
+                        );
+                        otherPlayerRef.lookAt(otherPlayerRef.position.clone().add(forward)); 
                     }
                 }
             });
