@@ -84,7 +84,7 @@ export const userSlice = createSlice({
         removeCollideObjectState: (state, action) => {
             // action.payload에 해당하는 인덱스의 객체를 제거
             state.collideObj = state.collideObj.filter(
-                (item, index) => index !== action.payload
+                (_item, index) => index !== action.payload
             );
         },
     },

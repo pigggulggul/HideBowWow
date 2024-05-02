@@ -38,7 +38,6 @@ type GLTFResult = GLTF & {
     animations: any[];
 };
 
-
 class ObjectRef extends Group {
     viewUpDown: number = 0;
     viewLR: number = 0;
@@ -162,24 +161,23 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const material = returnMaterial(modelIndex);
     const node = returnNode(modelIndex);
 
-    const [ref, api] = useBox(
-        () => ({
-            mass: 0,
-            args: [1, 1, 1],
-            position: [position.x, position.y, position.z], // 초기 위치를 useRef의 현재 값으로 설정
-            onCollide: (e) => {
-                console.log('충돌', e);
-            },
-        }), 
-    );
-    
-    const updateRotationX = (movementY: number) => { // 아래 위 
-        const rotationAmount = movementY * 0.02; // 회전 속도 조절 
+    const [ref] = useBox(() => ({
+        mass: 0,
+        args: [1, 1, 1],
+        position: [position.x, position.y, position.z], // 초기 위치를 useRef의 현재 값으로 설정
+        onCollide: (e) => {
+            console.log('충돌', e);
+        },
+    }));
+
+    const updateRotationX = (movementY: number) => {
+        // 아래 위
+        const rotationAmount = movementY * 0.02; // 회전 속도 조절
 
         if (playerRef.current) {
             // 시야각 제한
-            const maxRotationX = Math.PI * 1.5; 
-            const minRotationX = -Math.PI * 1.5; 
+            const maxRotationX = Math.PI * 1.5;
+            const minRotationX = -Math.PI * 1.5;
             if (playerRef.current.viewUpDown) {
                 playerRef.current.viewUpDown = Math.max(
                     minRotationX,
@@ -201,8 +199,9 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         }
     };
 
-    const updateRotationY = (movementX: number) => { //좌 우
-        const rotationAmount = movementX * 0.0013; // 회전 속도 조절을 위해 상수를 곱합니다. 
+    const updateRotationY = (movementX: number) => {
+        //좌 우
+        const rotationAmount = movementX * 0.0013; // 회전 속도 조절을 위해 상수를 곱합니다.
         if (playerRef.current) {
             // playerRef.current.rotation.y -= rotationAmount;
             playerRef.current.viewLR -= rotationAmount;
@@ -231,7 +230,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         return () => {
             document.removeEventListener('mousemove', handleMouseMove);
         };
-    }, []); 
+    }, []);
 
     useEffect(() => {
         if (playerRef.current) {
@@ -271,28 +270,32 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         };
     }, []);
 
-    useFrame(({ camera }) => {  
-        if (!player || !playerRef.current) return; 
+    useFrame(({ camera }) => {
+        if (!player || !playerRef.current) return;
 
-        if (meInfo?.nickname === playerNickname) { // 내 캐릭터의 경우
+        if (meInfo?.nickname === playerNickname) {
+            // 내 캐릭터의 경우
             lockPointer();
             const moveVector = new Vector3(
-                (keyState.current['d'] ? 1 : 0) - (keyState.current['a'] ? 1 : 0), // 수정: 오른쪽이면 1, 왼쪽이면 -1
+                (keyState.current['d'] ? 1 : 0) -
+                    (keyState.current['a'] ? 1 : 0), // 수정: 오른쪽이면 1, 왼쪽이면 -1
                 0,
-                (keyState.current['w'] ? 1 : 0) - (keyState.current['s'] ? 1 : 0) // 수정: 위쪽이면 1, 아래쪽이면 -1
+                (keyState.current['w'] ? 1 : 0) -
+                    (keyState.current['s'] ? 1 : 0) // 수정: 위쪽이면 1, 아래쪽이면 -1
             );
 
-            if(keyState.current['q']) {
+            if (keyState.current['q']) {
                 playerRef.current.rotation.y += 0.05;
             }
-            
-            if(keyState.current['e']) {
+
+            if (keyState.current['e']) {
                 playerRef.current.rotation.y -= 0.05;
             }
 
-            if (!moveVector.equals(new Vector3(0, 0, 0))) { // 이동중
-                moveVector.normalize().multiplyScalar(0.2); 
-                 
+            if (!moveVector.equals(new Vector3(0, 0, 0))) {
+                // 이동중
+                moveVector.normalize().multiplyScalar(0.2);
+
                 const forward = new Vector3(
                     Math.sin(playerRef.current.viewLR), // viewLR 값으로 삼각함수를 통해 x 값을 설정
                     0,
@@ -307,8 +310,8 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                             moveVector.x
                         )
                     );
-                
-                playerRef.current.position.add(moveDirection); 
+
+                playerRef.current.position.add(moveDirection);
                 // stomp로 이전
                 stompClient.sendMessage(
                     `/player.move`,
@@ -326,20 +329,20 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                             direction: [0, 0, 0],
                         },
                     })
-                ); 
-            } else { // 고정된 상태
+                );
+            } else {
+                // 고정된 상태
                 // rotation값 stomp
-            }  
+            }
             // 카메라 설정
             const playerPosition = playerRef.current.position.clone();
 
             // 플레이어가 바라보는 곳
-            const playerDirection = new Vector3(  
+            const playerDirection = new Vector3(
                 Math.sin(playerRef.current.viewLR),
-                playerRef.current.viewUpDown + 5,  
+                playerRef.current.viewUpDown + 5,
                 Math.cos(playerRef.current.viewLR)
-            ); 
- 
+            );
 
             // 카메라 위치
             playerDirection.multiplyScalar(17);
@@ -348,21 +351,23 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 playerPosition.y + 8 - playerRef.current.viewUpDown,
                 playerPosition.z - playerDirection.z
             );
- 
+
             playerDirection.multiplyScalar(0.5);
 
             // 카메라가 바라볼 위치
-            const carmeraTarget = new Vector3( 
+            const carmeraTarget = new Vector3(
                 playerPosition.x + playerDirection.x,
                 0,
                 playerPosition.z + playerDirection.z
             );
             camera.lookAt(carmeraTarget);
-
- 
-        } else { // 다른 플레이어의 캐릭터 
-            roomState.roomPlayers.forEach((otherPlayer : any) => {
-                if (otherPlayer.nickname !== meInfo?.nickname && otherPlayer.isSeeker === false) {
+        } else {
+            // 다른 플레이어의 캐릭터
+            roomState.roomPlayers.forEach((otherPlayer: any) => {
+                if (
+                    otherPlayer.nickname !== meInfo?.nickname &&
+                    otherPlayer.isSeeker === false
+                ) {
                     const otherPlayerRef = playerRef.current;
                     if (otherPlayerRef) {
                         // 위치 적용
@@ -374,7 +379,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     }
                 }
             });
-        } 
+        }
 
         if (nicknameRef.current) {
             nicknameRef.current.position.set(
@@ -383,7 +388,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 playerRef.current.position.z
             );
             nicknameRef.current.lookAt(10000, 10000, 10000);
-        } 
+        }
     });
 
     return {

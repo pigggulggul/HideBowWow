@@ -4,20 +4,19 @@ Command: npx gltfjsx@6.2.16 public/models/character/ArcticFox_Animations.glb -t 
 */
 
 import * as THREE from 'three';
-import { useGLTF, useAnimations } from '@react-three/drei';
+import { useGLTF } from '@react-three/drei';
 import { PlayerInitType } from '../../../../../types/GameType';
 import { useAnimal } from './hooks/useAnimal';
 import { useBox } from '@react-three/cannon';
 import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Geometry } from 'three-stdlib';
 import { useDispatch } from 'react-redux';
 import { addCollideObjectState } from '../../../../../store/user-slice';
 
 export function Animal({ player, position, modelIndex: mIdx }: PlayerInitType) {
     const dispatch = useDispatch();
     const modelIndex = mIdx ?? mIdx;
-    const [boxRef, boxApi] = useBox(
+    const [, boxApi] = useBox(
         () => ({
             mass: 0,
             args: [1, 1, 1],
@@ -39,7 +38,6 @@ export function Animal({ player, position, modelIndex: mIdx }: PlayerInitType) {
         useRef(null)
     );
     const {
-        meInfo,
         playerRef,
         memoizedPosition,
         playerNickname,
@@ -59,8 +57,6 @@ export function Animal({ player, position, modelIndex: mIdx }: PlayerInitType) {
         }
     });
     function calculateBoundingBox(mesh: any) {
-        const geometry = mesh.geometry;
-
         // Geometry가 BufferGeometry인 경우, 필요하다면 Geometry로 변환할 수 있으나,
         // Box3.compute()는 BufferGeometry에서도 작동하므로 변환할 필요가 없습니다.
         const box = new THREE.Box3().setFromObject(mesh);

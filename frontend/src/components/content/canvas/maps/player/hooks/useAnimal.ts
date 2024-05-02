@@ -10,13 +10,9 @@ import {
     Vector3,
     Quaternion,
 } from 'three';
-import {
-    CollideObject,
-    PlayerInitType,
-} from '../../../../../../types/GameType';
+import { PlayerInitType } from '../../../../../../types/GameType';
 import StompClient from '../../../../../../websocket/StompClient';
 import { useSelector } from 'react-redux';
-import { useBox } from '@react-three/cannon';
 import { GLTF, SkeletonUtils } from 'three-stdlib';
 
 interface GLTFAction extends AnimationClip {
@@ -88,9 +84,9 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     const roomState = useSelector(
         (state: any) => state.reduxFlag.userSlice.currentRoom
     );
-    const collideState = useSelector(
-        (state: any) => state.reduxFlag.userSlice.collideObj
-    );
+    // const collideState = useSelector(
+    //     (state: any) => state.reduxFlag.userSlice.collideObj
+    // );
 
     const stompClient = StompClient.getInstance();
 
@@ -145,7 +141,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     const objectMap = useGraph(clone);
     const nodes = objectMap.nodes;
 
-    const [animation, setAnimation] = useState<any>([
+    const [, setAnimation] = useState<any>([
         'Attack',
         'Bounce',
         'Clicked',
@@ -355,7 +351,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                 );
             } else {
                 // 고정된 상태
-                setIsWalking(false);    
+                setIsWalking(false);
                 stompClient.sendMessage(
                     `/player.move`,
                     JSON.stringify({
@@ -369,14 +365,14 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                                 playerRef.current.position.y,
                                 playerRef.current.position.z,
                             ],
-                            direction: [  
+                            direction: [
                                 Math.sin(playerRef.current.rotation.y),
                                 0,
-                                Math.cos(playerRef.current.rotation.y)
+                                Math.cos(playerRef.current.rotation.y),
                             ],
                         },
                     })
-                ); 
+                );
                 setAnimation('Roll');
             }
 

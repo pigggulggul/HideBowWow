@@ -6,7 +6,6 @@ Command: npx gltfjsx@6.2.16 public/models/object/RoundTable_brown.glb -t -o src/
 import * as THREE from 'three';
 import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
-import { useBox } from '@react-three/cannon';
 
 type GLTFResult = GLTF & {
     nodes: {

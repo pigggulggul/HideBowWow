@@ -4,7 +4,6 @@ Command: npx gltfjsx@6.2.16 public/models/object/Sofa_white.glb -t -o src/compon
 */
 
 import * as THREE from 'three';
-import React, { useRef } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 
@@ -17,11 +16,6 @@ type GLTFResult = GLTF & {
     };
     animations: any[];
 };
-
-type ContextType = Record<
-    string,
-    React.ForwardRefExoticComponent<JSX.IntrinsicElements['mesh']>
->;
 
 export function Model(props: JSX.IntrinsicElements['group']) {
     const { nodes, materials } = useGLTF('/Sofa_white.glb') as GLTFResult;
