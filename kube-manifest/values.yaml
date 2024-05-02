@@ -4,6 +4,3 @@ spec:
   source:
     repoURL: https://lab.ssafy.com/s10-final/S10P31A709.git
     targetRevision: manifest
-
-env:
-  value: 1
