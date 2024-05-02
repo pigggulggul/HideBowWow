@@ -22,6 +22,12 @@ type GLTFResult = GLTF & {
     };
 };
 
+
+class ObjectRef extends Group {
+    viewUpDown: number = 0;
+    viewLR: number = 0;
+}
+
 export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const playerNickname = player?.nickname;
     const keyState = useRef<{ [key: string]: boolean }>({});
@@ -44,8 +50,10 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
 
     const memoizedPosition = useMemo(() => position, []);
 
-    const playerRef = useRef<Group>(null);
-    const nicknameRef = useRef<Group>(null);
+    const playerRef = useRef<ObjectRef>(null);
+    const nicknameRef = useRef<ObjectRef>(null);
+
+
     const { scene: scene_ } = useGLTF(
         (() => {
             switch (modelIndex) {
@@ -141,6 +149,38 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             },
         }), 
     );
+    
+    const updateRotationY = (movementX: number) => { //좌 우
+        const rotationAmount = movementX * 0.0013; // 회전 속도 조절을 위해 상수를 곱합니다. 
+        if (playerRef.current) {
+            // playerRef.current.rotation.y -= rotationAmount;
+            playerRef.current.viewLR -= rotationAmount;
+        }
+    };
+
+    const lockPointer = () => {
+        const element = document.body;
+        const requestPointerLock = element.requestPointerLock;
+        requestPointerLock.call(element);
+    };
+
+    useEffect(() => {
+        const handleMouseMove = (event: MouseEvent) => {
+            // 마우스 포인터가 고정된 상태에서의 마우스 이동량을 감지합니다.
+            if (meInfo?.nickname === playerNickname) { 
+                const movementX = event.movementX || 0;
+                updateRotationY(movementX);
+            }
+        };
+
+        document.addEventListener('mousemove', handleMouseMove);
+
+        return () => {
+            document.removeEventListener('mousemove', handleMouseMove);
+        };
+    }, []); 
+
+
     useEffect(() => {
         if (playerRef.current) {
             if (ref.current) {
@@ -149,6 +189,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             }
             playerRef.current.name = playerNickname;
             playerRef.current.userData.physicsName = playerNickname; // userData에 이름 추가
+            playerRef.current.viewLR = 0;
         }
         if (ref.current) {
             // Mesh 객체를 찾아 이름을 할당합니다.
@@ -182,52 +223,84 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         if (!player || !playerRef.current) return; 
 
         if (meInfo?.nickname === playerNickname) { // 내 캐릭터의 경우
+            lockPointer();
             const moveVector = new Vector3(
                 (keyState.current['d'] ? 1 : 0) - (keyState.current['a'] ? 1 : 0), // 수정: 오른쪽이면 1, 왼쪽이면 -1
                 0,
                 (keyState.current['w'] ? 1 : 0) - (keyState.current['s'] ? 1 : 0) // 수정: 위쪽이면 1, 아래쪽이면 -1
             );
 
-            if (!moveVector.equals(new Vector3(0, 0, 0))) {
-                moveVector.normalize().multiplyScalar(0.2);
+            if (!moveVector.equals(new Vector3(0, 0, 0))) { // 이동중
+                moveVector.normalize().multiplyScalar(0.2); 
+                 
+                const forward = new Vector3(
+                    Math.sin(playerRef.current.viewLR), // viewLR 값으로 삼각함수를 통해 x 값을 설정
+                    0,
+                    Math.cos(playerRef.current.viewLR) // viewLR 값으로 삼각함수를 통해 z 값을 설정
+                ).normalize(); // 벡터를 정규화하여 길이를 1로 만듭니다.
+
+                const moveDirection = forward
+                    .clone()
+                    .multiplyScalar(moveVector.z)
+                    .add(
+                        new Vector3(-forward.z, 0, forward.x).multiplyScalar(
+                            moveVector.x
+                        )
+                    );
+                
+                playerRef.current.position.add(moveDirection); 
+                // stomp로 이전
+                stompClient.sendMessage(
+                    `/player.move`,
+                    JSON.stringify({
+                        type: 'player.move',
+                        roomId: roomId,
+                        sender: meName,
+                        data: {
+                            nickname: meName,
+                            position: [
+                                playerRef.current.position.x,
+                                playerRef.current.position.y,
+                                playerRef.current.position.z,
+                            ],
+                            direction: [0, 0, 0],
+                        },
+                    })
+                ); 
+            } else { // 고정된 상태
+                // rotation값 stomp
             }
+            
+            // 카메라 설정
+            const playerPosition = playerRef.current.position.clone();
 
-            const forward = new Vector3(-1, 0, -1).applyQuaternion(
-                playerRef.current.quaternion
-            );
-            const moveDirection = forward
-                .clone()
-                .multiplyScalar(moveVector.z)
-                .add(
-                    new Vector3(-forward.z, 0, forward.x).multiplyScalar(
-                        moveVector.x
-                    )
-                );
-            playerRef.current.position.add(moveDirection);
-
-            if (!moveVector.equals(new Vector3(0, 0, 0))) {
-                moveVector.normalize().multiplyScalar(0.2);
-                api.position.set(...playerRef.current.position.toArray()); // 물리 바디의 속도를 업데이트
-            }
-
-            // stomp로 이전
-            stompClient.sendMessage(
-                `/player.move`,
-                JSON.stringify({
-                    type: 'player.move',
-                    roomId: roomId,
-                    sender: meName,
-                    data: {
-                        nickname: meName,
-                        position: [
-                            playerRef.current.position.x,
-                            playerRef.current.position.y,
-                            playerRef.current.position.z,
-                        ],
-                        direction: [0, 0, 0],
-                    },
-                })
+            // 플레이어가 바라보는 곳
+            const playerDirection = new Vector3(  
+                Math.sin(playerRef.current.viewLR),
+                5,  
+                Math.cos(playerRef.current.viewLR)
             ); 
+ 
+
+            // 카메라 위치
+            playerDirection.multiplyScalar(17);
+            camera.position.set(
+                playerPosition.x - playerDirection.x,
+                playerPosition.y + 10,
+                playerPosition.z - playerDirection.z
+            );
+ 
+            playerDirection.multiplyScalar(0.5);
+
+            // 카메라가 바라볼 위치
+            const carmeraTarget = new Vector3( 
+                playerPosition.x + playerDirection.x,
+                0,
+                playerPosition.z + playerDirection.z
+            );
+            camera.lookAt(carmeraTarget);
+
+ 
         } else { // 다른 플레이어의 캐릭터 
             roomState.roomPlayers.forEach((otherPlayer : any) => {
                 if (otherPlayer.nickname !== meInfo?.nickname && otherPlayer.isSeeker === false) {
@@ -238,20 +311,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     }
                 }
             });
-        }
- 
-        // if (playerRef.current.position.distanceTo(position) > 0.1) {
-        //     const direction = playerRef.current.position
-        //         .clone()
-        //         .sub(position)
-        //         .normalize()
-        //         .multiplyScalar(0.04);
-
-        //     playerRef.current.position.add(moveVector);
-        //     playerRef.current.position.sub(direction);
-        //     playerRef.current.lookAt(position);
-        // } else {
-        // }
+        } 
 
         if (nicknameRef.current) {
             nicknameRef.current.position.set(
@@ -260,15 +320,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 playerRef.current.position.z
             );
             nicknameRef.current.lookAt(10000, 10000, 10000);
-        }
-        if (meInfo?.nickname === playerNickname) {
-            camera.position.set(
-                playerRef.current.position.x + 12,
-                playerRef.current.position.y + 12,
-                playerRef.current.position.z + 12
-            );
-            camera.lookAt(playerRef.current.position);
-        }
+        } 
     });
 
     return {
