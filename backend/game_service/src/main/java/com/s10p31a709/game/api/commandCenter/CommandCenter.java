@@ -63,8 +63,6 @@ public class CommandCenter {
                     if(aliveSeeker == 0) roomSocketService.hiderWin(room.getRoomId());
                 }
             }
-            // 대기실에서 방 정보 전송
-            roomSocketService.sendPosition(room);
         }
     }
 
@@ -91,11 +89,11 @@ public class CommandCenter {
         }
     }
 
-    @Scheduled(fixedRate = 100)
+    @Scheduled(fixedRateString = "#{ 1000 / ${game.fps}}")
     public void positionSchedule(){
         List<Room> rooms = roomRepository.findAllRoom();
         for (Room room : rooms){
-            if (room.getRoomState() != null && !room.getRoomState().equals(0) && room.isFlag()) {
+            if (room.getRoomState() != null && room.isFlag()) {
                 roomSocketService.sendPosition(room);
                 room.setFlag(false);
             }
