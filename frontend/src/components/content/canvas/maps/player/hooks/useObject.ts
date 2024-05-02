@@ -67,7 +67,9 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const memoizedPosition = useMemo(() => position, []);
 
     const playerRef = useRef<ObjectRef>(null);
-    const nicknameRef = useRef<ObjectRef>(null);
+    const nicknameRef = useRef<ObjectRef>(null); 
+    const accumulatedTimeRef = useRef(0.0);
+    
     const { scene: scene_, materials } = useGLTF(
         (() => {
             switch (modelIndex) {
@@ -271,11 +273,16 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         };
     }, []);
 
-    useFrame(({ camera }) => {  
+    useFrame(({ camera , clock }) => {  
         if (!player || !playerRef.current) return; 
 
         if (meInfo?.nickname === playerNickname) { // 내 캐릭터의 경우
             lockPointer();
+            
+            const delta = clock.getDelta(); // 프레임 간 시간 간격을 가져옵니다. 
+            accumulatedTimeRef.current += delta;
+            // console.log(delta)
+
             const moveVector = new Vector3(
                 (keyState.current['d'] ? 1 : 0) - (keyState.current['a'] ? 1 : 0), // 수정: 오른쪽이면 1, 왼쪽이면 -1
                 0,
@@ -310,49 +317,54 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 
                 playerRef.current.position.add(moveDirection); 
                 // stomp로 이전
-                stompClient.sendMessage(
-                    `/player.move`,
-                    JSON.stringify({
-                        type: 'player.move',
-                        roomId: roomId,
-                        sender: meName,
-                        data: {
-                            nickname: meName,
-                            position: [
-                                playerRef.current.position.x,
-                                playerRef.current.position.y,
-                                playerRef.current.position.z,
-                            ],
-                            direction: [
-                                Math.sin(playerRef.current.rotation.y),
-                                0,
-                                Math.cos(playerRef.current.rotation.y)],
-                        },
-                    })
-                ); 
+                if (accumulatedTimeRef.current >= 0.003) {
+                    accumulatedTimeRef.current = 0;
+                    stompClient.sendMessage(
+                        `/player.move`,
+                        JSON.stringify({
+                            type: 'player.move',
+                            roomId: roomId,
+                            sender: meName,
+                            data: {
+                                nickname: meName,
+                                position: [
+                                    playerRef.current.position.x,
+                                    playerRef.current.position.y,
+                                    playerRef.current.position.z,
+                                ],
+                                direction: [
+                                    Math.sin(playerRef.current.rotation.y),
+                                    0,
+                                    Math.cos(playerRef.current.rotation.y)],
+                            },
+                        })
+                    );  
+                }
             } else { // 고정된 상태
                 // rotation값 stomp 
-                stompClient.sendMessage(
-                    `/player.move`,
-                    JSON.stringify({
-                        type: 'player.move',
-                        roomId: roomId,
-                        sender: meName,
-                        data: {
-                            nickname: meName,
-                            position: [
-                                playerRef.current.position.x,
-                                playerRef.current.position.y,
-                                playerRef.current.position.z,
-                            ],
-                            direction: [
-                                Math.sin(playerRef.current.rotation.y),
-                                0,
-                                Math.cos(playerRef.current.rotation.y)],
-                        },
-                    })
-                ); 
-                console.log("회전값 : " + Math.sin(playerRef.current.rotation.y) + ",," +Math.cos(playerRef.current.rotation.y))
+                if (accumulatedTimeRef.current >= 0.003) {
+                    accumulatedTimeRef.current = 0;
+                    stompClient.sendMessage(
+                        `/player.move`,
+                        JSON.stringify({
+                            type: 'player.move',
+                            roomId: roomId,
+                            sender: meName,
+                            data: {
+                                nickname: meName,
+                                position: [
+                                    playerRef.current.position.x,
+                                    playerRef.current.position.y,
+                                    playerRef.current.position.z,
+                                ],
+                                direction: [
+                                    Math.sin(playerRef.current.rotation.y),
+                                    0,
+                                    Math.cos(playerRef.current.rotation.y)],
+                            },
+                        })
+                    ); 
+                }  
             }  
             // 카메라 설정
             const playerPosition = playerRef.current.position.clone();
