@@ -1,3 +1,4 @@
+# jenkins.build.number=
 apiVersion: v2
 name: game-service
 description: A Helm chart for Kubernetes
