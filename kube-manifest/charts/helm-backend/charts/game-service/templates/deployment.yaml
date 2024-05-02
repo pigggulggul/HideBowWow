@@ -20,3 +20,6 @@ spec:
           ports:
             - containerPort: {{ .Values.service.targetPort }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: VERSION
+              value: "{{ .Values.env.version }}"
