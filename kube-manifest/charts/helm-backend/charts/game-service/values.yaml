@@ -1,3 +1,4 @@
+# jenkins.build.number=
 replicaCount: 2
 
 image:
