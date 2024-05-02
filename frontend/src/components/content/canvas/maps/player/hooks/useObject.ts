@@ -150,6 +150,34 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         }), 
     );
     
+    const updateRotationX = (movementY: number) => { // 아래 위 
+        const rotationAmount = movementY * 0.02; // 회전 속도 조절 
+
+        if (playerRef.current) {
+            // 시야각 제한
+            const maxRotationX = Math.PI * 1.5; 
+            const minRotationX = -Math.PI * 1.5; 
+            if (playerRef.current.viewUpDown) {
+                playerRef.current.viewUpDown = Math.max(
+                    minRotationX,
+                    Math.min(
+                        maxRotationX,
+                        playerRef.current.viewUpDown - rotationAmount
+                    )
+                );
+            } else {
+                playerRef.current.viewUpDown = playerRef.current.rotation.x;
+                playerRef.current.viewUpDown = Math.max(
+                    minRotationX,
+                    Math.min(
+                        maxRotationX,
+                        playerRef.current.viewUpDown - rotationAmount
+                    )
+                );
+            }
+        }
+    };
+
     const updateRotationY = (movementX: number) => { //좌 우
         const rotationAmount = movementX * 0.0013; // 회전 속도 조절을 위해 상수를 곱합니다. 
         if (playerRef.current) {
@@ -167,9 +195,11 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     useEffect(() => {
         const handleMouseMove = (event: MouseEvent) => {
             // 마우스 포인터가 고정된 상태에서의 마우스 이동량을 감지합니다.
-            if (meInfo?.nickname === playerNickname) { 
+            if (meInfo?.nickname === playerNickname) {
                 const movementX = event.movementX || 0;
+                const movementY = event.movementY || 0;
                 updateRotationY(movementX);
+                updateRotationX(movementY);
             }
         };
 
@@ -179,7 +209,6 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             document.removeEventListener('mousemove', handleMouseMove);
         };
     }, []); 
-
 
     useEffect(() => {
         if (playerRef.current) {
@@ -230,6 +259,14 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 (keyState.current['w'] ? 1 : 0) - (keyState.current['s'] ? 1 : 0) // 수정: 위쪽이면 1, 아래쪽이면 -1
             );
 
+            if(keyState.current['q']) {
+                playerRef.current.rotation.y += 0.05;
+            }
+            
+            if(keyState.current['e']) {
+                playerRef.current.rotation.y -= 0.05;
+            }
+
             if (!moveVector.equals(new Vector3(0, 0, 0))) { // 이동중
                 moveVector.normalize().multiplyScalar(0.2); 
                  
@@ -269,15 +306,14 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 ); 
             } else { // 고정된 상태
                 // rotation값 stomp
-            }
-            
+            }  
             // 카메라 설정
             const playerPosition = playerRef.current.position.clone();
 
             // 플레이어가 바라보는 곳
             const playerDirection = new Vector3(  
                 Math.sin(playerRef.current.viewLR),
-                5,  
+                playerRef.current.viewUpDown + 5,  
                 Math.cos(playerRef.current.viewLR)
             ); 
  
@@ -286,7 +322,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             playerDirection.multiplyScalar(17);
             camera.position.set(
                 playerPosition.x - playerDirection.x,
-                playerPosition.y + 10,
+                playerPosition.y + 8 - playerRef.current.viewUpDown,
                 playerPosition.z - playerDirection.z
             );
  
