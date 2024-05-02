@@ -66,8 +66,8 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
 
     const memoizedPosition = useMemo(() => position, []);
 
-    const playerRef = useRef<Group>(null);
-    const nicknameRef = useRef<Group>(null);
+    const playerRef = useRef<ObjectRef>(null);
+    const nicknameRef = useRef<ObjectRef>(null);
     const { scene: scene_, materials } = useGLTF(
         (() => {
             switch (modelIndex) {
