@@ -1,7 +1,7 @@
 import { useGLTF } from '@react-three/drei';
-import { useFrame } from '@react-three/fiber';
+import { useFrame, useGraph } from '@react-three/fiber';
 import { useEffect, useMemo, useRef } from 'react';
-import { Bone, Group, MeshStandardMaterial, SkinnedMesh, Vector3 } from 'three';
+import { Group, Mesh, MeshStandardMaterial, SkinnedMesh, Vector3 } from 'three';
 import { GLTF, SkeletonUtils } from 'three-stdlib';
 import { PlayerInitType } from '../../../../../../types/GameType';
 import StompClient from '../../../../../../websocket/StompClient';
@@ -13,13 +13,29 @@ import { useBox } from '@react-three/cannon';
 // }
 type GLTFResult = GLTF & {
     nodes: {
-        Character: SkinnedMesh;
-        Root: Bone;
+        Barrel_1: Mesh;
+        Cabinet_18: Mesh;
+        Chair_11: Mesh;
+        Chair_4: Mesh;
+        Toy_Pig_1: Mesh;
+        Kitchen_Cabinet_4: Mesh;
+        Washstand_2: Mesh;
+        Kitchen_Cabinet_5: Mesh;
+        Kitchen_Cabinet_6: Mesh;
+        Ladder_1: Mesh;
+        Shelf_4: Mesh;
+        Table_5: Mesh;
+        Ham_1: Mesh;
+        Ham_2: Mesh;
+        Pot_2: Mesh;
+        Pot_1: Mesh;
+        Fridge_2: Mesh;
+        Table_13: Mesh;
     };
     materials: {
-        Atlas: MeshStandardMaterial;
-        'Atlas.001'?: MeshStandardMaterial;
+        ['Cartoon_Room_Mat.002']: MeshStandardMaterial;
     };
+    animations: any[];
 };
 
 
@@ -43,87 +59,90 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const roomId = useSelector(
         (state: any) => state.reduxFlag.userSlice.roomId
     );
-    
+
     const roomState = useSelector(
         (state: any) => state.reduxFlag.userSlice.currentRoom
     );
 
     const memoizedPosition = useMemo(() => position, []);
 
-    const playerRef = useRef<ObjectRef>(null);
-    const nicknameRef = useRef<ObjectRef>(null);
-
-
-    const { scene: scene_ } = useGLTF(
+    const playerRef = useRef<Group>(null);
+    const nicknameRef = useRef<Group>(null);
+    const { scene: scene_, materials } = useGLTF(
         (() => {
             switch (modelIndex) {
+                case 0:
+                    return '/models/object/Barrel.glb';
                 case 1:
-                    return '/models/Chest with Gold.glb';
+                    return '/models/object/Closet.glb';
                 case 2:
-                    return '/models/CuteRedDino.glb';
+                    return '/models/object/Chair_brown.glb';
                 case 3:
-                    return '/models/Doorway.glb';
+                    return '/models/object/Chair_white.glb';
                 case 4:
-                    return '/models/furniture-bed.glb';
+                    return '/models/object/Doll_pig.glb';
                 case 5:
-                    return '/models/furniture-bookcase.glb';
+                    return '/models/object/Drawer_brown_1.glb';
                 case 6:
-                    return '/models/furniture-chair.glb';
+                    return '/models/object/Drawer_brown_2.glb';
                 case 7:
-                    return '/models/furniture-coatRack.glb';
+                    return '/models/object/Drawer_brown_3.glb';
                 case 8:
-                    return '/models/furniture-couch.glb';
+                    return '/models/object/Drawer_brown_4.glb';
                 case 9:
-                    return '/models/furniture-fridge.glb';
+                    return '/models/object/Drawer_brown_5.glb';
                 case 10:
-                    return '/models/furniture-gamingComputer.glb';
+                    return '/models/object/Ladder_brown.glb';
                 case 11:
-                    return '/models/furniture-officeChair.glb';
+                    return '/models/object/Ladder_white.glb';
                 case 12:
-                    return '/models/furniture-standingDesk.glb';
+                    return '/models/object/LongTable_white.glb';
                 case 13:
-                    return '/models/Jungle gym.glb';
+                    return '/models/object/Meet_full.glb';
                 case 14:
-                    return '/models/Little Man.glb';
+                    return '/models/object/Meet_half.glb';
                 case 15:
-                    return '/models/Pine Trees.glb';
+                    return '/models/object/Pot_orange.glb';
                 case 16:
-                    return '/models/Slide.glb';
+                    return '/models/object/Pot_pink.glb';
                 case 17:
-                    return '/models/Steak.glb';
+                    return '/models/object/Refrigerator.glb';
                 case 18:
-                    return '/models/Tree.glb';
+                    return '/models/object/RoundTable_brown.glb';
                 case 19:
-                    return '/models/Wood Chest.glb';
+                    return '/models/object/Closet.glb';
                 case 20:
-                    return '/models/Swing.glb';
+                    return '/models/object/Closet.glb';
+                case 20:
+                    return '/models/object/Closet.glb';
                 default:
-                    return '';
+                    return '/models/object/Closet.glb';
             }
         })()
     ) as GLTFResult;
     const getScaleByModelIndex = (index: number | undefined) => {
         const scaleValues: any = {
-            1: 1,
-            2: 2,
-            3: 4,
-            4: 2,
-            5: 2,
-            6: 2,
-            7: 2,
-            8: 2,
-            9: 1,
-            10: 3,
-            11: 2,
-            12: 2,
-            13: 0.4,
-            14: 3,
-            15: 4,
-            16: 1,
-            17: 1,
-            18: 1,
-            19: 1,
-            20: 0.04,
+            0: 0.025,
+            1: 0.025,
+            2: 0.025,
+            3: 0.025,
+            4: 0.025,
+            5: 0.025,
+            6: 0.025,
+            7: 0.025,
+            8: 0.025,
+            9: 0.025,
+            10: 0.025,
+            11: 0.025,
+            12: 0.025,
+            13: 0.025,
+            14: 0.025,
+            15: 0.025,
+            16: 0.025,
+            17: 0.025,
+            18: 0.025,
+            19: 0.025,
+            20: 0.025,
         };
         if (index) {
             return scaleValues[index] || 1; // modelIndex에 해당하는 값이 없다면 기본값으로 1 사용
@@ -138,6 +157,10 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const scene = useMemo(() => {
         return SkeletonUtils.clone(scene_);
     }, []);
+    const objectMap = useGraph(scene);
+    const nodes = objectMap.nodes;
+    const material = returnMaterial(modelIndex);
+    const node = returnNode(modelIndex);
 
     const [ref, api] = useBox(
         () => ({
@@ -341,9 +364,13 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             roomState.roomPlayers.forEach((otherPlayer : any) => {
                 if (otherPlayer.nickname !== meInfo?.nickname && otherPlayer.isSeeker === false) {
                     const otherPlayerRef = playerRef.current;
-                    if(otherPlayerRef) { 
+                    if (otherPlayerRef) {
                         // 위치 적용
-                        otherPlayerRef?.position.set(otherPlayer.position[0], otherPlayer.position[1], otherPlayer.position[2]);
+                        otherPlayerRef?.position.set(
+                            otherPlayer.position[0],
+                            otherPlayer.position[1],
+                            otherPlayer.position[2]
+                        );
                     }
                 }
             });
@@ -367,5 +394,87 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         scene,
         nicknameRef,
         scale,
+        node,
+        material,
     };
+    function returnMaterial(num: number | undefined) {
+        switch (num) {
+            case 0:
+                return materials['Cartoon_Room_Mat.002'];
+            case 1:
+                return materials['Cartoon_Room_Mat.002'];
+            case 2:
+                return materials['Cartoon_Room_Mat.002'];
+            case 3:
+                return materials['Cartoon_Room_Mat.002'];
+            case 4:
+                return materials['Cartoon_Room_Mat.002'];
+            case 5:
+                return materials['Cartoon_Room_Mat.002'];
+            case 6:
+                return materials['Cartoon_Room_Mat.002'];
+            case 7:
+                return materials['Cartoon_Room_Mat.002'];
+            case 8:
+                return materials['Cartoon_Room_Mat.002'];
+            case 9:
+                return materials['Cartoon_Room_Mat.002'];
+            case 10:
+                return materials['Cartoon_Room_Mat.002'];
+            case 11:
+                return materials['Cartoon_Room_Mat.002'];
+            case 12:
+                return materials['Cartoon_Room_Mat.002'];
+            case 13:
+                return materials['Cartoon_Room_Mat.002'];
+            case 14:
+                return materials['Cartoon_Room_Mat.002'];
+            default:
+                return materials['Cartoon_Room_Mat.002'];
+        }
+    }
+    function returnNode(num: number | undefined) {
+        switch (num) {
+            case 0:
+                return (nodes.Barrel_1 as SkinnedMesh).geometry;
+            case 1:
+                return (nodes.Cabinet_18 as SkinnedMesh).geometry;
+            case 2:
+                return (nodes.Chair_11 as SkinnedMesh).geometry;
+            case 3:
+                return (nodes.Chair_4 as SkinnedMesh).geometry;
+            case 4:
+                return (nodes.Toy_Pig_1 as SkinnedMesh).geometry;
+            case 5:
+                return (nodes.Kitchen_Cabinet_4 as SkinnedMesh).geometry;
+            case 6:
+                return (nodes.Washstand_2 as SkinnedMesh).geometry;
+            case 7:
+                return (nodes.Kitchen_Cabinet_5 as SkinnedMesh).geometry;
+            case 8:
+                return (nodes.Kitchen_Cabinet_5 as SkinnedMesh).geometry;
+            case 9:
+                return (nodes.Kitchen_Cabinet_6 as SkinnedMesh).geometry;
+            case 10:
+                return (nodes.Ladder_1 as SkinnedMesh).geometry;
+            case 11:
+                return (nodes.Shelf_4 as SkinnedMesh).geometry;
+            case 12:
+                return (nodes.Table_5 as SkinnedMesh).geometry;
+            case 13:
+                return (nodes.Ham_1 as SkinnedMesh).geometry;
+            case 14:
+                return (nodes.Ham_2 as SkinnedMesh).geometry;
+            case 15:
+                return (nodes.Pot_2 as SkinnedMesh).geometry;
+            case 16:
+                return (nodes.Pot_1 as SkinnedMesh).geometry;
+            case 17:
+                return (nodes.Fridge_2 as SkinnedMesh).geometry;
+            case 18:
+                return (nodes.Table_13 as SkinnedMesh).geometry;
+            default:
+                return (nodes.Cabinet_18 as SkinnedMesh).geometry;
+        }
+    }
 };
