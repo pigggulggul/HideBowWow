@@ -3,7 +3,7 @@ replicaCount: 2
 
 image:
   repository: choichangho514/backend_game_service
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   tag: "latest"
 
 service:

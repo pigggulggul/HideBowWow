@@ -2,7 +2,7 @@ replicaCount: 2
 
 image:
   repository: choichangho514/backend_member_service
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   tag: "latest"
 
 service:
