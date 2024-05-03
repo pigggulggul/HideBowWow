@@ -1,5 +1,5 @@
 # jenkins.build.number=
-replicaCount: 2
+replicaCount: 1
 
 image:
   repository: choichangho514/backend_game_service
