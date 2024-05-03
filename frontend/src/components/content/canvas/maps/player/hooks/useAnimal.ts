@@ -426,6 +426,8 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
             } else {
                 // 고정된 상태
                 setIsWalking(false);
+                setAnimation('Roll');
+                
                 stompClient.sendMessage(
                     `/player.move`,
                     JSON.stringify({
