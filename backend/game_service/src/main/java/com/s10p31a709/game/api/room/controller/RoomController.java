@@ -25,10 +25,10 @@ public class RoomController {
     private final RoomService roomService;
 
     @Value("${spring.application.name}")
-    private final String applicationName;
+    private String applicationName;
 
     @Value("${server.servlet.contextPath}")
-    private final String contextPath;
+    private String contextPath;
 
     @GetMapping
     @Operation(summary = "방 목록 반환")
