@@ -1,6 +1,5 @@
 package com.s10p31a709.game;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.s10p31a709.game.common.config.GameProperties;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
