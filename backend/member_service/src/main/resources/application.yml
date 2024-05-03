@@ -14,7 +14,7 @@ spring:
   devtools:
     livereload:
       enabled: true
-  datasource:
+  datasource: 
 #    hikari:
 #      driver-class-name: org.mariadb.jdbc.Driver
 #      username: S10P31A709
