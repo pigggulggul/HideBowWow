@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 //@FeignClient(name = "member-service", url = "http://localhost:8001/api/member-service")
-@FeignClient(name = "game-service", url = "${server.domain}/api/game-service")
+@FeignClient(name = "game-service", url = "${server.domain}:8002/api/game-service")
 public interface GameServiceClient {
 
     @GetMapping("/rooms/channel")
