@@ -60,14 +60,14 @@ public class RoomController {
 
     @GetMapping("/channel")
     @Operation(summary = "현재 채널의 이름(name), 사람수(count), 주소(address) 반환")
-    public ResponseEntity<?> channelInfo(){
+    public Channel channelInfo(){
         List<Room> list = roomService.getRoomList();
         int cnt = 0;
         for (Room room : list){
             cnt += room.getRoomPlayers().size();
         }
 
-        return BaseResponse.success(200, "채널정보 반환 성공", new Channel(applicationName, cnt, contextPath));
+        return new Channel(applicationName, cnt, contextPath);
     }
 
 

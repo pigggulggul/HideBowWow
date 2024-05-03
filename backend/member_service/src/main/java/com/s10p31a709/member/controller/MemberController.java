@@ -62,7 +62,7 @@ public class MemberController {
     @Operation(summary = "채널 목록 반환")
     public ResponseEntity<?> channelList(){
         List<Channel> list = new ArrayList<>();
-        list.add(gameServiceClient.channelInfo().getData());
+        list.add(gameServiceClient.channelInfo());
         return BaseResponse.success(200, "채널 목록 반환 성공", list);
     }
 
