@@ -1,6 +1,6 @@
 import { useGLTF } from '@react-three/drei';
 import { useFrame, useGraph } from '@react-three/fiber';
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Group, Mesh, MeshStandardMaterial, SkinnedMesh, Vector3, Quaternion } from 'three';
 import { GLTF, SkeletonUtils } from 'three-stdlib';
 import { PlayerInitType } from '../../../../../../types/GameType';
@@ -47,6 +47,7 @@ class ObjectRef extends Group {
 export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const playerNickname = player?.nickname;
     const keyState = useRef<{ [key: string]: boolean }>({});
+    const [mouseWheelValue, setMouseWheelValue] = useState(Number);
 
     const stompClient = StompClient.getInstance();
     const meName = useSelector(
@@ -68,7 +69,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
 
     const playerRef = useRef<ObjectRef>(null);
     const nicknameRef = useRef<ObjectRef>(null); 
-    const accumulatedTimeRef = useRef(0.0);
+    const accumulatedTimeRef = useRef(0.0);   
     
     const { scene: scene_, materials } = useGLTF(
         (() => {
@@ -211,12 +212,23 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         }
     };
 
+    const handleMouseWheel = (event: WheelEvent) => {
+        // 마우스 휠을 위로 올릴 때
+        if (event.deltaY < 0) {
+            setMouseWheelValue((prevValue) => Math.min(12, prevValue + 1)); // 최댓값인 12를 넘지 않도록 설정
+        }
+        // 마우스 휠을 아래로 내릴 때
+        else if (event.deltaY > 0) {
+            setMouseWheelValue((prevValue) => Math.max(1, prevValue - 1)); // 최솟값인 1보다 작아지지 않도록 설정
+        }  
+    }; 
+
     const lockPointer = () => {
         const element = document.body;
         const requestPointerLock = element.requestPointerLock;
         requestPointerLock.call(element);
-    };
-
+    }; 
+    
     useEffect(() => {
         const handleMouseMove = (event: MouseEvent) => {
             // 마우스 포인터가 고정된 상태에서의 마우스 이동량을 감지합니다.
@@ -229,9 +241,11 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         };
 
         document.addEventListener('mousemove', handleMouseMove);
+        document.addEventListener('wheel', handleMouseWheel);
 
         return () => {
             document.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('wheel', handleMouseWheel);
         };
     }, []); 
 
@@ -367,18 +381,16 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 }  
             }  
             // 카메라 설정
-            const playerPosition = playerRef.current.position.clone();
-
+            const playerPosition = playerRef.current.position.clone();   
             // 플레이어가 바라보는 곳
             const playerDirection = new Vector3(  
                 Math.sin(playerRef.current.viewLR),
                 playerRef.current.viewUpDown + 5,  
                 Math.cos(playerRef.current.viewLR)
-            ); 
- 
-
+            );  
+            // console.log("!!" + mouseWheelValue); 
             // 카메라 위치
-            playerDirection.multiplyScalar(17);
+            playerDirection.multiplyScalar(mouseWheelValue*2);
             camera.position.set(
                 playerPosition.x - playerDirection.x,
                 playerPosition.y + 8 - playerRef.current.viewUpDown,
