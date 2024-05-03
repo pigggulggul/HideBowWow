@@ -37,7 +37,7 @@ public class GameApplication {
 	@Bean
 	public OpenAPI customOpenAPI() {
 		return new OpenAPI()
-				.addServersItem(new Server().url(domain+":"+port+contextPath).description("종범 서버"))
+				.addServersItem(new Server().url(domain+contextPath).description("배포 서버"))
 				.addServersItem(new Server().url("http://localhost:"+port+contextPath).description("로컬 서버"))
 				.info(new Info()
 						.title("Game-Service")
