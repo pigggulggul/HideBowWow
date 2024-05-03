@@ -2,7 +2,6 @@ import { GroundElements } from './structures/ground';
 import { useThree } from '@react-three/fiber';
 import { useEffect, useRef } from 'react';
 import { Vector3 } from 'three';
-import { Player } from './player/Player';
 import { AttackRules } from './player/AttackRules';
 import { useSelector } from 'react-redux';
 import { CurrentPlayersInfo } from '../../../../types/GameType';
