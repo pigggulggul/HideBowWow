@@ -306,11 +306,11 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             );
 
             if (keyState.current['q']) {
-                playerRef.current.rotation.y += 0.05;
+                playerRef.current.rotation.y += 0.025;
             }
 
             if (keyState.current['e']) {
-                playerRef.current.rotation.y -= 0.05;
+                playerRef.current.rotation.y -= 0.025;
             }
 
             if (!moveVector.equals(new Vector3(0, 0, 0))) {
