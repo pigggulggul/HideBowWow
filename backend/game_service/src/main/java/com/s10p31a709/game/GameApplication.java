@@ -33,6 +33,7 @@ public class GameApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(GameApplication.class, args);
 	}
+	
 
 	@Bean
 	public OpenAPI customOpenAPI() {
