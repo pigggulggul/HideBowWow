@@ -74,8 +74,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const memoizedPosition = useMemo(() => position, []); 
     const playerRef = useRef<ObjectRef>(null); 
     const nicknameRef = useRef<ObjectRef>(null); 
-    const accumulatedTimeRef = useRef(0.0);    
-    // const observerRef = useRef<Observer>(null);
+    const accumulatedTimeRef = useRef(0.0);     
     const observerRef = useRef<Observer | null>(null);
     
     const { scene: scene_, materials } = useGLTF(
@@ -257,6 +256,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 updateRotationY(movementX);
                 updateRotationX(movementY);
             }
+            setMouseWheelValue(10);
         };
 
         document.addEventListener('mousemove', handleMouseMove);
@@ -436,10 +436,14 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 
                 if(!observerRef.current) {  
                     observerRef.current = new Observer();
-                    observerRef.current.position = playerRef.current.position.clone();
+                    observerRef.current.position = new Vector3( 
+                        playerRef.current.position.x + 12, 
+                        playerRef.current.position.y + 12, 
+                        playerRef.current.position.z + 12, 
+                    ); 
                     observerRef.current.viewLR = playerRef.current.viewLR;
-                    observerRef.current.viewUpDown = playerRef.current.viewUpDown;
-                } 
+                    observerRef.current.viewUpDown = playerRef.current.viewUpDown; 
+                }  
 
                 const moveVector = new Vector3(
                     (keyState.current['d'] ? 1 : 0) -
