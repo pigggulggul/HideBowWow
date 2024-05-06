@@ -1,3 +1,4 @@
+import { Armchair_1 } from '../elements/Armchair_1';
 import { Bed_1 } from '../elements/Bed_1';
 import { Bed_2 } from '../elements/Bed_2';
 import { Book_1 } from '../elements/Book_1';
@@ -431,6 +432,9 @@ export function BarElement() {
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
             {/* 병실 */}
+
+            {/* 놀이방 */}
+            {/* 놀이방 */}
 
             {/* 벽보 */}
             <Frame_1 position={[-30, 5, 5.8]} rotation={[Math.PI / 2, 0, 0]} />

@@ -19,9 +19,9 @@ type GLTFResult = GLTF & {
     };
 };
 
-export function Model(props: ObjectSettingType) {
+export function RoundTable_orange(props: ObjectSettingType) {
     const { nodes, materials } = useGLTF(
-        '/RoundTable_orange.glb'
+        '/models/object/RoundTable_orange.glb'
     ) as GLTFResult;
     const [ref] = useBox<THREE.Mesh>(() => ({
         args: [4, 4, 4],
@@ -45,4 +45,4 @@ export function Model(props: ObjectSettingType) {
     );
 }
 
-useGLTF.preload('/RoundTable_orange.glb');
+useGLTF.preload('/models/object/RoundTable_orange.glb');
