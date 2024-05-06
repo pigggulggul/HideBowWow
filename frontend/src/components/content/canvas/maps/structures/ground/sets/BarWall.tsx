@@ -241,7 +241,6 @@ export default function BarWall() {
                 position={[5, 4, 70]}
                 rotation={[Math.PI / 2, 0, Math.PI / 2]}
             />
-
             <Wall_white_brown
                 position={[0, 4, 75]}
                 rotation={[Math.PI / 2, 0, 0]}

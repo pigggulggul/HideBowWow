@@ -112,11 +112,11 @@ export function BarElement() {
                 rotation={[Math.PI / 2, 0, 0]}
             />
             <Chair_brown
-                position={[15, 1.4, -22]}
+                position={[15, 0.8, -22]}
                 rotation={[Math.PI / 2, 0, Math.PI / 2]}
             />
             <Chair_brown
-                position={[9, 1.4, -22]}
+                position={[9, 0.8, -22]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
             <RoundTable_brown
@@ -124,11 +124,11 @@ export function BarElement() {
                 rotation={[Math.PI / 2, 0, 0]}
             />
             <Chair_brown
-                position={[15, 1.4, -30]}
+                position={[15, 0.8, -30]}
                 rotation={[Math.PI / 2, 0, Math.PI / 2]}
             />
             <Chair_brown
-                position={[9, 1.4, -30]}
+                position={[9, 0.8, -30]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
             <Doll_pig
@@ -140,11 +140,11 @@ export function BarElement() {
                 rotation={[Math.PI / 2, 0, 0]}
             />
             <Chair_brown
-                position={[3, 1.4, -22]}
+                position={[3, 0.8, -22]}
                 rotation={[Math.PI / 2, 0, Math.PI / 2]}
             />
             <Chair_brown
-                position={[-3, 1.4, -22]}
+                position={[-3, 0.8, -22]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
             <RoundTable_brown
@@ -152,11 +152,11 @@ export function BarElement() {
                 rotation={[Math.PI / 2, 0, 0]}
             />
             <Chair_brown
-                position={[3, 1.4, -30]}
+                position={[3, 0.8, -30]}
                 rotation={[Math.PI / 2, 0, Math.PI / 2]}
             />
             <Chair_brown
-                position={[-3, 1.4, -30]}
+                position={[-3, 0.8, -30]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
             <RoundTable_brown
@@ -164,11 +164,11 @@ export function BarElement() {
                 rotation={[Math.PI / 2, 0, 0]}
             />
             <Chair_brown
-                position={[-9, 1.4, -22]}
+                position={[-9, 0.8, -22]}
                 rotation={[Math.PI / 2, 0, Math.PI / 2]}
             />
             <Chair_brown
-                position={[-15, 1.4, -22]}
+                position={[-15, 0.8, -22]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
             <RoundTable_brown
@@ -176,11 +176,11 @@ export function BarElement() {
                 rotation={[Math.PI / 2, 0, 0]}
             />
             <Chair_brown
-                position={[-9, 1.4, -30]}
+                position={[-9, 0.8, -30]}
                 rotation={[Math.PI / 2, 0, Math.PI / 2]}
             />
             <Chair_brown
-                position={[-15, 1.4, -30]}
+                position={[-15, 0.8, -30]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
             <Ladder_brown
@@ -208,11 +208,11 @@ export function BarElement() {
                 rotation={[Math.PI / 2, 0, Math.PI / 2]}
             />
             <Chair_brown
-                position={[3, 1.4, -10]}
+                position={[3, 0.8, -10]}
                 rotation={[Math.PI / 2, 0, Math.PI / 2]}
             />
             <Chair_brown
-                position={[-3, 1.4, -10]}
+                position={[-3, 0.8, -10]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
             <LongTable_white
@@ -220,11 +220,11 @@ export function BarElement() {
                 rotation={[Math.PI / 2, 0, Math.PI / 2]}
             />
             <Chair_brown
-                position={[3, 1.4, -3]}
+                position={[3, 0.8, -3]}
                 rotation={[Math.PI / 2, 0, Math.PI / 2]}
             />
             <Chair_brown
-                position={[-3, 1.4, -3]}
+                position={[-3, 0.8, -3]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
             <LongTable_white
@@ -232,11 +232,11 @@ export function BarElement() {
                 rotation={[Math.PI / 2, 0, Math.PI / 2]}
             />
             <Chair_brown
-                position={[18, 1.4, -10]}
+                position={[18, 0.8, -10]}
                 rotation={[Math.PI / 2, 0, Math.PI / 2]}
             />
             <Chair_brown
-                position={[12, 1.4, -10]}
+                position={[12, 0.8, -10]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
             <LongTable_white
@@ -244,11 +244,11 @@ export function BarElement() {
                 rotation={[Math.PI / 2, 0, Math.PI / 2]}
             />
             <Chair_brown
-                position={[18, 1.4, -3]}
+                position={[18, 0.8, -3]}
                 rotation={[Math.PI / 2, 0, Math.PI / 2]}
             />
             <Chair_brown
-                position={[12, 1.4, -3]}
+                position={[12, 0.8, -3]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
             <LongTable_white
@@ -256,11 +256,11 @@ export function BarElement() {
                 rotation={[Math.PI / 2, 0, Math.PI / 2]}
             />
             <Chair_brown
-                position={[-12, 1.4, -10]}
+                position={[-12, 0.8, -10]}
                 rotation={[Math.PI / 2, 0, Math.PI / 2]}
             />
             <Chair_brown
-                position={[-18, 1.4, -10]}
+                position={[-18, 0.8, -10]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
             <LongTable_white
@@ -268,11 +268,11 @@ export function BarElement() {
                 rotation={[Math.PI / 2, 0, Math.PI / 2]}
             />
             <Chair_brown
-                position={[-12, 1.4, -3]}
+                position={[-12, 0.8, -3]}
                 rotation={[Math.PI / 2, 0, Math.PI / 2]}
             />
             <Chair_brown
-                position={[-18, 1.4, -3]}
+                position={[-18, 0.8, -3]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
             {/* 회의실 */}
