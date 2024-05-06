@@ -23,7 +23,7 @@ export function Shelve_brown(props: ObjectSettingType) {
         '/models/object/Shelve_brown.glb'
     ) as GLTFResult;
     const [ref] = useBox<THREE.Mesh>(() => ({
-        args: [4, 4, 4],
+        args: [4.4, 1, 0.5],
         mass: 0.1,
         position: props.position,
         rotation: props.rotation,

@@ -346,7 +346,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                     collideState.map((item: CollideObject, index: number) => {
                         const centerX = (item.minX + item.maxX) / 2;
                         const centerY = (item.minY + item.maxZ) / 2;
-                        const centerZ = (item.minY + item.maxZ) / 2;
+                        const centerZ = (item.minZ + item.maxZ) / 2;
 
                         if (
                             originPos.x >= item.minX - 1 &&
@@ -356,6 +356,8 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                             originPos.z >= item.minZ - 1 &&
                             originPos.z <= item.maxZ + 1
                         ) {
+                            originPos.y += 0.1;
+                            newPos.y += 0.1;
                             if (originPos.x < centerX) {
                                 if (newPos.x > originPos.x) {
                                     moveDirection.x = 0;
@@ -375,6 +377,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                                 }
                             }
                             if (originPos.z < centerZ) {
+                                console.log('허허');
                                 if (newPos.z > originPos.z) {
                                     moveDirection.z = 0;
                                 }
@@ -427,7 +430,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                 // 고정된 상태
                 setIsWalking(false);
                 setAnimation('Roll');
-                
+
                 stompClient.sendMessage(
                     `/player.move`,
                     JSON.stringify({

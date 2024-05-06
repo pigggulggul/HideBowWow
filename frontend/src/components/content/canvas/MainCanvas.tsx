@@ -1,7 +1,7 @@
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { RootMap } from './maps/RootMap';
-import { Physics } from '@react-three/cannon';
+import { Debug, Physics } from '@react-three/cannon';
 import { Suspense } from 'react';
 export function MainCanvas() {
     const aspectRatio = window.innerWidth / window.innerHeight;

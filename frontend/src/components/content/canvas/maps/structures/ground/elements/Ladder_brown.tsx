@@ -23,7 +23,7 @@ export function Ladder_brown(props: ObjectSettingType) {
         '/models/object/Ladder_brown.glb'
     ) as GLTFResult;
     const [ref] = useBox<THREE.Mesh>(() => ({
-        args: [2, 4, 4],
+        args: [2, 2, 4],
         mass: 0.1,
         position: props.position,
         rotation: props.rotation,

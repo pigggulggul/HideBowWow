@@ -23,7 +23,7 @@ export function Drawer_brown_1(props: ObjectSettingType) {
         '/models/object/Drawer_brown_1.glb'
     ) as GLTFResult;
     const [ref] = useBox<THREE.Mesh>(() => ({
-        args: [3, 3, 2.6],
+        args: [2.8, 3, 2.6],
         mass: 0.1,
         position: props.position,
         rotation: props.rotation,
@@ -31,7 +31,7 @@ export function Drawer_brown_1(props: ObjectSettingType) {
         angularFactor: [0, 0, 0], // 모든 축에 대해 회전 제한
     }));
     return (
-        <group position={[-1, -1, -1]} dispose={null}>
+        <group position={[-1, -1, -1.3]} dispose={null}>
             <mesh
                 ref={ref}
                 geometry={nodes.Kitchen_Cabinet_4.geometry}

@@ -1,7 +1,14 @@
 import { useGLTF } from '@react-three/drei';
 import { useFrame, useGraph } from '@react-three/fiber';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Group, Mesh, MeshStandardMaterial, SkinnedMesh, Vector3, Quaternion } from 'three';
+import {
+    Group,
+    Mesh,
+    MeshStandardMaterial,
+    SkinnedMesh,
+    Vector3,
+    Quaternion,
+} from 'three';
 import { GLTF, SkeletonUtils } from 'three-stdlib';
 import { PlayerInitType } from '../../../../../../types/GameType';
 import StompClient from '../../../../../../websocket/StompClient';
@@ -67,9 +74,9 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const memoizedPosition = useMemo(() => position, []);
 
     const playerRef = useRef<ObjectRef>(null);
-    const nicknameRef = useRef<ObjectRef>(null); 
-    const accumulatedTimeRef = useRef(0.0);   
-    
+    const nicknameRef = useRef<ObjectRef>(null);
+    const accumulatedTimeRef = useRef(0.0);
+
     const { scene: scene_, materials } = useGLTF(
         (() => {
             switch (modelIndex) {
@@ -219,15 +226,15 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         // 마우스 휠을 아래로 내릴 때
         else if (event.deltaY > 0) {
             setMouseWheelValue((prevValue) => Math.max(1, prevValue - 1)); // 최솟값인 1보다 작아지지 않도록 설정
-        }  
-    }; 
+        }
+    };
 
     const lockPointer = () => {
         const element = document.body;
         const requestPointerLock = element.requestPointerLock;
         requestPointerLock.call(element);
-    }; 
-    
+    };
+
     useEffect(() => {
         const handleMouseMove = (event: MouseEvent) => {
             // 마우스 포인터가 고정된 상태에서의 마우스 이동량을 감지합니다.
@@ -286,14 +293,14 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         };
     }, []);
 
-    useFrame(({ camera , clock }) => {  
-        if (!player || !playerRef.current) return; 
+    useFrame(({ camera, clock }) => {
+        if (!player || !playerRef.current) return;
 
         if (meInfo?.nickname === playerNickname) {
             // 내 캐릭터의 경우
             lockPointer();
-            
-            const delta = clock.getDelta(); // 프레임 간 시간 간격을 가져옵니다. 
+
+            const delta = clock.getDelta(); // 프레임 간 시간 간격을 가져옵니다.
             accumulatedTimeRef.current += delta;
             // console.log(delta)
 
@@ -352,15 +359,18 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                                 direction: [
                                     Math.sin(playerRef.current.rotation.y),
                                     0,
-                                    Math.cos(playerRef.current.rotation.y)],
+                                    Math.cos(playerRef.current.rotation.y),
+                                ],
                             },
                         })
-                    );  
+                    );
                 }
-            } else { // 고정된 상태
-                // rotation값 stomp 
+            } else {
+                // 고정된 상태
+                // rotation값 stomp
                 if (accumulatedTimeRef.current >= 0.003) {
                     accumulatedTimeRef.current = 0;
+                    console.log('a');
                     stompClient.sendMessage(
                         `/player.move`,
                         JSON.stringify({
@@ -377,14 +387,15 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                                 direction: [
                                     Math.sin(playerRef.current.rotation.y),
                                     0,
-                                    Math.cos(playerRef.current.rotation.y)],
+                                    Math.cos(playerRef.current.rotation.y),
+                                ],
                             },
                         })
-                    ); 
-                }  
-            }  
+                    );
+                }
+            }
             // 카메라 설정
-            const playerPosition = playerRef.current.position.clone();   
+            const playerPosition = playerRef.current.position.clone();
             // 플레이어가 바라보는 곳
             const playerDirection = new Vector3(
                 Math.sin(playerRef.current.viewLR),
@@ -393,7 +404,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             );
 
             // 카메라 위치
-            playerDirection.multiplyScalar(mouseWheelValue*2);
+            playerDirection.multiplyScalar(mouseWheelValue * 2);
             camera.position.set(
                 playerPosition.x - playerDirection.x,
                 playerPosition.y + 8 - playerRef.current.viewUpDown,
@@ -425,13 +436,22 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                             otherPlayer.position[2]
                         );
 
-                        // 방향 적용 
-                        const rotationVector = new Vector3(otherPlayer.direction[0], otherPlayer.direction[1], otherPlayer.direction[2]);
+                        // 방향 적용
+                        const rotationVector = new Vector3(
+                            otherPlayer.direction[0],
+                            otherPlayer.direction[1],
+                            otherPlayer.direction[2]
+                        );
                         rotationVector.normalize(); // 회전 벡터를 정규화합니다.
                         const forward = new Vector3(0, 0, -1).applyQuaternion(
-                            new Quaternion().setFromUnitVectors(new Vector3(0, 0, -1), rotationVector)
+                            new Quaternion().setFromUnitVectors(
+                                new Vector3(0, 0, -1),
+                                rotationVector
+                            )
                         );
-                        otherPlayerRef.lookAt(otherPlayerRef.position.clone().add(forward)); 
+                        otherPlayerRef.lookAt(
+                            otherPlayerRef.position.clone().add(forward)
+                        );
                     }
                 }
             });

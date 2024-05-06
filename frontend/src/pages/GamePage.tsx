@@ -1,5 +1,4 @@
 import { RecoilRoot } from 'recoil';
-import { ClientSocketControls } from '../components/utilComponents/ClientSocketControls';
 import { Content } from '../components/content/Content';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
@@ -26,7 +25,6 @@ export default function GamePage() {
     return (
         <RecoilRoot>
             <Content />
-            <ClientSocketControls />
             {currentRoom.roomState === 1 ? (
                 <div className="absolute flex top-1 w-full justify-center">
                     <p className="text-[2vw]">

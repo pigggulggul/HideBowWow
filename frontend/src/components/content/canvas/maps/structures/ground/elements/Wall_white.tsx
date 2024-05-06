@@ -42,7 +42,7 @@ export function Wall_white(props: ObjectSettingType) {
                     props.position[2],
                 ]}
                 rotation={props.rotation}
-                scale-y={0.01}
+                scale-y={0.02}
                 scale-x={0.0202}
                 scale-z={0.0202}
             />
