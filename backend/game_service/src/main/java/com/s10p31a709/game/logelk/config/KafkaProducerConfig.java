@@ -1,4 +1,4 @@
-package com.s10p31a709.game.logelk;
+package com.s10p31a709.game.logelk.config;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;

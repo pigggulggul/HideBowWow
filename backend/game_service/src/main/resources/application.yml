@@ -16,10 +16,8 @@ spring:
       enabled: true
   kafka:
     bootstrap-servers: k10a709.p.ssafy.io:19092
-  data:
-    elasticsearch:
-      cluster-name: 엄준식
-      cluster-nodes: 엄준식노드
+  elasticsearch:
+    uris: http://k10a709.p.ssafy.io:9200
 
 #logging
 logging:

@@ -5,7 +5,9 @@ import com.s10p31a709.game.api.room.entity.Room;
 import com.s10p31a709.game.api.room.repository.RoomRepository;
 import com.s10p31a709.game.api.socket.model.StompPayload;
 import com.s10p31a709.game.common.config.GameProperties;
+import com.s10p31a709.game.common.feign.entity.Member;
 import com.s10p31a709.game.common.feign.service.MemberServiceClient;
+import com.s10p31a709.game.logelk.service.HideLocationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -24,6 +26,7 @@ public class PlayerSocketService {
     private final SimpMessagingTemplate simpMessagingTemplate;
     private final MemberServiceClient memberServiceClient;
     private final GameProperties gameProperties;
+    private final HideLocationService hideLocationService;
 
     public void exitPlayer(String sessionId){
         Player player = roomRepository.findPlayerBySessionId(sessionId);
@@ -43,6 +46,11 @@ public class PlayerSocketService {
 
     public void enterPlayer(StompPayload<Player> message){
         Player player = roomRepository.savePlayer(message.getRoomId(), message.getData());
+        try {
+            memberServiceClient.enterGuest(new Member(message.getData().getNickname(), ""));
+        }catch (Exception e){
+            log.error(e.toString());
+        }
 
         StompPayload<Player> payload = new StompPayload<>("player.enter", message.getRoomId(), "system", player);
         simpMessagingTemplate.convertAndSend("/sub/room/"+message.getRoomId(), payload);
@@ -84,8 +92,7 @@ public class PlayerSocketService {
     }
     
     public void playerFix(StompPayload<Player> message){
-        String roomId = message.getRoomId();;
-        Player player = message.getData();
-        // 숨은 정보 log 전송
+        hideLocationService.sendHideLocation(roomRepository.findRoomByRoomId(message.getRoomId()), message.getData());
     }
+
 }
