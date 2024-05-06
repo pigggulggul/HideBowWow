@@ -39,7 +39,7 @@ export function Bed_3(props: ObjectSettingType) {
                 material={materials.Cartoon_Room_Mat}
                 position={props.position}
                 rotation={props.rotation}
-                scale={0.01}
+                scale={0.025}
             />
         </group>
     );
