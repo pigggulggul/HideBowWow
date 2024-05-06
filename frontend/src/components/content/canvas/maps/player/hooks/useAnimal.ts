@@ -99,6 +99,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     const playerRef = useRef<PlayerRef>(null);
     const prevPosition = useRef<Vector3 | null>(null);
     const isFirstFrame = useRef(true);
+    const accumulatedTimeRef = useRef(0.0);     
 
     const { scene, materials, animations } = useGLTF(
         (() => {
@@ -281,7 +282,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     }, [isJumping]);
 
     // Frame
-    useFrame(({ camera }) => {
+    useFrame(({ camera , clock }) => {
         if (isFirstFrame.current) {
             isFirstFrame.current = false;
             prevPosition.current = playerRef.current
@@ -291,7 +292,11 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
 
         if (!player || !playerRef.current) return;
 
-        if (meInfo?.nickname === playerNickname) {
+        if (meInfo?.nickname === playerNickname) { 
+            
+            const delta = clock.getDelta(); // 프레임 간 시간 간격을 가져옵니다.
+            accumulatedTimeRef.current += delta;
+
             // 내 캐릭터의 경우
             const moveVector = new Vector3(
                 (keyState.current['a'] ? 1 : 0) -
@@ -322,11 +327,9 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                     moveDirection.y = 0.08;
                 } else {
                     moveDirection.y = -0.08;
-                }
-                console.log(moveDirection);
+                } 
 
-                if (collideState.length > 0) {
-                    console.log(moveDirection);
+                if (collideState.length > 0) { 
                     const originPos = playerRef.current.position.clone();
                     const newPos = originPos.clone().add(moveDirection);
                     collideState.map((item: CollideObject, index: number) => {
@@ -362,8 +365,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                                     moveDirection.y = 0;
                                 }
                             }
-                            if (originPos.z < centerZ) {
-                                console.log('허허');
+                            if (originPos.z < centerZ) { 
                                 if (newPos.z > originPos.z) {
                                     moveDirection.z = 0;
                                 }
@@ -386,58 +388,64 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                     if (playerRef.current.position.y <= 0) {
                         playerRef.current.position.y = 0.1;
                     }
-                    playerRef.current.position.add(moveDirection);
-
-                    console.log(playerRef.current.position);
+                    playerRef.current.position.add(moveDirection); 
                 }
-
-                stompClient.sendMessage(
-                    `/player.move`,
-                    JSON.stringify({
-                        type: 'player.move',
-                        roomId: roomId,
-                        sender: meName,
-                        data: {
-                            nickname: meName,
-                            position: [
-                                playerRef.current.position.x,
-                                playerRef.current.position.y,
-                                playerRef.current.position.z,
-                            ],
-                            direction: [
-                                moveDirection.x,
-                                moveDirection.y,
-                                moveDirection.z,
-                            ],
-                        },
-                    })
-                );
+                
+                if (accumulatedTimeRef.current >= 0.003) {
+                    accumulatedTimeRef.current = 0;
+                    stompClient.sendMessage(
+                        `/player.move`,
+                        JSON.stringify({
+                            type: 'player.move',
+                            roomId: roomId,
+                            sender: meName,
+                            data: {
+                                nickname: meName,
+                                position: [
+                                    playerRef.current.position.x,
+                                    playerRef.current.position.y,
+                                    playerRef.current.position.z,
+                                ],
+                                direction: [
+                                    moveDirection.x,
+                                    moveDirection.y,
+                                    moveDirection.z,
+                                ],
+                            },
+                        })
+                    );
+                    console.log("데이터 전송");
+                }
             } else {
                 // 고정된 상태
                 setIsWalking(false);
-                setAnimation('Roll');
-
-                stompClient.sendMessage(
-                    `/player.move`,
-                    JSON.stringify({
-                        type: 'player.move',
-                        roomId: roomId,
-                        sender: meName,
-                        data: {
-                            nickname: meName,
-                            position: [
-                                playerRef.current.position.x,
-                                playerRef.current.position.y,
-                                playerRef.current.position.z,
-                            ],
-                            direction: [
-                                Math.sin(playerRef.current.rotation.y),
-                                0,
-                                Math.cos(playerRef.current.rotation.y),
-                            ],
-                        },
-                    })
-                );
+                setAnimation('Roll'); 
+                
+                if (accumulatedTimeRef.current >= 0.003) {
+                    accumulatedTimeRef.current = 0;
+                    stompClient.sendMessage(
+                        `/player.move`,
+                        JSON.stringify({
+                            type: 'player.move',
+                            roomId: roomId,
+                            sender: meName,
+                            data: {
+                                nickname: meName,
+                                position: [
+                                    playerRef.current.position.x,
+                                    playerRef.current.position.y,
+                                    playerRef.current.position.z,
+                                ],
+                                direction: [
+                                    Math.sin(playerRef.current.rotation.y),
+                                    0,
+                                    Math.cos(playerRef.current.rotation.y),
+                                ],
+                            },
+                        })
+                    );
+                    console.log("데이터 전송");
+                }
                 setAnimation('Walk');
             }
 
