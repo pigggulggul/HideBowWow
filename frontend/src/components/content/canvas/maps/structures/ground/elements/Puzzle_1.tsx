@@ -24,7 +24,7 @@ export function Puzzle_1(props: ObjectSettingType) {
         '/models/object/Puzzle_1.glb'
     ) as GLTFResult;
     const [ref] = useBox<THREE.Mesh>(() => ({
-        args: [4, 4, 4],
+        args: [1.4, 0.2, 1.4],
         mass: 0.1,
         position: props.position,
         rotation: props.rotation,
