@@ -14,6 +14,10 @@ spring:
   devtools:
     livereload:
       enabled: true
+  data:
+    elasticsearch:
+      cluster-name: 엄준식
+      cluster-nodes: 엄준식노드
 
 #logging
 logging:
