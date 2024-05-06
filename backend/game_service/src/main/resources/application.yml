@@ -16,6 +16,8 @@ spring:
       enabled: true
   kafka:
     bootstrap-servers: k10a709.p.ssafy.io:19092
+  elasticsearch:
+    uris: http://k10a709.p.ssafy.io:9200
 
 #logging
 logging:
@@ -39,4 +41,3 @@ game:
     maxSeekerIdx: 14
     maxHiderIdx: 20
   fps: 20
-

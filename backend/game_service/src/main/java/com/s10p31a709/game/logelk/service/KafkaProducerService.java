@@ -1,5 +1,7 @@
-package com.s10p31a709.game.logelk;
+package com.s10p31a709.game.logelk.service;
 
+import com.s10p31a709.game.logelk.entity.HideLocation;
+import com.s10p31a709.game.logelk.entity.GameResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -23,8 +25,4 @@ public class KafkaProducerService {
         kafkaTemplate.send("dev.game-server.hide-location-log.json", hideLocation);
     }
 
-    public void createAttackedObjectLogDev(AttackedObject attackedObject) {
-        log.info("hideLocation: {}", attackedObject);
-        kafkaTemplate.send("dev.game-server.attacked-objects-log.json", attackedObject);
-    }
 }

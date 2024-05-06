@@ -1,4 +1,4 @@
-package com.s10p31a709.game.logelk;
+package com.s10p31a709.game.common.feign.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,9 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AttackedObject {
+public class Member {
 
-    private Double[] position;
-    private int selectedIndex;
+
+    private String nickname;
+
+    private String password;
 
 }

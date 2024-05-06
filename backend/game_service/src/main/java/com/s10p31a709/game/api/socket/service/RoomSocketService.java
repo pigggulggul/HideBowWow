@@ -5,11 +5,14 @@ import com.s10p31a709.game.api.room.entity.Room;
 import com.s10p31a709.game.api.room.repository.RoomRepository;
 import com.s10p31a709.game.api.socket.model.StompPayload;
 import com.s10p31a709.game.common.config.GameProperties;
+import com.s10p31a709.game.logelk.entity.GameResult;
+import com.s10p31a709.game.logelk.service.GameResultService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -23,6 +26,7 @@ public class RoomSocketService {
     private final PlayerSocketService playerSocketService;
     private final AIService aiService;
     private final GameProperties gameProperties;
+    private final GameResultService gameResultService;
 
 
     public void modifyRoom(StompPayload<Room> message){
@@ -41,6 +45,7 @@ public class RoomSocketService {
 
     public void gameInit(StompPayload<Room> message){
         Room room = roomRepository.findRoomByRoomId(message.getRoomId());
+        room.setComputers(message.getData().getComputers());
         room.setRoomTime(gameProperties.getTime().getWaiting());
         room.setRoomState(1);
 
@@ -58,8 +63,12 @@ public class RoomSocketService {
                 player.setSelectedIndex(null);
             }
             if (room.getComputers() != null && !room.getComputers().isEmpty()){
-                List<Player> list = aiService.createComputer(room.getComputers().size());
+                log.info(room.getComputers().toString());
+                List<Player> list = aiService.hideLocationComputer(room.getComputers().size(), room.getRoomMap());
                 room.setComputers(list);
+                log.info(list.toString());
+            }else {
+                room.setComputers(new ArrayList<>());
             }
         }
 
@@ -89,20 +98,24 @@ public class RoomSocketService {
 
     public void seekerWin(String roomId){
         Room room = roomRepository.findRoomByRoomId(roomId);
-        // 게임 결과 log 전송
-        room.setRoomTime(gameProperties.getTime().getResult());
         room.setRoomState(4);
 
+        // 게임 결과 log 전송
+        gameResultService.sendGameResult(room);
+
+        room.setRoomTime(gameProperties.getTime().getResult());
         StompPayload<Room> payload = new StompPayload<>("room.seekerWin", roomId, "system", room);
         simpMessagingTemplate.convertAndSend("/sub/room/"+roomId, payload);
     }
 
     public void hiderWin(String roomId){
         Room room = roomRepository.findRoomByRoomId(roomId);
-        // 게임 결과 log 전송
-        room.setRoomTime(gameProperties.getTime().getResult());
         room.setRoomState(5);
 
+        // 게임 결과 log 전송
+        gameResultService.sendGameResult(room);
+
+        room.setRoomTime(gameProperties.getTime().getResult());
         StompPayload<Room> payload = new StompPayload<>("room.hiderWin", roomId, "system", room);
         simpMessagingTemplate.convertAndSend("/sub/room/"+roomId, payload);
     }
@@ -131,5 +144,6 @@ public class RoomSocketService {
         StompPayload<Room> payload = new StompPayload<>("room.gameState", room.getRoomId(), "system", room);
         simpMessagingTemplate.convertAndSend("/sub/room/"+room.getRoomId(), payload);
     }
+
 
 }

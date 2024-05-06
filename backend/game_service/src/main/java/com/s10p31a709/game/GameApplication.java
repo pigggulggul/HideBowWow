@@ -12,12 +12,14 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 @EnableFeignClients
 @EnableScheduling
 @EnableConfigurationProperties(GameProperties.class)
+@EnableElasticsearchRepositories
 public class GameApplication {
 
 	@Value("${server.domain}")
