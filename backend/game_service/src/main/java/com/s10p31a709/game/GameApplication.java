@@ -1,6 +1,5 @@
 package com.s10p31a709.game;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.s10p31a709.game.common.config.GameProperties;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
@@ -37,7 +36,7 @@ public class GameApplication {
 	@Bean
 	public OpenAPI customOpenAPI() {
 		return new OpenAPI()
-				.addServersItem(new Server().url(domain+":"+port+contextPath).description("종범 서버"))
+				.addServersItem(new Server().url(domain+contextPath).description("배포 서버"))
 				.addServersItem(new Server().url("http://localhost:"+port+contextPath).description("로컬 서버"))
 				.info(new Info()
 						.title("Game-Service")
