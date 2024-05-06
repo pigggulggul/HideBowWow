@@ -24,7 +24,7 @@ export function Ottoman_1(props: ObjectSettingType) {
         '/models/object/Ottoman_1.glb'
     ) as GLTFResult;
     const [ref] = useBox<THREE.Mesh>(() => ({
-        args: [4, 4, 4],
+        args: [2, 2, 1],
         mass: 0.1,
         position: props.position,
         rotation: props.rotation,

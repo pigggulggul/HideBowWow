@@ -24,7 +24,7 @@ export function RoundTable_orange(props: ObjectSettingType) {
         '/models/object/RoundTable_orange.glb'
     ) as GLTFResult;
     const [ref] = useBox<THREE.Mesh>(() => ({
-        args: [4, 4, 4],
+        args: [1.6, 1.6, 1.6],
         mass: 0.1,
         position: props.position,
         rotation: props.rotation,

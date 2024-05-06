@@ -24,7 +24,7 @@ export function Chair_orange(props: ObjectSettingType) {
         '/models/object/Chair_orange.glb'
     ) as GLTFResult;
     const [ref] = useBox<THREE.Mesh>(() => ({
-        args: [4, 4, 4],
+        args: [1, 1, 0.8],
         mass: 0.1,
         position: props.position,
         rotation: props.rotation,

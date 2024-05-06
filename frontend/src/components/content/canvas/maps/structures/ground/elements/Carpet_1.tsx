@@ -24,7 +24,7 @@ export function Carpet_1(props: ObjectSettingType) {
         '/models/object/Carpet_1.glb'
     ) as GLTFResult;
     const [ref] = useBox<THREE.Mesh>(() => ({
-        args: [4, 4, 4],
+        args: [8.6, 5, 0.1],
         mass: 0.1,
         position: props.position,
         rotation: props.rotation,

@@ -24,7 +24,7 @@ export function Bath_1(props: ObjectSettingType) {
         '/models/object/Bath_1.glb'
     ) as GLTFResult;
     const [ref] = useBox<THREE.Mesh>(() => ({
-        args: [4, 4, 4],
+        args: [3, 5, 1],
         mass: 0.1,
         position: props.position,
         rotation: props.rotation,
@@ -32,7 +32,7 @@ export function Bath_1(props: ObjectSettingType) {
         angularFactor: [0, 0, 0], // 모든 축에 대해 회전 제한
     }));
     return (
-        <group dispose={null}>
+        <group position={[0, 1.2, 0]} dispose={null}>
             <mesh
                 ref={ref}
                 geometry={nodes.Bath_1.geometry}

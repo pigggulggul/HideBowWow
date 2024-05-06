@@ -24,7 +24,7 @@ export function Cabinet_1(props: ObjectSettingType) {
         '/models/object/Cabinet_1.glb'
     ) as GLTFResult;
     const [ref] = useBox<THREE.Mesh>(() => ({
-        args: [4, 4, 4],
+        args: [2, 1.4, 4],
         mass: 0.1,
         position: props.position,
         rotation: props.rotation,
@@ -32,7 +32,7 @@ export function Cabinet_1(props: ObjectSettingType) {
         angularFactor: [0, 0, 0], // 모든 축에 대해 회전 제한
     }));
     return (
-        <group dispose={null}>
+        <group position={[0, -0.4, 0]} dispose={null}>
             <mesh
                 ref={ref}
                 geometry={nodes.Cabinet_9.geometry}
