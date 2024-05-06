@@ -1,7 +1,14 @@
 import { useGLTF } from '@react-three/drei';
 import { useFrame, useGraph } from '@react-three/fiber';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Group, Mesh, MeshStandardMaterial, SkinnedMesh, Vector3, Quaternion } from 'three';
+import {
+    Group,
+    Mesh,
+    MeshStandardMaterial,
+    SkinnedMesh,
+    Vector3,
+    Quaternion,
+} from 'three';
 import { GLTF, SkeletonUtils } from 'three-stdlib';
 import { PlayerInitType } from '../../../../../../types/GameType';
 import StompClient from '../../../../../../websocket/StompClient';
@@ -234,8 +241,8 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         // 마우스 휠을 위로 올릴 때
         else if (event.deltaY < 0) {
             setMouseWheelValue((prevValue) => Math.max(1, prevValue - 1)); // 최솟값인 1보다 작아지지 않도록 설정
-        }  
-    }; 
+        }
+    };
 
     const lockPointer = () => {
         const element = document.body;
@@ -316,8 +323,8 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         if (meInfo?.nickname === playerNickname) {  
             // 내 캐릭터의 경우
             lockPointer();
-            
-            const delta = clock.getDelta(); // 프레임 간 시간 간격을 가져옵니다. 
+
+            const delta = clock.getDelta(); // 프레임 간 시간 간격을 가져옵니다.
             accumulatedTimeRef.current += delta;
 
             if(!freeViewMode) { // 3인칭 모드 
@@ -506,13 +513,22 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                             otherPlayer.position[2]
                         );
 
-                        // 방향 적용 
-                        const rotationVector = new Vector3(otherPlayer.direction[0], otherPlayer.direction[1], otherPlayer.direction[2]);
+                        // 방향 적용
+                        const rotationVector = new Vector3(
+                            otherPlayer.direction[0],
+                            otherPlayer.direction[1],
+                            otherPlayer.direction[2]
+                        );
                         rotationVector.normalize(); // 회전 벡터를 정규화합니다.
                         const forward = new Vector3(0, 0, -1).applyQuaternion(
-                            new Quaternion().setFromUnitVectors(new Vector3(0, 0, -1), rotationVector)
+                            new Quaternion().setFromUnitVectors(
+                                new Vector3(0, 0, -1),
+                                rotationVector
+                            )
                         );
-                        otherPlayerRef.lookAt(otherPlayerRef.position.clone().add(forward)); 
+                        otherPlayerRef.lookAt(
+                            otherPlayerRef.position.clone().add(forward)
+                        );
                     }
                 }
             });
