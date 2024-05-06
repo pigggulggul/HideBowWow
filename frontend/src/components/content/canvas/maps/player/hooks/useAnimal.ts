@@ -97,6 +97,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
 
     const memoizedPosition = useMemo(() => position, []);
     const playerRef = useRef<PlayerRef>(null);
+    const nicknameRef = useRef<Group>(null);
     const prevPosition = useRef<Vector3 | null>(null);
     const isFirstFrame = useRef(true);
     const accumulatedTimeRef = useRef(0.0);     
@@ -420,7 +421,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                 // 고정된 상태
                 setIsWalking(false);
                 setAnimation('Roll'); 
-                
+
                 if (accumulatedTimeRef.current >= 0.003) {
                     accumulatedTimeRef.current = 0;
                     stompClient.sendMessage(
@@ -524,6 +525,15 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                 }
             });
         }
+        
+        if (nicknameRef.current) {
+            nicknameRef.current.position.set(
+                playerRef.current.position.x,
+                playerRef.current.position.y + 3.5,
+                playerRef.current.position.z
+            ); 
+            nicknameRef.current.lookAt(camera.position);
+        } 
     });
 
     return {
@@ -533,6 +543,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
         playerNickname,
         nodes,
         material,
+        nicknameRef,
     };
 
     function returnMaterial(num: number | undefined) {

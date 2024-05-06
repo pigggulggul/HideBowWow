@@ -533,15 +533,17 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 }
             });
         }
-
-        if (nicknameRef.current) {
-            nicknameRef.current.position.set(
-                playerRef.current.position.x,
-                playerRef.current.position.y + 3.5,
-                playerRef.current.position.z
-            );
-            nicknameRef.current.lookAt(10000, 10000, 10000);
-        }
+        
+        if(meInfo.isSeeker === false) { // 사물만 사물의 이름을 식별할 수 있다
+            if (nicknameRef.current) {
+                nicknameRef.current.position.set(
+                    playerRef.current.position.x,
+                    playerRef.current.position.y + 3.5,
+                    playerRef.current.position.z
+                );
+                nicknameRef.current.lookAt(camera.position);
+            }  
+        } 
     });
 
     return {

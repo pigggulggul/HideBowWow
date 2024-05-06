@@ -9,6 +9,7 @@ import { PlayerInitType } from '../../../../../types/GameType';
 import { useObject } from './hooks/useObject';
 import { useFrame } from '@react-three/fiber';
 import { useBox } from '@react-three/cannon';
+import { NicknameBoard } from '../structures/ground/3DUIs/NicknameBoard';
 
 export function ObjectPlayer({
     player,
@@ -17,9 +18,11 @@ export function ObjectPlayer({
 }: PlayerInitType) {
     const modelIndex = mIdx ? mIdx : 0;
     const {
+        meInfo,
         playerRef,
         memoizedPosition,
         playerNickname,
+        nicknameRef,
         node,
         material,
         scale,
@@ -52,7 +55,11 @@ export function ObjectPlayer({
         }
     });
 
-    return (
+    return ( 
+        <>
+        {meInfo && (
+                <NicknameBoard ref={nicknameRef} text={`${player?.nickname}`} />
+        )}
         <group
             ref={playerRef}
             position={memoizedPosition}
@@ -67,6 +74,8 @@ export function ObjectPlayer({
                 rotation={[Math.PI / 2, 0, 0]}
             />
         </group>
+        
+        </> 
     );
 }
 
