@@ -34,9 +34,9 @@ export function MainCanvas() {
             <OrbitControls />
             <Suspense>
                 <Physics>
-                    {/* <Debug> */}
-                    <RootMap />
-                    {/* </Debug> */}
+                    <Debug>
+                        <RootMap />
+                    </Debug>
                 </Physics>
             </Suspense>
         </Canvas>
