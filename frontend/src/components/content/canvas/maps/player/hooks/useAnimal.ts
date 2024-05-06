@@ -414,8 +414,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                                 ],
                             },
                         })
-                    );
-                    console.log("데이터 전송");
+                    ); 
                 }
             } else {
                 // 고정된 상태
@@ -444,8 +443,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                                 ],
                             },
                         })
-                    );
-                    console.log("데이터 전송");
+                    ); 
                 }
                 setAnimation('Walk');
             }
@@ -459,18 +457,27 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                 playerRef.current.viewUpDown, // 아래 위
                 Math.cos(playerRef.current.rotation.y)
             );
+            if(isJumping) { // 점프중 
+                camera.position.set(
+                    playerPosition.x + playerDirection.x,
+                    playerPosition.y + playerRef.current.position.y ,
+                    playerPosition.z + playerDirection.z
+                ); 
 
-            camera.position.set(
-                playerPosition.x + playerDirection.x,
-                playerPosition.y,
-                playerPosition.z + playerDirection.z
-            );
+            } else {
+                camera.position.set(
+                    playerPosition.x + playerDirection.x,
+                    playerPosition.y ,
+                    playerPosition.z + playerDirection.z
+                ); 
+            } 
             const cameraTarget = playerPosition
                 .clone()
-                .add(playerDirection.multiplyScalar(3));
+                .add(playerDirection.multiplyScalar(11));
             camera.lookAt(cameraTarget); // 정면보다 더 앞으로 설정!
             camera.zoom = 0.6;
             camera.updateProjectionMatrix();
+            console.log(playerRef.current.position.y)
         } else {
             // 다른 플레이어의 캐릭터
             roomState.roomPlayers.forEach((otherPlayer: any) => {
