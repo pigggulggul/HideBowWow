@@ -19,8 +19,10 @@ type GLTFResult = GLTF & {
     };
 };
 
-export function Model(props: ObjectSettingType) {
-    const { nodes, materials } = useGLTF('/Chair_orange.glb') as GLTFResult;
+export function Chair_orange(props: ObjectSettingType) {
+    const { nodes, materials } = useGLTF(
+        '/models/object/Chair_orange.glb'
+    ) as GLTFResult;
     const [ref] = useBox<THREE.Mesh>(() => ({
         args: [4, 4, 4],
         mass: 0.1,
@@ -43,4 +45,4 @@ export function Model(props: ObjectSettingType) {
     );
 }
 
-useGLTF.preload('/Chair_orange.glb');
+useGLTF.preload('/models/object/Chair_orange.glb');
