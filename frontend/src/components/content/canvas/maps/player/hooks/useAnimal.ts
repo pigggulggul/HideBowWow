@@ -176,10 +176,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     // const unlockPointer = () => {
     //     document.exitPointerLock();
     // };
-
-    // lockPointer();
-    // unlockPointer();
-
+  
     const updateRotationX = (movementY: number) => {
         const rotationAmount = movementY * 0.001; // 회전 속도 조절을 위해 상수를 곱합니다.
 
@@ -232,18 +229,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
         return () => {
             document.removeEventListener('mousemove', handleMouseMove);
         };
-    }, []);
-
-    // 이동
-    // useEffect(() => {
-    //     if (isWalking) {
-    //         lockPointer();
-    //         actions[animation]?.reset().fadeIn(0.2).play();
-    //     }
-    //     return () => {
-    //         actions[animation]?.fadeOut(0.5);
-    //     };
-    // }, [isWalking, animation, actions]);
+    }, []); 
 
     useEffect(() => {
         if (isWalking) {
