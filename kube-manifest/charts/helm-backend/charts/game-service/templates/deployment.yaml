@@ -22,4 +22,4 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: VERSION
-              value: "174"
+              value: "1"
