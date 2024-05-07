@@ -5,11 +5,10 @@ import {
     currentRoomState,
     givenChoiceState,
     readyState,
-    removePeopleRoomState,
-    meDead,
+    removePeopleRoomState, 
 } from '../store/user-slice';
-import { store } from '../store/store';
-import { useSelector } from 'react-redux';
+import { store } from '../store/store'; 
+ 
 
 class StompClient {
     private static instance: StompClient;
@@ -55,16 +54,8 @@ class StompClient {
                                 store.dispatch(removePeopleRoomState(msg.data));
                                 break;
                             }
-                            case 'player.dead': {
-                                // const meInfo = useSelector(
-                                //     (state: any) => state.reduxFlag.userSlice.meInfo
-                                // );
-                                
-                                // if(meInfo.nickname === msg.data.nickname) {
-                                //     meInfo.isDead = true;
-                                // } 
-                                console.log('플레이어 사망1 : ' + msg.data.nickname);  
-                                store.dispatch(meDead(true)); 
+                            case 'player.dead': {   
+                                console.log('플레이어 사망 : ' + msg.data.nickname);    
                                 break;
                             }
                             case 'player.choose': {
@@ -143,7 +134,7 @@ class StompClient {
                         break;
                     }
                     case 'player.dead': {
-                        console.log('플레이어 사망2', msg);
+                        console.log('플레이어 사망 : ' + msg.data.nickname);    
                         break;
                     }
                     /** 게임 입장 (요청 필요) */

@@ -75,9 +75,6 @@ export const userSlice = createSlice({
         meSelectedInfoState: (state, action) => {
             state.meInfo.selectedIndex = action.payload;
         },
-        meDead: (state, action) => {
-            state.meInfo.isDead = action.payload;
-        },
         givenChoiceState: (state, action) => {
             state.givenChoice = action.payload;
         },
@@ -103,7 +100,6 @@ export const {
     meInfoState,
     addPeopleRoomState,
     meSelectedInfoState,
-    meDead,
     removePeopleRoomState,
     givenChoiceState,
     addCollideObjectState,

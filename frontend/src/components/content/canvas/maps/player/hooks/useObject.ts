@@ -575,6 +575,12 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                             otherPlayerRef.position.clone().add(forward)
                         );
                     }
+                } else if( 
+                    otherPlayer.nickname === meInfo?.nickname &&
+                    otherPlayer.isSeeker === false &&
+                    otherPlayer.isDead === true
+                ) {
+                    meInfo.isDead = true; 
                 }
             });
         }
