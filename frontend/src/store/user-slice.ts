@@ -80,6 +80,9 @@ export const userSlice = createSlice({
         heartState: (state, action) => {
             state.meHeart = action.payload;
         },
+        meDead: (state, action) => {
+            state.meInfo.isDead = action.payload;
+        },
         givenChoiceState: (state, action) => {
             state.givenChoice = action.payload;
         },
@@ -105,6 +108,7 @@ export const {
     meInfoState,
     addPeopleRoomState,
     meSelectedInfoState,
+    meDead,
     removePeopleRoomState,
     givenChoiceState,
     addCollideObjectState,

@@ -6,8 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import { CurrentPlayersInfo } from '../types/GameType';
 import { heartState } from '../store/user-slice';
 import StompClient from '../websocket/StompClient';
+import { startRecording, stopRecording } from '../assets/js/voice';
 
 export default function GamePage() {
+    const stompClient = StompClient.getInstance();
     const meInfo = useSelector(
         (state: any) => state.reduxFlag.userSlice.meInfo
     );
@@ -156,7 +158,6 @@ export default function GamePage() {
             ) : (
                 <></>
             )}
-
             <div className="absolute flex flex-col top-1 left-1 w-[20%] h-[40%] bg-black bg-opacity-20 p-[0.4vw]">
                 <div className="flex items-center">
                     <img
@@ -213,6 +214,13 @@ export default function GamePage() {
                     </>
                 )}
             </div>
+            <div className="absolute flex top-1 w-full justify-end">
+                <button onClick={() => {stompClient.enterVoiceChannel(currentRoom.roomId, meInfo.nickname)}}>음성채널 입장</button> &nbsp;&nbsp;
+                <button onClick={() => {stompClient.exitVoiceChannel()}}>음성채널 퇴장</button> &nbsp;&nbsp;
+                <button onClick={() => {startRecording()}}>마이크 ON</button> &nbsp;&nbsp;
+                <button onClick={() => {stopRecording()}}>마이크 OFF</button> &nbsp;&nbsp;
+            </div>
+            
         </RecoilRoot>
     );
 }
