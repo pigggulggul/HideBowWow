@@ -26,11 +26,11 @@ public class CommandCenter {
         List<Room> rooms = roomRepository.findAllRoom();
 
         for (Room room : rooms){
+            room.setFlag(true);
             if (room.getRoomState() != null && !room.getRoomState().equals(0)) {
 
                 // 시간 1초씩 감소
                 room.setRoomTime(room.getRoomTime()-1);
-                room.setFlag(true);
 
                 // 시간이 다되면 다음 상태로 변경후 알림 전송
                 if (room.getRoomTime() <= 0){
