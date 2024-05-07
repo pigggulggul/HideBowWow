@@ -122,6 +122,7 @@ type GLTFResult = GLTF & {
         Plant_17: Mesh;
     };
     materials: {
+        Cartoon_Room_Mat: MeshStandardMaterial;
         ['Cartoon_Room_Mat.002']: MeshStandardMaterial;
     };
     animations: any[];
@@ -856,9 +857,10 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         material,
     };
     function returnMaterial(num: number | undefined) {
-        switch (num) {
-            default:
-                return materials['Cartoon_Room_Mat.002'];
+        if (num === undefined || num < 19) {
+            return materials['Cartoon_Room_Mat.002'];
+        } else {
+            return materials.Cartoon_Room_Mat;
         }
     }
     function returnNode(num: number | undefined) {
