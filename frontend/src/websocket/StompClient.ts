@@ -6,6 +6,7 @@ import {
     givenChoiceState,
     readyState,
     removePeopleRoomState,
+    meDead,
 } from '../store/user-slice';
 import { store } from '../store/store';
 import { createStream, handleData, endStream } from '../assets/js/voice';
@@ -55,7 +56,15 @@ class StompClient {
                                 break;
                             }
                             case 'player.dead': {
-                                console.log('플레이어 사망', msg);
+                                // const meInfo = useSelector(
+                                //     (state: any) => state.reduxFlag.userSlice.meInfo
+                                // );
+                                
+                                // if(meInfo.nickname === msg.data.nickname) {
+                                //     meInfo.isDead = true;
+                                // } 
+                                console.log('플레이어 사망1 : ' + msg.data.nickname);  
+                                store.dispatch(meDead(true)); 
                                 break;
                             }
                             case 'player.choose': {
@@ -135,7 +144,7 @@ class StompClient {
                         break;
                     }
                     case 'player.dead': {
-                        console.log('플레이어 사망', msg);
+                        console.log('플레이어 사망2', msg);
                         break;
                     }
                     /** 게임 입장 (요청 필요) */
@@ -152,7 +161,7 @@ class StompClient {
                     /** 플레이어 위치 정보 반환 */
                     case 'room.gameState': {
                         console.log('위치 반환');
-                        // console.log(msg);ws
+                        // console.log(msg);
                         store.dispatch(currentRoomState(msg.data));
                         break;
                     }
