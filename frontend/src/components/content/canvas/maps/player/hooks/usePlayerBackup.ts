@@ -13,7 +13,6 @@ import { GLTF, SkeletonUtils } from 'three-stdlib';
 import { PlayerInitType } from '../../../../../../types/GameType';
 import { useRecoilValue } from 'recoil';
 import { MeAtom } from '../../../../../../store/PlayersAtom';
-import { socket } from '../../../../../../sockets/clientSocket';
 
 interface GLTFAction extends AnimationClip {
     name: ActionName;
@@ -126,19 +125,6 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
                 'CharacterArmature|CharacterArmature|CharacterArmature|Run'
             );
             console.log(moveVector);
-
-            if (playerRef.current) {
-                playerRef.current.position.add(moveVector);
-                socket.emit('move', [
-                    playerRef.current.position.x,
-                    0,
-                    playerRef.current.position.z,
-                ]);
-                playerRef.current.rotation.y = Math.atan2(
-                    moveVector.x,
-                    moveVector.z
-                );
-            }
         } else {
             setIsWalking(false);
             setAnimation(

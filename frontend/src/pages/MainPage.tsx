@@ -37,18 +37,18 @@ export default function MainPage() {
                     'url(/src/assets/images/bg/background-main.png)',
             }}
         >
-            <p className="text-[2.4vw]">숨어있는 물체를 찾아라</p>
-            <h5 className="text-blue-600 text-[11vw]">숨구멍</h5>
+            <img src="/src/assets/images/text/text_title_sub.png" alt="" />
+            <img src="/src/assets/images/text/text_title.png" alt="" />
             <div className="flex justify-between w-[40%]">
                 <Link
                     to={'/guestlogin'}
-                    className="border-[0.3vw] color-border-main rounded-[0.6vw] px-[2vw] py-[0.4vw] color-text-main bg-white text-[2.6vw] cursor-pointer hover:color-bg-main hover:text-white"
+                    className="border-[0.3vw] color-border-main rounded-[0.6vw] px-[2vw] py-[0.4vw] color-text-main bg-white text-[2.6vw] cursor-pointer hover:color-bg-main hover:text-white btn-animation"
                 >
                     Guest
                 </Link>
                 <Link
                     to={'/userlogin'}
-                    className="border-[0.3vw] color-border-main rounded-[0.6vw] px-[2vw] py-[0.4vw] color-text-main bg-white text-[2.6vw] cursor-pointer hover:color-bg-main hover:text-white"
+                    className="border-[0.3vw] color-border-main rounded-[0.6vw] px-[2vw] py-[0.4vw] color-text-main bg-white text-[2.6vw] cursor-pointer hover:color-bg-main hover:text-white btn-animation"
                 >
                     Login
                 </Link>

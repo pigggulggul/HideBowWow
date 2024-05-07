@@ -23,7 +23,7 @@ export function Wall_white_Side(props: ObjectSettingType) {
         '/models/object/Wall_white.glb'
     ) as GLTFResult;
     const [ref] = useBox<THREE.Mesh>(() => ({
-        args: [10, 1, 8],
+        args: [10, 1.2, 8],
         mass: 0.1,
         position: [props.position[0], props.position[1], props.position[2]],
         rotation: props.rotation,
@@ -31,7 +31,7 @@ export function Wall_white_Side(props: ObjectSettingType) {
         angularFactor: [0, 0, 0], // 모든 축에 대해 회전 제한
     }));
     return (
-        <group position={[-5, -4, 0]} dispose={null}>
+        <group position={[-5, -4, -0.5]} dispose={null}>
             <mesh
                 ref={ref}
                 geometry={nodes.Wall_38.geometry}
@@ -42,7 +42,7 @@ export function Wall_white_Side(props: ObjectSettingType) {
                     props.position[2],
                 ]}
                 rotation={props.rotation}
-                scale-y={0.01}
+                scale-y={0.02}
                 scale-x={0.0202}
                 scale-z={0.0202}
             />

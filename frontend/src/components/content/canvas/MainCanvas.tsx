@@ -39,6 +39,9 @@ export function MainCanvas() {
                     {/* </Debug> */}
                 </Physics>
             </Suspense>
+            {/* 최적화 관련 */}
+            {/* <StatsGl />
+            <DrawCallCounter /> */}
         </Canvas>
     );
 }

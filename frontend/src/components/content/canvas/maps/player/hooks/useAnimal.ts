@@ -97,8 +97,10 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
 
     const memoizedPosition = useMemo(() => position, []);
     const playerRef = useRef<PlayerRef>(null);
+    const nicknameRef = useRef<Group>(null);
     const prevPosition = useRef<Vector3 | null>(null);
     const isFirstFrame = useRef(true);
+    const accumulatedTimeRef = useRef(0.0);     
 
     const { scene, materials, animations } = useGLTF(
         (() => {
@@ -126,7 +128,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                 case 10:
                     return '/models/character/Reindeer_Animations.glb';
                 case 11:
-                    return '/models/character/SeaLion_Animations.glb';
+                    return '/models/character/Penguin_Animations.glb';
                 case 12:
                     return '/models/character/SnowOwl_Animations.glb';
                 case 13:
@@ -176,9 +178,6 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     // const unlockPointer = () => {
     //     document.exitPointerLock();
     // };
-
-    // lockPointer();
-    // unlockPointer();
 
     const updateRotationX = (movementY: number) => {
         const rotationAmount = movementY * 0.001; // 회전 속도 조절을 위해 상수를 곱합니다.
@@ -234,17 +233,6 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
         };
     }, []);
 
-    // 이동
-    // useEffect(() => {
-    //     if (isWalking) {
-    //         lockPointer();
-    //         actions[animation]?.reset().fadeIn(0.2).play();
-    //     }
-    //     return () => {
-    //         actions[animation]?.fadeOut(0.5);
-    //     };
-    // }, [isWalking, animation, actions]);
-
     useEffect(() => {
         if (isWalking) {
             lockPointer();
@@ -295,7 +283,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     }, [isJumping]);
 
     // Frame
-    useFrame(({ camera }) => {
+    useFrame(({ camera , clock }) => {
         if (isFirstFrame.current) {
             isFirstFrame.current = false;
             prevPosition.current = playerRef.current
@@ -305,7 +293,11 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
 
         if (!player || !playerRef.current) return;
 
-        if (meInfo?.nickname === playerNickname) {
+        if (meInfo?.nickname === playerNickname) { 
+            
+            const delta = clock.getDelta(); // 프레임 간 시간 간격을 가져옵니다.
+            accumulatedTimeRef.current += delta;
+
             // 내 캐릭터의 경우
             const moveVector = new Vector3(
                 (keyState.current['a'] ? 1 : 0) -
@@ -336,17 +328,15 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                     moveDirection.y = 0.08;
                 } else {
                     moveDirection.y = -0.08;
-                }
-                console.log(moveDirection);
+                } 
 
-                if (collideState.length > 0) {
-                    console.log(moveDirection);
+                if (collideState.length > 0) { 
                     const originPos = playerRef.current.position.clone();
                     const newPos = originPos.clone().add(moveDirection);
                     collideState.map((item: CollideObject, index: number) => {
                         const centerX = (item.minX + item.maxX) / 2;
                         const centerY = (item.minY + item.maxZ) / 2;
-                        const centerZ = (item.minY + item.maxZ) / 2;
+                        const centerZ = (item.minZ + item.maxZ) / 2;
 
                         if (
                             originPos.x >= item.minX - 1 &&
@@ -356,6 +346,8 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                             originPos.z >= item.minZ - 1 &&
                             originPos.z <= item.maxZ + 1
                         ) {
+                            originPos.y += 0.1;
+                            newPos.y += 0.1;
                             if (originPos.x < centerX) {
                                 if (newPos.x > originPos.x) {
                                     moveDirection.x = 0;
@@ -374,7 +366,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                                     moveDirection.y = 0;
                                 }
                             }
-                            if (originPos.z < centerZ) {
+                            if (originPos.z < centerZ) { 
                                 if (newPos.z > originPos.z) {
                                     moveDirection.z = 0;
                                 }
@@ -397,58 +389,62 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                     if (playerRef.current.position.y <= 0) {
                         playerRef.current.position.y = 0.1;
                     }
-                    playerRef.current.position.add(moveDirection);
-
-                    console.log(playerRef.current.position);
+                    playerRef.current.position.add(moveDirection); 
                 }
-
-                stompClient.sendMessage(
-                    `/player.move`,
-                    JSON.stringify({
-                        type: 'player.move',
-                        roomId: roomId,
-                        sender: meName,
-                        data: {
-                            nickname: meName,
-                            position: [
-                                playerRef.current.position.x,
-                                playerRef.current.position.y,
-                                playerRef.current.position.z,
-                            ],
-                            direction: [
-                                moveDirection.x,
-                                moveDirection.y,
-                                moveDirection.z,
-                            ],
-                        },
-                    })
-                );
+                
+                if (accumulatedTimeRef.current >= 0.003) {
+                    accumulatedTimeRef.current = 0;
+                    stompClient.sendMessage(
+                        `/player.move`,
+                        JSON.stringify({
+                            type: 'player.move',
+                            roomId: roomId,
+                            sender: meName,
+                            data: {
+                                nickname: meName,
+                                position: [
+                                    playerRef.current.position.x,
+                                    playerRef.current.position.y,
+                                    playerRef.current.position.z,
+                                ],
+                                direction: [
+                                    moveDirection.x,
+                                    moveDirection.y,
+                                    moveDirection.z,
+                                ],
+                            },
+                        })
+                    ); 
+                }
             } else {
                 // 고정된 상태
                 setIsWalking(false);
-                setAnimation('Roll');
-                
-                stompClient.sendMessage(
-                    `/player.move`,
-                    JSON.stringify({
-                        type: 'player.move',
-                        roomId: roomId,
-                        sender: meName,
-                        data: {
-                            nickname: meName,
-                            position: [
-                                playerRef.current.position.x,
-                                playerRef.current.position.y,
-                                playerRef.current.position.z,
-                            ],
-                            direction: [
-                                Math.sin(playerRef.current.rotation.y),
-                                0,
-                                Math.cos(playerRef.current.rotation.y),
-                            ],
-                        },
-                    })
-                );
+                setAnimation('Roll'); 
+
+                if (accumulatedTimeRef.current >= 0.003) {
+                    accumulatedTimeRef.current = 0;
+                    stompClient.sendMessage(
+                        `/player.move`,
+                        JSON.stringify({
+                            type: 'player.move',
+                            roomId: roomId,
+                            sender: meName,
+                            data: {
+                                nickname: meName,
+                                position: [
+                                    playerRef.current.position.x,
+                                    playerRef.current.position.y,
+                                    playerRef.current.position.z,
+                                ],
+                                direction: [
+                                    Math.sin(playerRef.current.rotation.y),
+                                    0,
+                                    Math.cos(playerRef.current.rotation.y),
+                                ],
+                            },
+                        })
+                    ); 
+                }
                 setAnimation('Walk');
             }
 
@@ -461,18 +457,26 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                 playerRef.current.viewUpDown, // 아래 위
                 Math.cos(playerRef.current.rotation.y)
             );
+            if(isJumping) { // 점프중 
+                camera.position.set(
+                    playerPosition.x + playerDirection.x,
+                    playerPosition.y + playerRef.current.position.y ,
+                    playerPosition.z + playerDirection.z
+                ); 
 
-            camera.position.set(
-                playerPosition.x + playerDirection.x,
-                playerPosition.y,
-                playerPosition.z + playerDirection.z
-            );
+            } else {
+                camera.position.set(
+                    playerPosition.x + playerDirection.x,
+                    playerPosition.y ,
+                    playerPosition.z + playerDirection.z
+                ); 
+            } 
             const cameraTarget = playerPosition
                 .clone()
-                .add(playerDirection.multiplyScalar(3));
+                .add(playerDirection.multiplyScalar(11));
             camera.lookAt(cameraTarget); // 정면보다 더 앞으로 설정!
             camera.zoom = 0.6;
-            camera.updateProjectionMatrix();
+            camera.updateProjectionMatrix(); 
         } else {
             // 다른 플레이어의 캐릭터
             roomState.roomPlayers.forEach((otherPlayer: any) => {
@@ -527,6 +531,15 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                 }
             });
         }
+        
+        if (nicknameRef.current) {
+            nicknameRef.current.position.set(
+                playerRef.current.position.x,
+                playerRef.current.position.y + 3.5,
+                playerRef.current.position.z
+            ); 
+            nicknameRef.current.lookAt(camera.position);
+        } 
     });
 
     return {
@@ -536,6 +549,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
         playerNickname,
         nodes,
         material,
+        nicknameRef,
     };
 
     function returnMaterial(num: number | undefined) {
@@ -563,7 +577,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
             case 10:
                 return materials.M_Reindeer;
             case 11:
-                return materials.M_SeaLion;
+                return materials.M_Penguin;
             case 12:
                 return materials.M_SnowOwl;
             case 13:

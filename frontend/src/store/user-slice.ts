@@ -10,6 +10,7 @@ export interface UserState {
     meInfo: CurrentPlayersInfo;
     givenChoice: number[];
     collideObj: CollideObject[];
+    meHeart: number;
 }
 const initialState: UserState = {
     userNickname: '',
@@ -36,6 +37,7 @@ const initialState: UserState = {
     },
     givenChoice: [],
     collideObj: [],
+    meHeart: 0,
 };
 
 export const userSlice = createSlice({
@@ -75,6 +77,12 @@ export const userSlice = createSlice({
         meSelectedInfoState: (state, action) => {
             state.meInfo.selectedIndex = action.payload;
         },
+        heartState: (state, action) => {
+            state.meHeart = action.payload;
+        },
+        meDead: (state, action) => {
+            state.meInfo.isDead = action.payload;
+        },
         givenChoiceState: (state, action) => {
             state.givenChoice = action.payload;
         },
@@ -100,10 +108,12 @@ export const {
     meInfoState,
     addPeopleRoomState,
     meSelectedInfoState,
+    meDead,
     removePeopleRoomState,
     givenChoiceState,
     addCollideObjectState,
     removeCollideObjectState,
     collideObjectState,
+    heartState,
 } = userSlice.actions;
 export default userSlice.reducer;
