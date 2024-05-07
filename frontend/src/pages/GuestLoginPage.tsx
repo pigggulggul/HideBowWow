@@ -5,6 +5,8 @@ import { GuestLoginInfo } from '../types/GameType';
 import { useDispatch } from 'react-redux';
 import { userNicknameState } from '../store/user-slice';
 import { httpStatusCode } from '../components/utils/http-status';
+import backgroundImage from '../assets/images/bg/background-main.png';
+import textLoginQuest from '../assets/images/text/text_login_guest.png';
 
 export default function GuestLoginPage() {
     const [guestNickname, setGuestNickname] = useState<string>('');
@@ -32,10 +34,10 @@ export default function GuestLoginPage() {
             className="w-full h-full flex flex-col items-center justify-center"
             style={{
                 backgroundImage:
-                    'url(/src/assets/images/bg/background-main.png)',
+                `url(${backgroundImage})`,
             }}
         >
-            <img src="/src/assets/images/text/text_login_guest.png" alt="" />
+            <img src={textLoginQuest} alt="" />
             <div className="relative w-[50%] flex justify-between my-[2vw]">
                 <h5 className="w-[35%] text-white text-[3vw]">닉네임</h5>
                 <input

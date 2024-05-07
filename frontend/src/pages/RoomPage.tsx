@@ -6,6 +6,8 @@ import { httpStatusCode } from '../components/utils/http-status';
 import { useDispatch, useSelector } from 'react-redux';
 import StompClient from '../websocket/StompClient';
 import { currentRoomState, readyState } from '../store/user-slice';
+import backgroundImage from '../assets/images/bg/background-main.png';
+import dummyMap from '../assets/images/etc/dummy-map.png';
 
 export default function RoomPage() {
     const [settingRoomFlag, setSettingRoomFlag] = useState<boolean>(false);
@@ -92,7 +94,7 @@ export default function RoomPage() {
             className="relative w-full h-full flex flex-col items-center justify-center"
             style={{
                 backgroundImage:
-                    'url(/src/assets/images/bg/background-main.png)',
+                `url(${backgroundImage})`,
             }}
         >
             <div className="relative w-[80%] h-[90%] p-[1vw] flex justify-between border-[0.3vw] rounded-[0.6vw] border-white bg-sky-300 ">
@@ -135,7 +137,7 @@ export default function RoomPage() {
                     <div className="flex flex-col items-center">
                         <img
                             className="w-[80%] border-[0.3vw] border-white rounded-[0.6vw]"
-                            src="/src/assets/images/etc/dummy-map.png"
+                            src={dummyMap}
                             alt=""
                             style={{ aspectRatio: 1 / 1 }}
                         />
