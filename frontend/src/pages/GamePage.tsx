@@ -7,6 +7,15 @@ import { CurrentPlayersInfo } from '../types/GameType';
 import { heartState } from '../store/user-slice';
 import StompClient from '../websocket/StompClient';
 import { startRecording, stopRecording } from '../assets/js/voice';
+import winnerSeeker from '../assets/images/icon/winner_seeker.png';
+import winnerHider from '../assets/images/icon/winner_hider.png';
+import keyA from '../assets/images/icon/key_a.png';
+import keyD from '../assets/images/icon/key_d.png';
+import keyE from '../assets/images/icon/key_e.png';
+import keyMouseleft from '../assets/images/icon/key_mouseleft.png';
+import keyQ from '../assets/images/icon/key_q.png';
+import keyS from '../assets/images/icon/key_s.png';
+import keyW from '../assets/images/icon/key_w.png';
 
 export default function GamePage() {
     const stompClient = StompClient.getInstance();
@@ -109,7 +118,7 @@ export default function GamePage() {
             {currentRoom.roomState === 4 ? (
                 <div className="absolute flex flex-col items-center justify-center">
                     <img
-                        src="/src/assets/images/icon/winner_seeker.png"
+                        src={winnerSeeker}
                         alt=""
                     />
                     <p className="text-[2vw] text-black">
@@ -122,7 +131,7 @@ export default function GamePage() {
             {currentRoom.roomState === 5 ? (
                 <div className="absolute flex flex-col items-center justify-center">
                     <img
-                        src="/src/assets/images/icon/winner_hider.png"
+                        src={winnerHider}
                         alt=""
                     />
                     <p className="text-[2vw] text-black">
@@ -161,22 +170,22 @@ export default function GamePage() {
                 <div className="flex items-center">
                     <img
                         className="px-[0.2vw]"
-                        src="/src/assets/images/icon/key_w.png"
+                        src={keyW}
                         alt=""
                     />
                     <img
                         className="px-[0.2vw]"
-                        src="/src/assets/images/icon/key_a.png"
+                        src={keyA}
                         alt=""
                     />
                     <img
                         className="px-[0.2vw]"
-                        src="/src/assets/images/icon/key_s.png"
+                        src={keyS}
                         alt=""
                     />
                     <img
                         className="px-[0.2vw]"
-                        src="/src/assets/images/icon/key_d.png"
+                        src={keyD}
                         alt=""
                     />
                     <p className="px-[0.4vw] text-[1.6vw]">이동</p>
@@ -186,7 +195,7 @@ export default function GamePage() {
                         <div className="flex items-center my-[1vw]">
                             <img
                                 className="px-[0.2vw]"
-                                src="/src/assets/images/icon/key_mouseleft.png"
+                                src={keyMouseleft}
                                 alt=""
                             />
                             <p className="px-[0.4vw] text-[1.6vw]">공격</p>
@@ -197,7 +206,7 @@ export default function GamePage() {
                         <div className="flex items-center my-[1vw]">
                             <img
                                 className="px-[0.2vw]"
-                                src="/src/assets/images/icon/key_q.png"
+                                src={keyQ}
                                 alt=""
                             />
                             <p className="px-[0.4vw] text-[1.6vw]">회전 (좌)</p>
@@ -205,7 +214,7 @@ export default function GamePage() {
                         <div className="flex items-center">
                             <img
                                 className="px-[0.2vw]"
-                                src="/src/assets/images/icon/key_e.png"
+                                src={keyE}
                                 alt=""
                             />
                             <p className="px-[0.4vw] text-[1.6vw]">회전 (우)</p>

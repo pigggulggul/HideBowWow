@@ -6,6 +6,7 @@ import { httpStatusCode } from '../components/utils/http-status';
 import { useDispatch, useSelector } from 'react-redux';
 import { currentRoomState, roomIdState } from '../store/user-slice';
 import StompClient from '../websocket/StompClient';
+import backgroundImage from '../assets/images/bg/background-main.png';
 
 export default function LobbyPage() {
     const [makeRoomFlag, setMakeRoomFlag] = useState<boolean>(false);
@@ -176,7 +177,7 @@ export default function LobbyPage() {
             className="relative w-full h-full flex flex-col items-center justify-center"
             style={{
                 backgroundImage:
-                    'url(/src/assets/images/bg/background-main.png)',
+                    `url(${backgroundImage})`,
             }}
         >
             <div className="relative w-[80%] h-[90%] flex justify-between border-[0.3vw] rounded-[0.6vw] border-white bg-sky-50 overflow-y-auto">

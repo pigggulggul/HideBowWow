@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import backgroundImage from '../assets/images/bg/background-main.png';
+import textChannelSelect from '../assets/images/text/text_channel_select.png';
 
 export default function SelectChannelPage() {
     return (
@@ -6,12 +8,12 @@ export default function SelectChannelPage() {
             className="w-full h-full flex flex-col items-center justify-center"
             style={{
                 backgroundImage:
-                    'url(/src/assets/images/bg/background-main.png)',
+                `url(${backgroundImage})`,
             }}
         >
             <div className="w-[80%] h-[90%] py-[1.4vw] flex flex-col items-center border-[0.3vw] rounded-[0.6vw] border-white bg-gray-400 bg-opacity-30 overflow-y-auto">
                 <img
-                    src="/src/assets/images/text/text_channel_select.png"
+                    src={textChannelSelect}
                     alt=""
                 />
                 <div className="w-full h-full flex flex-wrap justify-between content-start px-[8vw] overflow-y-auto">

@@ -5,6 +5,8 @@ import { UserLoginInfo } from '../types/GameType';
 import { useDispatch } from 'react-redux';
 import { userNicknameState } from '../store/user-slice';
 import { httpStatusCode } from '../components/utils/http-status';
+import backgroundImage from '../assets/images/bg/background-main.png';
+import textLoginUser from '../assets/images/text/text_login_user.png';
 
 export default function UserLoginPage() {
     const [userNickname, setUserNickname] = useState<string>('');
@@ -36,10 +38,10 @@ export default function UserLoginPage() {
             className="w-full h-full flex flex-col items-center justify-center"
             style={{
                 backgroundImage:
-                    'url(/src/assets/images/bg/background-main.png)',
+                `url(${backgroundImage})`,
             }}
         >
-            <img src="/src/assets/images/text/text_login_user.png" alt="" />
+            <img src={textLoginUser} alt="" />
             <div className="relative w-[50%] flex justify-between my-[2vw]">
                 <h5 className="w-[35%] text-white text-[3vw] text-start">
                     닉네임

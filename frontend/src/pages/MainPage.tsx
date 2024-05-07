@@ -8,6 +8,9 @@ import {
     roomIdState,
     userNicknameState,
 } from '../store/user-slice';
+import backgroundImage from '../assets/images/bg/background-main.png';
+import textTitleSub from '../assets/images/text/text_title_sub.png';
+import textTitle from '../assets/images/text/text_title.png';
 
 export default function MainPage() {
     const dispatch = useDispatch();
@@ -34,11 +37,11 @@ export default function MainPage() {
             className="w-full h-full flex flex-col items-center justify-center"
             style={{
                 backgroundImage:
-                    'url(/src/assets/images/bg/background-main.png)',
+                `url(${backgroundImage})`,
             }}
         >
-            <img src="/src/assets/images/text/text_title_sub.png" alt="" />
-            <img src="/src/assets/images/text/text_title.png" alt="" />
+            <img src={textTitleSub} alt="" />
+            <img src={textTitle} alt="" />
             <div className="flex justify-between w-[40%]">
                 <Link
                     to={'/guestlogin'}
