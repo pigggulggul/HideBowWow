@@ -1,6 +1,6 @@
 import StompClient from '../../websocket/StompClient';
 
-let stompClient, stream, interval, roomId, nickname;
+let stompClient, stream, interval, roomId, nickname, volume;
 
 const constraints = {
     audio: {
@@ -21,6 +21,7 @@ const options = {
 async function createStream(newRoomId, newNickname){
     roomId = newRoomId;
     nickname = newNickname;
+    volume = 0.5;
     stompClient = StompClient.getInstance();
     stream = await navigator.mediaDevices.getUserMedia(constraints);
     console.log('음성채널 입장', roomId)
@@ -60,7 +61,23 @@ function startRecording() {
 }
 
 async function recording() {
-    const mediaRecorder = new MediaRecorder(stream, options);
+    const audioContext = new AudioContext();
+    const mediaStreamSource = audioContext.createMediaStreamSource(stream);
+    const destination = audioContext.createMediaStreamDestination();
+
+    const lowPassFilter = audioContext.createBiquadFilter();
+    lowPassFilter.type = "lowpass"; 
+    lowPassFilter.frequency.setValueAtTime(3400, audioContext.currentTime); // 고음 제거
+    
+    const highPassFilter = audioContext.createBiquadFilter();
+    highPassFilter.type = "highpass"; 
+    highPassFilter.frequency.setValueAtTime(300, audioContext.currentTime); // 저음 제거
+
+    mediaStreamSource.connect(lowPassFilter);
+    lowPassFilter.connect(highPassFilter);
+    highPassFilter.connect(destination);
+    
+    const mediaRecorder = new MediaRecorder(destination.stream, options);
     
     const chunks = [];
     
@@ -116,6 +133,7 @@ async function playAudio(blob) {
         
      // 오디오 요소 생성 및 설정
     const audio = new Audio(audioURL);
+    audio.volume = volume;
     try {
         await audio.play();
     } catch (error) {
