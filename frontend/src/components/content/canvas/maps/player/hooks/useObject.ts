@@ -9,7 +9,7 @@ import {
     Vector3,
     Quaternion,
 } from 'three';
-import { GLTF, SkeletonUtils } from 'three-stdlib';
+import { Face, GLTF, SkeletonUtils } from 'three-stdlib';
 import { PlayerInitType } from '../../../../../../types/GameType';
 import StompClient from '../../../../../../websocket/StompClient';
 import { useSelector } from 'react-redux';
@@ -350,238 +350,250 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     }, []);
 
     useFrame(({ camera , clock }) => {  
-        if (!player || !playerRef.current) return;    
+        if (!player || !playerRef.current) return;   
 
-        roomState.roomPlayers.forEach((Player: any) => { 
-            if ( // 다른 플레이어
-                Player.nickname !== meInfo?.nickname &&
-                Player.isSeeker === false
-            ) {
-                const otherPlayerRef = playerRef.current;
-                if (otherPlayerRef) {
-                    // 위치 적용
-                    otherPlayerRef?.position.set(
-                        Player.position[0],
-                        Player.position[1],
-                        Player.position[2]
-                    );
+        if (meInfo?.nickname === playerNickname) {   
 
-                    // 방향 적용
-                    const rotationVector = new Vector3(
-                        Player.direction[0],
-                        Player.direction[1],
-                        Player.direction[2]
+            const delta = clock.getDelta(); // 프레임 간 시간 간격을 가져옵니다.
+            accumulatedTimeRef.current += delta;
+            console.log("사망상태? : " + meInfo.isDead)
+            // console.log("dead? " + meInfo?.isDead);
+            if(meInfo?.isDead === false) { // 살아있는 경우
+                if(!freeViewMode) { // 3인칭 모드 
+                    const moveVector = new Vector3(
+                        (keyState.current['d'] ? 1 : 0) -
+                            (keyState.current['a'] ? 1 : 0), // 수정: 오른쪽이면 1, 왼쪽이면 -1
+                        0,
+                        (keyState.current['w'] ? 1 : 0) -
+                            (keyState.current['s'] ? 1 : 0) // 수정: 위쪽이면 1, 아래쪽이면 -1
                     );
-                    rotationVector.normalize(); // 회전 벡터를 정규화합니다.
-                    const forward = new Vector3(0, 0, -1).applyQuaternion(
-                        new Quaternion().setFromUnitVectors(
-                            new Vector3(0, 0, -1),
-                            rotationVector
-                        )
-                    );
-                    otherPlayerRef.lookAt(
-                        otherPlayerRef.position.clone().add(forward)
-                    );
-                }
-            } else if (  // 나 자신
-                Player.nickname === meInfo?.nickname &&
-                Player.isSeeker === false) { 
-                
-                const delta = clock.getDelta(); // 프레임 간 시간 간격을 가져옵니다.
-                accumulatedTimeRef.current += delta;
- 
-                if(!playerRef.current) return;
-                if(Player.isDead === false) { // 살아있는 경우
-                    if(!freeViewMode) { // 3인칭 모드 
-                        const moveVector = new Vector3(
-                            (keyState.current['d'] ? 1 : 0) -
-                                (keyState.current['a'] ? 1 : 0), // 수정: 오른쪽이면 1, 왼쪽이면 -1
-                            0,
-                            (keyState.current['w'] ? 1 : 0) -
-                                (keyState.current['s'] ? 1 : 0) // 수정: 위쪽이면 1, 아래쪽이면 -1
-                        );
-        
-                        if (keyState.current['q']) {
-                            playerRef.current.rotation.y += 0.025;
-                        }
-        
-                        if (keyState.current['e']) {
-                            playerRef.current.rotation.y -= 0.025;
-                        }
-            
-                        if (!moveVector.equals(new Vector3(0, 0, 0))) { // 이동중
-                            lockPointer();
-                            moveVector.normalize().multiplyScalar(0.2);
-        
-                            const forward = new Vector3(
-                                Math.sin(playerRef.current.viewLR), // viewLR 값으로 삼각함수를 통해 x 값을 설정
-                                0,
-                                Math.cos(playerRef.current.viewLR) // viewLR 값으로 삼각함수를 통해 z 값을 설정
-                            ).normalize(); // 벡터를 정규화하여 길이를 1로 만듭니다.
-        
-                            const moveDirection = forward
-                                .clone()
-                                .multiplyScalar(moveVector.z)
-                                .add(
-                                    new Vector3(-forward.z, 0, forward.x).multiplyScalar(
-                                        moveVector.x
-                                    )
-                                );
-        
-                            playerRef.current.position.add(moveDirection);
-                            // stomp로 이전
-                            if (accumulatedTimeRef.current >= 0.003) {
-                                accumulatedTimeRef.current = 0;
-                                stompClient.sendMessage(
-                                    `/player.move`,
-                                    JSON.stringify({
-                                        type: 'player.move',
-                                        roomId: roomId,
-                                        sender: meName,
-                                        data: {
-                                            nickname: meName,
-                                            position: [
-                                                playerRef.current.position.x,
-                                                playerRef.current.position.y,
-                                                playerRef.current.position.z,
-                                            ],
-                                            direction: [
-                                                Math.sin(playerRef.current.rotation.y),
-                                                0,
-                                                Math.cos(playerRef.current.rotation.y)],
-                                        },
-                                    })
-                                );  
-                            }
-                        } else { // 고정된 상태
-                            // rotation값 stomp 
-                            if (accumulatedTimeRef.current >= 0.003) {
-                                accumulatedTimeRef.current = 0;
-                                stompClient.sendMessage(
-                                    `/player.move`,
-                                    JSON.stringify({
-                                        type: 'player.move',
-                                        roomId: roomId,
-                                        sender: meName,
-                                        data: {
-                                            nickname: meName,
-                                            position: [
-                                                playerRef.current.position.x,
-                                                playerRef.current.position.y,
-                                                playerRef.current.position.z,
-                                            ],
-                                            direction: [
-                                                Math.sin(playerRef.current.rotation.y),
-                                                0,
-                                                Math.cos(playerRef.current.rotation.y)],
-                                        },
-                                    })
-                                ); 
-                            }  
-                        }  
-                        // 카메라 설정
-                        const playerPosition = playerRef.current.position.clone();   
-                        // 플레이어가 바라보는 곳
-                        const playerDirection = new Vector3(
-                            Math.sin(playerRef.current.viewLR),
-                            playerRef.current.viewUpDown + 5,
-                            Math.cos(playerRef.current.viewLR)
-                        );
-        
-                        // 카메라 위치
-                        playerDirection.multiplyScalar(mouseWheelValue*2);
-                        camera.position.set(
-                            playerPosition.x - playerDirection.x,
-                            playerPosition.y + 8 - playerRef.current.viewUpDown,
-                            playerPosition.z - playerDirection.z
-                        );
-        
-                        playerDirection.multiplyScalar(0.5);
-        
-                        // 카메라가 바라볼 위치
-                        const carmeraTarget = new Vector3(
-                            playerPosition.x + playerDirection.x,
-                            0,
-                            playerPosition.z + playerDirection.z
-                        );
-                        camera.lookAt(carmeraTarget);
-                    } else { // 자유 시점 모드 (R클릭)
-                        if(!observerRef.current) {  
-                            observerRef.current = new Observer();
-                            observerRef.current.position = new Vector3( 
-                                playerRef.current.position.x + 12, 
-                                playerRef.current.position.y + 12, 
-                                playerRef.current.position.z + 12, 
-                            ); 
-                            observerRef.current.viewLR = playerRef.current.viewLR;
-                            observerRef.current.viewUpDown = playerRef.current.viewUpDown; 
-                        }  
-        
-                        const moveVector = new Vector3(
-                            (keyState.current['d'] ? 1 : 0) -
-                                (keyState.current['a'] ? 1 : 0),
-                            0,
-                            (keyState.current['w'] ? 1 : 0) -
-                                (keyState.current['s'] ? 1 : 0)
-                        );
-                        if (!moveVector.equals(new Vector3(0, 0, 0))) { 
-                            moveVector.normalize().multiplyScalar(0.2); // 속도조절
-                        
-                            const forward = new Vector3(
-                                Math.sin(observerRef.current.viewLR), // viewLR 값으로 삼각함수를 통해 x 값을 설정
-                                Math.sin(observerRef.current.viewUpDown),
-                                Math.cos(observerRef.current.viewLR) // viewLR 값으로 삼각함수를 통해 z 값을 설정
-                            ).normalize(); // 벡터를 정규화하여 길이를 1로 만듭니다.
-        
-                            const moveDirection = forward
-                                .clone()
-                                .multiplyScalar(moveVector.z)
-                                .add(
-                                    new Vector3(-forward.z, 0, forward.x).multiplyScalar(
-                                        moveVector.x
-                                    )
-                                );
-                            
-                            observerRef.current.position.add(moveDirection); 
-                        }
-                        
-                        // 프리뷰 카메라 설정 
-                        const observerDirection = new Vector3( // 플레이어가 바라보는 곳
-                            Math.sin(observerRef.current.viewLR),
-                            observerRef.current.viewUpDown, // 아래 위
-                            Math.cos(observerRef.current.viewLR)
-                        ); 
-                        const cameraTarget = observerRef.current.position
-                            .clone()
-                            .add(observerDirection.multiplyScalar(3));
-        
-                        camera.position.set(
-                            observerRef.current.position.x,
-                            observerRef.current.position.y,
-                            observerRef.current.position.z,
-                        );
-                        camera.lookAt(cameraTarget); 
-                    }     
-                } else { // 죽어있는 경우 (관전모드)    
-                    // if(meInfo.isSeeker === true) return; 
-                    console.log("사망상태입니다!")
-                    camera.position.set(30,30,30)
-                    camera.lookAt(0,0,0)
-                    // const observedPlayer = roomState.roomPlayers[observedPlayerIndex];
     
-                    // if (observedPlayer) {
-                    //     console.log("현재 관전중인 플레이어 : " + JSON.stringify(observedPlayer))
-                    //     // 관전 중인 플레이어의 위치를 사용하여 카메라를 조정합니다.
-                    //     camera.position.set(
-                    //         observedPlayer.position[0] + 10,
-                    //         observedPlayer.position[1] + 10,
-                    //         observedPlayer.position[2] + 10 
-                    //     ); 
-                    //     camera.lookAt(observedPlayer.position[0], observedPlayer.position[1], observedPlayer.position[2]);
-                    // }
+                    if (keyState.current['q']) {
+                        playerRef.current.rotation.y += 0.025;
+                    }
+    
+                    if (keyState.current['e']) {
+                        playerRef.current.rotation.y -= 0.025;
+                    }
+        
+                    if (!moveVector.equals(new Vector3(0, 0, 0))) { // 이동중
+                        lockPointer();
+                        moveVector.normalize().multiplyScalar(0.2);
+    
+                        const forward = new Vector3(
+                            Math.sin(playerRef.current.viewLR), // viewLR 값으로 삼각함수를 통해 x 값을 설정
+                            0,
+                            Math.cos(playerRef.current.viewLR) // viewLR 값으로 삼각함수를 통해 z 값을 설정
+                        ).normalize(); // 벡터를 정규화하여 길이를 1로 만듭니다.
+    
+                        const moveDirection = forward
+                            .clone()
+                            .multiplyScalar(moveVector.z)
+                            .add(
+                                new Vector3(-forward.z, 0, forward.x).multiplyScalar(
+                                    moveVector.x
+                                )
+                            );
+    
+                        playerRef.current.position.add(moveDirection);
+                        // stomp로 이전
+                        if (accumulatedTimeRef.current >= 0.003) {
+                            accumulatedTimeRef.current = 0;
+                            stompClient.sendMessage(
+                                `/player.move`,
+                                JSON.stringify({
+                                    type: 'player.move',
+                                    roomId: roomId,
+                                    sender: meName,
+                                    data: {
+                                        nickname: meName,
+                                        position: [
+                                            playerRef.current.position.x,
+                                            playerRef.current.position.y,
+                                            playerRef.current.position.z,
+                                        ],
+                                        direction: [
+                                            Math.sin(playerRef.current.rotation.y),
+                                            0,
+                                            Math.cos(playerRef.current.rotation.y)],
+                                    },
+                                })
+                            );  
+                        }
+                    } else { // 고정된 상태
+                        // rotation값 stomp 
+                        if (accumulatedTimeRef.current >= 0.003) {
+                            accumulatedTimeRef.current = 0;
+                            stompClient.sendMessage(
+                                `/player.move`,
+                                JSON.stringify({
+                                    type: 'player.move',
+                                    roomId: roomId,
+                                    sender: meName,
+                                    data: {
+                                        nickname: meName,
+                                        position: [
+                                            playerRef.current.position.x,
+                                            playerRef.current.position.y,
+                                            playerRef.current.position.z,
+                                        ],
+                                        direction: [
+                                            Math.sin(playerRef.current.rotation.y),
+                                            0,
+                                            Math.cos(playerRef.current.rotation.y)],
+                                    },
+                                })
+                            ); 
+                        }  
+                    }  
+                    // 카메라 설정
+                    const playerPosition = playerRef.current.position.clone();   
+                    // 플레이어가 바라보는 곳
+                    const playerDirection = new Vector3(
+                        Math.sin(playerRef.current.viewLR),
+                        playerRef.current.viewUpDown + 5,
+                        Math.cos(playerRef.current.viewLR)
+                    );
+    
+                    // 카메라 위치
+                    playerDirection.multiplyScalar(mouseWheelValue*2);
+                    camera.position.set(
+                        playerPosition.x - playerDirection.x,
+                        playerPosition.y + 8 - playerRef.current.viewUpDown,
+                        playerPosition.z - playerDirection.z
+                    );
+    
+                    playerDirection.multiplyScalar(0.5);
+    
+                    // 카메라가 바라볼 위치
+                    const carmeraTarget = new Vector3(
+                        playerPosition.x + playerDirection.x,
+                        0,
+                        playerPosition.z + playerDirection.z
+                    );
+                    camera.lookAt(carmeraTarget);
+                } else { // 자유 시점 모드 (R클릭)
+                    if(!observerRef.current) {  
+                        observerRef.current = new Observer();
+                        observerRef.current.position = new Vector3( 
+                            playerRef.current.position.x + 12, 
+                            playerRef.current.position.y + 12, 
+                            playerRef.current.position.z + 12, 
+                        ); 
+                        observerRef.current.viewLR = playerRef.current.viewLR;
+                        observerRef.current.viewUpDown = playerRef.current.viewUpDown; 
+                    }  
+    
+                    const moveVector = new Vector3(
+                        (keyState.current['d'] ? 1 : 0) -
+                            (keyState.current['a'] ? 1 : 0),
+                        0,
+                        (keyState.current['w'] ? 1 : 0) -
+                            (keyState.current['s'] ? 1 : 0)
+                    );
+                    if (!moveVector.equals(new Vector3(0, 0, 0))) { 
+                        moveVector.normalize().multiplyScalar(0.2); // 속도조절
+                       
+                        const forward = new Vector3(
+                            Math.sin(observerRef.current.viewLR), // viewLR 값으로 삼각함수를 통해 x 값을 설정
+                            Math.sin(observerRef.current.viewUpDown),
+                            Math.cos(observerRef.current.viewLR) // viewLR 값으로 삼각함수를 통해 z 값을 설정
+                        ).normalize(); // 벡터를 정규화하여 길이를 1로 만듭니다.
+    
+                        const moveDirection = forward
+                            .clone()
+                            .multiplyScalar(moveVector.z)
+                            .add(
+                                new Vector3(-forward.z, 0, forward.x).multiplyScalar(
+                                    moveVector.x
+                                )
+                            );
+                        
+                        observerRef.current.position.add(moveDirection); 
+                    }
+                    
+                    // 프리뷰 카메라 설정 
+                    const observerDirection = new Vector3( // 플레이어가 바라보는 곳
+                        Math.sin(observerRef.current.viewLR),
+                        observerRef.current.viewUpDown, // 아래 위
+                        Math.cos(observerRef.current.viewLR)
+                    ); 
+                    const cameraTarget = observerRef.current.position
+                        .clone()
+                        .add(observerDirection.multiplyScalar(3));
+    
+                    camera.position.set(
+                        observerRef.current.position.x,
+                        observerRef.current.position.y,
+                        observerRef.current.position.z,
+                    );
+                    camera.lookAt(cameraTarget); 
+                }     
+            } else { // 죽어있는 경우 (관전모드)    
+                if(meInfo.isSeeker === true) return; 
+                console.log("사망상태입니다!")
+                camera.position.set(30,30,30)
+                camera.lookAt(0,0,0)
+                // const observedPlayer = roomState.roomPlayers[observedPlayerIndex];
+ 
+                // if (observedPlayer) {
+                //     console.log("현재 관전중인 플레이어 : " + JSON.stringify(observedPlayer))
+                //     // 관전 중인 플레이어의 위치를 사용하여 카메라를 조정합니다.
+                //     camera.position.set(
+                //         observedPlayer.position[0] + 10,
+                //         observedPlayer.position[1] + 10,
+                //         observedPlayer.position[2] + 10 
+                //     ); 
+                //     camera.lookAt(observedPlayer.position[0], observedPlayer.position[1], observedPlayer.position[2]);
+                // }
+            }
+             
+        } else {
+            // 다른 플레이어의 캐릭터
+            roomState.roomPlayers.forEach((otherPlayer: any) => {
+                // console.log("플레이어 : " + otherPlayer.nickname + " , " + otherPlayer.isDead)
+                if (
+                    otherPlayer.nickname !== meInfo?.nickname &&
+                    otherPlayer.isSeeker === false
+                ) {
+                    const otherPlayerRef = playerRef.current;
+                    if (otherPlayerRef) {
+                        // 위치 적용
+                        otherPlayerRef?.position.set(
+                            otherPlayer.position[0],
+                            otherPlayer.position[1],
+                            otherPlayer.position[2]
+                        );
+
+                        // 방향 적용
+                        const rotationVector = new Vector3(
+                            otherPlayer.direction[0],
+                            otherPlayer.direction[1],
+                            otherPlayer.direction[2]
+                        );
+                        rotationVector.normalize(); // 회전 벡터를 정규화합니다.
+                        const forward = new Vector3(0, 0, -1).applyQuaternion(
+                            new Quaternion().setFromUnitVectors(
+                                new Vector3(0, 0, -1),
+                                rotationVector
+                            )
+                        );
+                        otherPlayerRef.lookAt(
+                            otherPlayerRef.position.clone().add(forward)
+                        );
+                    }
                 } 
-            } 
-        }); 
+                
+                // if( 
+                //     otherPlayer.nickname === meInfo?.nickname &&
+                //     otherPlayer.isSeeker === false &&
+                //     otherPlayer.isDead === true
+                // ) {  
+                //     console.log("사망!!!!!!!!!!")
+                //     store.dispatch(meDead(true));  // 여기 ㅋ
+                // }
+            });
+        }
         
         if(meInfo.isSeeker === false) { // 사물만 사물의 이름을 식별할 수 있다
             if (nicknameRef.current) {

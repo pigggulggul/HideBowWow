@@ -41,7 +41,7 @@ const initialState: UserState = {
 export const userSlice = createSlice({
     name: 'userSlice',
     initialState,
-    reducers: {
+    reducers: { 
         //닉네임 설정
         userNicknameState: (state, action) => {
             state.userNickname = action.payload;
