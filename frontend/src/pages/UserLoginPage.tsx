@@ -39,7 +39,7 @@ export default function UserLoginPage() {
                     'url(/src/assets/images/bg/background-main.png)',
             }}
         >
-            <p className="text-[2.4vw]">게스트 로그인</p>
+            <img src="/src/assets/images/text/text_login_user.png" alt="" />
             <div className="relative w-[50%] flex justify-between my-[2vw]">
                 <h5 className="w-[35%] text-white text-[3vw] text-start">
                     닉네임
@@ -73,7 +73,7 @@ export default function UserLoginPage() {
                     login();
                 }}
             >
-                <div className="border-[0.3vw] color-border-main rounded-[0.6vw] px-[2vw] py-[0.4vw] color-text-main bg-white text-[2.6vw] cursor-pointer hover:color-bg-main hover:text-white">
+                <div className="border-[0.3vw] color-border-main rounded-[0.6vw] px-[2vw] py-[0.4vw] color-text-main bg-white text-[2.6vw] cursor-pointer hover:color-bg-main hover:text-white btn-animation">
                     Guest
                 </div>
             </div>

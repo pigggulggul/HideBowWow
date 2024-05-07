@@ -128,7 +128,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                 case 10:
                     return '/models/character/Reindeer_Animations.glb';
                 case 11:
-                    return '/models/character/SeaLion_Animations.glb';
+                    return '/models/character/Penguin_Animations.glb';
                 case 12:
                     return '/models/character/SnowOwl_Animations.glb';
                 case 13:
@@ -178,7 +178,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     // const unlockPointer = () => {
     //     document.exitPointerLock();
     // };
-  
+
     const updateRotationX = (movementY: number) => {
         const rotationAmount = movementY * 0.001; // 회전 속도 조절을 위해 상수를 곱합니다.
 
@@ -231,7 +231,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
         return () => {
             document.removeEventListener('mousemove', handleMouseMove);
         };
-    }, []); 
+    }, []);
 
     useEffect(() => {
         if (isWalking) {
@@ -577,7 +577,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
             case 10:
                 return materials.M_Reindeer;
             case 11:
-                return materials.M_SeaLion;
+                return materials.M_Penguin;
             case 12:
                 return materials.M_SnowOwl;
             case 13:

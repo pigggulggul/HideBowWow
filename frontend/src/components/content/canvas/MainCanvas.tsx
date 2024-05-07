@@ -1,8 +1,9 @@
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
+import { OrbitControls, Stats, StatsGl } from '@react-three/drei';
 import { RootMap } from './maps/RootMap';
 import { Debug, Physics } from '@react-three/cannon';
 import { Suspense } from 'react';
+import DrawCallCounter from '../../utils/DrawCallCounter';
 export function MainCanvas() {
     const aspectRatio = window.innerWidth / window.innerHeight;
     return (
@@ -34,11 +35,14 @@ export function MainCanvas() {
             <OrbitControls />
             <Suspense>
                 <Physics>
-                    <Debug>
-                        <RootMap />
-                    </Debug>
+                    {/* <Debug> */}
+                    <RootMap />
+                    {/* </Debug> */}
                 </Physics>
             </Suspense>
+            {/* 최적화 관련 */}
+            {/* <StatsGl />
+            <DrawCallCounter /> */}
         </Canvas>
     );
 }
