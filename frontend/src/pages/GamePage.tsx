@@ -3,8 +3,11 @@ import { Content } from '../components/content/Content';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import StompClient from '../websocket/StompClient';
+import { startRecording, stopRecording } from '../assets/js/voice';
 
 export default function GamePage() {
+    const stompClient = StompClient.getInstance();
     const meInfo = useSelector(
         (state: any) => state.reduxFlag.userSlice.meInfo
     );
@@ -95,6 +98,13 @@ export default function GamePage() {
             ) : (
                 <></>
             )}
+            <div className="absolute flex top-1 w-full justify-end">
+                <button onClick={() => {stompClient.enterVoiceChannel(currentRoom.roomId, meInfo.nickname)}}>음성채널 입장</button> &nbsp;&nbsp;
+                <button onClick={() => {stompClient.exitVoiceChannel()}}>음성채널 퇴장</button> &nbsp;&nbsp;
+                <button onClick={() => {startRecording()}}>마이크 ON</button> &nbsp;&nbsp;
+                <button onClick={() => {stopRecording()}}>마이크 OFF</button> &nbsp;&nbsp;
+            </div>
+            
         </RecoilRoot>
     );
 }
