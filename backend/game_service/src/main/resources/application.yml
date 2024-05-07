@@ -39,5 +39,5 @@ game:
   maxCapacity: 6
   object:
     maxSeekerIdx: 14
-    maxHiderIdx: 20
+    maxHiderIdx: 101
   fps: 30
