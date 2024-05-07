@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { PlayerAtom } from '../../../../../store/PlayersAtom';
 import { BufferGeometry, Line, LineBasicMaterial, Vector3 } from 'three';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { CurrentPlayersInfo } from '../../../../../types/GameType';
 import { useThree } from '@react-three/fiber';
 import StompClient from '../../../../../websocket/StompClient';
+import { heartState } from '../../../../../store/user-slice';
 
 export function AttackRules() {
     const [, setDetectedObject] = useState<any>(null);
@@ -19,19 +20,30 @@ export function AttackRules() {
         (state: any) => state.reduxFlag.userSlice.userNickname
     );
     const [players] = useRecoilState(PlayerAtom);
+    const meInfo = useSelector(
+        (state: any) => state.reduxFlag.userSlice.meInfo
+    );
+    const meHeart = useSelector(
+        (state: any) => state.reduxFlag.userSlice.meHeart
+    );
+    const dispatch = useDispatch();
     useEffect(() => {
-        const handleKeyDown = (event: any) => {
-            if (event.key === 'k') {
-                handleInteraction();
-            }
-        };
+        if (meInfo.isSeeker) {
+            const handleKeyDown = (event: MouseEvent) => {
+                if (event.button === 0) {
+                    handleInteraction();
+                }
+            };
 
-        window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
+            window.addEventListener('mousedown', handleKeyDown);
+            return () => window.removeEventListener('mousedown', handleKeyDown);
+        }
     }, [players, rayVisual]);
 
     const handleInteraction = () => {
         console.log('간다 공격!~');
+        let killFlag = false;
+
         const newPlayers = currentRoom.roomPlayers.map(
             (player: CurrentPlayersInfo) => ({
                 ...player,
@@ -52,30 +64,43 @@ export function AttackRules() {
 
             console.log(seeker.position);
             if (intersects.length > 0) {
-                const closestObject = intersects[0].object;
-                console.log('감지된 객체:', closestObject);
-                setDetectedObject(closestObject);
-                drawRayLine(camera.position, intersects[0].point); // 레이를 그리는 함수 호출
-                currentRoom.roomPlayers.map((item: CurrentPlayersInfo) => {
-                    // 모든 부모 이름을 가져옵니다.
-                    const parentNames = getParentNames(closestObject);
-                    if (!item.isDead && parentNames.includes(item.nickname)) {
-                        console.log('죽인다 빵야빵야');
-                        stompClient.sendMessage(
-                            `/player.dead`,
-                            JSON.stringify({
-                                type: 'player.enter',
-                                roomId: currentRoom.roomId,
-                                sender: item.nickname,
-                                data: {
-                                    nickname: item.nickname,
-                                    isDead: true,
-                                },
-                            })
-                        );
-                        // item.isDead = true;
+                intersects.map((item, index) => {
+                    if (index > 8) {
+                        return;
                     }
+                    const closestObject = item.object;
+                    console.log('감지된 객체:', closestObject);
+                    setDetectedObject(closestObject);
+                    // drawRayLine(camera.position, intersects[0].point); // 레이를 그리는 함수 호출
+                    currentRoom.roomPlayers.map((item: CurrentPlayersInfo) => {
+                        // 모든 부모 이름을 가져옵니다.
+                        const parentNames = getParentNames(closestObject);
+                        if (
+                            !item.isDead &&
+                            parentNames.includes(item.nickname)
+                        ) {
+                            console.log('죽인다 빵야빵야');
+                            killFlag = true;
+                            dispatch(heartState(5));
+                            stompClient.sendMessage(
+                                `/player.dead`,
+                                JSON.stringify({
+                                    type: 'player.enter',
+                                    roomId: currentRoom.roomId,
+                                    sender: item.nickname,
+                                    data: {
+                                        nickname: item.nickname,
+                                        isDead: true,
+                                    },
+                                })
+                            );
+                            // item.isDead = true;
+                        }
+                    });
                 });
+                if (!killFlag) {
+                    dispatch(heartState(meHeart - 1));
+                }
                 // closestObject.parent?.name 지준영
             }
         }

@@ -38,6 +38,88 @@ type GLTFResult = GLTF & {
         Pot_1: Mesh;
         Fridge_2: Mesh;
         Table_13: Mesh;
+        Armchair_1: Mesh;
+        Armchair_2: Mesh;
+        Basket_2: Mesh;
+        Bath_1: Mesh;
+        Bed_2: Mesh;
+        Bed_6: Mesh;
+        Bed_3: Mesh;
+        Books_6: Mesh;
+        Books_8: Mesh;
+        Books_4: Mesh;
+        Books_2: Mesh;
+        Books_15: Mesh;
+        Bottle_20: Mesh;
+        Bottle_22: Mesh;
+        Box_7: Mesh;
+        Bread_1: Mesh;
+        Cactus_5: Mesh;
+        Cactus_6: Mesh;
+        Cactus_4: Mesh;
+        Cake_1: Mesh;
+        Carpet_16: Mesh;
+        Carpet_8: Mesh;
+        Chair_5: Mesh;
+        Clock_1: Mesh;
+        Coffee_Drink_1: Mesh;
+        Cup_1: Mesh;
+        Cup_2: Mesh;
+        Toy_1: Mesh;
+        Chicken_Toy_1: Mesh;
+        Toy_Mushroom_1: Mesh;
+        Toy_Mushroom_2: Mesh;
+        Toy_Cat_1: Mesh;
+        Toy_Rabbit_1: Mesh;
+        Cabinet_19: Mesh;
+        Kitchen_Cabinet_3: Mesh;
+        Flower_5: Mesh;
+        Flower_2: Mesh;
+        Flower_1: Mesh;
+        Vase_with_Flowers_1: Mesh;
+        Vase_with_Flowers_3: Mesh;
+        Flower_6: Mesh;
+        Flower_7: Mesh;
+        Flower_8: Mesh;
+        Flower_9: Mesh;
+        Flower_10: Mesh;
+        Spatula_1: Mesh;
+        Painting_18: Mesh;
+        Painting_19: Mesh;
+        Painting_20: Mesh;
+        Childrens_Drawing_3: Mesh;
+        Childrens_Drawing_1: Mesh;
+        Childrens_Drawing_2: Mesh;
+        Flags_1: Mesh;
+        Mannequin_1: Mesh;
+        Mirror_1: Mesh;
+        Ottoman_1: Mesh;
+        Ottoman_2: Mesh;
+        Ottoman_3: Mesh;
+        Plate_1: Mesh;
+        Plate_3: Mesh;
+        Pot_Full_1: Mesh;
+        Present_1: Mesh;
+        Present_2: Mesh;
+        Present_3: Mesh;
+        Puzzle_1: Mesh;
+        Puzzle_2: Mesh;
+        Puzzle_3: Mesh;
+        Puzzle_4: Mesh;
+        Table_6: Mesh;
+        Sandwich_1: Mesh;
+        Sausages_1: Mesh;
+        Sewing_machine_1: Mesh;
+        Couch_5: Mesh;
+        Couch_1: Mesh;
+        Towels_1: Mesh;
+        Towels_2: Mesh;
+        TV_1: Mesh;
+        Plant_44: Mesh;
+        Plant_60: Mesh;
+        Plant_65: Mesh;
+        Tree_1: Mesh;
+        Plant_17: Mesh;
     };
     materials: {
         ['Cartoon_Room_Mat.002']: MeshStandardMaterial;
@@ -51,7 +133,7 @@ class ObjectRef extends Group {
 }
 
 class Observer {
-    position: Vector3 = new Vector3(0,0,0);
+    position: Vector3 = new Vector3(0, 0, 0);
     viewUpDown: number = 0;
     viewLR: number = 0;
 }
@@ -78,12 +160,12 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         (state: any) => state.reduxFlag.userSlice.currentRoom
     );
 
-    const memoizedPosition = useMemo(() => position, []); 
-    const playerRef = useRef<ObjectRef>(null); 
-    const nicknameRef = useRef<ObjectRef>(null); 
-    const accumulatedTimeRef = useRef(0.0);     
+    const memoizedPosition = useMemo(() => position, []);
+    const playerRef = useRef<ObjectRef>(null);
+    const nicknameRef = useRef<ObjectRef>(null);
+    const accumulatedTimeRef = useRef(0.0);
     const observerRef = useRef<Observer | null>(null);
-    
+
     const { scene: scene_, materials } = useGLTF(
         (() => {
             switch (modelIndex) {
@@ -126,45 +208,176 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 case 18:
                     return '/models/object/RoundTable_brown.glb';
                 case 19:
-                    return '/models/object/Closet.glb';
+                    return '/models/object/Armchair_1.glb';
                 case 20:
-                    return '/models/object/Closet.glb';
-                case 20:
-                    return '/models/object/Closet.glb';
+                    return '/models/object/Armchair_2.glb';
+                case 21:
+                    return '/models/object/Basket_1.glb';
+                case 22:
+                    return '/models/object/Bath_1.glb';
+                case 23:
+                    return '/models/object/Bed_1.glb';
+                case 24:
+                    return '/models/object/Bed_2.glb';
+                case 25:
+                    return '/models/object/Bed_3.glb';
+                case 26:
+                    return '/models/object/Book_1.glb';
+                case 27:
+                    return '/models/object/Book_2.glb';
+                case 28:
+                    return '/models/object/Book_3.glb';
+                case 29:
+                    return '/models/object/Book_4.glb';
+                case 30:
+                    return '/models/object/Book_5.glb';
+                case 31:
+                    return '/models/object/Bottle_1.glb';
+                case 32:
+                    return '/models/object/Bottle_2.glb';
+                case 33:
+                    return '/models/object/Box_1.glb';
+                case 34:
+                    return '/models/object/Bread.glb';
+                case 35:
+                    return '/models/object/Cactus_1.glb';
+                case 36:
+                    return '/models/object/Cactus_2.glb';
+                case 37:
+                    return '/models/object/Cactus_3.glb';
+                case 38:
+                    return '/models/object/Cake_1.glb';
+                case 39:
+                    return '/models/object/Carpet_1.glb';
+                case 40:
+                    return '/models/object/Carpet_2.glb';
+                case 41:
+                    return '/models/object/Chair_orange.glb';
+                case 42:
+                    return '/models/object/Clock_1.glb';
+                case 43:
+                    return '/models/object/Coffee_drink.glb';
+                case 44:
+                    return '/models/object/Cup_1.glb';
+                case 45:
+                    return '/models/object/Cup_2.glb';
+                case 46:
+                    return '/models/object/Doll_bear.glb';
+                case 47:
+                    return '/models/object/Doll_Chick.glb';
+                case 48:
+                    return '/models/object/Doll_mushroom_1.glb';
+                case 49:
+                    return '/models/object/Doll_mushroom_2.glb';
+                case 50:
+                    return '/models/object/Doll_Polar.glb';
+                case 51:
+                    return '/models/object/Doll_rabbit.glb';
+                case 52:
+                    return '/models/object/Drawer_blue_1.glb';
+                case 53:
+                    return '/models/object/Drawer_pink_1.glb';
+                case 54:
+                    return '/models/object/Flower_1.glb';
+                case 55:
+                    return '/models/object/Flower_2.glb';
+                case 56:
+                    return '/models/object/Flower_3.glb';
+                case 57:
+                    return '/models/object/Flower_5.glb';
+                case 58:
+                    return '/models/object/Flower_6.glb';
+                case 59:
+                    return '/models/object/Flower_7.glb';
+                case 60:
+                    return '/models/object/Flower_8.glb';
+                case 61:
+                    return '/models/object/Flower_9.glb';
+                case 62:
+                    return '/models/object/Flower_10.glb';
+                case 63:
+                    return '/models/object/Flower_11.glb';
+                case 64:
+                    return '/models/object/Fork.glb';
+                case 65:
+                    return '/models/object/Frame_1.glb';
+                case 66:
+                    return '/models/object/Frame_2.glb';
+                case 67:
+                    return '/models/object/Frame_3.glb';
+                case 68:
+                    return '/models/object/Frame_5.glb';
+                case 69:
+                    return '/models/object/Frame_6.glb';
+                case 70:
+                    return '/models/object/Frame_7.glb';
+                case 71:
+                    return '/models/object/Frame_8.glb';
+                case 72:
+                    return '/models/object/Mannequin_1.glb';
+                case 73:
+                    return '/models/object/Mirror_1.glb';
+                case 74:
+                    return '/models/object/Ottoman_1.glb';
+                case 75:
+                    return '/models/object/Ottoman_2.glb';
+                case 76:
+                    return '/models/object/Ottoman_3.glb';
+                case 77:
+                    return '/models/object/Plate_1.glb';
+                case 78:
+                    return '/models/object/Plate_2.glb';
+                case 79:
+                    return '/models/object/Pot_full_1.glb';
+                case 80:
+                    return '/models/object/Present_1.glb';
+                case 81:
+                    return '/models/object/Present_2.glb';
+                case 82:
+                    return '/models/object/Present_3.glb';
+                case 83:
+                    return '/models/object/Puzzle_1.glb';
+                case 84:
+                    return '/models/object/Puzzle_2.glb';
+                case 85:
+                    return '/models/object/Puzzle_3.glb';
+                case 86:
+                    return '/models/object/Puzzle_4.glb';
+                case 87:
+                    return '/models/object/RoundTable_orange.glb';
+                case 88:
+                    return '/models/object/Sandwich_1.glb';
+                case 89:
+                    return '/models/object/Sausages_1.glb';
+                case 90:
+                    return '/models/object/Sewing_machine_1.glb';
+                case 91:
+                    return '/models/object/Sofa_1.glb';
+                case 92:
+                    return '/models/object/Sofa_2.glb';
+                case 93:
+                    return '/models/object/Towels_1.glb';
+                case 94:
+                    return '/models/object/Towels_2.glb';
+                case 95:
+                    return '/models/object/Tv.glb';
+                case 96:
+                    return '/models/object/Vase_1.glb';
+                case 97:
+                    return '/models/object/Vase_2.glb';
+                case 98:
+                    return '/models/object/Vase_3.glb';
+                case 99:
+                    return '/models/object/Vase_4.glb';
+                case 100:
+                    return '/models/object/Vase_5.glb';
                 default:
                     return '/models/object/Closet.glb';
             }
         })()
     ) as GLTFResult;
     const getScaleByModelIndex = (index: number | undefined) => {
-        const scaleValues: any = {
-            0: 0.025,
-            1: 0.025,
-            2: 0.025,
-            3: 0.025,
-            4: 0.025,
-            5: 0.025,
-            6: 0.025,
-            7: 0.025,
-            8: 0.025,
-            9: 0.025,
-            10: 0.025,
-            11: 0.025,
-            12: 0.025,
-            13: 0.025,
-            14: 0.025,
-            15: 0.025,
-            16: 0.025,
-            17: 0.025,
-            18: 0.025,
-            19: 0.025,
-            20: 0.025,
-        };
-        if (index) {
-            return scaleValues[index] || 1; // modelIndex에 해당하는 값이 없다면 기본값으로 1 사용
-        } else {
-            return -1;
-        }
+        return 0.025;
     };
 
     const scale = getScaleByModelIndex(modelIndex);
@@ -213,10 +426,10 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     )
                 );
             }
-        } 
-        
-        if (observerRef.current) {  
-            observerRef.current.viewUpDown -= (rotationAmount*0.05); // 이 부분 수정
+        }
+
+        if (observerRef.current) {
+            observerRef.current.viewUpDown -= rotationAmount * 0.05; // 이 부분 수정
         }
     };
 
@@ -227,13 +440,13 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             // playerRef.current.rotation.y -= rotationAmount;
             playerRef.current.viewLR -= rotationAmount;
         }
- 
-        if (observerRef.current) {  
+
+        if (observerRef.current) {
             observerRef.current.viewLR -= rotationAmount;
         }
     };
 
-    const handleMouseWheel = (event: WheelEvent) => { 
+    const handleMouseWheel = (event: WheelEvent) => {
         // 마우스 휠을 아래로 내릴 때
         if (event.deltaY > 0) {
             setMouseWheelValue((prevValue) => Math.min(12, prevValue + 1)); // 최댓값인 12를 넘지 않도록 설정
@@ -248,8 +461,8 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         const element = document.body;
         const requestPointerLock = element.requestPointerLock;
         requestPointerLock.call(element);
-    }; 
-     
+    };
+
     const toggleFreeViewMode = () => {
         setFreeViewMode((prevMode) => !prevMode);
     };
@@ -301,7 +514,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         const handleKeyDown = (event: any) => {
             keyState.current[event.key] = true;
             if (event.key === 'r') {
-                toggleFreeViewMode(); 
+                toggleFreeViewMode();
             }
         };
 
@@ -317,17 +530,18 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         };
     }, []);
 
-    useFrame(({ camera , clock }) => {  
-        if (!player || !playerRef.current) return;  
+    useFrame(({ camera, clock }) => {
+        if (!player || !playerRef.current) return;
 
-        if (meInfo?.nickname === playerNickname) {  
+        if (meInfo?.nickname === playerNickname) {
             // 내 캐릭터의 경우
             lockPointer();
 
             const delta = clock.getDelta(); // 프레임 간 시간 간격을 가져옵니다.
             accumulatedTimeRef.current += delta;
 
-            if(!freeViewMode) { // 3인칭 모드 
+            if (!freeViewMode) {
+                // 3인칭 모드
                 const moveVector = new Vector3(
                     (keyState.current['d'] ? 1 : 0) -
                         (keyState.current['a'] ? 1 : 0), // 수정: 오른쪽이면 1, 왼쪽이면 -1
@@ -343,8 +557,9 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 if (keyState.current['e']) {
                     playerRef.current.rotation.y -= 0.025;
                 }
-    
-                if (!moveVector.equals(new Vector3(0, 0, 0))) { // 이동중
+
+                if (!moveVector.equals(new Vector3(0, 0, 0))) {
+                    // 이동중
                     moveVector.normalize().multiplyScalar(0.2);
 
                     const forward = new Vector3(
@@ -357,9 +572,11 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                         .clone()
                         .multiplyScalar(moveVector.z)
                         .add(
-                            new Vector3(-forward.z, 0, forward.x).multiplyScalar(
-                                moveVector.x
-                            )
+                            new Vector3(
+                                -forward.z,
+                                0,
+                                forward.x
+                            ).multiplyScalar(moveVector.x)
                         );
 
                     playerRef.current.position.add(moveDirection);
@@ -382,13 +599,15 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                                     direction: [
                                         Math.sin(playerRef.current.rotation.y),
                                         0,
-                                        Math.cos(playerRef.current.rotation.y)],
+                                        Math.cos(playerRef.current.rotation.y),
+                                    ],
                                 },
                             })
-                        );  
+                        );
                     }
-                } else { // 고정된 상태
-                    // rotation값 stomp 
+                } else {
+                    // 고정된 상태
+                    // rotation값 stomp
                     if (accumulatedTimeRef.current >= 0.003) {
                         accumulatedTimeRef.current = 0;
                         stompClient.sendMessage(
@@ -407,14 +626,15 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                                     direction: [
                                         Math.sin(playerRef.current.rotation.y),
                                         0,
-                                        Math.cos(playerRef.current.rotation.y)],
+                                        Math.cos(playerRef.current.rotation.y),
+                                    ],
                                 },
                             })
-                        ); 
-                    }  
-                }  
+                        );
+                    }
+                }
                 // 카메라 설정
-                const playerPosition = playerRef.current.position.clone();   
+                const playerPosition = playerRef.current.position.clone();
                 // 플레이어가 바라보는 곳
                 const playerDirection = new Vector3(
                     Math.sin(playerRef.current.viewLR),
@@ -423,7 +643,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 );
 
                 // 카메라 위치
-                playerDirection.multiplyScalar(mouseWheelValue*2);
+                playerDirection.multiplyScalar(mouseWheelValue * 2);
                 camera.position.set(
                     playerPosition.x - playerDirection.x,
                     playerPosition.y + 8 - playerRef.current.viewUpDown,
@@ -439,18 +659,20 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     playerPosition.z + playerDirection.z
                 );
                 camera.lookAt(carmeraTarget);
-            } else { // 자유 시점 모드 
-                
-                if(!observerRef.current) {  
+            } else {
+                // 자유 시점 모드
+
+                if (!observerRef.current) {
                     observerRef.current = new Observer();
-                    observerRef.current.position = new Vector3( 
-                        playerRef.current.position.x + 12, 
-                        playerRef.current.position.y + 12, 
-                        playerRef.current.position.z + 12, 
-                    ); 
+                    observerRef.current.position = new Vector3(
+                        playerRef.current.position.x + 12,
+                        playerRef.current.position.y + 12,
+                        playerRef.current.position.z + 12
+                    );
                     observerRef.current.viewLR = playerRef.current.viewLR;
-                    observerRef.current.viewUpDown = playerRef.current.viewUpDown; 
-                }  
+                    observerRef.current.viewUpDown =
+                        playerRef.current.viewUpDown;
+                }
 
                 const moveVector = new Vector3(
                     (keyState.current['d'] ? 1 : 0) -
@@ -459,9 +681,9 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     (keyState.current['w'] ? 1 : 0) -
                         (keyState.current['s'] ? 1 : 0)
                 );
-                if (!moveVector.equals(new Vector3(0, 0, 0))) { 
+                if (!moveVector.equals(new Vector3(0, 0, 0))) {
                     moveVector.normalize().multiplyScalar(0.2); // 속도조절
-                   
+
                     const forward = new Vector3(
                         Math.sin(observerRef.current.viewLR), // viewLR 값으로 삼각함수를 통해 x 값을 설정
                         Math.sin(observerRef.current.viewUpDown),
@@ -472,20 +694,22 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                         .clone()
                         .multiplyScalar(moveVector.z)
                         .add(
-                            new Vector3(-forward.z, 0, forward.x).multiplyScalar(
-                                moveVector.x
-                            )
+                            new Vector3(
+                                -forward.z,
+                                0,
+                                forward.x
+                            ).multiplyScalar(moveVector.x)
                         );
-                    
-                    observerRef.current.position.add(moveDirection); 
+
+                    observerRef.current.position.add(moveDirection);
                 }
-                
-                // 프리뷰 카메라 설정 
+
+                // 프리뷰 카메라 설정
                 const observerDirection = new Vector3( // 플레이어가 바라보는 곳
                     Math.sin(observerRef.current.viewLR),
                     observerRef.current.viewUpDown, // 아래 위
                     Math.cos(observerRef.current.viewLR)
-                ); 
+                );
                 const cameraTarget = observerRef.current.position
                     .clone()
                     .add(observerDirection.multiplyScalar(3));
@@ -493,10 +717,10 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 camera.position.set(
                     observerRef.current.position.x,
                     observerRef.current.position.y,
-                    observerRef.current.position.z,
+                    observerRef.current.position.z
                 );
-                camera.lookAt(cameraTarget); 
-            }  
+                camera.lookAt(cameraTarget);
+            }
         } else {
             // 다른 플레이어의 캐릭터
             roomState.roomPlayers.forEach((otherPlayer: any) => {
@@ -557,36 +781,6 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     };
     function returnMaterial(num: number | undefined) {
         switch (num) {
-            case 0:
-                return materials['Cartoon_Room_Mat.002'];
-            case 1:
-                return materials['Cartoon_Room_Mat.002'];
-            case 2:
-                return materials['Cartoon_Room_Mat.002'];
-            case 3:
-                return materials['Cartoon_Room_Mat.002'];
-            case 4:
-                return materials['Cartoon_Room_Mat.002'];
-            case 5:
-                return materials['Cartoon_Room_Mat.002'];
-            case 6:
-                return materials['Cartoon_Room_Mat.002'];
-            case 7:
-                return materials['Cartoon_Room_Mat.002'];
-            case 8:
-                return materials['Cartoon_Room_Mat.002'];
-            case 9:
-                return materials['Cartoon_Room_Mat.002'];
-            case 10:
-                return materials['Cartoon_Room_Mat.002'];
-            case 11:
-                return materials['Cartoon_Room_Mat.002'];
-            case 12:
-                return materials['Cartoon_Room_Mat.002'];
-            case 13:
-                return materials['Cartoon_Room_Mat.002'];
-            case 14:
-                return materials['Cartoon_Room_Mat.002'];
             default:
                 return materials['Cartoon_Room_Mat.002'];
         }
@@ -631,6 +825,170 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 return (nodes.Fridge_2 as SkinnedMesh).geometry;
             case 18:
                 return (nodes.Table_13 as SkinnedMesh).geometry;
+            case 19:
+                return (nodes.Armchair_1 as SkinnedMesh).geometry;
+            case 20:
+                return (nodes.Armchair_2 as SkinnedMesh).geometry;
+            case 21:
+                return (nodes.Basket_2 as SkinnedMesh).geometry;
+            case 22:
+                return (nodes.Bath_1 as SkinnedMesh).geometry;
+            case 23:
+                return (nodes.Bed_2 as SkinnedMesh).geometry;
+            case 24:
+                return (nodes.Bed_6 as SkinnedMesh).geometry;
+            case 25:
+                return (nodes.Bed_3 as SkinnedMesh).geometry;
+            case 26:
+                return (nodes.Books_6 as SkinnedMesh).geometry;
+            case 27:
+                return (nodes.Books_8 as SkinnedMesh).geometry;
+            case 28:
+                return (nodes.Books_4 as SkinnedMesh).geometry;
+            case 29:
+                return (nodes.Books_2 as SkinnedMesh).geometry;
+            case 30:
+                return (nodes.Books_15 as SkinnedMesh).geometry;
+            case 31:
+                return (nodes.Bottle_20 as SkinnedMesh).geometry;
+            case 32:
+                return (nodes.Bottle_22 as SkinnedMesh).geometry;
+            case 33:
+                return (nodes.Box_7 as SkinnedMesh).geometry;
+            case 34:
+                return (nodes.Bread_1 as SkinnedMesh).geometry;
+            case 35:
+                return (nodes.Cactus_5 as SkinnedMesh).geometry;
+            case 36:
+                return (nodes.Cactus_6 as SkinnedMesh).geometry;
+            case 37:
+                return (nodes.Cactus_4 as SkinnedMesh).geometry;
+            case 38:
+                return (nodes.Cake_1 as SkinnedMesh).geometry;
+            case 39:
+                return (nodes.Carpet_16 as SkinnedMesh).geometry;
+            case 40:
+                return (nodes.Carpet_8 as SkinnedMesh).geometry;
+            case 41:
+                return (nodes.Chair_5 as SkinnedMesh).geometry;
+            case 42:
+                return (nodes.Clock_1 as SkinnedMesh).geometry;
+            case 43:
+                return (nodes.Coffee_Drink_1 as SkinnedMesh).geometry;
+            case 44:
+                return (nodes.Cup_1 as SkinnedMesh).geometry;
+            case 45:
+                return (nodes.Cup_2 as SkinnedMesh).geometry;
+            case 46:
+                return (nodes.Toy_1 as SkinnedMesh).geometry;
+            case 47:
+                return (nodes.Chicken_Toy_1 as SkinnedMesh).geometry;
+            case 48:
+                return (nodes.Toy_Mushroom_1 as SkinnedMesh).geometry;
+            case 49:
+                return (nodes.Toy_Mushroom_2 as SkinnedMesh).geometry;
+            case 50:
+                return (nodes.Toy_Cat_1 as SkinnedMesh).geometry;
+            case 51:
+                return (nodes.Toy_Rabbit_1 as SkinnedMesh).geometry;
+            case 52:
+                return (nodes.Cabinet_19 as SkinnedMesh).geometry;
+            case 53:
+                return (nodes.Kitchen_Cabinet_3 as SkinnedMesh).geometry;
+            case 54:
+                return (nodes.Flower_5 as SkinnedMesh).geometry;
+            case 55:
+                return (nodes.Flower_2 as SkinnedMesh).geometry;
+            case 56:
+                return (nodes.Flower_1 as SkinnedMesh).geometry;
+            case 57:
+                return (nodes.Vase_with_Flowers_1 as SkinnedMesh).geometry;
+            case 58:
+                return (nodes.Vase_with_Flowers_3 as SkinnedMesh).geometry;
+            case 59:
+                return (nodes.Flower_6 as SkinnedMesh).geometry;
+            case 60:
+                return (nodes.Flower_7 as SkinnedMesh).geometry;
+            case 61:
+                return (nodes.Flower_8 as SkinnedMesh).geometry;
+            case 62:
+                return (nodes.Flower_9 as SkinnedMesh).geometry;
+            case 63:
+                return (nodes.Flower_10 as SkinnedMesh).geometry;
+            case 64:
+                return (nodes.Spatula_1 as SkinnedMesh).geometry;
+            case 65:
+                return (nodes.Painting_18 as SkinnedMesh).geometry;
+            case 66:
+                return (nodes.Painting_19 as SkinnedMesh).geometry;
+            case 67:
+                return (nodes.Painting_20 as SkinnedMesh).geometry;
+            case 68:
+                return (nodes.Childrens_Drawing_3 as SkinnedMesh).geometry;
+            case 69:
+                return (nodes.Childrens_Drawing_1 as SkinnedMesh).geometry;
+            case 70:
+                return (nodes.Childrens_Drawing_2 as SkinnedMesh).geometry;
+            case 71:
+                return (nodes.Flags_1 as SkinnedMesh).geometry;
+            case 72:
+                return (nodes.Mannequin_1 as SkinnedMesh).geometry;
+            case 73:
+                return (nodes.Mirror_1 as SkinnedMesh).geometry;
+            case 74:
+                return (nodes.Ottoman_1 as SkinnedMesh).geometry;
+            case 75:
+                return (nodes.Ottoman_2 as SkinnedMesh).geometry;
+            case 76:
+                return (nodes.Ottoman_3 as SkinnedMesh).geometry;
+            case 77:
+                return (nodes.Plate_1 as SkinnedMesh).geometry;
+            case 78:
+                return (nodes.Plate_3 as SkinnedMesh).geometry;
+            case 79:
+                return (nodes.Pot_Full_1 as SkinnedMesh).geometry;
+            case 80:
+                return (nodes.Present_1 as SkinnedMesh).geometry;
+            case 81:
+                return (nodes.Present_2 as SkinnedMesh).geometry;
+            case 82:
+                return (nodes.Present_3 as SkinnedMesh).geometry;
+            case 83:
+                return (nodes.Puzzle_1 as SkinnedMesh).geometry;
+            case 84:
+                return (nodes.Puzzle_2 as SkinnedMesh).geometry;
+            case 85:
+                return (nodes.Puzzle_3 as SkinnedMesh).geometry;
+            case 86:
+                return (nodes.Puzzle_4 as SkinnedMesh).geometry;
+            case 87:
+                return (nodes.Table_6 as SkinnedMesh).geometry;
+            case 88:
+                return (nodes.Sandwich_1 as SkinnedMesh).geometry;
+            case 89:
+                return (nodes.Sausages_1 as SkinnedMesh).geometry;
+            case 90:
+                return (nodes.Sewing_machine_1 as SkinnedMesh).geometry;
+            case 91:
+                return (nodes.Couch_5 as SkinnedMesh).geometry;
+            case 92:
+                return (nodes.Couch_1 as SkinnedMesh).geometry;
+            case 93:
+                return (nodes.Towels_1 as SkinnedMesh).geometry;
+            case 94:
+                return (nodes.Towels_2 as SkinnedMesh).geometry;
+            case 95:
+                return (nodes.TV_1 as SkinnedMesh).geometry;
+            case 96:
+                return (nodes.Plant_44 as SkinnedMesh).geometry;
+            case 97:
+                return (nodes.Plant_60 as SkinnedMesh).geometry;
+            case 98:
+                return (nodes.Plant_65 as SkinnedMesh).geometry;
+            case 99:
+                return (nodes.Tree_1 as SkinnedMesh).geometry;
+            case 100:
+                return (nodes.Plant_17 as SkinnedMesh).geometry;
             default:
                 return (nodes.Cabinet_18 as SkinnedMesh).geometry;
         }
