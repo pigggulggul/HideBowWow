@@ -1,6 +1,3 @@
-import { Wall_blue } from '../elements/Wall_blue';
-import { Wall_white } from '../elements/Wall_white';
-import { Wall_white_Side } from '../elements/Wall_white_Side';
 import { Wall_white_brown } from '../elements/Wall_white_brown';
 
 export default function BarWall() {

@@ -26,7 +26,6 @@ export default function GamePage() {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const stompClient = StompClient.getInstance();
     useEffect(() => {
         if (currentRoom.roomState === 0) {
             document.exitPointerLock();
@@ -215,12 +214,42 @@ export default function GamePage() {
                 )}
             </div>
             <div className="absolute flex top-1 w-full justify-end">
-                <button onClick={() => {stompClient.enterVoiceChannel(currentRoom.roomId, meInfo.nickname)}}>음성채널 입장</button> &nbsp;&nbsp;
-                <button onClick={() => {stompClient.exitVoiceChannel()}}>음성채널 퇴장</button> &nbsp;&nbsp;
-                <button onClick={() => {startRecording()}}>마이크 ON</button> &nbsp;&nbsp;
-                <button onClick={() => {stopRecording()}}>마이크 OFF</button> &nbsp;&nbsp;
+                <button
+                    onClick={() => {
+                        stompClient.enterVoiceChannel(
+                            currentRoom.roomId,
+                            meInfo.nickname
+                        );
+                    }}
+                >
+                    음성채널 입장
+                </button>{' '}
+                &nbsp;&nbsp;
+                <button
+                    onClick={() => {
+                        stompClient.exitVoiceChannel();
+                    }}
+                >
+                    음성채널 퇴장
+                </button>{' '}
+                &nbsp;&nbsp;
+                <button
+                    onClick={() => {
+                        startRecording();
+                    }}
+                >
+                    마이크 ON
+                </button>{' '}
+                &nbsp;&nbsp;
+                <button
+                    onClick={() => {
+                        stopRecording();
+                    }}
+                >
+                    마이크 OFF
+                </button>{' '}
+                &nbsp;&nbsp;
             </div>
-            
         </RecoilRoot>
     );
 }

@@ -4,10 +4,10 @@ Command: npx gltfjsx@6.2.16 public/models/object/Table_green.glb -t -o src/compo
 */
 
 import * as THREE from 'three';
-import React, { useRef } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import { ObjectSettingType } from '../../../../../../../types/GameType';
+import { useBox } from '@react-three/cannon';
 
 type GLTFResult = GLTF & {
     nodes: {

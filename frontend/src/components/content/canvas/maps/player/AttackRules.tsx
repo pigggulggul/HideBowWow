@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { PlayerAtom } from '../../../../../store/PlayersAtom';
-import { BufferGeometry, Line, LineBasicMaterial, Vector3 } from 'three';
 import { useDispatch, useSelector } from 'react-redux';
 import { CurrentPlayersInfo } from '../../../../../types/GameType';
 import { useThree } from '@react-three/fiber';
 import StompClient from '../../../../../websocket/StompClient';
 import { heartState } from '../../../../../store/user-slice';
+import { Vector3 } from 'three';
 
 export function AttackRules() {
     const [, setDetectedObject] = useState<any>(null);
-    const [rayVisual, setRayVisual] = useState<any>(null); // 레이 시각화 객체 상태
+    const [rayVisual, _] = useState<any>(null); // 레이 시각화 객체 상태
     const stompClient = StompClient.getInstance();
     const { camera, scene, raycaster } = useThree();
     const currentRoom = useSelector(
@@ -105,22 +105,22 @@ export function AttackRules() {
             }
         }
     };
-    const drawRayLine = (start: any, end: any) => {
-        // 라인 재료와 지오메트리 생성
-        const material = new LineBasicMaterial({
-            color: 0xff0000,
-        });
-        const points = [start, end];
-        const geometry = new BufferGeometry().setFromPoints(points);
+    // const drawRayLine = (start: any, end: any) => {
+    //     // 라인 재료와 지오메트리 생성
+    //     const material = new LineBasicMaterial({
+    //         color: 0xff0000,
+    //     });
+    //     const points = [start, end];
+    //     const geometry = new BufferGeometry().setFromPoints(points);
 
-        // 기존 라인이 있으면 씬에서 제거
-        if (rayVisual) scene.remove(rayVisual);
+    //     // 기존 라인이 있으면 씬에서 제거
+    //     if (rayVisual) scene.remove(rayVisual);
 
-        // 새로운 라인 생성
-        const line = new Line(geometry, material);
-        scene.add(line);
-        setRayVisual(line);
-    };
+    //     // 새로운 라인 생성
+    //     const line = new Line(geometry, material);
+    //     scene.add(line);
+    //     setRayVisual(line);
+    // };
 
     const getParentNames = (object: any) => {
         let names = [];
