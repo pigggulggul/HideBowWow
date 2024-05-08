@@ -19,6 +19,7 @@ import keyW from '../assets/images/icon/key_w.png';
 import keyC from '../assets/images/icon/key_c.png';
 import keyM from '../assets/images/icon/key_m.png';
 import keyR from '../assets/images/icon/key_r.png';
+import ingameMusic from '../assets/bgm/ingame_music.mp3';
 
 export default function GamePage() {
     const stompClient = StompClient.getInstance();
@@ -42,7 +43,7 @@ export default function GamePage() {
     const [microphone, setMicrophone] = useState<any>();
 
     const [playing, setPlaying] = useState<boolean>(false);
-    const [audio] = useState(new Audio('../src/assets/bgm/ingame_music.mp3'));
+    const [audio] = useState(new Audio(ingameMusic));
     // BGM 설정
     useEffect(() => {
         setPlaying(bgmSetting);
