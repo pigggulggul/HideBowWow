@@ -32,16 +32,36 @@ export default function GamePage() {
     const meHeart = useSelector(
         (state: any) => state.reduxFlag.userSlice.meHeart
     );
+    const bgmSetting = useSelector(
+        (state: any) => state.reduxFlag.userSlice.bgmFlag
+    );
 
     const [seekerNum, setSeekerNum] = useState<number>(0);
     const [hiderNum, setHiderNum] = useState<number>(0);
     const [stream, setStream] = useState<any>();
     const [microphone, setMicrophone] = useState<any>();
 
+    const [playing, setPlaying] = useState<boolean>(false);
+    const [audio] = useState(new Audio('../src/assets/bgm/ingame_music.mp3'));
+    // BGM 설정
+    useEffect(() => {
+        setPlaying(bgmSetting);
+    }, [playing, bgmSetting]);
+    useEffect(() => {
+        playing ? audio.play() : audio.pause();
+    }, [playing, audio]);
+    useEffect(() => {
+        audio.addEventListener('ended', () => setPlaying(false));
+        return () => {
+            audio.removeEventListener('ended', () => setPlaying(false));
+        };
+    }, [audio]);
+
     const navigate = useNavigate();
     const dispatch = useDispatch();
     useEffect(() => {
         if (currentRoom.roomState === 0) {
+            audio.pause();
             document.exitPointerLock();
             navigate(`/room/${currentRoom.roomId}`, {
                 state: currentRoom.roomId,
@@ -63,8 +83,8 @@ export default function GamePage() {
     }, [currentRoom.roomPlayers]);
     useEffect(() => {
         if (meInfo) {
-            console.log('헤헤');
             if (meInfo.isSeeker) {
+                console.log('헤헤');
                 dispatch(heartState(5));
             } else {
                 dispatch(heartState(1));
@@ -88,16 +108,24 @@ export default function GamePage() {
         }
     }, [meHeart]);
 
-    // 키보드(C, M) 이벤트 리스너 & voice.js의 stream과 interval값 갱신 & 페이지 이탈 시 이벤트리스너 삭제
     useEffect(() => {
+        // 키보드(C, M) 이벤트 리스너 & voice.js의 stream과 interval값 갱신 & 페이지 이탈 시 이벤트리스너 삭제
         window.addEventListener('keydown', handleKeyPress);
         setInterval(() => {
             setStream(getStream())
             setMicrophone(getInterval())
         }, 500);
+
+        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+            e.preventDefault();
+            e.returnValue =
+                '새로고침시 게임이 나가집니다. 페이지를 떠나시겠습니까?';
+        };
+        window.addEventListener('beforeunload', handleBeforeUnload);
     
         return () => {
           window.removeEventListener('keydown', handleKeyPress);
+          window.removeEventListener('beforeunload', handleBeforeUnload);
         };
       }, []);
 
@@ -157,10 +185,7 @@ export default function GamePage() {
             )}
             {currentRoom.roomState === 4 ? (
                 <div className="absolute flex flex-col items-center justify-center">
-                    <img
-                        src={winnerSeeker}
-                        alt=""
-                    />
+                    <img src={winnerSeeker} alt="" />
                     <p className="text-[2vw] text-black">
                         {currentRoom.roomTime}초 후 로비로 복귀합니다.
                     </p>
@@ -170,10 +195,7 @@ export default function GamePage() {
             )}
             {currentRoom.roomState === 5 ? (
                 <div className="absolute flex flex-col items-center justify-center">
-                    <img
-                        src={winnerHider}
-                        alt=""
-                    />
+                    <img src={winnerHider} alt="" />
                     <p className="text-[2vw] text-black">
                         {currentRoom.roomTime}초 후 로비로 복귀합니다.
                     </p>
@@ -208,26 +230,10 @@ export default function GamePage() {
             )}
             <div className="absolute flex flex-col top-1 left-1 w-[25s%] h-[40%] bg-black bg-opacity-20 p-[0.4vw]">
                 <div className="flex items-center">
-                    <img
-                        className="px-[0.2vw]"
-                        src={keyW}
-                        alt=""
-                    />
-                    <img
-                        className="px-[0.2vw]"
-                        src={keyA}
-                        alt=""
-                    />
-                    <img
-                        className="px-[0.2vw]"
-                        src={keyS}
-                        alt=""
-                    />
-                    <img
-                        className="px-[0.2vw]"
-                        src={keyD}
-                        alt=""
-                    />
+                    <img className="px-[0.2vw]" src={keyW} alt="" />
+                    <img className="px-[0.2vw]" src={keyA} alt="" />
+                    <img className="px-[0.2vw]" src={keyS} alt="" />
+                    <img className="px-[0.2vw]" src={keyD} alt="" />
                     <p className="px-[0.4vw] text-[1.6vw]">이동</p>
                 </div>
                 {meInfo.isSeeker ? (
