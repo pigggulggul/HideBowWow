@@ -13,7 +13,6 @@ import { GLTF, SkeletonUtils } from 'three-stdlib';
 import { PlayerInitType } from '../../../../../../types/GameType';
 import StompClient from '../../../../../../websocket/StompClient';
 import { useSelector } from 'react-redux';
-import { useBox } from '@react-three/cannon';
 
 // interface GLTFAction extends AnimationClip {
 //     name: ActionName;
@@ -160,6 +159,9 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const roomState = useSelector(
         (state: any) => state.reduxFlag.userSlice.currentRoom
     );
+
+    const initialHeight = returnHeightSize(modelIndex);
+    position.y = initialHeight;
 
     const memoizedPosition = useMemo(() => position, []);
     const playerRef = useRef<ObjectRef>(null);
@@ -393,14 +395,14 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const material = returnMaterial(modelIndex);
     const node = returnNode(modelIndex);
 
-    const [ref] = useBox(() => ({
-        mass: 0,
-        args: [1, 1, 1],
-        position: [position.x, position.y, position.z], // 초기 위치를 useRef의 현재 값으로 설정
-        onCollide: (e) => {
-            console.log('충돌', e);
-        },
-    }));
+    // const [ref] = useBox(() => ({
+    //     mass: 0,
+    //     args: [1, 1, 1],
+    //     position: [position.x, position.y, position.z], // 초기 위치를 useRef의 현재 값으로 설정
+    //     onCollide: (e) => {
+    //         console.log('충돌', e);
+    //     },
+    // }));
 
     const updateRotationX = (movementY: number) => {
         // 아래 위
@@ -522,23 +524,23 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
 
     useEffect(() => {
         if (playerRef.current) {
-            if (ref.current) {
-                ref.current.name = playerNickname;
-            }
+            // if (ref.current) {
+            //     ref.current.name = playerNickname;
+            // }
             playerRef.current.name = playerNickname;
             playerRef.current.userData.physicsName = playerNickname; // userData에 이름 추가
             playerRef.current.viewLR = 0;
         }
-        if (ref.current) {
-            // Mesh 객체를 찾아 이름을 할당합니다.
-            const mesh = ref.current.children.find(
-                (child) => child.type === 'Mesh'
-            );
-            if (mesh) {
-                mesh.name = playerNickname;
-            }
-        }
-    }, [playerNickname, ref]);
+        // if (ref.current) {
+        //     // Mesh 객체를 찾아 이름을 할당합니다.
+        //     const mesh = ref.current.children.find(
+        //         (child) => child.type === 'Mesh'
+        //     );
+        //     if (mesh) {
+        //         mesh.name = playerNickname;
+        //     }
+        // }
+    }, [playerNickname]);
 
     // 키 입력
     useEffect(() => {
@@ -620,7 +622,6 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                                     forward.x
                                 ).multiplyScalar(moveVector.x)
                             );
-
                         playerRef.current.position.add(moveDirection);
                         // stomp로 이전
                         if (accumulatedTimeRef.current >= 0.003) {
@@ -1069,6 +1070,105 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 return (nodes.Plant_17 as SkinnedMesh).geometry;
             default:
                 return (nodes.Cabinet_18 as SkinnedMesh).geometry;
+        }
+    }
+    function returnHeightSize(num: number | undefined) {
+        switch (num) {
+            case 0:
+            case 4:
+            case 13:
+            case 14:
+            case 15:
+            case 16:
+            case 21:
+            case 27:
+            case 28:
+            case 29:
+            case 30:
+            case 31:
+            case 32:
+            case 33:
+            case 34:
+            case 35:
+            case 36:
+            case 37:
+            case 38:
+            case 49:
+            case 50:
+            case 51:
+            case 54:
+            case 55:
+            case 56:
+            case 57:
+            case 58:
+            case 59:
+            case 60:
+            case 61:
+            case 62:
+            case 63:
+            case 64:
+            case 65:
+            case 66:
+            case 67:
+            case 68:
+            case 69:
+            case 70:
+            case 71:
+            case 73:
+            case 74:
+            case 75:
+            case 76:
+            case 77:
+            case 78:
+            case 79:
+            case 80:
+            case 81:
+            case 82:
+            case 83:
+            case 84:
+            case 85:
+            case 86:
+            case 88:
+            case 89:
+            case 90:
+            case 93:
+            case 94:
+            case 96:
+            case 97:
+            case 98:
+            case 99:
+            case 100:
+                return 1;
+            case 1:
+            case 2:
+            case 3:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 17:
+            case 18:
+            case 19:
+            case 20:
+            case 22:
+            case 23:
+            case 24:
+            case 25:
+            case 26:
+            case 52:
+            case 53:
+            case 72:
+            case 87:
+            case 91:
+            case 92:
+            case 95:
+                return 1;
+            default:
+                return 1;
         }
     }
 };

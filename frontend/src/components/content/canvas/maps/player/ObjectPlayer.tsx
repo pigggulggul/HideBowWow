@@ -37,7 +37,7 @@ export function ObjectPlayer({
             mass: 0,
             args: [1, 1, 1],
             type: 'Kinematic',
-            position: [0, 0, 0], // 초기 위치를 useRef의 현재 값으로 설정
+            position: [0, 0.5, 0], // 초기 위치를 useRef의 현재 값으로 설정
             onCollide: (e) => {
                 console.log('충돌', e);
             },
