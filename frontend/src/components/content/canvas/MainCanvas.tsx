@@ -42,9 +42,9 @@ export function MainCanvas() {
                 <OrbitControls />
 
                 <Physics>
-                    <Debug>
+                    {/* <Debug> */}
                         <RootMap />
-                    </Debug>
+                    {/* </Debug> */}
                 </Physics>
                 {/* 최적화 관련 */}
                 {/* <StatsGl /> */}
