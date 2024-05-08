@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { CurrentPlayersInfo } from '../types/GameType';
 import { heartState } from '../store/user-slice';
 import StompClient from '../websocket/StompClient';
-import { startRecording, stopRecording } from '../assets/js/voice';
+import { startRecording, stopRecording, getStream, getInterval } from '../assets/js/voice';
 import winnerSeeker from '../assets/images/icon/winner_seeker.png';
 import winnerHider from '../assets/images/icon/winner_hider.png';
 import keyA from '../assets/images/icon/key_a.png';
@@ -16,6 +16,9 @@ import keyMouseleft from '../assets/images/icon/key_mouseleft.png';
 import keyQ from '../assets/images/icon/key_q.png';
 import keyS from '../assets/images/icon/key_s.png';
 import keyW from '../assets/images/icon/key_w.png';
+import keyC from '../assets/images/icon/key_c.png';
+import keyM from '../assets/images/icon/key_m.png';
+import keyR from '../assets/images/icon/key_r.png';
 
 export default function GamePage() {
     const stompClient = StompClient.getInstance();
@@ -32,6 +35,8 @@ export default function GamePage() {
 
     const [seekerNum, setSeekerNum] = useState<number>(0);
     const [hiderNum, setHiderNum] = useState<number>(0);
+    const [stream, setStream] = useState<any>();
+    const [microphone, setMicrophone] = useState<any>();
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -82,6 +87,40 @@ export default function GamePage() {
             );
         }
     }, [meHeart]);
+
+    // 키보드(C, M) 이벤트 리스너 & voice.js의 stream과 interval값 갱신 & 페이지 이탈 시 이벤트리스너 삭제
+    useEffect(() => {
+        window.addEventListener('keydown', handleKeyPress);
+        setInterval(() => {
+            setStream(getStream())
+            setMicrophone(getInterval())
+        }, 500);
+    
+        return () => {
+          window.removeEventListener('keydown', handleKeyPress);
+        };
+      }, []);
+
+    // c나 m을 누르면 음성채널과 마이크 동작 실행
+    const handleKeyPress = (event: KeyboardEvent) => {
+        if(event.key == 'c'){
+            if(!getStream()) {
+                stompClient.enterVoiceChannel(
+                    currentRoom.roomId,
+                    meInfo.nickname
+                );
+            }else {
+                stompClient.exitVoiceChannel();
+            }
+        }else if(event.key == 'm'){
+            if(!getInterval()){
+                startRecording();
+            }else{
+                stopRecording();
+            }
+        }
+    };
+
     return (
         <RecoilRoot>
             <Content />
@@ -167,7 +206,7 @@ export default function GamePage() {
             ) : (
                 <></>
             )}
-            <div className="absolute flex flex-col top-1 left-1 w-[20%] h-[40%] bg-black bg-opacity-20 p-[0.4vw]">
+            <div className="absolute flex flex-col top-1 left-1 w-[25s%] h-[40%] bg-black bg-opacity-20 p-[0.4vw]">
                 <div className="flex items-center">
                     <img
                         className="px-[0.2vw]"
@@ -210,55 +249,49 @@ export default function GamePage() {
                                 src={keyQ}
                                 alt=""
                             />
-                            <p className="px-[0.4vw] text-[1.6vw]">회전 (좌)</p>
-                        </div>
-                        <div className="flex items-center">
                             <img
                                 className="px-[0.2vw]"
                                 src={keyE}
                                 alt=""
                             />
-                            <p className="px-[0.4vw] text-[1.6vw]">회전 (우)</p>
+                            <p className="px-[0.4vw] text-[1.6vw]">회전 (좌, 우)</p>
+                        </div>
+                        <div className="flex items-center">
+                            <img
+                                className="px-[0.2vw]"
+                                src={keyR}
+                                alt="key_r.png"
+                            />
+                            <p className="px-[0.4vw] text-[1.6vw]">고정 / 해제</p>
                         </div>
                     </>
                 )}
-            </div>
-            <div className="absolute flex top-1 w-full justify-end">
-                <button
-                    onClick={() => {
-                        stompClient.enterVoiceChannel(
-                            currentRoom.roomId,
-                            meInfo.nickname
-                        );
-                    }}
-                >
-                    음성채널 입장
-                </button>{' '}
-                &nbsp;&nbsp;
-                <button
-                    onClick={() => {
-                        stompClient.exitVoiceChannel();
-                    }}
-                >
-                    음성채널 퇴장
-                </button>{' '}
-                &nbsp;&nbsp;
-                <button
-                    onClick={() => {
-                        startRecording();
-                    }}
-                >
-                    마이크 ON
-                </button>{' '}
-                &nbsp;&nbsp;
-                <button
-                    onClick={() => {
-                        stopRecording();
-                    }}
-                >
-                    마이크 OFF
-                </button>{' '}
-                &nbsp;&nbsp;
+
+                {/* 음성채팅 입, 퇴장 관련 키 가이드 */}
+                <div className="flex items-center my-[1vw]">
+                    <img
+                        className="px-[0.2vw]"
+                        src={keyC}
+                        alt="key_c.png"
+                     />
+                    <p className="px-[0.4vw] text-[1.6vw]">
+                        {stream ? "음성채팅 퇴장" : "음성채팅 입장"}
+                    </p>
+                </div>
+
+                {/* 마이크 ON, OFF 관련 키 가이드. 음성채팅에 들어와야 보인다 */}
+                {stream ? (
+                    <div className="flex items-center">
+                        <img
+                            className="px-[0.2vw]"
+                            src={keyM}
+                            alt="key_m.png"
+                        />
+                        <p className="px-[0.4vw] text-[1.6vw]">
+                            {microphone ? "마이크 OFF" : "마이크 ON"}
+                        </p>
+                    </div>
+                ): <></>}
             </div>
         </RecoilRoot>
     );

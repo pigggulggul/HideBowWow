@@ -9,7 +9,7 @@ import {
     meDead, 
 } from '../store/user-slice';
 import { store } from '../store/store';
-import { createStream, handleData, endStream } from '../assets/js/voice';
+import { createStream, handleData, endStream, getStream } from '../assets/js/voice';
 
 class StompClient {
     private static instance: StompClient;
@@ -220,6 +220,8 @@ class StompClient {
             alert('연결된 소켓이 없습니다')
             return
         }
+        if(getStream()) return;
+
         createStream(roomId, nickname)
 
         this.client.subscribe(`/sub/voice/${roomId}`, (message) => {
@@ -232,6 +234,7 @@ class StompClient {
 
     public exitVoiceChannel(): void {
         if(!this.client) return
+        if(!getStream()) return;
 
         this.client.unsubscribe(this.subscribeId)
         endStream()
