@@ -1,9 +1,9 @@
 import { RecoilRoot } from 'recoil';
 import { Content } from '../components/content/Content';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CurrentPlayersInfo } from '../types/GameType';
+import { ChatType, CurrentPlayersInfo } from '../types/GameType';
 import { heartState } from '../store/user-slice';
 import StompClient from '../websocket/StompClient';
 import { startRecording, stopRecording } from '../assets/js/voice';
@@ -33,11 +33,23 @@ export default function GamePage() {
         (state: any) => state.reduxFlag.userSlice.bgmFlag
     );
 
+    const chatList = useSelector(
+        (state: any) => state.reduxFlag.userSlice.chatData
+    );
+
     const [seekerNum, setSeekerNum] = useState<number>(0);
     const [hiderNum, setHiderNum] = useState<number>(0);
 
     const [playing, setPlaying] = useState<boolean>(false);
     const [audio] = useState(new Audio('../src/assets/bgm/ingame_music.mp3'));
+
+    const [toggleChat, setToggleChat] = useState<boolean>(false);
+
+    const [chatContent, setChatContent] = useState<string>('');
+
+    const inputRef = useRef<HTMLInputElement>(null);
+    //스크롤 탐지용
+    const messageEndRef = useRef<HTMLDivElement>(null);
     // BGM 설정
     useEffect(() => {
         setPlaying(bgmSetting);
@@ -103,17 +115,59 @@ export default function GamePage() {
         }
     }, [meHeart]);
     useEffect(() => {
+        if (toggleChat) {
+            if (inputRef.current) {
+                inputRef.current.focus();
+            }
+        } else {
+            if (inputRef.current && chatContent !== '') {
+                console.log('보낼게염');
+                stompClient.sendMessage(
+                    `/chat.player`,
+                    JSON.stringify({
+                        type: 'chat.player',
+                        roomId: currentRoom.roomId,
+                        sender: meInfo.nickname,
+                        data: {
+                            nickname: meInfo.nickname,
+                            content: chatContent,
+                        },
+                    })
+                );
+                setChatContent('');
+
+                inputRef.current.blur();
+            }
+        }
+    }, [toggleChat]);
+    useEffect(() => {
+        if (messageEndRef.current) {
+            messageEndRef.current.scrollIntoView({
+                behavior: 'smooth',
+            });
+        }
+    }, [chatList]);
+    useEffect(() => {
         const handleBeforeUnload = (e: BeforeUnloadEvent) => {
             e.preventDefault();
             e.returnValue =
                 '새로고침시 게임이 나가집니다. 페이지를 떠나시겠습니까?';
         };
+
+        const handleKeyDown = (event: any) => {
+            if (event.key === 'Enter') {
+                setToggleChat((prev) => !prev);
+            }
+        };
         // 이벤트 리스너 추가
         window.addEventListener('beforeunload', handleBeforeUnload);
+        document.addEventListener('keydown', handleKeyDown);
         return () => {
+            document.removeEventListener('keydown', handleKeyDown);
             window.removeEventListener('beforeunload', handleBeforeUnload);
         };
     }, []);
+
     return (
         <RecoilRoot>
             <Content />
@@ -224,6 +278,47 @@ export default function GamePage() {
                         </div>
                     </>
                 )}
+            </div>
+
+            <div
+                className={
+                    'absolute flex flex-col bottom-20 left-1 w-[30%] h-[30%]  p-[0.4vw] overflow-auto '
+                }
+                style={
+                    toggleChat
+                        ? { backgroundColor: 'rgba(0,0,0,0.1)', opacity: 10 }
+                        : {}
+                }
+            >
+                <div className="w-[full] h-[90%] p-[0.4vw] overflow-auto">
+                    {chatList.map((item: ChatType, index: number) => {
+                        return (
+                            <div
+                                className="w-full flex items-center justify-start my-1"
+                                key={'chat key : ' + index}
+                            >
+                                <p className="w-[20%]">{item.nickname} :</p>
+                                <p className="w-[80%] text-start">
+                                    {item.content}
+                                </p>
+                            </div>
+                        );
+                    })}
+                    <div ref={messageEndRef}></div>
+                </div>
+                <input
+                    ref={inputRef}
+                    className="w-[full] h-[10%] p-[0.4vw] overflow-auto"
+                    value={chatContent}
+                    onChange={(e) => {
+                        setChatContent(e.target.value);
+                    }}
+                    style={
+                        toggleChat
+                            ? { visibility: 'visible' }
+                            : { visibility: 'hidden' }
+                    }
+                />
             </div>
             <div className="absolute flex top-1 w-full justify-end">
                 <button
