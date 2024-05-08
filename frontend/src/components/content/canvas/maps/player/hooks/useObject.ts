@@ -9,10 +9,13 @@ import {
     Vector3,
     Quaternion,
 } from 'three';
-import { GLTF, SkeletonUtils } from 'three-stdlib';
+import { Face, GLTF, SkeletonUtils } from 'three-stdlib';
 import { PlayerInitType } from '../../../../../../types/GameType';
 import StompClient from '../../../../../../websocket/StompClient';
 import { useSelector } from 'react-redux';
+import { useBox } from '@react-three/cannon';
+import { store } from '../../../../../../store/store'; 
+import { meDead } from '../../../../../../store/user-slice';
 
 // interface GLTFAction extends AnimationClip {
 //     name: ActionName;
@@ -476,29 +479,14 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         setObservedPlayerIndex((prevIndex) => {
             // 관전 중인 플레이어의 인덱스를 증가시킵니다.
             return (prevIndex + 1) % roomState.roomPlayers.length;
-        });
-        console.log(
-            '플레이어 인덱스 : ' +
-                observedPlayerIndex +
-                ' of ' +
-                roomState.roomPlayers.length
-        );
-    };
+        });  
+    };  
 
     const handlePageDown = () => {
         setObservedPlayerIndex((prevIndex) => {
             // 관전 중인 플레이어의 인덱스를 감소시킵니다.
-            return (
-                (prevIndex - 1 + roomState.roomPlayers.length) %
-                roomState.roomPlayers.length
-            );
-        });
-        console.log(
-            '플레이어 인덱스 : ' +
-                observedPlayerIndex +
-                ' of ' +
-                roomState.roomPlayers.length
-        );
+            return (prevIndex - 1 + roomState.roomPlayers.length) % roomState.roomPlayers.length;
+        });  
     };
 
     useEffect(() => {
@@ -570,22 +558,21 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             document.removeEventListener('keyup', handleKeyUp);
         };
     }, []);
+ 
+    // useEffect(() => { 
+    //     console.log("플레이어 인덱스 : " + observedPlayerIndex + " of " +roomState.roomPlayers.length );
+    // }, [observedPlayerIndex]);
+ 
+    useFrame(({ camera , clock }) => {  
+        if (!player || !playerRef.current) return;   
 
-    useFrame(({ camera, clock }) => {
-        if (!player || !playerRef.current) return;
-
-        if (meInfo?.nickname === playerNickname) {
-            // 내 캐릭터의 경우
-            lockPointer();
+        if (meInfo?.nickname === playerNickname) {   
 
             const delta = clock.getDelta(); // 프레임 간 시간 간격을 가져옵니다.
-            accumulatedTimeRef.current += delta;
-
-            // console.log("dead? " + meInfo?.isDead);
-            if (meInfo?.isDead === false) {
-                // 살아있는 경우
-                if (!freeViewMode) {
-                    // 3인칭 모드
+            accumulatedTimeRef.current += delta; 
+            
+            if(meInfo?.isDead === false) { // 살아있는 경우
+                if(!freeViewMode) { // 3인칭 모드 
                     const moveVector = new Vector3(
                         (keyState.current['d'] ? 1 : 0) -
                             (keyState.current['a'] ? 1 : 0), // 수정: 오른쪽이면 1, 왼쪽이면 -1
@@ -601,9 +588,9 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     if (keyState.current['e']) {
                         playerRef.current.rotation.y -= 0.025;
                     }
-
-                    if (!moveVector.equals(new Vector3(0, 0, 0))) {
-                        // 이동중
+        
+                    if (!moveVector.equals(new Vector3(0, 0, 0))) { // 이동중
+                        lockPointer();
                         moveVector.normalize().multiplyScalar(0.2);
 
                         const forward = new Vector3(
@@ -623,6 +610,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                                 ).multiplyScalar(moveVector.x)
                             );
                         playerRef.current.position.add(moveDirection);
+
                         // stomp로 이전
                         if (accumulatedTimeRef.current >= 0.003) {
                             accumulatedTimeRef.current = 0;
@@ -769,38 +757,16 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                         observerRef.current.position.y,
                         observerRef.current.position.z
                     );
-                    camera.lookAt(cameraTarget);
-                }
-            } else {
-                // 죽어있는 경우 (관전모드)
-                console.log('!!!! 사망!!');
-                if (meInfo.isSeeker === true) return;
-                const observedPlayer =
-                    roomState.roomPlayers[observedPlayerIndex];
-
-                if (observedPlayer) {
-                    console.log(
-                        '현재 관전중인 플레이어 : ' +
-                            JSON.stringify(observedPlayer)
-                    );
-                    // 관전 중인 플레이어의 위치를 사용하여 카메라를 조정합니다.
-                    camera.position.set(
-                        observedPlayer.position[0] + 10,
-                        observedPlayer.position[1] + 10,
-                        observedPlayer.position[2] + 10
-                    );
-                    camera.lookAt(
-                        observedPlayer.position[0],
-                        observedPlayer.position[1],
-                        observedPlayer.position[2]
-                    );
-                }
-            }
+                    camera.lookAt(cameraTarget); 
+                }     
+            }   
         } else {
             // 다른 플레이어의 캐릭터
             roomState.roomPlayers.forEach((otherPlayer: any) => {
+                // console.log("플레이어 : " + otherPlayer.nickname + " , " + otherPlayer.isDead)
                 if (
                     otherPlayer.nickname !== meInfo?.nickname &&
+                    otherPlayer.nickname === playerNickname &&
                     otherPlayer.isSeeker === false
                 ) {
                     const otherPlayerRef = playerRef.current;
@@ -829,12 +795,28 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                             otherPlayerRef.position.clone().add(forward)
                         );
                     }
-                }
+                }  
             });
         }
+        
+        if(meInfo?.isDead) { // 사망한 경우 
+             // 죽어있는 경우 (관전모드)    
+                // if(meInfo.isSeeker === true) return;  
+  
+                const observedPlayer = roomState.roomPlayers[observedPlayerIndex]; 
+                
+                if (observedPlayer) {
+                    // console.log("현재 관전중인 플레이어 인덱스: " + observedPlayerIndex) 
+                    camera.position.set(
+                        observedPlayer.position[0] + 10,
+                        observedPlayer.position[1] + 10,
+                        observedPlayer.position[2] + 10 
+                    ); 
+                    camera.lookAt(observedPlayer.position[0], observedPlayer.position[1], observedPlayer.position[2]);
+                }
+        }
 
-        if (meInfo.isSeeker === false) {
-            // 사물만 사물의 이름을 식별할 수 있다
+        if(meInfo.isSeeker === false) { // 사물만 사물의 이름을 식별할 수 있다
             if (nicknameRef.current) {
                 nicknameRef.current.position.set(
                     playerRef.current.position.x,
