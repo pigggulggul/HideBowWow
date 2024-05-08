@@ -2,7 +2,7 @@
 replicaCount: 1
 
 image:
-  repository: choichangho514/backend_game_service_test
+  repository: choichangho514/backend_game_service
   pullPolicy: Always
   tag: "latest"
 
