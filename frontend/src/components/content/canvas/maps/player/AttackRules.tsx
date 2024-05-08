@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { CurrentPlayersInfo } from '../../../../../types/GameType';
 import { useThree } from '@react-three/fiber';
 import StompClient from '../../../../../websocket/StompClient';
-import { heartState } from '../../../../../store/user-slice';
+import {
+    decrementHeartState,
+    heartState,
+} from '../../../../../store/user-slice';
 import { Vector3 } from 'three';
 
 export function AttackRules() {
@@ -97,9 +100,7 @@ export function AttackRules() {
                     });
                 });
                 if (!killFlag) {
-                    const heart = meHeart;
-                    console.log(heart - 1);
-                    dispatch(heartState(heart - 1));
+                    dispatch(decrementHeartState());
                     killFlag = false;
                 }
                 // closestObject.parent?.name 지준영
