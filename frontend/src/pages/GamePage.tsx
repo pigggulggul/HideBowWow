@@ -114,7 +114,7 @@ export default function GamePage() {
         setInterval(() => {
             setStream(getStream())
             setMicrophone(getInterval())
-        }, 500);
+        }, 300);
 
         const handleBeforeUnload = (e: BeforeUnloadEvent) => {
             e.preventDefault();
