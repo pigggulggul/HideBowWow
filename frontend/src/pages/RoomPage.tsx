@@ -5,7 +5,11 @@ import { getRoom } from '../api/rooms';
 import { httpStatusCode } from '../components/utils/http-status';
 import { useDispatch, useSelector } from 'react-redux';
 import StompClient from '../websocket/StompClient';
-import { currentRoomState, readyState } from '../store/user-slice';
+import {
+    currentRoomState,
+    mapSizeState,
+    readyState,
+} from '../store/user-slice';
 import backgroundImage from '../assets/images/bg/background-main.png';
 import dummyMap from '../assets/images/etc/dummy-map.png';
 
@@ -38,6 +42,15 @@ export default function RoomPage() {
     };
 
     const playGame = () => {
+        if (currentRoom.roomMap === 'Bar') {
+            dispatch(
+                mapSizeState({ minX: -60, maxX: 40, minZ: -40, maxZ: 90 })
+            );
+        } else {
+            dispatch(
+                mapSizeState({ minX: -60, maxX: 40, minZ: -40, maxZ: 90 })
+            );
+        }
         if (currentRoom.roomAdmin === meName) {
             stompClient.sendMessage(
                 `/room.gameInit`,
@@ -93,8 +106,7 @@ export default function RoomPage() {
         <section
             className="relative w-full h-full flex flex-col items-center justify-center"
             style={{
-                backgroundImage:
-                `url(${backgroundImage})`,
+                backgroundImage: `url(${backgroundImage})`,
             }}
         >
             <div className="relative w-[80%] h-[90%] p-[1vw] flex justify-between border-[0.3vw] rounded-[0.6vw] border-white bg-sky-300 ">
