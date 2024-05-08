@@ -13,9 +13,7 @@ import { Face, GLTF, SkeletonUtils } from 'three-stdlib';
 import { PlayerInitType } from '../../../../../../types/GameType';
 import StompClient from '../../../../../../websocket/StompClient';
 import { useSelector } from 'react-redux';
-import { useBox } from '@react-three/cannon';
-import { store } from '../../../../../../store/store'; 
-import { meDead } from '../../../../../../store/user-slice';
+import { useBox } from '@react-three/cannon';  
 
 // interface GLTFAction extends AnimationClip {
 //     name: ActionName;
@@ -146,6 +144,8 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const keyState = useRef<{ [key: string]: boolean }>({});
     const [mouseWheelValue, setMouseWheelValue] = useState(Number);
     const [freeViewMode, setFreeViewMode] = useState(false);
+    const [callsInLastSecond, setCallsInLastSecond] = useState(0);
+    const [delay, setDelay] = useState(0.00008);
 
     const stompClient = StompClient.getInstance();
     const meName = useSelector(
@@ -171,7 +171,8 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const nicknameRef = useRef<ObjectRef>(null);
     const accumulatedTimeRef = useRef(0.0);
     const observerRef = useRef<Observer | null>(null);
-    const [observedPlayerIndex, setObservedPlayerIndex] = useState(0);
+    const [observedPlayerIndex, setObservedPlayerIndex] = useState(0); 
+    const callsInLastSecondRef = useRef(callsInLastSecond);
 
     const { scene: scene_, materials } = useGLTF(
         (() => {
@@ -487,8 +488,31 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             // 관전 중인 플레이어의 인덱스를 감소시킵니다.
             return (prevIndex - 1 + roomState.roomPlayers.length) % roomState.roomPlayers.length;
         });  
-    };
-
+    };  
+    
+    useEffect(() => {
+        callsInLastSecondRef.current = callsInLastSecond;  
+    }, [callsInLastSecond]);
+    
+    useEffect(() => {  
+        // 3초마다 호출
+        if(meInfo?.nickname === playerNickname) { 
+            const intervalId = setInterval(() => { 
+                console.log("초당 평균 프레임 :", (callsInLastSecondRef.current/3));
+                setCallsInLastSecond(0); // 85 ~ 95
+                if(callsInLastSecondRef.current > 95) {
+                    setDelay(preDelay => preDelay + 0.00001) 
+                    console.log("딜레이 값을 올리겠습니다.");
+                } else if (callsInLastSecondRef.current < 85) {
+                    setDelay(preDelay => preDelay - 0.00001)   
+                    console.log("딜레이 값을 낮추겠습니다.");
+                }  
+            }, 3000);  
+            
+            return () => clearInterval(intervalId);
+        }  
+    }, []); 
+ 
     useEffect(() => {
         const handleMouseMove = (event: MouseEvent) => {
             // 마우스 포인터가 고정된 상태에서의 마우스 이동량을 감지합니다.
@@ -557,11 +581,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             document.removeEventListener('keydown', handleKeyDown);
             document.removeEventListener('keyup', handleKeyUp);
         };
-    }, []);
- 
-    // useEffect(() => { 
-    //     console.log("플레이어 인덱스 : " + observedPlayerIndex + " of " +roomState.roomPlayers.length );
-    // }, [observedPlayerIndex]);
+    }, []); 
  
     useFrame(({ camera , clock }) => {  
         if (!player || !playerRef.current) return;   
@@ -612,7 +632,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                         playerRef.current.position.add(moveDirection);
 
                         // stomp로 이전
-                        if (accumulatedTimeRef.current >= 0.003) {
+                        if (accumulatedTimeRef.current >= delay) {
                             accumulatedTimeRef.current = 0;
                             stompClient.sendMessage(
                                 `/player.move`,
@@ -639,11 +659,12 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                                     },
                                 })
                             );
+                            setCallsInLastSecond(prevCount => prevCount + 1);
                         }
                     } else {
                         // 고정된 상태
                         // rotation값 stomp
-                        if (accumulatedTimeRef.current >= 0.003) {
+                        if (accumulatedTimeRef.current >= delay) {
                             accumulatedTimeRef.current = 0;
                             stompClient.sendMessage(
                                 `/player.move`,
@@ -670,6 +691,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                                     },
                                 })
                             );
+                            setCallsInLastSecond(prevCount => prevCount + 1);
                         }
                     }
                     // 카메라 설정
@@ -759,11 +781,10 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     );
                     camera.lookAt(cameraTarget); 
                 }     
-            }   
+            }    
         } else {
             // 다른 플레이어의 캐릭터
             roomState.roomPlayers.forEach((otherPlayer: any) => {
-                // console.log("플레이어 : " + otherPlayer.nickname + " , " + otherPlayer.isDead)
                 if (
                     otherPlayer.nickname !== meInfo?.nickname &&
                     otherPlayer.nickname === playerNickname &&
@@ -839,6 +860,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         node,
         material,
     };
+
     function returnMaterial(num: number | undefined) {
         if (num === undefined || num < 19) {
             return materials['Cartoon_Room_Mat.002'];
