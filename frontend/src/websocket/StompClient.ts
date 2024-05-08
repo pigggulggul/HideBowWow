@@ -5,11 +5,12 @@ import {
     currentRoomState,
     givenChoiceState,
     readyState,
-    removePeopleRoomState, 
-    meDead, 
+    removePeopleRoomState,
+    meDead,
+    addChatDataState,
 } from '../store/user-slice';
 import { store } from '../store/store';
-import { createStream, handleData, endStream } from '../assets/js/voice';
+import { createStream, handleData, endStream, getStream } from '../assets/js/voice';
 
 class StompClient {
     private static instance: StompClient;
@@ -55,9 +56,13 @@ class StompClient {
                                 store.dispatch(removePeopleRoomState(msg.data));
                                 break;
                             }
-                            case 'player.dead': {   
-                                console.log('플레이어 사망 : ' + msg.data.nickname);  
-                                const { reduxFlag: { userSlice } } = store.getState(); // userSlice만 추출
+                            case 'player.dead': {
+                                console.log(
+                                    '플레이어 사망 : ' + msg.data.nickname
+                                );
+                                const {
+                                    reduxFlag: { userSlice },
+                                } = store.getState(); // userSlice만 추출
                                 const meInfo = userSlice.meInfo;
                                 if (meInfo.nickname === msg.data.nickname) {
                                     store.dispatch(meDead(true));
@@ -112,7 +117,12 @@ class StompClient {
                             case 'room.backRoom': {
                                 console.log('대기실로 이동', msg);
                                 store.dispatch(currentRoomState(msg.data));
-                                this.exitVoiceChannel()
+                                this.exitVoiceChannel();
+                                break;
+                            }
+                            case 'chat.player': {
+                                console.log('채팅', msg);
+                                store.dispatch(addChatDataState(msg.data));
                                 break;
                             }
                             default: {
@@ -141,12 +151,14 @@ class StompClient {
                         break;
                     }
                     case 'player.dead': {
-                        console.log('플레이어 사망 : ' + msg.data.nickname);  
-                        const { reduxFlag: { userSlice } } = store.getState(); // userSlice만 추출
+                        console.log('플레이어 사망 : ' + msg.data.nickname);
+                        const {
+                            reduxFlag: { userSlice },
+                        } = store.getState(); // userSlice만 추출
                         const meInfo = userSlice.meInfo;
                         if (meInfo.nickname === msg.data.nickname) {
                             store.dispatch(meDead(true));
-                        } 
+                        }
                         break;
                     }
                     /** 게임 입장 (요청 필요) */
@@ -193,7 +205,12 @@ class StompClient {
                     case 'room.backRoom': {
                         console.log('대기실로 이동', msg);
                         store.dispatch(currentRoomState(msg.data));
-                        this.exitVoiceChannel()
+                        this.exitVoiceChannel();
+                        break;
+                    }
+                    case 'chat.player': {
+                        console.log('채팅', msg);
+                        store.dispatch(addChatDataState(msg.data));
                         break;
                     }
                 }
@@ -213,30 +230,37 @@ class StompClient {
         }
     }
 
-    private subscribeId = Math.round(Math.random()*10000)+"";
+    private subscribeId = Math.round(Math.random() * 10000) + '';
 
     public enterVoiceChannel(roomId: string, nickname: string): void {
-        if(!this.client){
-            alert('연결된 소켓이 없습니다')
-            return
+        if (!this.client) {
+            alert('연결된 소켓이 없습니다');
+            return;
         }
+
+        if(getStream()) return;
+
         createStream(roomId, nickname)
 
-        this.client.subscribe(`/sub/voice/${roomId}`, (message) => {
-            const stompPayload = JSON.parse(message.body);
-            handleData(stompPayload)
-        },
-        {id: this.subscribeId}
+
+        this.client.subscribe(
+            `/sub/voice/${roomId}`,
+            (message) => {
+                const stompPayload = JSON.parse(message.body);
+                handleData(stompPayload);
+            },
+            { id: this.subscribeId }
         );
     }
 
     public exitVoiceChannel(): void {
         if(!this.client) return
+        if(!getStream()) return;
 
-        this.client.unsubscribe(this.subscribeId)
-        endStream()
+
+        this.client.unsubscribe(this.subscribeId);
+        endStream();
     }
-
 }
 
 export default StompClient;

@@ -71,3 +71,14 @@ export interface ObjectSettingType {
     position: Triplet;
     rotation?: Triplet;
 }
+
+export interface MapSize {
+    minX: number;
+    maxX: number;
+    minZ: number;
+    maxZ: number;
+}
+export interface ChatType {
+    nickname: string;
+    content: string;
+}

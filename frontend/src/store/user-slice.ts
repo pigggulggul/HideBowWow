@@ -1,5 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { CollideObject, CurrentPlayersInfo, RoomInfo } from '../types/GameType';
+import {
+    ChatType,
+    CollideObject,
+    CurrentPlayersInfo,
+    MapSize,
+    RoomInfo,
+} from '../types/GameType';
 
 export interface UserState {
     //닉네임
@@ -11,6 +17,9 @@ export interface UserState {
     givenChoice: number[];
     collideObj: CollideObject[];
     meHeart: number;
+    bgmFlag: boolean;
+    mapSize: MapSize;
+    chatData: ChatType[];
 }
 const initialState: UserState = {
     userNickname: '',
@@ -38,12 +47,20 @@ const initialState: UserState = {
     givenChoice: [],
     collideObj: [],
     meHeart: 0,
+    bgmFlag: true,
+    mapSize: {
+        minX: -100,
+        maxX: 100,
+        minZ: -100,
+        maxZ: 100,
+    },
+    chatData: [],
 };
 
 export const userSlice = createSlice({
     name: 'userSlice',
     initialState,
-    reducers: { 
+    reducers: {
         //닉네임 설정
         userNicknameState: (state, action) => {
             state.userNickname = action.payload;
@@ -80,6 +97,9 @@ export const userSlice = createSlice({
         heartState: (state, action) => {
             state.meHeart = action.payload;
         },
+        decrementHeartState: (state) => {
+            state.meHeart -= 1;
+        },
         meDead: (state, action) => {
             state.meInfo.isDead = action.payload;
         },
@@ -98,6 +118,18 @@ export const userSlice = createSlice({
                 (_item, index) => index !== action.payload
             );
         },
+        bgmFlagState: (state, action) => {
+            state.bgmFlag = action.payload;
+        },
+        mapSizeState: (state, action) => {
+            state.mapSize = action.payload;
+        },
+        chatDataState: (state, action) => {
+            state.chatData = action.payload;
+        },
+        addChatDataState: (state, action) => {
+            state.chatData = [...state.chatData, action.payload];
+        },
     },
 });
 export const {
@@ -115,5 +147,10 @@ export const {
     removeCollideObjectState,
     collideObjectState,
     heartState,
+    decrementHeartState,
+    bgmFlagState,
+    mapSizeState,
+    chatDataState,
+    addChatDataState,
 } = userSlice.actions;
 export default userSlice.reducer;

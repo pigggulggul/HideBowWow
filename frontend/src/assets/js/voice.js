@@ -21,10 +21,10 @@ const options = {
 async function createStream(newRoomId, newNickname){
     roomId = newRoomId;
     nickname = newNickname;
-    volume = 0.5;
+    volume = 1;
     stompClient = StompClient.getInstance();
     stream = await navigator.mediaDevices.getUserMedia(constraints);
-    console.log('음성채널 입장', roomId)
+    console.log('음성채팅 입장', roomId)
 }
 
 async function endStream(){
@@ -35,7 +35,7 @@ async function endStream(){
         track.stop();
     });
     stream = null;
-    console.log('음성 채널 나감', roomId)
+    console.log('음성채팅 나감', roomId)
 }
 
 function handleData(stompPayload){
@@ -169,4 +169,14 @@ function base64ToBlob(base64, mimeType) {
     return new Blob([new Uint8Array(array)], {type: mimeType});
 }
 
-export {createStream, endStream, handleData, startRecording, stopRecording}
+// ------------------------------------------- 변수 동적 관리 -----------------------------------------------
+
+function getStream(){
+    return stream;
+}
+
+function getInterval(){
+    return interval;
+}
+
+export {createStream, endStream, handleData, startRecording, stopRecording, getStream, getInterval}

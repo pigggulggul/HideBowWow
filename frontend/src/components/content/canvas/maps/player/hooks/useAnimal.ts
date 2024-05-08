@@ -75,6 +75,8 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     const [isWalking, setIsWalking] = useState(false);
     const keyState = useRef<{ [key: string]: boolean }>({});
     const [isJumping, setIsJumping] = useState(0);
+    const [callsInLastSecond, setCallsInLastSecond] = useState(0);
+    const [delay, setDelay] = useState(0.00008);
     // Redux
     const playerNickname = player?.nickname;
     const meName = useSelector(
@@ -100,7 +102,8 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     const nicknameRef = useRef<Group>(null);
     const prevPosition = useRef<Vector3 | null>(null);
     const isFirstFrame = useRef(true);
-    const accumulatedTimeRef = useRef(0.0);     
+    const accumulatedTimeRef = useRef(0.0);       
+    const callsInLastSecondRef = useRef(callsInLastSecond);
 
     const { scene, materials, animations } = useGLTF(
         (() => {
@@ -216,6 +219,29 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     };
 
     useEffect(() => {
+        callsInLastSecondRef.current = callsInLastSecond;  
+    }, [callsInLastSecond]);
+     
+    useEffect(() => {  
+        // 3초마다 호출
+        if(meInfo?.nickname === playerNickname) { 
+            const intervalId = setInterval(() => { 
+                console.log("초당 평균 프레임 :", (callsInLastSecondRef.current/3));
+                setCallsInLastSecond(0); // 85 ~ 95
+                if(callsInLastSecondRef.current > 95) {
+                    setDelay(preDelay => preDelay + 0.00001) 
+                    console.log("딜레이 값을 올리겠습니다.");
+                } else if (callsInLastSecondRef.current < 85) {
+                    setDelay(preDelay => preDelay - 0.00001)   
+                    console.log("딜레이 값을 낮추겠습니다.");
+                }  
+            }, 3000);  
+            
+            return () => clearInterval(intervalId);
+        }  
+    }, []); 
+
+    useEffect(() => {
         const handleMouseMove = (event: MouseEvent) => {
             // 마우스 포인터가 고정된 상태에서의 마우스 이동량을 감지합니다.
             if (meInfo?.nickname === playerNickname) {
@@ -296,7 +322,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
         if (meInfo?.nickname === playerNickname) { 
             
             const delta = clock.getDelta(); // 프레임 간 시간 간격을 가져옵니다.
-            accumulatedTimeRef.current += delta;
+            accumulatedTimeRef.current += delta; 
 
             // 내 캐릭터의 경우
             const moveVector = new Vector3(
@@ -392,7 +418,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                     playerRef.current.position.add(moveDirection); 
                 }
                 
-                if (accumulatedTimeRef.current >= 0.003) {
+                if (accumulatedTimeRef.current >= delay) {
                     accumulatedTimeRef.current = 0;
                     stompClient.sendMessage(
                         `/player.move`,
@@ -414,14 +440,15 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                                 ],
                             },
                         })
-                    ); 
+                    );  
+                    setCallsInLastSecond(prevCount => prevCount + 1); 
                 }
             } else {
                 // 고정된 상태
                 setIsWalking(false);
                 setAnimation('Roll'); 
 
-                if (accumulatedTimeRef.current >= 0.003) {
+                if (accumulatedTimeRef.current >= delay) {
                     accumulatedTimeRef.current = 0;
                     stompClient.sendMessage(
                         `/player.move`,
@@ -443,7 +470,8 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                                 ],
                             },
                         })
-                    ); 
+                    );  
+                    setCallsInLastSecond(prevCount => prevCount + 1); 
                 }
                 setAnimation('Walk');
             }
@@ -476,7 +504,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                 .add(playerDirection.multiplyScalar(11));
             camera.lookAt(cameraTarget); // 정면보다 더 앞으로 설정!
             camera.zoom = 0.6;
-            camera.updateProjectionMatrix(); 
+            camera.updateProjectionMatrix();   
         } else {
             // 다른 플레이어의 캐릭터
             roomState.roomPlayers.forEach((otherPlayer: any) => {
@@ -541,7 +569,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
             ); 
             nicknameRef.current.lookAt(camera.position);
         } 
-    });
+    }); 
 
     return {
         meInfo,

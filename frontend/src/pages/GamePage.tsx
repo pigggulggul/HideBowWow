@@ -1,12 +1,12 @@
 import { RecoilRoot } from 'recoil';
 import { Content } from '../components/content/Content';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CurrentPlayersInfo } from '../types/GameType';
+import { ChatType, CurrentPlayersInfo } from '../types/GameType';
 import { heartState } from '../store/user-slice';
 import StompClient from '../websocket/StompClient';
-import { startRecording, stopRecording } from '../assets/js/voice';
+import { startRecording, stopRecording, getStream, getInterval } from '../assets/js/voice';
 import winnerSeeker from '../assets/images/icon/winner_seeker.png';
 import winnerHider from '../assets/images/icon/winner_hider.png';
 import keyA from '../assets/images/icon/key_a.png';
@@ -16,6 +16,10 @@ import keyMouseleft from '../assets/images/icon/key_mouseleft.png';
 import keyQ from '../assets/images/icon/key_q.png';
 import keyS from '../assets/images/icon/key_s.png';
 import keyW from '../assets/images/icon/key_w.png';
+import keyC from '../assets/images/icon/key_c.png';
+import keyM from '../assets/images/icon/key_m.png';
+import keyR from '../assets/images/icon/key_r.png';
+import ingameMusic from '../assets/bgm/ingame_music.mp3';
 
 export default function GamePage() {
     const stompClient = StompClient.getInstance();
@@ -29,14 +33,48 @@ export default function GamePage() {
     const meHeart = useSelector(
         (state: any) => state.reduxFlag.userSlice.meHeart
     );
+    const bgmSetting = useSelector(
+        (state: any) => state.reduxFlag.userSlice.bgmFlag
+    );
+
+    const chatList = useSelector(
+        (state: any) => state.reduxFlag.userSlice.chatData
+    );
 
     const [seekerNum, setSeekerNum] = useState<number>(0);
     const [hiderNum, setHiderNum] = useState<number>(0);
+    const [stream, setStream] = useState<any>();
+    const [microphone, setMicrophone] = useState<any>();
+
+    const [playing, setPlaying] = useState<boolean>(false);
+    const [audio] = useState(new Audio(ingameMusic));
+
+    const [toggleChat, setToggleChat] = useState<boolean>(false);
+
+    const [chatContent, setChatContent] = useState<string>('');
+
+    const inputRef = useRef<HTMLInputElement>(null);
+    //스크롤 탐지용
+    const messageEndRef = useRef<HTMLDivElement>(null);
+    // BGM 설정
+    useEffect(() => {
+        setPlaying(bgmSetting);
+    }, [playing, bgmSetting]);
+    useEffect(() => {
+        playing ? audio.play() : audio.pause();
+    }, [playing, audio]);
+    useEffect(() => {
+        audio.addEventListener('ended', () => setPlaying(false));
+        return () => {
+            audio.removeEventListener('ended', () => setPlaying(false));
+        };
+    }, [audio]);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
     useEffect(() => {
         if (currentRoom.roomState === 0) {
+            audio.pause();
             document.exitPointerLock();
             navigate(`/room/${currentRoom.roomId}`, {
                 state: currentRoom.roomId,
@@ -58,8 +96,8 @@ export default function GamePage() {
     }, [currentRoom.roomPlayers]);
     useEffect(() => {
         if (meInfo) {
-            console.log('헤헤');
             if (meInfo.isSeeker) {
+                console.log('헤헤');
                 dispatch(heartState(5));
             } else {
                 dispatch(heartState(1));
@@ -82,6 +120,83 @@ export default function GamePage() {
             );
         }
     }, [meHeart]);
+
+    useEffect(() => {
+        if (toggleChat) {
+            if (inputRef.current) {
+                inputRef.current.focus();
+            }
+        } else {
+            if (inputRef.current && chatContent !== '') {
+                console.log('보낼게염');
+                stompClient.sendMessage(
+                    `/chat.player`,
+                    JSON.stringify({
+                        type: 'chat.player',
+                        roomId: currentRoom.roomId,
+                        sender: meInfo.nickname,
+                        data: {
+                            nickname: meInfo.nickname,
+                            content: chatContent,
+                        },
+                    })
+                );
+                setChatContent('');
+
+                inputRef.current.blur();
+            }
+        }
+    }, [toggleChat]);
+    useEffect(() => {
+        if (messageEndRef.current) {
+            messageEndRef.current.scrollIntoView({
+                behavior: 'smooth',
+            });
+        }
+    }, [chatList]);
+    useEffect(() => {
+        // 키보드(C, M) 이벤트 리스너 & voice.js의 stream과 interval값 갱신 & 페이지 이탈 시 이벤트리스너 삭제
+        setInterval(() => {
+            setStream(getStream())
+            setMicrophone(getInterval())
+        }, 300);
+        
+        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+            e.preventDefault();
+            e.returnValue =
+                '새로고침시 게임이 나가집니다. 페이지를 떠나시겠습니까?';
+        };
+
+        // c나 m을 누르면 음성채널과 마이크 동작 실행
+        const handleKeyPress = (event: KeyboardEvent) => {
+            if(event.key == 'c'){
+                if(!getStream()) {
+                    stompClient.enterVoiceChannel(
+                        currentRoom.roomId,
+                        meInfo.nickname
+                    );
+                }else {
+                    stompClient.exitVoiceChannel();
+                }
+            }else if(event.key == 'm'){
+                if(!getInterval()){
+                    startRecording();
+                }else{
+                    stopRecording();
+                }
+            }else if (event.key === 'Enter') {
+                setToggleChat((prev) => !prev);
+            }
+        };
+        // 이벤트 리스너 추가
+        window.addEventListener('keydown', handleKeyPress);
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => {
+            window.removeEventListener('keydown', handleKeyPress);
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, []);
+
     return (
         <RecoilRoot>
             <Content />
@@ -118,10 +233,7 @@ export default function GamePage() {
             )}
             {currentRoom.roomState === 4 ? (
                 <div className="absolute flex flex-col items-center justify-center">
-                    <img
-                        src={winnerSeeker}
-                        alt=""
-                    />
+                    <img src={winnerSeeker} alt="" />
                     <p className="text-[2vw] text-black">
                         {currentRoom.roomTime}초 후 로비로 복귀합니다.
                     </p>
@@ -131,10 +243,7 @@ export default function GamePage() {
             )}
             {currentRoom.roomState === 5 ? (
                 <div className="absolute flex flex-col items-center justify-center">
-                    <img
-                        src={winnerHider}
-                        alt=""
-                    />
+                    <img src={winnerHider} alt="" />
                     <p className="text-[2vw] text-black">
                         {currentRoom.roomTime}초 후 로비로 복귀합니다.
                     </p>
@@ -167,28 +276,12 @@ export default function GamePage() {
             ) : (
                 <></>
             )}
-            <div className="absolute flex flex-col top-1 left-1 w-[20%] h-[40%] bg-black bg-opacity-20 p-[0.4vw]">
+            <div className="absolute flex flex-col top-1 left-1 w-[25s%] h-[40%] bg-black bg-opacity-20 p-[0.4vw]">
                 <div className="flex items-center">
-                    <img
-                        className="px-[0.2vw]"
-                        src={keyW}
-                        alt=""
-                    />
-                    <img
-                        className="px-[0.2vw]"
-                        src={keyA}
-                        alt=""
-                    />
-                    <img
-                        className="px-[0.2vw]"
-                        src={keyS}
-                        alt=""
-                    />
-                    <img
-                        className="px-[0.2vw]"
-                        src={keyD}
-                        alt=""
-                    />
+                    <img className="px-[0.2vw]" src={keyW} alt="" />
+                    <img className="px-[0.2vw]" src={keyA} alt="" />
+                    <img className="px-[0.2vw]" src={keyS} alt="" />
+                    <img className="px-[0.2vw]" src={keyD} alt="" />
                     <p className="px-[0.4vw] text-[1.6vw]">이동</p>
                 </div>
                 {meInfo.isSeeker ? (
@@ -210,56 +303,91 @@ export default function GamePage() {
                                 src={keyQ}
                                 alt=""
                             />
-                            <p className="px-[0.4vw] text-[1.6vw]">회전 (좌)</p>
-                        </div>
-                        <div className="flex items-center">
                             <img
                                 className="px-[0.2vw]"
                                 src={keyE}
                                 alt=""
                             />
-                            <p className="px-[0.4vw] text-[1.6vw]">회전 (우)</p>
+                            <p className="px-[0.4vw] text-[1.6vw]">회전 (좌, 우)</p>
+                        </div>
+                        <div className="flex items-center">
+                            <img
+                                className="px-[0.2vw]"
+                                src={keyR}
+                                alt="key_r.png"
+                            />
+                            <p className="px-[0.4vw] text-[1.6vw]">고정 / 해제</p>
                         </div>
                     </>
                 )}
+
+                {/* 음성채팅 입, 퇴장 관련 키 가이드 */}
+                <div className="flex items-center my-[1vw]">
+                    <img
+                        className="px-[0.2vw]"
+                        src={keyC}
+                        alt="key_c.png"
+                     />
+                    <p className="px-[0.4vw] text-[1.6vw]">
+                        {stream ? "음성채팅 퇴장" : "음성채팅 입장"}
+                    </p>
+                </div>
+
+                {/* 마이크 ON, OFF 관련 키 가이드. 음성채팅에 들어와야 보인다 */}
+                {stream ? (
+                    <div className="flex items-center">
+                        <img
+                            className="px-[0.2vw]"
+                            src={keyM}
+                            alt="key_m.png"
+                        />
+                        <p className="px-[0.4vw] text-[1.6vw]">
+                            {microphone ? "마이크 OFF" : "마이크 ON"}
+                        </p>
+                    </div>
+                ): <></>}
             </div>
-            <div className="absolute flex top-1 w-full justify-end">
-                <button
-                    onClick={() => {
-                        stompClient.enterVoiceChannel(
-                            currentRoom.roomId,
-                            meInfo.nickname
+            <div
+                className={
+                    'absolute flex flex-col bottom-20 left-1 w-[30%] h-[30%]  p-[0.4vw] overflow-auto '
+                }
+                style={
+                    toggleChat
+                        ? { backgroundColor: 'rgba(0,0,0,0.1)', opacity: 10 }
+                        : {}
+                }
+            >
+                <div className="w-[full] h-[90%] p-[0.4vw] overflow-auto">
+                    {chatList.map((item: ChatType, index: number) => {
+                        return (
+                            <div
+                                className="w-full flex items-center justify-start my-1"
+                                key={'chat key : ' + index}
+                            >
+                                <p className="w-[20%]">{item.nickname} :</p>
+                                <p className="w-[80%] text-start">
+                                    {item.content}
+                                </p>
+                            </div>
                         );
+                    })}
+                    <div ref={messageEndRef}></div>
+                </div>
+                <input
+                    ref={inputRef}
+                    className="w-[full] h-[10%] p-[0.4vw] overflow-auto"
+                    value={chatContent}
+                    onChange={(e) => {
+                        setChatContent(e.target.value);
                     }}
-                >
-                    음성채널 입장
-                </button>{' '}
-                &nbsp;&nbsp;
-                <button
-                    onClick={() => {
-                        stompClient.exitVoiceChannel();
-                    }}
-                >
-                    음성채널 퇴장
-                </button>{' '}
-                &nbsp;&nbsp;
-                <button
-                    onClick={() => {
-                        startRecording();
-                    }}
-                >
-                    마이크 ON
-                </button>{' '}
-                &nbsp;&nbsp;
-                <button
-                    onClick={() => {
-                        stopRecording();
-                    }}
-                >
-                    마이크 OFF
-                </button>{' '}
-                &nbsp;&nbsp;
+                    style={
+                        toggleChat
+                            ? { visibility: 'visible' }
+                            : { visibility: 'hidden' }
+                    }
+                />
             </div>
+
         </RecoilRoot>
     );
 }

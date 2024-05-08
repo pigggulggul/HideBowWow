@@ -1,11 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { RoomInfo } from '../types/GameType';
+import { ChatType, RoomInfo } from '../types/GameType';
 import { getRoom } from '../api/rooms';
 import { httpStatusCode } from '../components/utils/http-status';
 import { useDispatch, useSelector } from 'react-redux';
 import StompClient from '../websocket/StompClient';
-import { currentRoomState, readyState } from '../store/user-slice';
+import {
+    chatDataState,
+    currentRoomState,
+    mapSizeState,
+    readyState,
+} from '../store/user-slice';
 import backgroundImage from '../assets/images/bg/background-main.png';
 import dummyMap from '../assets/images/etc/dummy-map.png';
 
@@ -27,6 +32,17 @@ export default function RoomPage() {
     const currentRoom = useSelector(
         (state: any) => state.reduxFlag.userSlice.currentRoom
     );
+
+    ///////// 채팅 관련 //////////
+    const chatList = useSelector(
+        (state: any) => state.reduxFlag.userSlice.chatData
+    );
+    const [chatContent, setChatContent] = useState<string>('');
+    const inputRef = useRef<HTMLInputElement>(null);
+    //스크롤 탐지용
+    const messageEndRef = useRef<HTMLDivElement>(null);
+    ///////// 채팅 관련 //////////
+
     const dispatch = useDispatch();
     const loadRoom = async (state: string) => {
         const res = await getRoom(state);
@@ -38,6 +54,16 @@ export default function RoomPage() {
     };
 
     const playGame = () => {
+        if (currentRoom.roomMap === 'Bar') {
+            dispatch(
+                mapSizeState({ minX: -60, maxX: 40, minZ: -40, maxZ: 90 })
+            );
+        } else {
+            dispatch(
+                mapSizeState({ minX: -60, maxX: 40, minZ: -40, maxZ: 90 })
+            );
+        }
+        dispatch(chatDataState([]));
         if (currentRoom.roomAdmin === meName) {
             stompClient.sendMessage(
                 `/room.gameInit`,
@@ -58,6 +84,7 @@ export default function RoomPage() {
 
     useEffect(() => {
         dispatch(readyState(false));
+        dispatch(chatDataState([]));
     }, []);
     useEffect(() => {
         if (state) {
@@ -73,6 +100,34 @@ export default function RoomPage() {
         console.log('방정보', currentRoom);
         setRoom(currentRoom);
     }, [currentRoom]);
+
+    const sendEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            if (inputRef.current && chatContent !== '') {
+                console.log('보낼게염');
+                stompClient.sendMessage(
+                    `/chat.player`,
+                    JSON.stringify({
+                        type: 'chat.player',
+                        roomId: currentRoom.roomId,
+                        sender: meName,
+                        data: {
+                            nickname: meName,
+                            content: chatContent,
+                        },
+                    })
+                );
+                setChatContent('');
+            }
+        }
+    };
+    useEffect(() => {
+        if (messageEndRef.current) {
+            messageEndRef.current.scrollIntoView({
+                behavior: 'smooth',
+            });
+        }
+    }, [chatList]);
 
     const outRoom = () => {
         stompClient.sendMessage(
@@ -93,8 +148,7 @@ export default function RoomPage() {
         <section
             className="relative w-full h-full flex flex-col items-center justify-center"
             style={{
-                backgroundImage:
-                `url(${backgroundImage})`,
+                backgroundImage: `url(${backgroundImage})`,
             }}
         >
             <div className="relative w-[80%] h-[90%] p-[1vw] flex justify-between border-[0.3vw] rounded-[0.6vw] border-white bg-sky-300 ">
@@ -111,25 +165,70 @@ export default function RoomPage() {
                         </p>
                     </div>
                     <div className="w-full h-[86%] flex flex-wrap content-start ">
-                        {room?.roomPlayers.map((item, index) => {
-                            return (
-                                <div
-                                    key={'currentPeople' + index}
-                                    className="w-[45%] h-[15%] px-[1vw] my-[0.6vw] mx-[0.4vw] flex justify-between items-center border-[0.3vw] rounded-[0.6vw] border-white bg-sky-400 text-white cursor-pointer hover:bg-sky-500 "
-                                >
-                                    <p className="text-[1.4vw]">
-                                        {item.nickname}
-                                    </p>
-                                    {room?.roomAdmin === item.nickname ? (
-                                        <div className="flex flex-col">
-                                            <p className="text-[1.6vw]">방장</p>
-                                        </div>
-                                    ) : (
-                                        <></>
-                                    )}
-                                </div>
-                            );
-                        })}
+                        <div className="w-full h-[60%] flex flex-wrap content-start ">
+                            {room?.roomPlayers.map((item, index) => {
+                                return (
+                                    <div
+                                        key={'currentPeople' + index}
+                                        className="w-[45%] h-[15%] px-[1vw] my-[0.6vw] mx-[0.4vw] flex justify-between items-center border-[0.3vw] rounded-[0.6vw] cursor-pointer border-white bg-sky-400 text-white hover:bg-sky-500 "
+                                        style={
+                                            item.nickname === meName
+                                                ? {
+                                                      borderColor: 'black',
+                                                      color: 'black',
+                                                  }
+                                                : {}
+                                        }
+                                    >
+                                        <p className="text-[1.4vw]">
+                                            {item.nickname}
+                                        </p>
+                                        {room?.roomAdmin === item.nickname ? (
+                                            <div className="flex flex-col">
+                                                <p className="text-[1.6vw]">
+                                                    방장
+                                                </p>
+                                            </div>
+                                        ) : (
+                                            <></>
+                                        )}
+                                    </div>
+                                );
+                            })}
+                        </div>
+                        <div className="w-full h-[34%] bg-white my-[0.6vw] mx-[0.4vw] rounded-[0.6vw]">
+                            <div className="w-[full] h-[85%] p-[0.4vw] overflow-auto">
+                                {chatList.map(
+                                    (item: ChatType, index: number) => {
+                                        return (
+                                            <div
+                                                className="w-full flex items-center justify-start my-1 text-[1.1vw]"
+                                                key={'chat key : ' + index}
+                                            >
+                                                <p className="w-[18%] text-center">
+                                                    {item.nickname}
+                                                </p>
+                                                <p className="w-[2%]">:</p>
+                                                <p className="w-[80%] text-start">
+                                                    {item.content}
+                                                </p>
+                                            </div>
+                                        );
+                                    }
+                                )}
+                                <div ref={messageEndRef}></div>
+                            </div>
+                            <input
+                                ref={inputRef}
+                                className="w-[99%] h-[15%] py-[0.4vw] overflow-auto border"
+                                value={chatContent}
+                                onChange={(e) => {
+                                    setChatContent(e.target.value);
+                                }}
+                                placeholder="채팅을 입력해주세요"
+                                onKeyDown={sendEnter}
+                            />
+                        </div>
                     </div>
                 </div>
 

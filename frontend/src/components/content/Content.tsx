@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { meInfoState, meSelectedInfoState } from '../../store/user-slice';
 import StompClient from '../../websocket/StompClient';
 import ObjectInfo from '../../json/ObjectInfo.json';
+
 export function Content() {
     const dispatch = useDispatch();
     const stompClient = StompClient.getInstance();
