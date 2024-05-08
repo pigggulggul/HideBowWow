@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useRecoilState } from 'recoil';
-import { PlayerAtom } from '../../../../../store/PlayersAtom';
 import { useDispatch, useSelector } from 'react-redux';
 import { CurrentPlayersInfo } from '../../../../../types/GameType';
 import { useThree } from '@react-three/fiber';
@@ -10,7 +8,7 @@ import { Vector3 } from 'three';
 
 export function AttackRules() {
     const [, setDetectedObject] = useState<any>(null);
-    const [rayVisual, _] = useState<any>(null); // 레이 시각화 객체 상태
+    // const [rayVisual, _] = useState<any>(null); // 레이 시각화 객체 상태
     const stompClient = StompClient.getInstance();
     const { camera, scene, raycaster } = useThree();
     const currentRoom = useSelector(
@@ -19,7 +17,6 @@ export function AttackRules() {
     const meName = useSelector(
         (state: any) => state.reduxFlag.userSlice.userNickname
     );
-    const [players] = useRecoilState(PlayerAtom);
     const meInfo = useSelector(
         (state: any) => state.reduxFlag.userSlice.meInfo
     );
@@ -38,12 +35,9 @@ export function AttackRules() {
             window.addEventListener('mousedown', handleKeyDown);
             return () => window.removeEventListener('mousedown', handleKeyDown);
         }
-    }, [players, rayVisual]);
+    }, []);
 
     const handleInteraction = () => {
-        console.log('간다 공격!~');
-        let killFlag = false;
-
         const newPlayers = currentRoom.roomPlayers.map(
             (player: CurrentPlayersInfo) => ({
                 ...player,
@@ -56,6 +50,10 @@ export function AttackRules() {
         // console.log(seeker);
 
         if (seeker && seeker.nickname === meName) {
+            console.log('간다 공격!~');
+            let killFlag = false;
+            console.log(killFlag, meHeart);
+
             const direction = new Vector3();
             camera.getWorldDirection(direction); // 카메라의 방향을 얻음
 
@@ -99,7 +97,10 @@ export function AttackRules() {
                     });
                 });
                 if (!killFlag) {
-                    dispatch(heartState(meHeart - 1));
+                    const heart = meHeart;
+                    console.log(heart - 1);
+                    dispatch(heartState(heart - 1));
+                    killFlag = false;
                 }
                 // closestObject.parent?.name 지준영
             }

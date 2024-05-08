@@ -9,11 +9,13 @@ import {
     Vector3,
     Quaternion,
 } from 'three';
-import { GLTF, SkeletonUtils } from 'three-stdlib';
+import { Face, GLTF, SkeletonUtils } from 'three-stdlib';
 import { PlayerInitType } from '../../../../../../types/GameType';
 import StompClient from '../../../../../../websocket/StompClient';
 import { useSelector } from 'react-redux';
 import { useBox } from '@react-three/cannon';
+import { store } from '../../../../../../store/store'; 
+import { meDead } from '../../../../../../store/user-slice';
 
 // interface GLTFAction extends AnimationClip {
 //     name: ActionName;
@@ -160,6 +162,9 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const roomState = useSelector(
         (state: any) => state.reduxFlag.userSlice.currentRoom
     );
+
+    const initialHeight = returnHeightSize(modelIndex);
+    position.y = initialHeight;
 
     const memoizedPosition = useMemo(() => position, []);
     const playerRef = useRef<ObjectRef>(null);
@@ -393,14 +398,14 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const material = returnMaterial(modelIndex);
     const node = returnNode(modelIndex);
 
-    const [ref] = useBox(() => ({
-        mass: 0,
-        args: [1, 1, 1],
-        position: [position.x, position.y, position.z], // 초기 위치를 useRef의 현재 값으로 설정
-        onCollide: (e) => {
-            console.log('충돌', e);
-        },
-    }));
+    // const [ref] = useBox(() => ({
+    //     mass: 0,
+    //     args: [1, 1, 1],
+    //     position: [position.x, position.y, position.z], // 초기 위치를 useRef의 현재 값으로 설정
+    //     onCollide: (e) => {
+    //         console.log('충돌', e);
+    //     },
+    // }));
 
     const updateRotationX = (movementY: number) => {
         // 아래 위
@@ -474,29 +479,14 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         setObservedPlayerIndex((prevIndex) => {
             // 관전 중인 플레이어의 인덱스를 증가시킵니다.
             return (prevIndex + 1) % roomState.roomPlayers.length;
-        });
-        console.log(
-            '플레이어 인덱스 : ' +
-                observedPlayerIndex +
-                ' of ' +
-                roomState.roomPlayers.length
-        );
-    };
+        });  
+    };  
 
     const handlePageDown = () => {
         setObservedPlayerIndex((prevIndex) => {
             // 관전 중인 플레이어의 인덱스를 감소시킵니다.
-            return (
-                (prevIndex - 1 + roomState.roomPlayers.length) %
-                roomState.roomPlayers.length
-            );
-        });
-        console.log(
-            '플레이어 인덱스 : ' +
-                observedPlayerIndex +
-                ' of ' +
-                roomState.roomPlayers.length
-        );
+            return (prevIndex - 1 + roomState.roomPlayers.length) % roomState.roomPlayers.length;
+        });  
     };
 
     useEffect(() => {
@@ -522,23 +512,23 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
 
     useEffect(() => {
         if (playerRef.current) {
-            if (ref.current) {
-                ref.current.name = playerNickname;
-            }
+            // if (ref.current) {
+            //     ref.current.name = playerNickname;
+            // }
             playerRef.current.name = playerNickname;
             playerRef.current.userData.physicsName = playerNickname; // userData에 이름 추가
             playerRef.current.viewLR = 0;
         }
-        if (ref.current) {
-            // Mesh 객체를 찾아 이름을 할당합니다.
-            const mesh = ref.current.children.find(
-                (child) => child.type === 'Mesh'
-            );
-            if (mesh) {
-                mesh.name = playerNickname;
-            }
-        }
-    }, [playerNickname, ref]);
+        // if (ref.current) {
+        //     // Mesh 객체를 찾아 이름을 할당합니다.
+        //     const mesh = ref.current.children.find(
+        //         (child) => child.type === 'Mesh'
+        //     );
+        //     if (mesh) {
+        //         mesh.name = playerNickname;
+        //     }
+        // }
+    }, [playerNickname]);
 
     // 키 입력
     useEffect(() => {
@@ -568,22 +558,21 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             document.removeEventListener('keyup', handleKeyUp);
         };
     }, []);
+ 
+    // useEffect(() => { 
+    //     console.log("플레이어 인덱스 : " + observedPlayerIndex + " of " +roomState.roomPlayers.length );
+    // }, [observedPlayerIndex]);
+ 
+    useFrame(({ camera , clock }) => {  
+        if (!player || !playerRef.current) return;   
 
-    useFrame(({ camera, clock }) => {
-        if (!player || !playerRef.current) return;
-
-        if (meInfo?.nickname === playerNickname) {
-            // 내 캐릭터의 경우
-            lockPointer();
+        if (meInfo?.nickname === playerNickname) {   
 
             const delta = clock.getDelta(); // 프레임 간 시간 간격을 가져옵니다.
-            accumulatedTimeRef.current += delta;
-
-            // console.log("dead? " + meInfo?.isDead);
-            if (meInfo?.isDead === false) {
-                // 살아있는 경우
-                if (!freeViewMode) {
-                    // 3인칭 모드
+            accumulatedTimeRef.current += delta; 
+            
+            if(meInfo?.isDead === false) { // 살아있는 경우
+                if(!freeViewMode) { // 3인칭 모드 
                     const moveVector = new Vector3(
                         (keyState.current['d'] ? 1 : 0) -
                             (keyState.current['a'] ? 1 : 0), // 수정: 오른쪽이면 1, 왼쪽이면 -1
@@ -599,9 +588,9 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     if (keyState.current['e']) {
                         playerRef.current.rotation.y -= 0.025;
                     }
-
-                    if (!moveVector.equals(new Vector3(0, 0, 0))) {
-                        // 이동중
+        
+                    if (!moveVector.equals(new Vector3(0, 0, 0))) { // 이동중
+                        lockPointer();
                         moveVector.normalize().multiplyScalar(0.2);
 
                         const forward = new Vector3(
@@ -620,8 +609,8 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                                     forward.x
                                 ).multiplyScalar(moveVector.x)
                             );
-
                         playerRef.current.position.add(moveDirection);
+
                         // stomp로 이전
                         if (accumulatedTimeRef.current >= 0.003) {
                             accumulatedTimeRef.current = 0;
@@ -768,38 +757,16 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                         observerRef.current.position.y,
                         observerRef.current.position.z
                     );
-                    camera.lookAt(cameraTarget);
-                }
-            } else {
-                // 죽어있는 경우 (관전모드)
-                console.log('!!!! 사망!!');
-                if (meInfo.isSeeker === true) return;
-                const observedPlayer =
-                    roomState.roomPlayers[observedPlayerIndex];
-
-                if (observedPlayer) {
-                    console.log(
-                        '현재 관전중인 플레이어 : ' +
-                            JSON.stringify(observedPlayer)
-                    );
-                    // 관전 중인 플레이어의 위치를 사용하여 카메라를 조정합니다.
-                    camera.position.set(
-                        observedPlayer.position[0] + 10,
-                        observedPlayer.position[1] + 10,
-                        observedPlayer.position[2] + 10
-                    );
-                    camera.lookAt(
-                        observedPlayer.position[0],
-                        observedPlayer.position[1],
-                        observedPlayer.position[2]
-                    );
-                }
-            }
+                    camera.lookAt(cameraTarget); 
+                }     
+            }   
         } else {
             // 다른 플레이어의 캐릭터
             roomState.roomPlayers.forEach((otherPlayer: any) => {
+                // console.log("플레이어 : " + otherPlayer.nickname + " , " + otherPlayer.isDead)
                 if (
                     otherPlayer.nickname !== meInfo?.nickname &&
+                    otherPlayer.nickname === playerNickname &&
                     otherPlayer.isSeeker === false
                 ) {
                     const otherPlayerRef = playerRef.current;
@@ -828,12 +795,28 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                             otherPlayerRef.position.clone().add(forward)
                         );
                     }
-                }
+                }  
             });
         }
+        
+        if(meInfo?.isDead) { // 사망한 경우 
+             // 죽어있는 경우 (관전모드)    
+                // if(meInfo.isSeeker === true) return;  
+  
+                const observedPlayer = roomState.roomPlayers[observedPlayerIndex]; 
+                
+                if (observedPlayer) {
+                    // console.log("현재 관전중인 플레이어 인덱스: " + observedPlayerIndex) 
+                    camera.position.set(
+                        observedPlayer.position[0] + 10,
+                        observedPlayer.position[1] + 10,
+                        observedPlayer.position[2] + 10 
+                    ); 
+                    camera.lookAt(observedPlayer.position[0], observedPlayer.position[1], observedPlayer.position[2]);
+                }
+        }
 
-        if (meInfo.isSeeker === false) {
-            // 사물만 사물의 이름을 식별할 수 있다
+        if(meInfo.isSeeker === false) { // 사물만 사물의 이름을 식별할 수 있다
             if (nicknameRef.current) {
                 nicknameRef.current.position.set(
                     playerRef.current.position.x,
@@ -1069,6 +1052,105 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 return (nodes.Plant_17 as SkinnedMesh).geometry;
             default:
                 return (nodes.Cabinet_18 as SkinnedMesh).geometry;
+        }
+    }
+    function returnHeightSize(num: number | undefined) {
+        switch (num) {
+            case 0:
+            case 4:
+            case 13:
+            case 14:
+            case 15:
+            case 16:
+            case 21:
+            case 27:
+            case 28:
+            case 29:
+            case 30:
+            case 31:
+            case 32:
+            case 33:
+            case 34:
+            case 35:
+            case 36:
+            case 37:
+            case 38:
+            case 49:
+            case 50:
+            case 51:
+            case 54:
+            case 55:
+            case 56:
+            case 57:
+            case 58:
+            case 59:
+            case 60:
+            case 61:
+            case 62:
+            case 63:
+            case 64:
+            case 65:
+            case 66:
+            case 67:
+            case 68:
+            case 69:
+            case 70:
+            case 71:
+            case 73:
+            case 74:
+            case 75:
+            case 76:
+            case 77:
+            case 78:
+            case 79:
+            case 80:
+            case 81:
+            case 82:
+            case 83:
+            case 84:
+            case 85:
+            case 86:
+            case 88:
+            case 89:
+            case 90:
+            case 93:
+            case 94:
+            case 96:
+            case 97:
+            case 98:
+            case 99:
+            case 100:
+                return 1;
+            case 1:
+            case 2:
+            case 3:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
+            case 12:
+            case 17:
+            case 18:
+            case 19:
+            case 20:
+            case 22:
+            case 23:
+            case 24:
+            case 25:
+            case 26:
+            case 52:
+            case 53:
+            case 72:
+            case 87:
+            case 91:
+            case 92:
+            case 95:
+                return 1;
+            default:
+                return 1;
         }
     }
 };

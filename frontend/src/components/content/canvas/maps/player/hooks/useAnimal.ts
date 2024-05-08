@@ -482,6 +482,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
             roomState.roomPlayers.forEach((otherPlayer: any) => {
                 if (
                     otherPlayer.nickname !== meInfo?.nickname &&
+                    otherPlayer.nickname === playerNickname && 
                     otherPlayer.isSeeker === true
                 ) {
                     const otherPlayerRef = playerRef.current;
