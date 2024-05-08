@@ -21,7 +21,7 @@ const options = {
 async function createStream(newRoomId, newNickname){
     roomId = newRoomId;
     nickname = newNickname;
-    volume = 0.3;
+    volume = 1;
     stompClient = StompClient.getInstance();
     stream = await navigator.mediaDevices.getUserMedia(constraints);
     console.log('음성채팅 입장', roomId)

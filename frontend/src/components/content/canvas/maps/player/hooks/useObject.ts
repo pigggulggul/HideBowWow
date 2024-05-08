@@ -13,10 +13,6 @@ import { GLTF, SkeletonUtils } from 'three-stdlib';
 import { PlayerInitType } from '../../../../../../types/GameType';
 import StompClient from '../../../../../../websocket/StompClient';
 import { useSelector } from 'react-redux';
-<<<<<<< frontend/src/components/content/canvas/maps/player/hooks/useObject.ts
-import { useBox } from '@react-three/cannon';  
-=======
->>>>>>> frontend/src/components/content/canvas/maps/player/hooks/useObject.ts
 
 // interface GLTFAction extends AnimationClip {
 //     name: ActionName;
@@ -492,7 +488,6 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const handlePageDown = () => {
         setObservedPlayerIndex((prevIndex) => {
             // 관전 중인 플레이어의 인덱스를 감소시킵니다.
-<<<<<<< frontend/src/components/content/canvas/maps/player/hooks/useObject.ts
             return (prevIndex - 1 + roomState.roomPlayers.length) % roomState.roomPlayers.length;
         });  
     };  
@@ -520,15 +515,6 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         }  
     }, []); 
  
-=======
-            return (
-                (prevIndex - 1 + roomState.roomPlayers.length) %
-                roomState.roomPlayers.length
-            );
-        });
-    };
-
->>>>>>> frontend/src/components/content/canvas/maps/player/hooks/useObject.ts
     useEffect(() => {
         const handleMouseMove = (event: MouseEvent) => {
             // 마우스 포인터가 고정된 상태에서의 마우스 이동량을 감지합니다.
@@ -597,18 +583,11 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             document.removeEventListener('keydown', handleKeyDown);
             document.removeEventListener('keyup', handleKeyUp);
         };
-<<<<<<< frontend/src/components/content/canvas/maps/player/hooks/useObject.ts
-    }, []); 
- 
-    useFrame(({ camera , clock }) => {  
-        if (!player || !playerRef.current) return;   
-=======
     }, []);
 
     // useEffect(() => {
     //     console.log("플레이어 인덱스 : " + observedPlayerIndex + " of " +roomState.roomPlayers.length );
     // }, [observedPlayerIndex]);
->>>>>>> frontend/src/components/content/canvas/maps/player/hooks/useObject.ts
 
     useFrame(({ camera, clock }) => {
         if (!player || !playerRef.current) return;
@@ -815,15 +794,9 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                         observerRef.current.position.y,
                         observerRef.current.position.z
                     );
-<<<<<<< frontend/src/components/content/canvas/maps/player/hooks/useObject.ts
                     camera.lookAt(cameraTarget); 
                 }     
             }    
-=======
-                    camera.lookAt(cameraTarget);
-                }
-            }
->>>>>>> frontend/src/components/content/canvas/maps/player/hooks/useObject.ts
         } else {
             // 다른 플레이어의 캐릭터
             roomState.roomPlayers.forEach((otherPlayer: any) => {
