@@ -9,13 +9,10 @@ import {
     Vector3,
     Quaternion,
 } from 'three';
-import { Face, GLTF, SkeletonUtils } from 'three-stdlib';
+import { GLTF, SkeletonUtils } from 'three-stdlib';
 import { PlayerInitType } from '../../../../../../types/GameType';
 import StompClient from '../../../../../../websocket/StompClient';
 import { useSelector } from 'react-redux';
-import { useBox } from '@react-three/cannon';
-import { store } from '../../../../../../store/store'; 
-import { meDead } from '../../../../../../store/user-slice';
 
 // interface GLTFAction extends AnimationClip {
 //     name: ActionName;
