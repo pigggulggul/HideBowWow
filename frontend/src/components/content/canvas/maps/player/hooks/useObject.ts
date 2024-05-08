@@ -521,10 +521,10 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 const movementY = event.movementY || 0;
                 updateRotationY(movementX);
                 updateRotationX(movementY);
-            }
-            setMouseWheelValue(10);
+            } 
         };
 
+        setMouseWheelValue(10);
         document.addEventListener('mousemove', handleMouseMove);
         document.addEventListener('wheel', handleMouseWheel);
 
@@ -701,8 +701,8 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                         Math.sin(playerRef.current.viewLR),
                         playerRef.current.viewUpDown + 5,
                         Math.cos(playerRef.current.viewLR)
-                    );
-
+                    ); 
+                    
                     // 카메라 위치
                     playerDirection.multiplyScalar(mouseWheelValue * 2);
                     camera.position.set(
