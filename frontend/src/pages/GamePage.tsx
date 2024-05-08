@@ -58,6 +58,7 @@ export default function GamePage() {
     }, [currentRoom.roomPlayers]);
     useEffect(() => {
         if (meInfo) {
+            console.log('헤헤');
             if (meInfo.isSeeker) {
                 dispatch(heartState(5));
             } else {
