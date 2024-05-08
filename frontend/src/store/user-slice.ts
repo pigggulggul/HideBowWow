@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
+    ChatType,
     CollideObject,
     CurrentPlayersInfo,
     MapSize,
@@ -18,6 +19,7 @@ export interface UserState {
     meHeart: number;
     bgmFlag: boolean;
     mapSize: MapSize;
+    chatData: ChatType[];
 }
 const initialState: UserState = {
     userNickname: '',
@@ -52,6 +54,7 @@ const initialState: UserState = {
         minZ: -100,
         maxZ: 100,
     },
+    chatData: [],
 };
 
 export const userSlice = createSlice({
@@ -121,6 +124,12 @@ export const userSlice = createSlice({
         mapSizeState: (state, action) => {
             state.mapSize = action.payload;
         },
+        chatDataState: (state, action) => {
+            state.chatData = action.payload;
+        },
+        addChatDataState: (state, action) => {
+            state.chatData = [...state.chatData, action.payload];
+        },
     },
 });
 export const {
@@ -141,5 +150,7 @@ export const {
     decrementHeartState,
     bgmFlagState,
     mapSizeState,
+    chatDataState,
+    addChatDataState,
 } = userSlice.actions;
 export default userSlice.reducer;

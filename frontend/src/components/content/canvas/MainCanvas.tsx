@@ -3,8 +3,11 @@ import { OrbitControls, Sky } from '@react-three/drei';
 import { RootMap } from './maps/RootMap';
 import { Debug, Physics } from '@react-three/cannon';
 import { Suspense } from 'react';
+
 export function MainCanvas() {
     const aspectRatio = window.innerWidth / window.innerHeight;
+    // 키보드 이벤트
+
     return (
         <Suspense
             fallback={
