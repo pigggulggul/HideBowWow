@@ -1,7 +1,7 @@
 replicaCount: 2
 
 image:
-  repository: choichangho514/frontend
+  repository: choichangho514/frontend_test
   pullPolicy: Always
   tag: "latest"
 
