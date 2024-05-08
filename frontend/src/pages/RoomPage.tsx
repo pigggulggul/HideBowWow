@@ -6,6 +6,8 @@ import { httpStatusCode } from '../components/utils/http-status';
 import { useDispatch, useSelector } from 'react-redux';
 import StompClient from '../websocket/StompClient';
 import { currentRoomState, readyState } from '../store/user-slice';
+import backgroundImage from '../assets/images/bg/background-main.png';
+import dummyMap from '../assets/images/etc/dummy-map.png';
 
 export default function RoomPage() {
     const [settingRoomFlag, setSettingRoomFlag] = useState<boolean>(false);
@@ -92,12 +94,12 @@ export default function RoomPage() {
             className="relative w-full h-full flex flex-col items-center justify-center"
             style={{
                 backgroundImage:
-                    'url(/src/assets/images/bg/background-main.png)',
+                `url(${backgroundImage})`,
             }}
         >
-            <div className="relative w-[80%] h-[90%] p-[1vw] flex justify-between border-[0.3vw] rounded-[0.6vw] border-gray-950 bg-white ">
+            <div className="relative w-[80%] h-[90%] p-[1vw] flex justify-between border-[0.3vw] rounded-[0.6vw] border-white bg-sky-300 ">
                 <div className="w-[60%] h-full flex-col justify-center">
-                    <div className="w-full h-[14%] flex justify-between items-center mx-auto my-[1vw] px-[1vw] py-[1.2vw] text-[1.2vw] border-[0.2vw] border-gray-950 rounded-[0.6vw] ">
+                    <div className="w-full h-[14%] flex justify-between items-center mx-auto my-[1vw] px-[1vw] py-[1.2vw] text-[1.2vw] border-[0.2vw] bg-white border-white rounded-[0.6vw] ">
                         <p>{room?.roomTitle}</p>
                         <p
                             className="cursor-pointer"
@@ -113,7 +115,7 @@ export default function RoomPage() {
                             return (
                                 <div
                                     key={'currentPeople' + index}
-                                    className="w-[45%] h-[15%] px-[1vw] my-[0.6vw] mx-[0.4vw] flex justify-between items-center border-[0.3vw] rounded-[0.6vw] border-black bg-white cursor-pointer hover:bg-sky-500 "
+                                    className="w-[45%] h-[15%] px-[1vw] my-[0.6vw] mx-[0.4vw] flex justify-between items-center border-[0.3vw] rounded-[0.6vw] border-white bg-sky-400 text-white cursor-pointer hover:bg-sky-500 "
                                 >
                                     <p className="text-[1.4vw]">
                                         {item.nickname}
@@ -134,12 +136,12 @@ export default function RoomPage() {
                 <div className="w-[40%] h-full flex flex-col items-center justify-around">
                     <div className="flex flex-col items-center">
                         <img
-                            className="w-[80%] border-[0.3vw] border-black rounded-[0.6vw]"
-                            src="/src/assets/images/etc/dummy-map.png"
+                            className="w-[80%] border-[0.3vw] border-white rounded-[0.6vw]"
+                            src={dummyMap}
                             alt=""
                             style={{ aspectRatio: 1 / 1 }}
                         />
-                        <div className="flex text-[2vw]">
+                        <div className="flex text-[2vw] text-white">
                             <p className="mx-[1vw]">-</p>
                             <p>농장</p>
                             <p className="mx-[1vw]">+</p>
@@ -148,7 +150,7 @@ export default function RoomPage() {
 
                     <div className="w-full flex justify-between">
                         <div
-                            className="w-[45%] h-full px-[1vw] bg-red-400  py-[1vw] border-[0.3vw] rounded-[0.6vw] border-black cursor-pointer hover:bg-red-500 hover:text-white hover:border-red-500 "
+                            className="w-[45%] h-full px-[1vw] bg-rose-400 text-white py-[1vw] border-[0.3vw] rounded-[0.6vw] border-white cursor-pointer hover:bg-red-500 hover:text-white hover:border-red-500 "
                             onClick={() => {
                                 outRoom();
                             }}
@@ -156,24 +158,24 @@ export default function RoomPage() {
                             <p className="text-[1.4vw]">나가기</p>
                         </div>
                         <div
-                            className="w-[45%] h-full px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] border-black cursor-pointer hover:bg-sky-500 hover:text-white hover:border-sky-500"
+                            className="w-[45%] h-full px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] border-white bg-sky-400 cursor-pointer hover:bg-sky-500 hover:text-white hover:border-sky-500"
                             onClick={() => {
                                 playGame();
                             }}
                         >
-                            <p className="text-[1.4vw]">게임시작</p>
+                            <p className="text-[1.4vw] text-white ">게임시작</p>
                         </div>
                     </div>
                 </div>
             </div>
             {settingRoomFlag ? (
-                <div className="absolute w-[40%] h-[40%] flex flex-col items-center justify-between border-[0.3vw] rounded-[0.6vw] border-gray-950 bg-white overflow-y-auto">
+                <div className="absolute w-[40%] h-[40%] flex flex-col items-center justify-between border-[0.3vw] rounded-[0.6vw] border-white bg-sky-300 overflow-y-auto">
                     <div className="w-full flex flex-col items-center">
                         <p className="text-[1.8vw] my-[1vw]">방 수정하기</p>
                         <div className="relative w-[90%] flex justify-start items-center my-[0.4vw]">
                             <p className="w-[40%] text-[1.6vw]">제목 수정 : </p>
                             <input
-                                className="w-[60%] border-[0.2vw] border-black px-[1vw] py-[0.4vw] mx-[1vw]"
+                                className="w-[60%] border-[0.2vw] border-white px-[1vw] py-[0.4vw] mx-[1vw]"
                                 type="text"
                                 name=""
                                 id=""
@@ -184,7 +186,7 @@ export default function RoomPage() {
                                 비밀번호 수정 :{' '}
                             </p>
                             <input
-                                className="w-[60%] border-[0.2vw] border-black px-[1vw] py-[0.4vw] mx-[1vw]"
+                                className="w-[60%] border-[0.2vw] border-white px-[1vw] py-[0.4vw] mx-[1vw]"
                                 type="text"
                                 name=""
                                 id=""
@@ -194,7 +196,7 @@ export default function RoomPage() {
 
                     <div className="relative w-[90%] flex justify-between items-center my-[1vw]">
                         <p
-                            className="w-[30%] h-full px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] border-black cursor-pointer hover:bg-sky-500 hover:text-white hover:border-sky-500"
+                            className="w-[30%] h-full px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] border-white cursor-pointer hover:bg-sky-500 hover:text-white hover:border-sky-500"
                             onClick={() => {
                                 changeSettingRoomFlag();
                             }}
@@ -202,7 +204,7 @@ export default function RoomPage() {
                             <p className="text-[1.4vw]">수정하기</p>
                         </p>
                         <p
-                            className="w-[30%] h-full px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] border-black cursor-pointer hover:bg-sky-500 hover:text-white hover:border-sky-500"
+                            className="w-[30%] h-full px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] border-white cursor-pointer hover:bg-sky-500 hover:text-white hover:border-sky-500"
                             onClick={() => {
                                 changeSettingRoomFlag();
                             }}

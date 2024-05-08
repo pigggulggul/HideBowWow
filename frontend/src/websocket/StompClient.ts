@@ -8,8 +8,8 @@ import {
     removePeopleRoomState, 
     meDead, 
 } from '../store/user-slice';
-import { store } from '../store/store'; 
- 
+import { store } from '../store/store';
+import { createStream, handleData, endStream } from '../assets/js/voice';
 
 class StompClient {
     private static instance: StompClient;
@@ -112,6 +112,7 @@ class StompClient {
                             case 'room.backRoom': {
                                 console.log('대기실로 이동', msg);
                                 store.dispatch(currentRoomState(msg.data));
+                                this.exitVoiceChannel()
                                 break;
                             }
                             default: {
@@ -192,6 +193,7 @@ class StompClient {
                     case 'room.backRoom': {
                         console.log('대기실로 이동', msg);
                         store.dispatch(currentRoomState(msg.data));
+                        this.exitVoiceChannel()
                         break;
                     }
                 }
@@ -210,6 +212,31 @@ class StompClient {
             this.client.publish({ destination: destination, body: body });
         }
     }
+
+    private subscribeId = Math.round(Math.random()*10000)+"";
+
+    public enterVoiceChannel(roomId: string, nickname: string): void {
+        if(!this.client){
+            alert('연결된 소켓이 없습니다')
+            return
+        }
+        createStream(roomId, nickname)
+
+        this.client.subscribe(`/sub/voice/${roomId}`, (message) => {
+            const stompPayload = JSON.parse(message.body);
+            handleData(stompPayload)
+        },
+        {id: this.subscribeId}
+        );
+    }
+
+    public exitVoiceChannel(): void {
+        if(!this.client) return
+
+        this.client.unsubscribe(this.subscribeId)
+        endStream()
+    }
+
 }
 
 export default StompClient;

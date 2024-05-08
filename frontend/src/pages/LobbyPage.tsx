@@ -6,6 +6,7 @@ import { httpStatusCode } from '../components/utils/http-status';
 import { useDispatch, useSelector } from 'react-redux';
 import { currentRoomState, roomIdState } from '../store/user-slice';
 import StompClient from '../websocket/StompClient';
+import backgroundImage from '../assets/images/bg/background-main.png';
 
 export default function LobbyPage() {
     const [makeRoomFlag, setMakeRoomFlag] = useState<boolean>(false);
@@ -176,16 +177,16 @@ export default function LobbyPage() {
             className="relative w-full h-full flex flex-col items-center justify-center"
             style={{
                 backgroundImage:
-                    'url(/src/assets/images/bg/background-main.png)',
+                    `url(${backgroundImage})`,
             }}
         >
-            <div className="relative w-[80%] h-[90%] flex justify-between border-[0.3vw] rounded-[0.6vw] border-gray-950 bg-white overflow-y-auto">
+            <div className="relative w-[80%] h-[90%] flex justify-between border-[0.3vw] rounded-[0.6vw] border-white bg-sky-50 overflow-y-auto">
                 <div className="w-[15%]">
-                    <p className="w-[80%] mx-auto my-[1vw] px-[1vw] py-[1.2vw] text-[1.2vw] border-[0.2vw] border-gray-950 rounded-[0.6vw] hover:color-bg-main cursor-pointer">
+                    <p className="w-[80%] mx-auto my-[1vw] px-[1vw] py-[1.2vw] text-[1.2vw] border-[0.2vw] border-white bg-sky-400 text-white rounded-[0.6vw] hover:color-bg-main cursor-pointer">
                         빠른시작
                     </p>
                     <p
-                        className="w-[80%] mx-auto my-[1vw] px-[1vw] py-[1.2vw] text-[1.2vw] border-[0.2vw] border-gray-950 rounded-[0.6vw] hover:color-bg-main cursor-pointer"
+                        className="w-[80%] mx-auto my-[1vw] px-[1vw] py-[1.2vw] text-[1.2vw] border-[0.2vw] border-white bg-sky-400 text-white rounded-[0.6vw] hover:color-bg-main cursor-pointer"
                         onClick={() => {
                             changeMakeRoomFlag();
                         }}
@@ -193,7 +194,7 @@ export default function LobbyPage() {
                         방 만들기
                     </p>
                     <p
-                        className="w-[80%] mx-auto my-[1vw] px-[1vw] py-[1.2vw] text-[1.2vw] border-[0.2vw] border-gray-950 rounded-[0.6vw] hover:color-bg-main cursor-pointer"
+                        className="w-[80%] mx-auto my-[1vw] px-[1vw] py-[1.2vw] text-[1.2vw] border-[0.2vw] border-white bg-sky-400 text-white rounded-[0.6vw] hover:color-bg-main cursor-pointer"
                         onClick={() => {
                             changeSearchRoomFlag();
                         }}
@@ -207,7 +208,7 @@ export default function LobbyPage() {
                             return (
                                 <div
                                     key={'public-room-' + index}
-                                    className="w-[45%] h-[20%] px-[1vw] my-[0.6vw] mx-[0.4vw] flex justify-between items-center border-[0.3vw] rounded-[0.6vw] border-black bg-white cursor-pointer hover:bg-sky-500 "
+                                    className="w-[45%] h-[20%] px-[1vw] my-[0.6vw] mx-[0.4vw] flex justify-between items-center border-[0.3vw] rounded-[0.6vw] border-white bg-sky-400 text-white cursor-pointer hover:bg-sky-500 "
                                     onClick={() => {
                                         checkPublicRoom(item.roomId);
                                     }}
@@ -231,7 +232,7 @@ export default function LobbyPage() {
                                             {item.roomPlayers.length}/6
                                         </p>
                                         {item.roomState === 0 ? (
-                                            <p className="text-[1.6vw] text-sky-400">
+                                            <p className="text-[1.6vw] text-white">
                                                 대기중
                                             </p>
                                         ) : (
@@ -274,13 +275,13 @@ export default function LobbyPage() {
                 </div>
             </div>
             {makeRoomFlag ? (
-                <div className="absolute w-[40%] h-[40%] flex flex-col items-center justify-between border-[0.3vw] rounded-[0.6vw] border-gray-950 bg-white overflow-y-auto">
+                <div className="absolute w-[40%]  flex flex-col items-center justify-between border-[0.3vw] rounded-[0.6vw] border-white bg-sky-400 text-white overflow-y-auto">
                     <div className="w-full flex flex-col items-center">
                         <p className="text-[1.8vw] my-[1vw]">방 만들기</p>
                         <div className="relative w-[90%] flex justify-start items-center my-[0.4vw]">
                             <p className="w-[40%] text-[1.6vw]">방 이름 : </p>
                             <input
-                                className="w-[60%] border-[0.2vw] border-black px-[1vw] py-[0.4vw] mx-[1vw]"
+                                className="w-[60%] border-[0.2vw] border-white text-black px-[1vw] py-[0.4vw] mx-[1vw]"
                                 type="text"
                                 name=""
                                 id=""
@@ -295,7 +296,7 @@ export default function LobbyPage() {
                                 방 비밀번호 :{' '}
                             </p>
                             <input
-                                className="w-[60%] border-[0.2vw] border-black px-[1vw] py-[0.4vw] mx-[1vw]"
+                                className="w-[60%] border-[0.2vw] border-white text-black px-[1vw] py-[0.4vw] mx-[1vw]"
                                 type="password"
                                 name=""
                                 id=""
@@ -320,7 +321,7 @@ export default function LobbyPage() {
 
                     <div className="relative w-[90%] flex justify-between items-center my-[1vw]">
                         <div
-                            className="w-[30%] h-full px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] border-black cursor-pointer hover:bg-sky-500 hover:text-white hover:border-sky-500"
+                            className="w-[30%] h-full px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] border-white cursor-pointer hover:bg-sky-500 hover:text-white hover:border-sky-500"
                             onClick={() => {
                                 makeRoom();
                             }}
@@ -328,7 +329,7 @@ export default function LobbyPage() {
                             <p className="text-[1.4vw]">방 만들기</p>
                         </div>
                         <div
-                            className="w-[30%] h-full px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] border-black cursor-pointer hover:bg-sky-500 hover:text-white hover:border-sky-500"
+                            className="w-[30%] h-full px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] border-white cursor-pointer hover:bg-sky-500 hover:text-white hover:border-sky-500"
                             onClick={() => {
                                 changeMakeRoomFlag();
                             }}

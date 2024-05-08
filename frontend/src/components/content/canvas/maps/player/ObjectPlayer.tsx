@@ -37,11 +37,7 @@ export function ObjectPlayer({
             mass: 0,
             args: [1, 1, 1],
             type: 'Kinematic',
-            position: [
-                memoizedPosition.x,
-                memoizedPosition.y,
-                memoizedPosition.z,
-            ], // 초기 위치를 useRef의 현재 값으로 설정
+            position: [0, 0.5, 0], // 초기 위치를 useRef의 현재 값으로 설정
             onCollide: (e) => {
                 console.log('충돌', e);
             },
@@ -55,27 +51,26 @@ export function ObjectPlayer({
         }
     });
 
-    return ( 
+    return (
         <>
-        {meInfo && (
+            {meInfo && (
                 <NicknameBoard ref={nicknameRef} text={`${player?.nickname}`} />
-        )}
-        <group
-            ref={playerRef}
-            position={memoizedPosition}
-            name={playerNickname ?? ''}
-            dispose={null}
-            scale={scale}
-        >
-            <mesh
-                geometry={node}
-                material={material}
-                name={playerNickname}
-                rotation={[Math.PI / 2, 0, 0]}
-            />
-        </group>
-        
-        </> 
+            )}
+            <group
+                ref={playerRef}
+                position={memoizedPosition}
+                name={playerNickname ?? ''}
+                dispose={null}
+                scale={scale}
+            >
+                <mesh
+                    geometry={node}
+                    material={material}
+                    name={playerNickname}
+                    rotation={[Math.PI / 2, 0, 0]}
+                />
+            </group>
+        </>
     );
 }
 

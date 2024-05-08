@@ -34,11 +34,14 @@ export function MainCanvas() {
             <OrbitControls />
             <Suspense>
                 <Physics>
-                    {/* <Debug> */}
-                    <RootMap />
-                    {/* </Debug> */}
+                    <Debug>
+                        <RootMap />
+                    </Debug>
                 </Physics>
             </Suspense>
+            {/* 최적화 관련 */}
+            {/* <StatsGl />
+            <DrawCallCounter /> */}
         </Canvas>
     );
 }

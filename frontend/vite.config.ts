@@ -12,11 +12,11 @@ export default defineConfig({
         },
         proxy: {
             '/api/member-service': {
-                target: 'http://jongbum.site:8001/',
+                target: 'https://k10a709.p.ssafy.io/',
                 changeOrigin: true,
             },
             '/api/game-service': {
-                target: 'http://jongbum.site:8002/',
+                target: 'https://k10a709.p.ssafy.io/',
                 changeOrigin: true,
             },
         },

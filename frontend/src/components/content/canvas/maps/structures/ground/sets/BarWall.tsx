@@ -1,6 +1,3 @@
-import { Wall_blue } from '../elements/Wall_blue';
-import { Wall_white } from '../elements/Wall_white';
-import { Wall_white_Side } from '../elements/Wall_white_Side';
 import { Wall_white_brown } from '../elements/Wall_white_brown';
 
 export default function BarWall() {
@@ -241,7 +238,6 @@ export default function BarWall() {
                 position={[5, 4, 70]}
                 rotation={[Math.PI / 2, 0, Math.PI / 2]}
             />
-
             <Wall_white_brown
                 position={[0, 4, 75]}
                 rotation={[Math.PI / 2, 0, 0]}
