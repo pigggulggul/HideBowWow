@@ -1,7 +1,7 @@
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Sky } from '@react-three/drei';
 import { RootMap } from './maps/RootMap';
-import { Physics } from '@react-three/cannon';
+import { Debug, Physics } from '@react-three/cannon';
 import { Suspense } from 'react';
 
 export function MainCanvas() {
@@ -45,9 +45,9 @@ export function MainCanvas() {
                 <OrbitControls />
 
                 <Physics>
-                    {/* <Debug> */}
+                    <Debug>
                         <RootMap />
-                    {/* </Debug> */}
+                    </Debug>
                 </Physics>
                 {/* 최적화 관련 */}
                 {/* <StatsGl /> */}

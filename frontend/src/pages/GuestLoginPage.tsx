@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { guestLogin } from '../api/auth';
 import { GuestLoginInfo } from '../types/GameType';
@@ -29,12 +29,16 @@ export default function GuestLoginPage() {
             }
         }
     };
+    const sendEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            login();
+        }
+    };
     return (
         <section
             className="w-full h-full flex flex-col items-center justify-center"
             style={{
-                backgroundImage:
-                `url(${backgroundImage})`,
+                backgroundImage: `url(${backgroundImage})`,
             }}
         >
             <img src={textLoginQuest} alt="" />
@@ -47,6 +51,7 @@ export default function GuestLoginPage() {
                     onChange={(e) => {
                         setGuestNickname(e.target.value);
                     }}
+                    onKeyDown={sendEnter}
                 />
             </div>
 

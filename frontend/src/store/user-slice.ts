@@ -14,7 +14,6 @@ export interface UserState {
     isReady: boolean;
     currentRoom: RoomInfo;
     meInfo: CurrentPlayersInfo;
-    givenChoice: number[];
     collideObj: CollideObject[];
     meHeart: number;
     bgmFlag: boolean;
@@ -44,7 +43,6 @@ const initialState: UserState = {
         isDead: null,
         isSeeker: null,
     },
-    givenChoice: [],
     collideObj: [],
     meHeart: 0,
     bgmFlag: true,
@@ -53,6 +51,8 @@ const initialState: UserState = {
         maxX: 100,
         minZ: -100,
         maxZ: 100,
+        minY: -1,
+        maxY: 8,
     },
     chatData: [],
 };
@@ -103,9 +103,6 @@ export const userSlice = createSlice({
         meDead: (state, action) => {
             state.meInfo.isDead = action.payload;
         },
-        givenChoiceState: (state, action) => {
-            state.givenChoice = action.payload;
-        },
         collideObjectState: (state, action) => {
             state.collideObj = action.payload;
         },
@@ -142,7 +139,6 @@ export const {
     meSelectedInfoState,
     meDead,
     removePeopleRoomState,
-    givenChoiceState,
     addCollideObjectState,
     removeCollideObjectState,
     collideObjectState,

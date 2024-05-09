@@ -235,27 +235,30 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     };
 
     useEffect(() => {
-        callsInLastSecondRef.current = callsInLastSecond;  
+        callsInLastSecondRef.current = callsInLastSecond;
     }, [callsInLastSecond]);
-     
-    useEffect(() => {  
+
+    useEffect(() => {
         // 3초마다 호출
-        if(meInfo?.nickname === playerNickname) { 
-            const intervalId = setInterval(() => { 
-                console.log("초당 평균 프레임 :", (callsInLastSecondRef.current/3));
+        if (meInfo?.nickname === playerNickname) {
+            const intervalId = setInterval(() => {
+                console.log(
+                    '초당 평균 프레임 :',
+                    callsInLastSecondRef.current / 3
+                );
                 setCallsInLastSecond(0); // 85 ~ 95
-                if(callsInLastSecondRef.current > 95) {
-                    setDelay(preDelay => preDelay + 0.00001) 
-                    console.log("딜레이 값을 올리겠습니다.");
+                if (callsInLastSecondRef.current > 95) {
+                    setDelay((preDelay) => preDelay + 0.00001);
+                    console.log('딜레이 값을 올리겠습니다.');
                 } else if (callsInLastSecondRef.current < 85) {
-                    setDelay(preDelay => preDelay - 0.00001)   
-                    console.log("딜레이 값을 낮추겠습니다.");
-                }  
-            }, 3000);  
-            
+                    setDelay((preDelay) => preDelay - 0.00001);
+                    console.log('딜레이 값을 낮추겠습니다.');
+                }
+            }, 3000);
+
             return () => clearInterval(intervalId);
-        }  
-    }, []); 
+        }
+    }, []);
 
     useEffect(() => {
         const handleMouseMove = (event: MouseEvent) => {
@@ -325,7 +328,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     }, [isJumping]);
 
     // Frame
-    useFrame(({ camera , clock }) => {
+    useFrame(({ camera, clock }) => {
         if (isFirstFrame.current) {
             isFirstFrame.current = false;
             prevPosition.current = playerRef.current
@@ -588,7 +591,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
             roomState.roomPlayers.forEach((otherPlayer: any) => {
                 if (
                     otherPlayer.nickname !== meInfo?.nickname &&
-                    otherPlayer.nickname === playerNickname && 
+                    otherPlayer.nickname === playerNickname &&
                     otherPlayer.isSeeker === true
                 ) {
                     const otherPlayerRef = playerRef.current;
@@ -644,7 +647,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                 playerRef.current.position.x,
                 playerRef.current.position.y + 3.5,
                 playerRef.current.position.z
-            ); 
+            );
             nicknameRef.current.lookAt(camera.position);
         }  
         }    

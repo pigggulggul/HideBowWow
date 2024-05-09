@@ -23,7 +23,7 @@ export function Doll_pig(props: ObjectSettingType) {
         '/models/object/Doll_pig.glb'
     ) as GLTFResult;
     const [ref] = useBox<THREE.Mesh>(() => ({
-        args: [1.4, 1.8, 1.4],
+        args: [1.1, 1.8, 1.1],
         mass: 0.1,
         position: props.position,
         rotation: props.rotation,
