@@ -12,7 +12,7 @@ service:
   targetPort: 8002
 
 env:
-  value: 194
+  value: 196
 #ingress:
 #  enabled: true
 #  className: nginx
