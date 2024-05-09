@@ -13,7 +13,7 @@ public class GameProperties {
     private int maxCapacity;
     private Object object;
     private int fps;
-
+    private Map map;
 
     @Data
     public static class Time {
@@ -22,10 +22,28 @@ public class GameProperties {
         private int seek;
         private int result;
     }
+
     @Data
     public static class Object {
         private int maxSeekerIdx;
         private int maxHiderIdx;
+    }
+
+    @Data
+    public static class Map {
+        private RichHouse richHouse;
+    }
+
+    @Data
+    public static class RichHouse {
+        private StartPoint startPoint;
+    }
+
+    @Data
+    public static class StartPoint {
+        private double x;
+        private double y;
+        private double z;
     }
 
 }

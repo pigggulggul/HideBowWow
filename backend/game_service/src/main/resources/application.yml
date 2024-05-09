@@ -32,12 +32,18 @@ logging:
 
 game:
   time:
-    waiting: 10
+    waiting: 3
     hide: 30
     seek: 90
     result: 10
-  maxCapacity: 6
+  maxCapacity: 12
   object:
     maxSeekerIdx: 14
     maxHiderIdx: 101
+  map:
+    richHouse:
+      startPoint:
+        x: -43.8823
+        y: 0.03
+        z: -27.9526
   fps: 30

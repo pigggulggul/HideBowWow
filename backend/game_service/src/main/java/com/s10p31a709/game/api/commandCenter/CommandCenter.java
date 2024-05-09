@@ -89,6 +89,8 @@ public class CommandCenter {
         }
     }
 
+    // 방의 상태 fps만큼 전송. 변경사항이 없는 경우(flag = false)는 전송하지 않음.
+    // 시간이 변하면 flag = true가 되므로 최소 1초에 한번은 전송
     @Scheduled(fixedRateString = "#{ 1000 / ${game.fps}}")
     public void positionSchedule(){
         List<Room> rooms = roomRepository.findAllRoom();
