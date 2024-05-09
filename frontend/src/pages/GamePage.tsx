@@ -219,17 +219,8 @@ export default function GamePage() {
             ) : (
                 <></>
             )}
-            {currentRoom.roomState === 2 && meInfo.isSeeker ? (
-                <div className="absolute w-full h-full flex flex-col justify-center items-center bg-black">
-                    <img className="w-[90%]" src={seekerDisplay} alt="" />
-                    <p className="text-[3vw] text-white">
-                        당신은 술래입니다. 조금만 기다려주시기 바랍니다.
-                    </p>
-                </div>
-            ) : (
-                <></>
-            )}
-            {currentRoom.roomState === 2 && !meInfo.isSeeker ? (
+
+            {currentRoom.roomState === 2 ? (
                 <div className="absolute flex top-4 w-full justify-center items-center text-[2vw]">
                     <p className=" text-sky-400">술래</p>
                     <p className=" text-sky-400 ms-[1vw]">{seekerNum}</p>
