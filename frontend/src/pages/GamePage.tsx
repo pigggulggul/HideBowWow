@@ -24,8 +24,9 @@ import keyW from '../assets/images/icon/key_w.png';
 import keyC from '../assets/images/icon/key_c.png';
 import keyM from '../assets/images/icon/key_m.png';
 import keyR from '../assets/images/icon/key_r.png';
+import keySpace from '../assets/images/icon/key_space.png';
 import ingameMusic from '../assets/bgm/ingame_music.mp3';
-import seekerDisplay from '../assets/images/bg/seekerBg.png';
+import ObjectInfo from '../json/ObjectInfo.json';
 
 export default function GamePage() {
     const stompClient = StompClient.getInstance();
@@ -219,17 +220,8 @@ export default function GamePage() {
             ) : (
                 <></>
             )}
-            {currentRoom.roomState === 2 && meInfo.isSeeker ? (
-                <div className="absolute w-full h-full flex flex-col justify-center items-center bg-black">
-                    <img className="w-[90%]" src={seekerDisplay} alt="" />
-                    <p className="text-[3vw] text-white">
-                        당신은 술래입니다. 조금만 기다려주시기 바랍니다.
-                    </p>
-                </div>
-            ) : (
-                <></>
-            )}
-            {currentRoom.roomState === 2 && !meInfo.isSeeker ? (
+
+            {currentRoom.roomState === 2 ? (
                 <div className="absolute flex top-4 w-full justify-center items-center text-[2vw]">
                     <p className=" text-sky-400">술래</p>
                     <p className=" text-sky-400 ms-[1vw]">{seekerNum}</p>
@@ -271,6 +263,50 @@ export default function GamePage() {
                     <p className="text-[2vw] text-black">
                         {currentRoom.roomTime}초 후 로비로 복귀합니다.
                     </p>
+                </div>
+            ) : (
+                <></>
+            )}
+            {currentRoom.roomState === 4 || currentRoom.roomState === 5 ? (
+                <div className="absolute w-full flex justify-center bottom-6">
+                    {currentRoom.roomPlayers.map(
+                        (item: CurrentPlayersInfo, pIndex: number) => {
+                            if (!item.isSeeker) {
+                                return (
+                                    <div
+                                        className="w-[15%] h-[30%] flex flex-col border-[0.4vw] border-sky-300 bg-white p-[1vw] rounded-[0.6vw]"
+                                        key={'result-' + pIndex}
+                                    >
+                                        <p>{item.nickname}</p>
+                                        {item.selectedIndex ? (
+                                            <img
+                                                className="relative w-50 h-40 object-fill"
+                                                src={
+                                                    ObjectInfo[
+                                                        item.selectedIndex
+                                                    ].thumbnail
+                                                }
+                                                alt=""
+                                            />
+                                        ) : (
+                                            <></>
+                                        )}
+                                        {item.selectedIndex ? (
+                                            <p>
+                                                {
+                                                    ObjectInfo[
+                                                        item.selectedIndex
+                                                    ].name
+                                                }
+                                            </p>
+                                        ) : (
+                                            <></>
+                                        )}
+                                    </div>
+                                );
+                            }
+                        }
+                    )}
                 </div>
             ) : (
                 <></>
@@ -328,7 +364,7 @@ export default function GamePage() {
                                 회전 (좌, 우)
                             </p>
                         </div>
-                        <div className="flex items-center">
+                        <div className="flex items-center mb-[1vw]">
                             <img
                                 className="px-[0.2vw]"
                                 src={keyR}
@@ -341,8 +377,17 @@ export default function GamePage() {
                     </>
                 )}
 
+                <div className="flex items-center mb-[1vw]">
+                    <img
+                        className="px-[0.2vw]"
+                        src={keySpace}
+                        alt="key_space.png"
+                    />
+                    <p className="px-[0.4vw] text-[1.6vw]">점프</p>
+                </div>
+
                 {/* 음성채팅 입, 퇴장 관련 키 가이드 */}
-                <div className="flex items-center my-[1vw]">
+                <div className="flex items-center">
                     <img className="px-[0.2vw]" src={keyC} alt="key_c.png" />
                     <p className="px-[0.4vw] text-[1.6vw]">
                         {stream ? '음성채팅 퇴장' : '음성채팅 입장'}

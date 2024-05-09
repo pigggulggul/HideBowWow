@@ -21,9 +21,6 @@ export function Content() {
     const meInfo = useSelector(
         (state: any) => state.reduxFlag.userSlice.meInfo
     );
-    const givenChoice = useSelector(
-        (state: any) => state.reduxFlag.userSlice.givenChoice
-    );
     //내정보.
     const [me, setMe] = useState<CurrentPlayersInfo>({
         direction: [0, 0, 0],
@@ -38,6 +35,11 @@ export function Content() {
         roomState.roomPlayers
     );
     const [choice, setChoice] = useState<number[]>([1, 2, 3]);
+    const [rerollFlag, setRerollFlag] = useState<boolean[]>([
+        false,
+        false,
+        false,
+    ]);
     const [choiceFlag, setChoiceFlag] = useState<boolean>(false);
     useEffect(() => {
         if (meInfo.nickname !== '') {
@@ -98,11 +100,14 @@ export function Content() {
         }
     }, [roomState.roomState]);
     useEffect(() => {
-        if (givenChoice.length === 3) {
-            setChoice(givenChoice);
-            console.log(givenChoice);
-        }
-    }, [givenChoice]);
+        const randomChoice = [
+            Math.floor(Math.random() * 100),
+            Math.floor(Math.random() * 100),
+            Math.floor(Math.random() * 100),
+        ];
+        console.log('숫자 배정', randomChoice);
+        setChoice(randomChoice);
+    }, []);
 
     const handleSelectedIndex = (index: number) => {
         setMe((prevMe) => ({ ...prevMe, selectedIndex: index })); // 새 객체를 반환하여 selectedIndex 업데이트
@@ -137,6 +142,18 @@ export function Content() {
         dispatch(meSelectedInfoState(index));
     };
 
+    const rerollIndex = (num: number) => {
+        if (!rerollFlag[num]) {
+            const newChoice = [...choice];
+            newChoice[num] = Math.floor(Math.random() * 100);
+            setChoice(newChoice);
+
+            const newRerollFlag = [...rerollFlag];
+            newRerollFlag[num] = true;
+            setRerollFlag(newRerollFlag);
+        }
+    };
+
     return (
         <>
             {me ? (
@@ -165,7 +182,20 @@ export function Content() {
                                         >
                                             선택하기
                                         </p>
-                                        <p className=" py-[1vw] px-[1vw] bg-sky-200 border-[0.2vw] border-sky-400 rounded-[0.6vw] my-[0.4vw] cursor-pointer">
+                                        <p
+                                            className=" py-[1vw] px-[1vw] bg-sky-200 border-[0.2vw] border-sky-400 rounded-[0.6vw] my-[0.4vw] cursor-pointer"
+                                            onClick={() => {
+                                                rerollIndex(index);
+                                            }}
+                                            style={
+                                                rerollFlag[index]
+                                                    ? {
+                                                          backgroundColor:
+                                                              'gray',
+                                                      }
+                                                    : {}
+                                            }
+                                        >
                                             리롤하기
                                         </p>
                                     </div>

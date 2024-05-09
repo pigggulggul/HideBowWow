@@ -102,7 +102,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     const nicknameRef = useRef<Group>(null);
     const prevPosition = useRef<Vector3 | null>(null);
     const isFirstFrame = useRef(true);
-    const accumulatedTimeRef = useRef(0.0);       
+    const accumulatedTimeRef = useRef(0.0);
     const callsInLastSecondRef = useRef(callsInLastSecond);
 
     const { scene, materials, animations } = useGLTF(
@@ -219,27 +219,30 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     };
 
     useEffect(() => {
-        callsInLastSecondRef.current = callsInLastSecond;  
+        callsInLastSecondRef.current = callsInLastSecond;
     }, [callsInLastSecond]);
-     
-    useEffect(() => {  
+
+    useEffect(() => {
         // 3초마다 호출
-        if(meInfo?.nickname === playerNickname) { 
-            const intervalId = setInterval(() => { 
-                console.log("초당 평균 프레임 :", (callsInLastSecondRef.current/3));
+        if (meInfo?.nickname === playerNickname) {
+            const intervalId = setInterval(() => {
+                console.log(
+                    '초당 평균 프레임 :',
+                    callsInLastSecondRef.current / 3
+                );
                 setCallsInLastSecond(0); // 85 ~ 95
-                if(callsInLastSecondRef.current > 95) {
-                    setDelay(preDelay => preDelay + 0.00001) 
-                    console.log("딜레이 값을 올리겠습니다.");
+                if (callsInLastSecondRef.current > 95) {
+                    setDelay((preDelay) => preDelay + 0.00001);
+                    console.log('딜레이 값을 올리겠습니다.');
                 } else if (callsInLastSecondRef.current < 85) {
-                    setDelay(preDelay => preDelay - 0.00001)   
-                    console.log("딜레이 값을 낮추겠습니다.");
-                }  
-            }, 3000);  
-            
+                    setDelay((preDelay) => preDelay - 0.00001);
+                    console.log('딜레이 값을 낮추겠습니다.');
+                }
+            }, 3000);
+
             return () => clearInterval(intervalId);
-        }  
-    }, []); 
+        }
+    }, []);
 
     useEffect(() => {
         const handleMouseMove = (event: MouseEvent) => {
@@ -309,7 +312,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     }, [isJumping]);
 
     // Frame
-    useFrame(({ camera , clock }) => {
+    useFrame(({ camera, clock }) => {
         if (isFirstFrame.current) {
             isFirstFrame.current = false;
             prevPosition.current = playerRef.current
@@ -319,10 +322,9 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
 
         if (!player || !playerRef.current) return;
 
-        if (meInfo?.nickname === playerNickname) { 
-            
+        if (meInfo?.nickname === playerNickname) {
             const delta = clock.getDelta(); // 프레임 간 시간 간격을 가져옵니다.
-            accumulatedTimeRef.current += delta; 
+            accumulatedTimeRef.current += delta;
 
             // 내 캐릭터의 경우
             const moveVector = new Vector3(
@@ -354,9 +356,9 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                     moveDirection.y = 0.08;
                 } else {
                     moveDirection.y = -0.08;
-                } 
+                }
 
-                if (collideState.length > 0) { 
+                if (collideState.length > 0) {
                     const originPos = playerRef.current.position.clone();
                     const newPos = originPos.clone().add(moveDirection);
                     collideState.map((item: CollideObject, index: number) => {
@@ -392,7 +394,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                                     moveDirection.y = 0;
                                 }
                             }
-                            if (originPos.z < centerZ) { 
+                            if (originPos.z < centerZ) {
                                 if (newPos.z > originPos.z) {
                                     moveDirection.z = 0;
                                 }
@@ -415,9 +417,10 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                     if (playerRef.current.position.y <= 0) {
                         playerRef.current.position.y = 0.1;
                     }
-                    playerRef.current.position.add(moveDirection); 
+                    playerRef.current.position.add(moveDirection);
+                    // console.log(playerRef.current.position);
                 }
-                
+
                 if (accumulatedTimeRef.current >= delay) {
                     accumulatedTimeRef.current = 0;
                     stompClient.sendMessage(
@@ -440,13 +443,13 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                                 ],
                             },
                         })
-                    );  
-                    setCallsInLastSecond(prevCount => prevCount + 1); 
+                    );
+                    setCallsInLastSecond((prevCount) => prevCount + 1);
                 }
             } else {
                 // 고정된 상태
                 setIsWalking(false);
-                setAnimation('Roll'); 
+                setAnimation('Roll');
 
                 if (accumulatedTimeRef.current >= delay) {
                     accumulatedTimeRef.current = 0;
@@ -470,8 +473,8 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                                 ],
                             },
                         })
-                    );  
-                    setCallsInLastSecond(prevCount => prevCount + 1); 
+                    );
+                    setCallsInLastSecond((prevCount) => prevCount + 1);
                 }
                 setAnimation('Walk');
             }
@@ -485,32 +488,32 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                 playerRef.current.viewUpDown, // 아래 위
                 Math.cos(playerRef.current.rotation.y)
             );
-            if(isJumping) { // 점프중 
+            if (isJumping) {
+                // 점프중
                 camera.position.set(
                     playerPosition.x + playerDirection.x,
-                    playerPosition.y + playerRef.current.position.y ,
+                    playerPosition.y + playerRef.current.position.y,
                     playerPosition.z + playerDirection.z
-                ); 
-
+                );
             } else {
                 camera.position.set(
                     playerPosition.x + playerDirection.x,
-                    playerPosition.y ,
+                    playerPosition.y,
                     playerPosition.z + playerDirection.z
-                ); 
-            } 
+                );
+            }
             const cameraTarget = playerPosition
                 .clone()
                 .add(playerDirection.multiplyScalar(11));
             camera.lookAt(cameraTarget); // 정면보다 더 앞으로 설정!
             camera.zoom = 0.6;
-            camera.updateProjectionMatrix();   
+            camera.updateProjectionMatrix();
         } else {
             // 다른 플레이어의 캐릭터
             roomState.roomPlayers.forEach((otherPlayer: any) => {
                 if (
                     otherPlayer.nickname !== meInfo?.nickname &&
-                    otherPlayer.nickname === playerNickname && 
+                    otherPlayer.nickname === playerNickname &&
                     otherPlayer.isSeeker === true
                 ) {
                     const otherPlayerRef = playerRef.current;
@@ -560,16 +563,16 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                 }
             });
         }
-        
+
         if (nicknameRef.current) {
             nicknameRef.current.position.set(
                 playerRef.current.position.x,
                 playerRef.current.position.y + 3.5,
                 playerRef.current.position.z
-            ); 
+            );
             nicknameRef.current.lookAt(camera.position);
-        } 
-    }); 
+        }
+    });
 
     return {
         meInfo,

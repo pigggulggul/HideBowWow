@@ -23,7 +23,7 @@ export function Meet_full(props: ObjectSettingType) {
         '/models/object/Meet_full.glb'
     ) as GLTFResult;
     const [ref] = useBox<THREE.Mesh>(() => ({
-        args: [2, 2, 1],
+        args: [2, 1, 0.8],
         mass: 0.1,
         position: props.position,
         rotation: props.rotation,

@@ -18,6 +18,7 @@ import StompClient from '../../../../../../websocket/StompClient';
 import { useSelector } from 'react-redux';
 import { store } from '../../../../../../store/store';
 import { removeCollideObjectState } from '../../../../../../store/user-slice';
+import { mode } from 'crypto-js';
 
 // interface GLTFAction extends AnimationClip {
 //     name: ActionName;
@@ -483,6 +484,31 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     };
 
     const toggleFreeViewMode = () => {
+        if (playerRef.current) {
+            stompClient.sendMessage(
+                `/player.fix`,
+                JSON.stringify({
+                    type: 'player.fix',
+                    roomId: roomId,
+                    sender: meName,
+                    data: {
+                        nickname: meName,
+                        selectedIndex: modelIndex,
+                        position: [
+                            playerRef.current.position.x,
+                            playerRef.current.position.y,
+                            playerRef.current.position.z,
+                        ],
+                        direction: [
+                            Math.sin(playerRef.current.rotation.y),
+                            0,
+                            Math.cos(playerRef.current.rotation.y),
+                        ],
+                    },
+                })
+            );
+        }
+
         setFreeViewMode((prevMode) => !prevMode);
     };
 
@@ -669,6 +695,8 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                         !moveVector.equals(new Vector3(0, 0, 0)) ||
                         isJumping != 0
                     ) {
+                        console.log(isJumping);
+
                         // 이동중
                         lockPointer();
                         moveVector.normalize().multiplyScalar(0.2);
@@ -702,7 +730,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                             collideState.map(
                                 (item: CollideObject, index: number) => {
                                     const centerX = (item.minX + item.maxX) / 2;
-                                    const centerY = (item.minY + item.maxZ) / 2;
+                                    const centerY = (item.minY + item.maxY) / 2;
                                     const centerZ = (item.minZ + item.maxZ) / 2;
 
                                     if (
@@ -770,7 +798,9 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                             playerRef.current.position.x > mapState.maxX ||
                             playerRef.current.position.x < mapState.minX ||
                             playerRef.current.position.z > mapState.maxZ ||
-                            playerRef.current.position.z < mapState.minZ
+                            playerRef.current.position.z < mapState.minZ ||
+                            playerRef.current.position.y > mapState.maxY ||
+                            playerRef.current.position.y < mapState.minY
                         ) {
                             playerRef.current.position.set(0, initialHeight, 0);
                         }
@@ -1009,6 +1039,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         scale,
         node,
         material,
+        initialHeight,
     };
 
     function returnMaterial(num: number | undefined) {

@@ -176,8 +176,7 @@ export default function LobbyPage() {
         <section
             className="relative w-full h-full flex flex-col items-center justify-center"
             style={{
-                backgroundImage:
-                    `url(${backgroundImage})`,
+                backgroundImage: `url(${backgroundImage})`,
             }}
         >
             <div className="relative w-[80%] h-[90%] flex justify-between border-[0.3vw] rounded-[0.6vw] border-white bg-sky-50 overflow-y-auto">

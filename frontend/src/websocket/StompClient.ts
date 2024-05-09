@@ -3,7 +3,6 @@ import { handshake } from './client';
 import {
     addPeopleRoomState,
     currentRoomState,
-    givenChoiceState,
     readyState,
     removePeopleRoomState,
     meDead,
@@ -92,9 +91,8 @@ class StompClient {
                                 }
                                 break;
                             }
-                            case 'player.choose': {
-                                console.log('플레이어 선택지', msg);
-                                store.dispatch(givenChoiceState(msg.data));
+                            case 'player.fix': {
+                                console.log('플레이어 고정', msg);
                                 break;
                             }
                             /** 게임 입장 (요청 필요) */
@@ -211,6 +209,10 @@ class StompClient {
                     }
                     case 'player.object': {
                         // console.log('물체 변경', msg);
+                        break;
+                    }
+                    case 'player.fix': {
+                        console.log('플레이어 고정', msg);
                         break;
                     }
                     /** 플레이어 위치 정보 반환 */
