@@ -584,7 +584,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                     .clone()
                     .add(playerDirection.multiplyScalar(11));
                 camera.lookAt(cameraTarget); // 정면보다 더 앞으로 설정!
-                camera.zoom = 0.6;
+                camera.zoom = 0.4;
                 camera.updateProjectionMatrix();   
             } else {
             // 다른 플레이어의 캐릭터
