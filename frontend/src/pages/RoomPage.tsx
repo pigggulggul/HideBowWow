@@ -12,7 +12,7 @@ import {
     readyState,
 } from '../store/user-slice';
 import backgroundImage from '../assets/images/bg/background-main.png';
-import dummyMap from '../assets/images/etc/dummy-map.png';
+import mainMap from '../assets/images/bg/map-Rich.png';
 
 export default function RoomPage() {
     const [settingRoomFlag, setSettingRoomFlag] = useState<boolean>(false);
@@ -78,7 +78,7 @@ export default function RoomPage() {
             );
             navigate(`/game/${state}`, { state: state });
         } else {
-            alert('반장만 시작 할 수 있습니다.');
+            alert('방장만 시작 할 수 있습니다.');
         }
     };
 
@@ -235,8 +235,8 @@ export default function RoomPage() {
                 <div className="w-[40%] h-full flex flex-col items-center justify-around">
                     <div className="flex flex-col items-center">
                         <img
-                            className="w-[80%] border-[0.3vw] border-white rounded-[0.6vw]"
-                            src={dummyMap}
+                            className="w-[80%] border-[0.3vw] border-white rounded-[0.6vw] bg-white"
+                            src={mainMap}
                             alt=""
                             style={{ aspectRatio: 1 / 1 }}
                         />

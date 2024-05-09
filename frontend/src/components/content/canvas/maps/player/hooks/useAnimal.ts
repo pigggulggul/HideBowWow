@@ -49,7 +49,15 @@ type GLTFResult = GLTF & {
 };
 interface PlayerRef extends Group {
     viewUpDown?: number;
+    viewLR?: number; 
 }
+
+class Observer {
+    position: Vector3 = new Vector3(0, 0, 0);
+    viewUpDown: number = 0;
+    viewLR: number = 0;
+}
+
 type ActionName =
     | 'Attack'
     | 'Bounce'
@@ -102,6 +110,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     const nicknameRef = useRef<Group>(null);
     const prevPosition = useRef<Vector3 | null>(null);
     const isFirstFrame = useRef(true);
+    const observerRef = useRef<Observer | null>(null);
     const accumulatedTimeRef = useRef(0.0);       
     const callsInLastSecondRef = useRef(callsInLastSecond);
 
@@ -208,13 +217,20 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                 );
             }
         }
+        if (observerRef.current) {
+            observerRef.current.viewUpDown -= rotationAmount * 0.5; // 이 부분 수정
+        }
     };
 
     const updateRotationY = (movementX: number) => {
         const rotationAmount = movementX * 0.0013; // 회전 속도 조절을 위해 상수를 곱합니다.
 
         if (playerRef.current) {
-            playerRef.current.rotation.y -= rotationAmount;
+            playerRef.current.rotation.y -= rotationAmount;  
+        }
+        
+        if (observerRef.current) {
+            observerRef.current.viewLR -= rotationAmount;
         }
     };
 
@@ -315,197 +331,259 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
             prevPosition.current = playerRef.current
                 ? playerRef.current.position.clone()
                 : null; // 처음 프레임에만 이전 포지션 초기화
-        }
+        }   
 
         if (!player || !playerRef.current) return;
 
-        if (meInfo?.nickname === playerNickname) { 
-            
-            const delta = clock.getDelta(); // 프레임 간 시간 간격을 가져옵니다.
-            accumulatedTimeRef.current += delta; 
-
-            // 내 캐릭터의 경우
-            const moveVector = new Vector3(
-                (keyState.current['a'] ? 1 : 0) -
-                    (keyState.current['d'] ? 1 : 0),
-                0,
-                (keyState.current['s'] ? 1 : 0) -
-                    (keyState.current['w'] ? 1 : 0)
-            );
-
-            if (!moveVector.equals(new Vector3(0, 0, 0)) || isJumping != 0) {
-                // 이동중
-                moveVector.normalize().multiplyScalar(0.2); // 속도조절
-                setIsWalking(true);
-                setAnimation('Walk');
-                // 캐릭터가 바라보는 방향으로 이동 벡터를 회전시킵니다.
-                const forward = new Vector3(0, 0, -1).applyQuaternion(
-                    playerRef.current.quaternion
+        if((roomState.roomState == 1 || roomState.roomState == 2) && meInfo.isSeeker === true) { // 게임 대기시간 
+            // 관전모드 
+            if (!observerRef.current) {
+                observerRef.current = new Observer();
+                observerRef.current.position = new Vector3(
+                    playerRef.current.position.x + 12,
+                    playerRef.current.position.y + 12,
+                    playerRef.current.position.z + 12
                 );
+                observerRef.current.viewLR = playerRef.current.rotation.y;
+                // observerRef.current.viewUpDown = playerRef.current.viewUpDown;
+                observerRef.current.viewUpDown = 0
+            }
+
+            const moveVector = new Vector3(
+                (keyState.current['d'] ? 1 : 0) -
+                    (keyState.current['a'] ? 1 : 0),
+                0,
+                (keyState.current['w'] ? 1 : 0) -
+                    (keyState.current['s'] ? 1 : 0)
+            );
+            if (!moveVector.equals(new Vector3(0, 0, 0))) {
+                lockPointer();
+                moveVector.normalize().multiplyScalar(0.2); // 속도조절
+
+                const forward = new Vector3(
+                    Math.sin(observerRef.current.viewLR), // viewLR 값으로 삼각함수를 통해 x 값을 설정
+                    Math.sin(observerRef.current.viewUpDown),
+                    Math.cos(observerRef.current.viewLR) // viewLR 값으로 삼각함수를 통해 z 값을 설정
+                ).normalize(); // 벡터를 정규화하여 길이를 1로 만듭니다.
+
                 const moveDirection = forward
                     .clone()
                     .multiplyScalar(moveVector.z)
                     .add(
-                        new Vector3(-forward.z, 0, forward.x).multiplyScalar(
-                            moveVector.x
-                        )
+                        new Vector3(
+                            -forward.z,
+                            0,
+                            forward.x
+                        ).multiplyScalar(moveVector.x)
                     );
-                if (isJumping === 1) {
-                    moveDirection.y = 0.08;
-                } else {
-                    moveDirection.y = -0.08;
-                } 
 
-                if (collideState.length > 0) { 
-                    const originPos = playerRef.current.position.clone();
-                    const newPos = originPos.clone().add(moveDirection);
-                    collideState.map((item: CollideObject, index: number) => {
-                        const centerX = (item.minX + item.maxX) / 2;
-                        const centerY = (item.minY + item.maxZ) / 2;
-                        const centerZ = (item.minZ + item.maxZ) / 2;
-
-                        if (
-                            originPos.x >= item.minX - 1 &&
-                            originPos.x <= item.maxX + 1 &&
-                            originPos.y >= item.minY - 1 &&
-                            originPos.y <= item.maxY + 1 &&
-                            originPos.z >= item.minZ - 1 &&
-                            originPos.z <= item.maxZ + 1
-                        ) {
-                            originPos.y += 0.1;
-                            newPos.y += 0.1;
-                            if (originPos.x < centerX) {
-                                if (newPos.x > originPos.x) {
-                                    moveDirection.x = 0;
-                                }
-                            } else if (originPos.x >= centerX) {
-                                if (newPos.x <= originPos.x) {
-                                    moveDirection.x = 0;
-                                }
-                            }
-                            if (originPos.y < centerY) {
-                                if (newPos.y > originPos.y) {
-                                    moveDirection.y = 0;
-                                }
-                            } else if (originPos.y >= centerY) {
-                                if (newPos.y <= originPos.y) {
-                                    moveDirection.y = 0;
-                                }
-                            }
-                            if (originPos.z < centerZ) { 
-                                if (newPos.z > originPos.z) {
-                                    moveDirection.z = 0;
-                                }
-                            } else if (originPos.z >= centerZ) {
-                                if (newPos.z <= originPos.z) {
-                                    moveDirection.z = 0;
-                                }
-                            }
-                            if (playerRef.current) {
-                                if (playerRef.current.position.y <= 0) {
-                                    playerRef.current.position.y = 0.1;
-                                }
-                                playerRef.current.position.add(moveDirection);
-                            }
-                        } else {
-                            store.dispatch(removeCollideObjectState(index));
-                        }
-                    });
-                } else {
-                    if (playerRef.current.position.y <= 0) {
-                        playerRef.current.position.y = 0.1;
-                    }
-                    playerRef.current.position.add(moveDirection); 
-                }
-                
-                if (accumulatedTimeRef.current >= delay) {
-                    accumulatedTimeRef.current = 0;
-                    stompClient.sendMessage(
-                        `/player.move`,
-                        JSON.stringify({
-                            type: 'player.move',
-                            roomId: roomId,
-                            sender: meName,
-                            data: {
-                                nickname: meName,
-                                position: [
-                                    playerRef.current.position.x,
-                                    playerRef.current.position.y,
-                                    playerRef.current.position.z,
-                                ],
-                                direction: [
-                                    moveDirection.x,
-                                    moveDirection.y,
-                                    moveDirection.z,
-                                ],
-                            },
-                        })
-                    );  
-                    setCallsInLastSecond(prevCount => prevCount + 1); 
-                }
-            } else {
-                // 고정된 상태
-                setIsWalking(false);
-                setAnimation('Roll'); 
-
-                if (accumulatedTimeRef.current >= delay) {
-                    accumulatedTimeRef.current = 0;
-                    stompClient.sendMessage(
-                        `/player.move`,
-                        JSON.stringify({
-                            type: 'player.move',
-                            roomId: roomId,
-                            sender: meName,
-                            data: {
-                                nickname: meName,
-                                position: [
-                                    playerRef.current.position.x,
-                                    playerRef.current.position.y,
-                                    playerRef.current.position.z,
-                                ],
-                                direction: [
-                                    Math.sin(playerRef.current.rotation.y),
-                                    0,
-                                    Math.cos(playerRef.current.rotation.y),
-                                ],
-                            },
-                        })
-                    );  
-                    setCallsInLastSecond(prevCount => prevCount + 1); 
-                }
-                setAnimation('Walk');
+                observerRef.current.position.add(moveDirection);
             }
 
-            // 카메라 설정
-            const playerPosition = playerRef.current.position.clone();
-            playerPosition.setY(+3);
-
-            const playerDirection = new Vector3( // 플레이어가 바라보는 곳
-                Math.sin(playerRef.current.rotation.y),
-                playerRef.current.viewUpDown, // 아래 위
-                Math.cos(playerRef.current.rotation.y)
+            // 프리뷰 카메라 설정
+            const observerDirection = new Vector3( // 플레이어가 바라보는 곳
+                Math.sin(observerRef.current.viewLR),
+                observerRef.current.viewUpDown, // 아래 위
+                Math.cos(observerRef.current.viewLR)
             );
-            if(isJumping) { // 점프중 
-                camera.position.set(
-                    playerPosition.x + playerDirection.x,
-                    playerPosition.y + playerRef.current.position.y ,
-                    playerPosition.z + playerDirection.z
-                ); 
-
-            } else {
-                camera.position.set(
-                    playerPosition.x + playerDirection.x,
-                    playerPosition.y ,
-                    playerPosition.z + playerDirection.z
-                ); 
-            } 
-            const cameraTarget = playerPosition
+            const cameraTarget = observerRef.current.position
                 .clone()
-                .add(playerDirection.multiplyScalar(11));
-            camera.lookAt(cameraTarget); // 정면보다 더 앞으로 설정!
-            camera.zoom = 0.6;
-            camera.updateProjectionMatrix();   
-        } else {
+                .add(observerDirection.multiplyScalar(3));
+
+            camera.position.set(
+                observerRef.current.position.x,
+                observerRef.current.position.y,
+                observerRef.current.position.z
+            );
+            camera.lookAt(cameraTarget);  
+        } else { // 게임 시작
+            if (meInfo?.nickname === playerNickname) { // 내 캐릭터인 경우
+                const delta = clock.getDelta(); // 프레임 간 시간 간격을 가져옵니다.
+                accumulatedTimeRef.current += delta; 
+    
+                // 내 캐릭터의 경우
+                const moveVector = new Vector3(
+                    (keyState.current['a'] ? 1 : 0) -
+                        (keyState.current['d'] ? 1 : 0),
+                    0,
+                    (keyState.current['s'] ? 1 : 0) -
+                        (keyState.current['w'] ? 1 : 0)
+                );
+    
+                if (!moveVector.equals(new Vector3(0, 0, 0)) || isJumping != 0) {
+                    lockPointer();
+                    // 이동중
+                    moveVector.normalize().multiplyScalar(0.2); // 속도조절
+                    setIsWalking(true);
+                    setAnimation('Walk');
+                    // 캐릭터가 바라보는 방향으로 이동 벡터를 회전시킵니다.
+                    const forward = new Vector3(0, 0, -1).applyQuaternion(
+                        playerRef.current.quaternion
+                    );
+                    const moveDirection = forward
+                        .clone()
+                        .multiplyScalar(moveVector.z)
+                        .add(
+                            new Vector3(-forward.z, 0, forward.x).multiplyScalar(
+                                moveVector.x
+                            )
+                        );
+                    if (isJumping === 1) {
+                        moveDirection.y = 0.08;
+                    } else {
+                        moveDirection.y = -0.08;
+                    } 
+    
+                    if (collideState.length > 0) { 
+                        const originPos = playerRef.current.position.clone();
+                        const newPos = originPos.clone().add(moveDirection);
+                        collideState.map((item: CollideObject, index: number) => {
+                            const centerX = (item.minX + item.maxX) / 2;
+                            const centerY = (item.minY + item.maxZ) / 2;
+                            const centerZ = (item.minZ + item.maxZ) / 2;
+    
+                            if (
+                                originPos.x >= item.minX - 1 &&
+                                originPos.x <= item.maxX + 1 &&
+                                originPos.y >= item.minY - 1 &&
+                                originPos.y <= item.maxY + 1 &&
+                                originPos.z >= item.minZ - 1 &&
+                                originPos.z <= item.maxZ + 1
+                            ) {
+                                originPos.y += 0.1;
+                                newPos.y += 0.1;
+                                if (originPos.x < centerX) {
+                                    if (newPos.x > originPos.x) {
+                                        moveDirection.x = 0;
+                                    }
+                                } else if (originPos.x >= centerX) {
+                                    if (newPos.x <= originPos.x) {
+                                        moveDirection.x = 0;
+                                    }
+                                }
+                                if (originPos.y < centerY) {
+                                    if (newPos.y > originPos.y) {
+                                        moveDirection.y = 0;
+                                    }
+                                } else if (originPos.y >= centerY) {
+                                    if (newPos.y <= originPos.y) {
+                                        moveDirection.y = 0;
+                                    }
+                                }
+                                if (originPos.z < centerZ) { 
+                                    if (newPos.z > originPos.z) {
+                                        moveDirection.z = 0;
+                                    }
+                                } else if (originPos.z >= centerZ) {
+                                    if (newPos.z <= originPos.z) {
+                                        moveDirection.z = 0;
+                                    }
+                                }
+                                if (playerRef.current) {
+                                    if (playerRef.current.position.y <= 0) {
+                                        playerRef.current.position.y = 0.1;
+                                    }
+                                    playerRef.current.position.add(moveDirection);
+                                }
+                            } else {
+                                store.dispatch(removeCollideObjectState(index));
+                            }
+                        });
+                    } else {
+                        if (playerRef.current.position.y <= 0) {
+                            playerRef.current.position.y = 0.1;
+                        }
+                        playerRef.current.position.add(moveDirection); 
+                    }
+                    
+                    if (accumulatedTimeRef.current >= delay) {
+                        accumulatedTimeRef.current = 0;
+                        stompClient.sendMessage(
+                            `/player.move`,
+                            JSON.stringify({
+                                type: 'player.move',
+                                roomId: roomId,
+                                sender: meName,
+                                data: {
+                                    nickname: meName,
+                                    position: [
+                                        playerRef.current.position.x,
+                                        playerRef.current.position.y,
+                                        playerRef.current.position.z,
+                                    ],
+                                    direction: [
+                                        moveDirection.x,
+                                        moveDirection.y,
+                                        moveDirection.z,
+                                    ],
+                                },
+                            })
+                        );  
+                        setCallsInLastSecond(prevCount => prevCount + 1); 
+                    }
+                } else {
+                    // 고정된 상태
+                    setIsWalking(false);
+                    setAnimation('Roll'); 
+    
+                    if (accumulatedTimeRef.current >= delay) {
+                        accumulatedTimeRef.current = 0;
+                        stompClient.sendMessage(
+                            `/player.move`,
+                            JSON.stringify({
+                                type: 'player.move',
+                                roomId: roomId,
+                                sender: meName,
+                                data: {
+                                    nickname: meName,
+                                    position: [
+                                        playerRef.current.position.x,
+                                        playerRef.current.position.y,
+                                        playerRef.current.position.z,
+                                    ],
+                                    direction: [
+                                        Math.sin(playerRef.current.rotation.y),
+                                        0,
+                                        Math.cos(playerRef.current.rotation.y),
+                                    ],
+                                },
+                            })
+                        );  
+                        setCallsInLastSecond(prevCount => prevCount + 1); 
+                    }
+                    setAnimation('Walk');
+                }
+        
+                // 카메라 설정
+                const playerPosition = playerRef.current.position.clone();
+                playerPosition.setY(+3);
+    
+                const playerDirection = new Vector3( // 플레이어가 바라보는 곳
+                    Math.sin(playerRef.current.rotation.y),
+                    playerRef.current.viewUpDown, // 아래 위
+                    Math.cos(playerRef.current.rotation.y)
+                );
+                if(isJumping) { // 점프중 
+                    camera.position.set(
+                        playerPosition.x + playerDirection.x,
+                        playerPosition.y + playerRef.current.position.y ,
+                        playerPosition.z + playerDirection.z
+                    ); 
+    
+                } else {
+                    camera.position.set(
+                        playerPosition.x + playerDirection.x,
+                        playerPosition.y ,
+                        playerPosition.z + playerDirection.z
+                    ); 
+                } 
+                const cameraTarget = playerPosition
+                    .clone()
+                    .add(playerDirection.multiplyScalar(11));
+                camera.lookAt(cameraTarget); // 정면보다 더 앞으로 설정!
+                camera.zoom = 0.6;
+                camera.updateProjectionMatrix();   
+            } else {
             // 다른 플레이어의 캐릭터
             roomState.roomPlayers.forEach((otherPlayer: any) => {
                 if (
@@ -560,7 +638,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                 }
             });
         }
-        
+            
         if (nicknameRef.current) {
             nicknameRef.current.position.set(
                 playerRef.current.position.x,
@@ -568,7 +646,8 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                 playerRef.current.position.z
             ); 
             nicknameRef.current.lookAt(camera.position);
-        } 
+        }  
+        }    
     }); 
 
     return {

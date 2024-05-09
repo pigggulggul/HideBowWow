@@ -6,7 +6,12 @@ import { useNavigate } from 'react-router-dom';
 import { ChatType, CurrentPlayersInfo } from '../types/GameType';
 import { heartState } from '../store/user-slice';
 import StompClient from '../websocket/StompClient';
-import { startRecording, stopRecording, getStream, getInterval } from '../assets/js/voice';
+import {
+    startRecording,
+    stopRecording,
+    getStream,
+    getInterval,
+} from '../assets/js/voice';
 import winnerSeeker from '../assets/images/icon/winner_seeker.png';
 import winnerHider from '../assets/images/icon/winner_hider.png';
 import keyA from '../assets/images/icon/key_a.png';
@@ -20,6 +25,7 @@ import keyC from '../assets/images/icon/key_c.png';
 import keyM from '../assets/images/icon/key_m.png';
 import keyR from '../assets/images/icon/key_r.png';
 import ingameMusic from '../assets/bgm/ingame_music.mp3';
+import seekerDisplay from '../assets/images/bg/seekerBg.png';
 
 export default function GamePage() {
     const stompClient = StompClient.getInstance();
@@ -109,7 +115,7 @@ export default function GamePage() {
             stompClient.sendMessage(
                 `/player.dead`,
                 JSON.stringify({
-                    type: 'player.enter',
+                    type: 'player.dead',
                     roomId: currentRoom.roomId,
                     sender: meInfo.nickname,
                     data: {
@@ -157,10 +163,10 @@ export default function GamePage() {
     useEffect(() => {
         // 키보드(C, M) 이벤트 리스너 & voice.js의 stream과 interval값 갱신 & 페이지 이탈 시 이벤트리스너 삭제
         setInterval(() => {
-            setStream(getStream())
-            setMicrophone(getInterval())
+            setStream(getStream());
+            setMicrophone(getInterval());
         }, 300);
-        
+
         const handleBeforeUnload = (e: BeforeUnloadEvent) => {
             e.preventDefault();
             e.returnValue =
@@ -169,22 +175,22 @@ export default function GamePage() {
 
         // c나 m을 누르면 음성채널과 마이크 동작 실행
         const handleKeyPress = (event: KeyboardEvent) => {
-            if(event.key == 'c'){
-                if(!getStream()) {
+            if (event.key == 'c') {
+                if (!getStream()) {
                     stompClient.enterVoiceChannel(
                         currentRoom.roomId,
                         meInfo.nickname
                     );
-                }else {
+                } else {
                     stompClient.exitVoiceChannel();
                 }
-            }else if(event.key == 'm'){
-                if(!getInterval()){
+            } else if (event.key == 'm') {
+                if (!getInterval()) {
                     startRecording();
-                }else{
+                } else {
                     stopRecording();
                 }
-            }else if (event.key === 'Enter') {
+            } else if (event.key === 'Enter') {
                 setToggleChat((prev) => !prev);
             }
         };
@@ -213,20 +219,38 @@ export default function GamePage() {
             ) : (
                 <></>
             )}
-            {currentRoom.roomState === 2 ? (
-                <div className="absolute flex top-4 w-full justify-center">
-                    <p className="text-[2vw]">
-                        숨는 시간 : {currentRoom.roomTime}
+            {currentRoom.roomState === 2 && meInfo.isSeeker ? (
+                <div className="absolute w-full h-full flex flex-col justify-center items-center bg-black">
+                    <img className="w-[90%]" src={seekerDisplay} alt="" />
+                    <p className="text-[3vw] text-white">
+                        당신은 술래입니다. 조금만 기다려주시기 바랍니다.
                     </p>
                 </div>
             ) : (
                 <></>
             )}
+            {currentRoom.roomState === 2 && !meInfo.isSeeker ? (
+                <div className="absolute flex top-4 w-full justify-center items-center text-[2vw]">
+                    <p className=" text-sky-400">술래</p>
+                    <p className=" text-sky-400 ms-[1vw]">{seekerNum}</p>
+                    <p className="text-[2vw]">
+                        숨는 시간 : {currentRoom.roomTime}
+                    </p>
+                    <p className=" text-orange-400">도망자</p>
+                    <p className=" text-orange-400 ms-[1vw]">{hiderNum}</p>
+                </div>
+            ) : (
+                <></>
+            )}
             {currentRoom.roomState === 3 ? (
-                <div className="absolute flex top-4 w-full justify-center">
+                <div className="absolute flex top-4 w-full justify-center items-center text-[2vw]">
+                    <p className=" text-sky-400">술래</p>
+                    <p className=" text-sky-400 ms-[1vw]">{seekerNum}</p>
                     <p className="text-[2vw]">
                         남은 시간 : {currentRoom.roomTime}
                     </p>
+                    <p className=" text-orange-400">도망자</p>
+                    <p className=" text-orange-400 ms-[1vw]">{hiderNum}</p>
                 </div>
             ) : (
                 <></>
@@ -298,17 +322,11 @@ export default function GamePage() {
                 ) : (
                     <>
                         <div className="flex items-center my-[1vw]">
-                            <img
-                                className="px-[0.2vw]"
-                                src={keyQ}
-                                alt=""
-                            />
-                            <img
-                                className="px-[0.2vw]"
-                                src={keyE}
-                                alt=""
-                            />
-                            <p className="px-[0.4vw] text-[1.6vw]">회전 (좌, 우)</p>
+                            <img className="px-[0.2vw]" src={keyQ} alt="" />
+                            <img className="px-[0.2vw]" src={keyE} alt="" />
+                            <p className="px-[0.4vw] text-[1.6vw]">
+                                회전 (좌, 우)
+                            </p>
                         </div>
                         <div className="flex items-center">
                             <img
@@ -316,20 +334,18 @@ export default function GamePage() {
                                 src={keyR}
                                 alt="key_r.png"
                             />
-                            <p className="px-[0.4vw] text-[1.6vw]">고정 / 해제</p>
+                            <p className="px-[0.4vw] text-[1.6vw]">
+                                고정 / 해제
+                            </p>
                         </div>
                     </>
                 )}
 
                 {/* 음성채팅 입, 퇴장 관련 키 가이드 */}
                 <div className="flex items-center my-[1vw]">
-                    <img
-                        className="px-[0.2vw]"
-                        src={keyC}
-                        alt="key_c.png"
-                     />
+                    <img className="px-[0.2vw]" src={keyC} alt="key_c.png" />
                     <p className="px-[0.4vw] text-[1.6vw]">
-                        {stream ? "음성채팅 퇴장" : "음성채팅 입장"}
+                        {stream ? '음성채팅 퇴장' : '음성채팅 입장'}
                     </p>
                 </div>
 
@@ -342,10 +358,12 @@ export default function GamePage() {
                             alt="key_m.png"
                         />
                         <p className="px-[0.4vw] text-[1.6vw]">
-                            {microphone ? "마이크 OFF" : "마이크 ON"}
+                            {microphone ? '마이크 OFF' : '마이크 ON'}
                         </p>
                     </div>
-                ): <></>}
+                ) : (
+                    <></>
+                )}
             </div>
             <div
                 className={
@@ -359,17 +377,35 @@ export default function GamePage() {
             >
                 <div className="w-[full] h-[90%] p-[0.4vw] overflow-auto">
                     {chatList.map((item: ChatType, index: number) => {
-                        return (
-                            <div
-                                className="w-full flex items-center justify-start my-1"
-                                key={'chat key : ' + index}
-                            >
-                                <p className="w-[20%]">{item.nickname} :</p>
-                                <p className="w-[80%] text-start">
-                                    {item.content}
-                                </p>
-                            </div>
-                        );
+                        if (item.nickname === '<SYSTEM>') {
+                            return (
+                                <div
+                                    className="w-full flex justify-start my-1 text-red-500"
+                                    key={'chat key : ' + index}
+                                >
+                                    <p className="w-[auto] max-w-[25%]">
+                                        {item.nickname} :
+                                    </p>
+                                    <p className="w-[auto] max-w-[75%] text-start">
+                                        {item.content}
+                                    </p>
+                                </div>
+                            );
+                        } else {
+                            return (
+                                <div
+                                    className="w-full flex justify-start my-1"
+                                    key={'chat key : ' + index}
+                                >
+                                    <p className="w-[auto] max-w-[25%]">
+                                        {item.nickname} :
+                                    </p>
+                                    <p className="w-[auto] max-w-[75%] text-start">
+                                        {item.content}
+                                    </p>
+                                </div>
+                            );
+                        }
                     })}
                     <div ref={messageEndRef}></div>
                 </div>
@@ -387,7 +423,6 @@ export default function GamePage() {
                     }
                 />
             </div>
-
         </RecoilRoot>
     );
 }
