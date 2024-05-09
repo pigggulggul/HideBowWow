@@ -23,7 +23,7 @@ export function Floor_blue(props: ObjectSettingType) {
         '/models/object/Floor_blue.glb'
     ) as GLTFResult;
     const [ref] = useBox<THREE.Mesh>(() => ({
-        args: [10, 10, 0.2],
+        args: [10, 10, 0.1],
         mass: 0.1,
         type: 'Static',
         position: props.position,
@@ -32,7 +32,7 @@ export function Floor_blue(props: ObjectSettingType) {
         angularFactor: [0, 0, 0], // 모든 축에 대해 회전 제한
     }));
     return (
-        <group dispose={null}>
+        <group position={[0, -0.1, 0]} dispose={null}>
             <mesh
                 ref={ref}
                 geometry={nodes.Floor_19.geometry}

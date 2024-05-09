@@ -77,6 +77,8 @@ export interface MapSize {
     maxX: number;
     minZ: number;
     maxZ: number;
+    minY: number;
+    maxY: number;
 }
 export interface ChatType {
     nickname: string;

@@ -24,7 +24,9 @@ import keyW from '../assets/images/icon/key_w.png';
 import keyC from '../assets/images/icon/key_c.png';
 import keyM from '../assets/images/icon/key_m.png';
 import keyR from '../assets/images/icon/key_r.png';
+import keySpace from '../assets/images/icon/key_space.png';
 import ingameMusic from '../assets/bgm/ingame_music.mp3';
+import ObjectInfo from '../json/ObjectInfo.json';
 import seekerDisplay from '../assets/images/bg/seekerBg.png';
 
 export default function GamePage() {
@@ -58,6 +60,9 @@ export default function GamePage() {
     const [toggleChat, setToggleChat] = useState<boolean>(false);
 
     const [chatContent, setChatContent] = useState<string>('');
+
+    //공격
+    const [shot, setShot] = useState<boolean>(false);
 
     const inputRef = useRef<HTMLInputElement>(null);
     //스크롤 탐지용
@@ -111,6 +116,9 @@ export default function GamePage() {
         }
     }, [meInfo.isSeeker]);
     useEffect(() => {
+        if (meHeart < 5 && meHeart >= 0) {
+            handleShot();
+        }
         if (meHeart === 0) {
             stompClient.sendMessage(
                 `/player.dead`,
@@ -121,6 +129,19 @@ export default function GamePage() {
                     data: {
                         nickname: meInfo.nickname,
                         isDead: true,
+                    },
+                })
+            );
+            const data = `술래 '${meInfo.nickname}' 님이 죽었습니다.`;
+            stompClient.sendMessage(
+                `/chat.player`,
+                JSON.stringify({
+                    type: 'chat.player',
+                    roomId: currentRoom.roomId,
+                    sender: meInfo.nickname,
+                    data: {
+                        nickname: '<SYSTEM>',
+                        content: data,
                     },
                 })
             );
@@ -203,6 +224,13 @@ export default function GamePage() {
         };
     }, []);
 
+    const handleShot = () => {
+        setShot(true);
+        setTimeout(() => {
+            setShot(false);
+        }, 300); // 0.5초 후에 isRed 상태를 false로 변경
+    };
+
     return (
         <RecoilRoot>
             <Content />
@@ -219,6 +247,20 @@ export default function GamePage() {
             ) : (
                 <></>
             )}
+
+            {/* {currentRoom.roomState === 2 ? (
+                <div className="absolute flex top-4 w-full justify-center items-center text-[2vw]">
+                    <p className=" text-sky-400">술래</p>
+                    <p className=" text-sky-400 ms-[1vw]">{seekerNum}</p>
+                    <p className="text-[2vw] mx-[2vw]">
+                        숨는 시간 : {currentRoom.roomTime}
+                    </p>
+                    <p className=" text-orange-400">도망자</p>
+                    <p className=" text-orange-400 ms-[1vw]">{hiderNum}</p>
+                </div>
+            ) : (
+                <></>
+            )} */}
             {currentRoom.roomState === 2 && meInfo.isSeeker ? (
                 <div className="absolute w-full h-full flex flex-col justify-center items-center bg-black">
                     <img className="w-[90%]" src={seekerDisplay} alt="" />
@@ -233,7 +275,7 @@ export default function GamePage() {
                 <div className="absolute flex top-4 w-full justify-center items-center text-[2vw]">
                     <p className=" text-sky-400">술래</p>
                     <p className=" text-sky-400 ms-[1vw]">{seekerNum}</p>
-                    <p className="text-[2vw]">
+                    <p className="text-[2vw] mx-[1vw]">
                         숨는 시간 : {currentRoom.roomTime}
                     </p>
                     <p className=" text-orange-400">도망자</p>
@@ -246,7 +288,7 @@ export default function GamePage() {
                 <div className="absolute flex top-4 w-full justify-center items-center text-[2vw]">
                     <p className=" text-sky-400">술래</p>
                     <p className=" text-sky-400 ms-[1vw]">{seekerNum}</p>
-                    <p className="text-[2vw]">
+                    <p className="text-[2vw] mx-[2vw]">
                         남은 시간 : {currentRoom.roomTime}
                     </p>
                     <p className=" text-orange-400">도망자</p>
@@ -271,6 +313,50 @@ export default function GamePage() {
                     <p className="text-[2vw] text-black">
                         {currentRoom.roomTime}초 후 로비로 복귀합니다.
                     </p>
+                </div>
+            ) : (
+                <></>
+            )}
+            {currentRoom.roomState === 4 || currentRoom.roomState === 5 ? (
+                <div className="absolute w-full flex justify-center bottom-4">
+                    {currentRoom.roomPlayers.map(
+                        (item: CurrentPlayersInfo, pIndex: number) => {
+                            if (!item.isSeeker) {
+                                return (
+                                    <div
+                                        className="w-[15%] h-[30%] flex flex-col border-[0.4vw] border-sky-300 bg-white p-[1vw] rounded-[0.6vw] mx-[1vw]"
+                                        key={'result-' + pIndex}
+                                    >
+                                        <p>{item.nickname}</p>
+                                        {item.selectedIndex ? (
+                                            <img
+                                                className="relative w-50 h-40 object-fill"
+                                                src={
+                                                    ObjectInfo[
+                                                        item.selectedIndex
+                                                    ].thumbnail
+                                                }
+                                                alt=""
+                                            />
+                                        ) : (
+                                            <></>
+                                        )}
+                                        {item.selectedIndex ? (
+                                            <p>
+                                                {
+                                                    ObjectInfo[
+                                                        item.selectedIndex
+                                                    ].name
+                                                }
+                                            </p>
+                                        ) : (
+                                            <></>
+                                        )}
+                                    </div>
+                                );
+                            }
+                        }
+                    )}
                 </div>
             ) : (
                 <></>
@@ -328,7 +414,7 @@ export default function GamePage() {
                                 회전 (좌, 우)
                             </p>
                         </div>
-                        <div className="flex items-center">
+                        <div className="flex items-center mb-[1vw]">
                             <img
                                 className="px-[0.2vw]"
                                 src={keyR}
@@ -341,8 +427,17 @@ export default function GamePage() {
                     </>
                 )}
 
+                <div className="flex items-center mb-[1vw]">
+                    <img
+                        className="px-[0.2vw]"
+                        src={keySpace}
+                        alt="key_space.png"
+                    />
+                    <p className="px-[0.4vw] text-[1.6vw]">점프</p>
+                </div>
+
                 {/* 음성채팅 입, 퇴장 관련 키 가이드 */}
-                <div className="flex items-center my-[1vw]">
+                <div className="flex items-center">
                     <img className="px-[0.2vw]" src={keyC} alt="key_c.png" />
                     <p className="px-[0.4vw] text-[1.6vw]">
                         {stream ? '음성채팅 퇴장' : '음성채팅 입장'}
@@ -423,6 +518,12 @@ export default function GamePage() {
                     }
                 />
             </div>
+
+            {shot ? (
+                <div className="absolute w-full h-full bg-red-400 opacity-35"></div>
+            ) : (
+                <></>
+            )}
         </RecoilRoot>
     );
 }

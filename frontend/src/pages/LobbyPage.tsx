@@ -10,7 +10,7 @@ import backgroundImage from '../assets/images/bg/background-main.png';
 
 export default function LobbyPage() {
     const [makeRoomFlag, setMakeRoomFlag] = useState<boolean>(false);
-    const [searchRoomFlag, setSearchRoomFlag] = useState<boolean>(false);
+    const [, setSearchRoomFlag] = useState<boolean>(false);
     const [privateRoomFlag, setPrivateRoomFlag] = useState<boolean>(false);
     const [privateRoomId, setPrivateRoomId] = useState<string>('');
     const [privateRoomPassword, setPrivateRoomPassword] = useState<string>('');
@@ -40,16 +40,16 @@ export default function LobbyPage() {
         setPrivateRoomPassword('');
         setPrivateRoomFlag(false);
     };
-    const changeSearchRoomFlag = () => {
-        setMakeRoomFlag(false);
-        setSearchRoomFlag(!searchRoomFlag);
-        setMakeRoomTitle('');
-        setMakeRoomPassword('');
-        setMakeRoomIsPublic(true);
-        setPrivateRoomId('');
-        setPrivateRoomPassword('');
-        setPrivateRoomFlag(false);
-    };
+    // const changeSearchRoomFlag = () => {
+    //     setMakeRoomFlag(false);
+    //     setSearchRoomFlag(!searchRoomFlag);
+    //     setMakeRoomTitle('');
+    //     setMakeRoomPassword('');
+    //     setMakeRoomIsPublic(true);
+    //     setPrivateRoomId('');
+    //     setPrivateRoomPassword('');
+    //     setPrivateRoomFlag(false);
+    // };
     const closePrivateRoom = () => {
         setPrivateRoomId('');
         setPrivateRoomPassword('');
@@ -66,6 +66,8 @@ export default function LobbyPage() {
     const makeRoomAPI = async () => {
         if (makeRoomTitle === '') {
             alert('방 제목을 1글자 이상 입력해주세요');
+        } else if (makeRoomPassword !== '' && makeRoomIsPublic) {
+            alert('비밀방 설정을 해주세요.');
         } else {
             const makeRoomInfo: MakeRoomState = {
                 roomTitle: makeRoomTitle,
@@ -104,6 +106,7 @@ export default function LobbyPage() {
         setPrivateRoomFlag(true);
     };
     const checkPrivateRoomAPI = async () => {
+        console.log(privateRoomPassword);
         const checkData: EnterRoomState = {
             roomId: privateRoomId,
             roomPassword: privateRoomPassword,
@@ -176,15 +179,14 @@ export default function LobbyPage() {
         <section
             className="relative w-full h-full flex flex-col items-center justify-center"
             style={{
-                backgroundImage:
-                    `url(${backgroundImage})`,
+                backgroundImage: `url(${backgroundImage})`,
             }}
         >
             <div className="relative w-[80%] h-[90%] flex justify-between border-[0.3vw] rounded-[0.6vw] border-white bg-sky-50 overflow-y-auto">
                 <div className="w-[15%]">
-                    <p className="w-[80%] mx-auto my-[1vw] px-[1vw] py-[1.2vw] text-[1.2vw] border-[0.2vw] border-white bg-sky-400 text-white rounded-[0.6vw] hover:color-bg-main cursor-pointer">
+                    {/* <p className="w-[80%] mx-auto my-[1vw] px-[1vw] py-[1.2vw] text-[1.2vw] border-[0.2vw] border-white bg-sky-400 text-white rounded-[0.6vw] hover:color-bg-main cursor-pointer">
                         빠른시작
-                    </p>
+                    </p> */}
                     <p
                         className="w-[80%] mx-auto my-[1vw] px-[1vw] py-[1.2vw] text-[1.2vw] border-[0.2vw] border-white bg-sky-400 text-white rounded-[0.6vw] hover:color-bg-main cursor-pointer"
                         onClick={() => {
@@ -193,14 +195,14 @@ export default function LobbyPage() {
                     >
                         방 만들기
                     </p>
-                    <p
+                    {/* <p
                         className="w-[80%] mx-auto my-[1vw] px-[1vw] py-[1.2vw] text-[1.2vw] border-[0.2vw] border-white bg-sky-400 text-white rounded-[0.6vw] hover:color-bg-main cursor-pointer"
                         onClick={() => {
                             changeSearchRoomFlag();
                         }}
                     >
                         방 찾기
-                    </p>
+                    </p> */}
                 </div>
                 <div className="w-[85%] h-full flex flex-wrap content-start overflow-y-auto">
                     {room.map((item, index) => {
@@ -211,6 +213,45 @@ export default function LobbyPage() {
                                     className="w-[45%] h-[20%] px-[1vw] my-[0.6vw] mx-[0.4vw] flex justify-between items-center border-[0.3vw] rounded-[0.6vw] border-white bg-sky-400 text-white cursor-pointer hover:bg-sky-500 "
                                     onClick={() => {
                                         checkPublicRoom(item.roomId);
+                                    }}
+                                >
+                                    <div className="text-[1.8vw] flex items-center">
+                                        <p>
+                                            {index}.{item.roomTitle}
+                                        </p>
+                                        {item.isPublic ? (
+                                            <p className="mx-[1vw] text-[1vw]">
+                                                공개
+                                            </p>
+                                        ) : (
+                                            <p className="mx-[1vw] text-[1vw]">
+                                                비공개
+                                            </p>
+                                        )}
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <p className="text-[1.6vw]">
+                                            {item.roomPlayers.length}/12
+                                        </p>
+                                        {item.roomState === 0 ? (
+                                            <p className="text-[1.6vw] text-white">
+                                                대기중
+                                            </p>
+                                        ) : (
+                                            <p className="text-[1.6vw] text-red-600">
+                                                게임중
+                                            </p>
+                                        )}
+                                    </div>
+                                </div>
+                            );
+                        } else {
+                            return (
+                                <div
+                                    key={'public-room-' + index}
+                                    className="w-[45%] h-[20%] px-[1vw] my-[0.6vw] mx-[0.4vw] flex justify-between items-center border-[0.3vw] rounded-[0.6vw] border-white bg-sky-400 text-white cursor-pointer hover:bg-sky-500 "
+                                    onClick={() => {
+                                        checkPrivateRoom(item.roomId);
                                     }}
                                 >
                                     <div className="text-[1.8vw] flex items-center">
@@ -240,33 +281,6 @@ export default function LobbyPage() {
                                                 게임중
                                             </p>
                                         )}
-                                    </div>
-                                </div>
-                            );
-                        } else {
-                            return (
-                                <div
-                                    key={'public-room-' + index}
-                                    className="w-[45%] h-[20%] px-[1vw] my-[0.6vw] mx-[0.4vw] flex justify-between items-center border-[0.3vw] rounded-[0.6vw] border-black bg-white cursor-pointer hover:bg-sky-500 "
-                                    onClick={() => {
-                                        checkPrivateRoom(item.roomId);
-                                    }}
-                                >
-                                    <div className="text-[1.8vw] flex items-center">
-                                        <p>
-                                            {index}.{item.roomTitle}
-                                        </p>
-                                        <p className="mx-[1vw] text-[1vw]">
-                                            비공개
-                                        </p>
-                                    </div>
-                                    <div className="flex flex-col">
-                                        <p className="text-[1.6vw]">
-                                            {item.roomPlayers.length}/6
-                                        </p>
-                                        <p className="text-[1.6vw] text-red-600">
-                                            게임중
-                                        </p>
                                     </div>
                                 </div>
                             );
@@ -309,7 +323,7 @@ export default function LobbyPage() {
                         <div className="w-[90%] flex justify-end items-center">
                             <p>비밀방</p>
                             <div
-                                className={`w-[1.4vw] h-[1.4vw] border-[0.2vw] mx-[0.4vw] color-border-main cursor-pointer ${
+                                className={`w-[1.4vw] h-[1.4vw] border-[0.2vw] mx-[0.4vw] color-border-main bg-white cursor-pointer ${
                                     makeRoomIsPublic ? '' : 'color-bg-main'
                                 }`}
                                 onClick={() => {
@@ -341,7 +355,7 @@ export default function LobbyPage() {
             ) : (
                 <></>
             )}
-            {searchRoomFlag ? (
+            {/* {searchRoomFlag ? (
                 <div className="absolute w-[40%] h-[40%] flex flex-col items-center justify-between border-[0.3vw] rounded-[0.6vw] border-gray-950 bg-white overflow-y-auto">
                     <p className="text-[1.8vw] my-[1vw]">방 찾기</p>
                     <div className="relative w-[90%] flex justify-start items-center my-[0.4vw]">
@@ -375,7 +389,7 @@ export default function LobbyPage() {
                 </div>
             ) : (
                 <></>
-            )}
+            )} */}
             {privateRoomFlag ? (
                 <div className="absolute w-[40%] h-[40%] flex flex-col items-center justify-center border-[0.3vw] rounded-[0.6vw] border-gray-950 bg-white overflow-y-auto">
                     <p className="text-[2vw]">비밀번호입력</p>

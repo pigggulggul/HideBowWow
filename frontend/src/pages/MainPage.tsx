@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import {
     collideObjectState,
     currentRoomState,
-    givenChoiceState,
     readyState,
     roomIdState,
     userNicknameState,
@@ -29,7 +28,6 @@ export default function MainPage() {
             roomTitle: '',
         })
     );
-    dispatch(givenChoiceState(''));
     dispatch(collideObjectState([]));
 
     return (

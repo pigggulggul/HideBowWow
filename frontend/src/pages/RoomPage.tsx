@@ -56,11 +56,25 @@ export default function RoomPage() {
     const playGame = () => {
         if (currentRoom.roomMap === 'Bar') {
             dispatch(
-                mapSizeState({ minX: -60, maxX: 40, minZ: -40, maxZ: 90 })
+                mapSizeState({
+                    minX: -60,
+                    maxX: 40,
+                    minZ: -40,
+                    maxZ: 90,
+                    minY: -1,
+                    maxY: 8,
+                })
             );
         } else {
             dispatch(
-                mapSizeState({ minX: -60, maxX: 40, minZ: -40, maxZ: 90 })
+                mapSizeState({
+                    minX: -60,
+                    maxX: 40,
+                    minZ: -40,
+                    maxZ: 90,
+                    minY: -1,
+                    maxY: 8,
+                })
             );
         }
         dispatch(chatDataState([]));
@@ -141,7 +155,7 @@ export default function RoomPage() {
                 },
             })
         );
-        navigate('/lobby');
+        window.location.replace('/lobby');
     };
 
     return (
