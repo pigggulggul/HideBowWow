@@ -86,7 +86,7 @@ export function AttackRules() {
                             stompClient.sendMessage(
                                 `/player.dead`,
                                 JSON.stringify({
-                                    type: 'player.enter',
+                                    type: 'player.dead',
                                     roomId: currentRoom.roomId,
                                     sender: item.nickname,
                                     data: {

@@ -10,7 +10,12 @@ import {
     addChatDataState,
 } from '../store/user-slice';
 import { store } from '../store/store';
-import { createStream, handleData, endStream, getStream } from '../assets/js/voice';
+import {
+    createStream,
+    handleData,
+    endStream,
+    getStream,
+} from '../assets/js/voice';
 
 class StompClient {
     private static instance: StompClient;
@@ -66,6 +71,24 @@ class StompClient {
                                 const meInfo = userSlice.meInfo;
                                 if (meInfo.nickname === msg.data.nickname) {
                                     store.dispatch(meDead(true));
+                                }
+                                if (msg.data.isSeeker) {
+                                    const data = `술래 '${msg.data.nickname}' 님이 죽었습니다.`;
+
+                                    store.dispatch(
+                                        addChatDataState({
+                                            nickname: '<SYSTEM>',
+                                            content: data,
+                                        })
+                                    );
+                                } else {
+                                    const data = `도망자 '${msg.data.nickname}' 님이 발견됐습니다.`;
+                                    store.dispatch(
+                                        addChatDataState({
+                                            nickname: '<SYSTEM>',
+                                            content: data,
+                                        })
+                                    );
                                 }
                                 break;
                             }
@@ -159,6 +182,24 @@ class StompClient {
                         if (meInfo.nickname === msg.data.nickname) {
                             store.dispatch(meDead(true));
                         }
+                        if (msg.data.isSeeker) {
+                            const data = `술래 '${msg.data.nickname}' 님이 죽었습니다.`;
+
+                            store.dispatch(
+                                addChatDataState({
+                                    nickname: '<SYSTEM>',
+                                    content: data,
+                                })
+                            );
+                        } else {
+                            const data = `도망자 '${msg.data.nickname}' 님이 발견됐습니다.`;
+                            store.dispatch(
+                                addChatDataState({
+                                    nickname: '<SYSTEM>',
+                                    content: data,
+                                })
+                            );
+                        }
                         break;
                     }
                     /** 게임 입장 (요청 필요) */
@@ -238,10 +279,9 @@ class StompClient {
             return;
         }
 
-        if(getStream()) return;
+        if (getStream()) return;
 
-        createStream(roomId, nickname)
-
+        createStream(roomId, nickname);
 
         this.client.subscribe(
             `/sub/voice/${roomId}`,
@@ -254,9 +294,8 @@ class StompClient {
     }
 
     public exitVoiceChannel(): void {
-        if(!this.client) return
-        if(!getStream()) return;
-
+        if (!this.client) return;
+        if (!getStream()) return;
 
         this.client.unsubscribe(this.subscribeId);
         endStream();

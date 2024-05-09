@@ -10,9 +10,14 @@ import {
     Quaternion,
 } from 'three';
 import { GLTF, SkeletonUtils } from 'three-stdlib';
-import { PlayerInitType } from '../../../../../../types/GameType';
+import {
+    CollideObject,
+    PlayerInitType,
+} from '../../../../../../types/GameType';
 import StompClient from '../../../../../../websocket/StompClient';
 import { useSelector } from 'react-redux';
+import { store } from '../../../../../../store/store';
+import { removeCollideObjectState } from '../../../../../../store/user-slice';
 
 // interface GLTFAction extends AnimationClip {
 //     name: ActionName;
@@ -141,6 +146,7 @@ class Observer {
 export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const playerNickname = player?.nickname;
     const keyState = useRef<{ [key: string]: boolean }>({});
+    const [isJumping, setIsJumping] = useState(0);
     const [mouseWheelValue, setMouseWheelValue] = useState(Number);
     const [freeViewMode, setFreeViewMode] = useState(false);
     const [callsInLastSecond, setCallsInLastSecond] = useState(0);
@@ -164,6 +170,9 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const mapState = useSelector(
         (state: any) => state.reduxFlag.userSlice.mapSize
     );
+    const collideState = useSelector(
+        (state: any) => state.reduxFlag.userSlice.collideObj
+    );
 
     const initialHeight = returnHeightSize(modelIndex);
     position.y = initialHeight;
@@ -173,7 +182,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const nicknameRef = useRef<ObjectRef>(null);
     const accumulatedTimeRef = useRef(0.0);
     const observerRef = useRef<Observer | null>(null);
-    const [observedPlayerIndex, setObservedPlayerIndex] = useState(0); 
+    const [observedPlayerIndex, setObservedPlayerIndex] = useState(0);
     const callsInLastSecondRef = useRef(callsInLastSecond);
 
     const { scene: scene_, materials } = useGLTF(
@@ -256,7 +265,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 case 37:
                     return '/models/object/Cactus_3.glb';
                 case 38:
-                    return '/models/object/Cake_1.glb';
+                    return '/models/object/Cake.glb';
                 case 39:
                     return '/models/object/Carpet_1.glb';
                 case 40:
@@ -338,7 +347,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 case 78:
                     return '/models/object/Plate_2.glb';
                 case 79:
-                    return '/models/object/Pot_full_1.glb';
+                    return '/models/object/Pot_full.glb';
                 case 80:
                     return '/models/object/Present_1.glb';
                 case 81:
@@ -488,33 +497,39 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const handlePageDown = () => {
         setObservedPlayerIndex((prevIndex) => {
             // 관전 중인 플레이어의 인덱스를 감소시킵니다.
-            return (prevIndex - 1 + roomState.roomPlayers.length) % roomState.roomPlayers.length;
-        });  
-    };  
-    
+            return (
+                (prevIndex - 1 + roomState.roomPlayers.length) %
+                roomState.roomPlayers.length
+            );
+        });
+    };
+
     useEffect(() => {
-        callsInLastSecondRef.current = callsInLastSecond;  
+        callsInLastSecondRef.current = callsInLastSecond;
     }, [callsInLastSecond]);
-    
-    useEffect(() => {  
+
+    useEffect(() => {
         // 3초마다 호출
-        if(meInfo?.nickname === playerNickname) { 
-            const intervalId = setInterval(() => { 
-                console.log("초당 평균 프레임 :", (callsInLastSecondRef.current/3));
+        if (meInfo?.nickname === playerNickname) {
+            const intervalId = setInterval(() => {
+                console.log(
+                    '초당 평균 프레임 :',
+                    callsInLastSecondRef.current / 3
+                );
                 setCallsInLastSecond(0); // 85 ~ 95
-                if(callsInLastSecondRef.current > 95) {
-                    setDelay(preDelay => preDelay + 0.00001) 
-                    console.log("딜레이 값을 올리겠습니다.");
+                if (callsInLastSecondRef.current > 95) {
+                    setDelay((preDelay) => preDelay + 0.00001);
+                    console.log('딜레이 값을 올리겠습니다.');
                 } else if (callsInLastSecondRef.current < 85) {
-                    setDelay(preDelay => preDelay - 0.00001)   
-                    console.log("딜레이 값을 낮추겠습니다.");
-                }  
-            }, 3000);  
-            
+                    setDelay((preDelay) => preDelay - 0.00001);
+                    console.log('딜레이 값을 낮추겠습니다.');
+                }
+            }, 3000);
+
             return () => clearInterval(intervalId);
-        }  
-    }, []); 
- 
+        }
+    }, []);
+
     useEffect(() => {
         const handleMouseMove = (event: MouseEvent) => {
             // 마우스 포인터가 고정된 상태에서의 마우스 이동량을 감지합니다.
@@ -523,7 +538,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 const movementY = event.movementY || 0;
                 updateRotationY(movementX);
                 updateRotationX(movementY);
-            } 
+            }
         };
 
         setMouseWheelValue(10);
@@ -585,6 +600,40 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         };
     }, []);
 
+    // 키 입력
+    useEffect(() => {
+        const handleKeyDown = (event: any) => {
+            keyState.current[event.key] = true;
+            if (event.code === 'Space' && isJumping === 0) {
+                setIsJumping(1);
+            }
+        };
+
+        const handleKeyUp = (event: any) => {
+            keyState.current[event.key] = false;
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        document.addEventListener('keyup', handleKeyUp);
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+            document.removeEventListener('keyup', handleKeyUp);
+        };
+    }, []);
+    useEffect(() => {
+        if (isJumping === 1) {
+            console.log('점프중입니다.');
+            setTimeout(() => {
+                console.log('점프 내려가는 중입니다.');
+                setIsJumping(2);
+            }, 600); // Return after half a second
+            setTimeout(() => {
+                console.log('점프 끝입니다.');
+                setIsJumping(0);
+            }, 1200);
+        }
+    }, [isJumping]);
+
     // useEffect(() => {
     //     console.log("플레이어 인덱스 : " + observedPlayerIndex + " of " +roomState.roomPlayers.length );
     // }, [observedPlayerIndex]);
@@ -616,7 +665,10 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                         playerRef.current.rotation.y -= 0.025;
                     }
 
-                    if (!moveVector.equals(new Vector3(0, 0, 0))) {
+                    if (
+                        !moveVector.equals(new Vector3(0, 0, 0)) ||
+                        isJumping != 0
+                    ) {
                         // 이동중
                         lockPointer();
                         moveVector.normalize().multiplyScalar(0.2);
@@ -637,7 +689,83 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                                     forward.x
                                 ).multiplyScalar(moveVector.x)
                             );
-                        playerRef.current.position.add(moveDirection); 
+
+                        if (isJumping === 1) {
+                            moveDirection.y = 0.08;
+                        } else {
+                            moveDirection.y = -0.08;
+                        }
+                        if (collideState.length > 0) {
+                            const originPos =
+                                playerRef.current.position.clone();
+                            const newPos = originPos.clone().add(moveDirection);
+                            collideState.map(
+                                (item: CollideObject, index: number) => {
+                                    const centerX = (item.minX + item.maxX) / 2;
+                                    const centerY = (item.minY + item.maxZ) / 2;
+                                    const centerZ = (item.minZ + item.maxZ) / 2;
+
+                                    if (
+                                        originPos.x >= item.minX - 1 &&
+                                        originPos.x <= item.maxX + 1 &&
+                                        originPos.y >= item.minY - 1 &&
+                                        originPos.y <= item.maxY + 1 &&
+                                        originPos.z >= item.minZ - 1 &&
+                                        originPos.z <= item.maxZ + 1
+                                    ) {
+                                        originPos.y += 0.1;
+                                        newPos.y += 0.1;
+                                        if (originPos.x < centerX) {
+                                            if (newPos.x > originPos.x) {
+                                                moveDirection.x = 0;
+                                            }
+                                        } else if (originPos.x >= centerX) {
+                                            if (newPos.x <= originPos.x) {
+                                                moveDirection.x = 0;
+                                            }
+                                        }
+                                        if (originPos.y < centerY) {
+                                            if (newPos.y > originPos.y) {
+                                                moveDirection.y = 0;
+                                            }
+                                        } else if (originPos.y >= centerY) {
+                                            if (newPos.y <= originPos.y) {
+                                                moveDirection.y = 0;
+                                            }
+                                        }
+                                        if (originPos.z < centerZ) {
+                                            if (newPos.z > originPos.z) {
+                                                moveDirection.z = 0;
+                                            }
+                                        } else if (originPos.z >= centerZ) {
+                                            if (newPos.z <= originPos.z) {
+                                                moveDirection.z = 0;
+                                            }
+                                        }
+                                        if (playerRef.current) {
+                                            if (
+                                                playerRef.current.position.y <=
+                                                0
+                                            ) {
+                                                playerRef.current.position.y = 0.1;
+                                            }
+                                            playerRef.current.position.add(
+                                                moveDirection
+                                            );
+                                        }
+                                    } else {
+                                        store.dispatch(
+                                            removeCollideObjectState(index)
+                                        );
+                                    }
+                                }
+                            );
+                        } else {
+                            if (playerRef.current.position.y <= initialHeight) {
+                                playerRef.current.position.y = initialHeight;
+                            }
+                            playerRef.current.position.add(moveDirection);
+                        }
                         if (
                             playerRef.current.position.x > mapState.maxX ||
                             playerRef.current.position.x < mapState.minX ||
@@ -647,7 +775,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                             playerRef.current.position.set(0, initialHeight, 0);
                         }
                         if (accumulatedTimeRef.current >= delay) {
-                            // stomp로 이전 
+                            // stomp로 이전
                             accumulatedTimeRef.current = 0;
                             stompClient.sendMessage(
                                 `/player.move`,
@@ -674,7 +802,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                                     },
                                 })
                             );
-                            setCallsInLastSecond(prevCount => prevCount + 1);
+                            setCallsInLastSecond((prevCount) => prevCount + 1);
                         }
                     } else {
                         // 고정된 상태
@@ -706,7 +834,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                                     },
                                 })
                             );
-                            setCallsInLastSecond(prevCount => prevCount + 1);
+                            setCallsInLastSecond((prevCount) => prevCount + 1);
                         }
                     }
                     // 카메라 설정
@@ -716,10 +844,11 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                         Math.sin(playerRef.current.viewLR),
                         playerRef.current.viewUpDown + 5,
                         Math.cos(playerRef.current.viewLR)
-                    ); 
-                    
+                    );
+
                     // 카메라 위치
                     playerDirection.multiplyScalar(mouseWheelValue * 2);
+
                     camera.position.set(
                         playerPosition.x - playerDirection.x,
                         playerPosition.y + 8 - playerRef.current.viewUpDown,
@@ -794,9 +923,9 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                         observerRef.current.position.y,
                         observerRef.current.position.z
                     );
-                    camera.lookAt(cameraTarget); 
-                }     
-            }    
+                    camera.lookAt(cameraTarget);
+                }
+            }
         } else {
             // 다른 플레이어의 캐릭터
             roomState.roomPlayers.forEach((otherPlayer: any) => {
@@ -1102,69 +1231,12 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             case 0:
             case 4:
             case 13:
-            case 14:
-            case 15:
             case 16:
-            case 21:
-            case 27:
-            case 28:
-            case 29:
-            case 30:
-            case 31:
-            case 32:
-            case 33:
-            case 34:
-            case 35:
-            case 36:
-            case 37:
-            case 38:
-            case 49:
-            case 50:
-            case 51:
-            case 54:
-            case 55:
-            case 56:
-            case 57:
-            case 58:
-            case 59:
-            case 60:
-            case 61:
-            case 62:
-            case 63:
-            case 64:
-            case 65:
-            case 66:
-            case 67:
-            case 68:
-            case 69:
-            case 70:
-            case 71:
-            case 73:
-            case 74:
-            case 75:
-            case 76:
-            case 77:
-            case 78:
-            case 79:
-            case 80:
-            case 81:
-            case 82:
-            case 83:
-            case 84:
-            case 85:
-            case 86:
+            case 15:
+                return 0;
+            case 14:
+                return 0.1;
             case 88:
-            case 89:
-            case 90:
-            case 93:
-            case 94:
-            case 96:
-            case 97:
-            case 98:
-            case 99:
-            case 100:
-                return 1;
-            case 1:
             case 2:
             case 3:
             case 5:
@@ -1177,21 +1249,110 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             case 12:
             case 17:
             case 18:
+            case 39:
+            case 40:
+                return 0.2;
+            case 77:
+            case 78:
+            case 1:
+                return 0.25;
+            case 34:
+            case 81:
+            case 44:
+                return 0.3;
+            case 94:
+            case 48:
+                return 0.4;
+            case 38:
+            case 49:
+            case 93:
+            case 26:
+            case 45:
+            case 46:
+                return 0.5;
+            case 82:
+                return 0.6;
+            case 56:
+            case 43:
+                return 0.7;
+            case 74:
+            case 76:
+            case 41:
+                return 0.8;
+            case 21:
+            case 27:
+            case 28:
+            case 29:
+            case 30:
+            case 31:
+            case 32:
+            case 33:
+            case 35:
+            case 36:
+            case 37:
+            case 50:
+            case 51:
+            case 64:
+            case 68:
+            case 70:
+            case 75:
+            case 79:
+            case 80:
+            case 83:
+            case 84:
+            case 85:
+            case 86:
+            case 90:
+            case 100:
             case 19:
             case 20:
             case 22:
             case 23:
-            case 24:
-            case 25:
-            case 26:
             case 52:
-            case 53:
-            case 72:
             case 87:
             case 91:
             case 92:
             case 95:
+            case 42:
+            case 47:
                 return 1;
+            case 58:
+            case 60:
+            case 61:
+                return 1.3;
+            case 59:
+                return 1.4;
+            case 57:
+            case 62:
+            case 69:
+            case 53:
+                return 1.5;
+            case 71:
+                return 1.6;
+            case 63:
+            case 65:
+            case 66:
+            case 67:
+            case 89:
+                return 1.8;
+            case 24:
+                return 2;
+            case 96:
+                return 2.25;
+            case 97:
+                return 2.45;
+            case 55:
+                return 2.5;
+            case 54:
+            case 73:
+            case 25:
+                return 3;
+            case 98:
+                return 3.5;
+            case 72:
+                return 4.25;
+            case 99:
+                return 5;
             default:
                 return 1;
         }

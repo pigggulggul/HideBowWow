@@ -36,25 +36,24 @@ export default function MainPage() {
         <section
             className="w-full h-full flex flex-col items-center justify-center"
             style={{
-                backgroundImage:
-                `url(${backgroundImage})`,
+                backgroundImage: `url(${backgroundImage})`,
             }}
         >
             <img src={textTitleSub} alt="" />
             <img src={textTitle} alt="" />
-            <div className="flex justify-between w-[40%]">
+            <div className="flex justify-center w-[40%]">
                 <Link
                     to={'/guestlogin'}
                     className="border-[0.3vw] color-border-main rounded-[0.6vw] px-[2vw] py-[0.4vw] color-text-main bg-white text-[2.6vw] cursor-pointer hover:color-bg-main hover:text-white btn-animation"
                 >
                     Guest
                 </Link>
-                <Link
+                {/* <Link
                     to={'/userlogin'}
                     className="border-[0.3vw] color-border-main rounded-[0.6vw] px-[2vw] py-[0.4vw] color-text-main bg-white text-[2.6vw] cursor-pointer hover:color-bg-main hover:text-white btn-animation"
                 >
                     Login
-                </Link>
+                </Link> */}
             </div>
         </section>
     );
