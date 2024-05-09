@@ -36,7 +36,7 @@ game:
     hide: 30
     seek: 90
     result: 10
-  maxCapacity: 6
+  maxCapacity: 12
   object:
     maxSeekerIdx: 14
     maxHiderIdx: 101

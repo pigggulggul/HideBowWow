@@ -52,13 +52,17 @@ public class RoomSocketService {
         // 맵 판단해서 적용
         GameProperties.RichHouse map = gameProperties.getMap().getRichHouse();
 
-        int seekerNumber = new Random().nextInt(room.getRoomPlayers().size());
+        int seekerNumber1 = new Random().nextInt(room.getRoomPlayers().size());
+        int seekerNumber2 = (room.getRoomPlayers().size() > 7)? new Random().nextInt(room.getRoomPlayers().size()): -1;
+        while (seekerNumber2 != -1 && seekerNumber1 == seekerNumber2){
+            seekerNumber2 = new Random().nextInt(room.getRoomPlayers().size());
+        }
         for (int i = 0; i < room.getRoomPlayers().size(); i++) {
             Player player = room.getRoomPlayers().get(i);
             player.setPosition(new Double[]{map.getStartPoint().getX()+(i*0.5), map.getStartPoint().getY(), map.getStartPoint().getZ()+(i*0.5)});
             player.setDirection(new Double[]{0d, 0d, 0d});
             player.setIsDead(false);
-            if(i == seekerNumber) {
+            if(i == seekerNumber1 || i == seekerNumber2) {
                 player.setIsSeeker(true);
                 player.setSelectedIndex(new Random().nextInt(gameProperties.getObject().getMaxSeekerIdx()));
             }else {
