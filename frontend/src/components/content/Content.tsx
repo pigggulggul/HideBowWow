@@ -57,6 +57,46 @@ export function Content() {
             });
         }
     }, [roomState]);
+
+    useEffect(() => {
+        console.log('선택 랜덤');
+        if (roomState.roomState === 3 && meInfo.selectedIndex == null) {
+            const random = Math.floor(Math.random() * 3);
+            setMe((prevMe) => ({ ...prevMe, selectedIndex: random })); // 새 객체를 반환하여 selectedIndex 업데이트
+
+            console.log('처음 players', players);
+            const updatedPlayers = players.map((player) => {
+                if (player.nickname === me.nickname && !choiceFlag) {
+                    setMe((prev) => ({
+                        ...prev,
+                        selectedIndex: choice[random],
+                    }));
+                    setChoiceFlag(true);
+                    stompClient.sendMessage(
+                        `/player.object`,
+                        JSON.stringify({
+                            type: 'player.object',
+                            roomId: roomState.roomId,
+                            sender: meName,
+                            data: {
+                                nickname: me.nickname,
+                                selectedIndex: choice[random],
+                                position: me.position,
+                                direction: me.direction,
+                                isDead: me.isDead,
+                                isSeeker: me.isSeeker,
+                            },
+                        })
+                    );
+                    return { ...player, selectedIndex: choice[random] };
+                }
+                return player;
+            });
+            setPlayers(updatedPlayers);
+            console.log('바뀐 Player정보', updatedPlayers);
+            dispatch(meSelectedInfoState(random));
+        }
+    }, [roomState.roomState]);
     useEffect(() => {
         if (givenChoice.length === 3) {
             setChoice(givenChoice);
