@@ -27,6 +27,7 @@ import keyR from '../assets/images/icon/key_r.png';
 import keySpace from '../assets/images/icon/key_space.png';
 import ingameMusic from '../assets/bgm/ingame_music.mp3';
 import ObjectInfo from '../json/ObjectInfo.json';
+import seekerDisplay from '../assets/images/bg/seekerBg.png';
 
 export default function GamePage() {
     const stompClient = StompClient.getInstance();
@@ -247,11 +248,34 @@ export default function GamePage() {
                 <></>
             )}
 
-            {currentRoom.roomState === 2 ? (
+            {/* {currentRoom.roomState === 2 ? (
                 <div className="absolute flex top-4 w-full justify-center items-center text-[2vw]">
                     <p className=" text-sky-400">술래</p>
                     <p className=" text-sky-400 ms-[1vw]">{seekerNum}</p>
                     <p className="text-[2vw] mx-[2vw]">
+                        숨는 시간 : {currentRoom.roomTime}
+                    </p>
+                    <p className=" text-orange-400">도망자</p>
+                    <p className=" text-orange-400 ms-[1vw]">{hiderNum}</p>
+                </div>
+            ) : (
+                <></>
+            )} */}
+            {currentRoom.roomState === 2 && meInfo.isSeeker ? (
+                <div className="absolute w-full h-full flex flex-col justify-center items-center bg-black">
+                    <img className="w-[90%]" src={seekerDisplay} alt="" />
+                    <p className="text-[3vw] text-white">
+                        당신은 술래입니다. 조금만 기다려주시기 바랍니다.
+                    </p>
+                </div>
+            ) : (
+                <></>
+            )}
+            {currentRoom.roomState === 2 && !meInfo.isSeeker ? (
+                <div className="absolute flex top-4 w-full justify-center items-center text-[2vw]">
+                    <p className=" text-sky-400">술래</p>
+                    <p className=" text-sky-400 ms-[1vw]">{seekerNum}</p>
+                    <p className="text-[2vw] mx-[1vw]">
                         숨는 시간 : {currentRoom.roomTime}
                     </p>
                     <p className=" text-orange-400">도망자</p>
