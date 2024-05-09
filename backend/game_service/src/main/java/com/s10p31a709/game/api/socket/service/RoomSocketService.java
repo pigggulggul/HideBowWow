@@ -49,10 +49,13 @@ public class RoomSocketService {
         room.setRoomTime(gameProperties.getTime().getWaiting());
         room.setRoomState(1);
 
+        // 맵 판단해서 적용
+        GameProperties.RichHouse map = gameProperties.getMap().getRichHouse();
+
         int seekerNumber = new Random().nextInt(room.getRoomPlayers().size());
         for (int i = 0; i < room.getRoomPlayers().size(); i++) {
             Player player = room.getRoomPlayers().get(i);
-            player.setPosition(new Double[]{0d, 0d, 0d});
+            player.setPosition(new Double[]{map.getStartPoint().getX()+(i*0.5), map.getStartPoint().getY(), map.getStartPoint().getZ()+(i*0.5)});
             player.setDirection(new Double[]{0d, 0d, 0d});
             player.setIsDead(false);
             if(i == seekerNumber) {
@@ -143,6 +146,5 @@ public class RoomSocketService {
         StompPayload<Room> payload = new StompPayload<>("room.gameState", room.getRoomId(), "system", room);
         simpMessagingTemplate.convertAndSend("/sub/room/"+room.getRoomId(), payload);
     }
-
 
 }

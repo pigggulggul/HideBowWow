@@ -40,4 +40,10 @@ game:
   object:
     maxSeekerIdx: 14
     maxHiderIdx: 101
+  map:
+    richHouse:
+      startPoint:
+        x: -43.8823
+        y: 0.03
+        z: -27.9526
   fps: 30
