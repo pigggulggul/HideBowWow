@@ -49,7 +49,7 @@ public class PlayerSocketService {
         try {
             memberServiceClient.enterGuest(new Member(message.getData().getNickname(), ""));
         }catch (Exception e){
-            log.error(e.toString());
+            log.info(e.toString());
         }
 
         StompPayload<Player> payload = new StompPayload<>("player.enter", message.getRoomId(), "system", player);
