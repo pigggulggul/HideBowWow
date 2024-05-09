@@ -32,7 +32,7 @@ logging:
 
 game:
   time:
-    waiting: 5
+    waiting: 3
     hide: 30
     seek: 90
     result: 10
