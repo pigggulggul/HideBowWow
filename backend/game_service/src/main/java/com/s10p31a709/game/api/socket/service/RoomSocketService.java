@@ -74,7 +74,6 @@ public class RoomSocketService {
 
         StompPayload<Room> payload = new StompPayload<>("room.gameInit", message.getRoomId(), "system", room);
         simpMessagingTemplate.convertAndSend("/sub/room/"+message.getRoomId(), payload);
-        playerSocketService.choosePlayer(message.getRoomId());
         log.info(room.toString());
     }
 

@@ -83,13 +83,6 @@ public class PlayerSocketService {
         StompPayload<Player> payload = new StompPayload<>("player.object", message.getRoomId(), "system", player);
         simpMessagingTemplate.convertAndSend("/sub/room/"+message.getRoomId(), payload);
     }
-
-    public void choosePlayer(String roomId) {
-        int maxIdx = gameProperties.getObject().getMaxHiderIdx();
-        int[] arr = new int[]{new Random().nextInt(maxIdx), new Random().nextInt(maxIdx), new Random().nextInt(maxIdx)};
-        StompPayload<int[]> payload = new StompPayload<>("player.choose", roomId, "system", arr);
-        simpMessagingTemplate.convertAndSend("/sub/room/"+roomId, payload);
-    }
     
     public void playerFix(StompPayload<Player> message){
         hideLocationService.sendHideLocation(roomRepository.findRoomByRoomId(message.getRoomId()), message.getData());
