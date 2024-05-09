@@ -61,7 +61,7 @@ export function ObjectPlayer({
     useFrame(() => {
         if (playerRef.current) {
             const { x, y, z } = playerRef.current.position;
-            if (initialHeight > 2) {
+            if (initialHeight < 1) {
                 boxApi.position.set(x, y + initialHeight, z);
             } else boxApi.position.set(x, y, z); // 물리 바디의 속도를 업데이트
             // console.log(playerRef.current.position);
