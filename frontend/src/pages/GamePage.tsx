@@ -60,6 +60,9 @@ export default function GamePage() {
 
     const [chatContent, setChatContent] = useState<string>('');
 
+    //공격
+    const [shot, setShot] = useState<boolean>(false);
+
     const inputRef = useRef<HTMLInputElement>(null);
     //스크롤 탐지용
     const messageEndRef = useRef<HTMLDivElement>(null);
@@ -112,6 +115,9 @@ export default function GamePage() {
         }
     }, [meInfo.isSeeker]);
     useEffect(() => {
+        if (meHeart < 5 && meHeart >= 0) {
+            handleShot();
+        }
         if (meHeart === 0) {
             stompClient.sendMessage(
                 `/player.dead`,
@@ -122,6 +128,19 @@ export default function GamePage() {
                     data: {
                         nickname: meInfo.nickname,
                         isDead: true,
+                    },
+                })
+            );
+            const data = `술래 '${meInfo.nickname}' 님이 죽었습니다.`;
+            stompClient.sendMessage(
+                `/chat.player`,
+                JSON.stringify({
+                    type: 'chat.player',
+                    roomId: currentRoom.roomId,
+                    sender: meInfo.nickname,
+                    data: {
+                        nickname: '<SYSTEM>',
+                        content: data,
                     },
                 })
             );
@@ -204,6 +223,13 @@ export default function GamePage() {
         };
     }, []);
 
+    const handleShot = () => {
+        setShot(true);
+        setTimeout(() => {
+            setShot(false);
+        }, 300); // 0.5초 후에 isRed 상태를 false로 변경
+    };
+
     return (
         <RecoilRoot>
             <Content />
@@ -225,7 +251,7 @@ export default function GamePage() {
                 <div className="absolute flex top-4 w-full justify-center items-center text-[2vw]">
                     <p className=" text-sky-400">술래</p>
                     <p className=" text-sky-400 ms-[1vw]">{seekerNum}</p>
-                    <p className="text-[2vw]">
+                    <p className="text-[2vw] mx-[2vw]">
                         숨는 시간 : {currentRoom.roomTime}
                     </p>
                     <p className=" text-orange-400">도망자</p>
@@ -238,7 +264,7 @@ export default function GamePage() {
                 <div className="absolute flex top-4 w-full justify-center items-center text-[2vw]">
                     <p className=" text-sky-400">술래</p>
                     <p className=" text-sky-400 ms-[1vw]">{seekerNum}</p>
-                    <p className="text-[2vw]">
+                    <p className="text-[2vw] mx-[2vw]">
                         남은 시간 : {currentRoom.roomTime}
                     </p>
                     <p className=" text-orange-400">도망자</p>
@@ -268,13 +294,13 @@ export default function GamePage() {
                 <></>
             )}
             {currentRoom.roomState === 4 || currentRoom.roomState === 5 ? (
-                <div className="absolute w-full flex justify-center bottom-6">
+                <div className="absolute w-full flex justify-center bottom-4">
                     {currentRoom.roomPlayers.map(
                         (item: CurrentPlayersInfo, pIndex: number) => {
                             if (!item.isSeeker) {
                                 return (
                                     <div
-                                        className="w-[15%] h-[30%] flex flex-col border-[0.4vw] border-sky-300 bg-white p-[1vw] rounded-[0.6vw]"
+                                        className="w-[15%] h-[30%] flex flex-col border-[0.4vw] border-sky-300 bg-white p-[1vw] rounded-[0.6vw] mx-[1vw]"
                                         key={'result-' + pIndex}
                                     >
                                         <p>{item.nickname}</p>
@@ -468,6 +494,12 @@ export default function GamePage() {
                     }
                 />
             </div>
+
+            {shot ? (
+                <div className="absolute w-full h-full bg-red-400 opacity-35"></div>
+            ) : (
+                <></>
+            )}
         </RecoilRoot>
     );
 }

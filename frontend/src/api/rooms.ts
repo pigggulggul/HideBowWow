@@ -21,3 +21,7 @@ export async function getRoom(id: string) {
 export async function enterRoom(checkInfo: EnterRoomState) {
     return await local.post(`/api/game-service/rooms/enter`, checkInfo);
 }
+/**GET: 채널 조회 */
+export async function getChannel() {
+    return await local.get(`/api/member-service/channel`);
+}

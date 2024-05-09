@@ -18,7 +18,6 @@ import StompClient from '../../../../../../websocket/StompClient';
 import { useSelector } from 'react-redux';
 import { store } from '../../../../../../store/store';
 import { removeCollideObjectState } from '../../../../../../store/user-slice';
-import { mode } from 'crypto-js';
 
 // interface GLTFAction extends AnimationClip {
 //     name: ActionName;
@@ -370,7 +369,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 case 89:
                     return '/models/object/Sausages_1.glb';
                 case 90:
-                    return '/models/object/Sewing_machine_1.glb';
+                    return '/models/object/Sewing_machine.glb';
                 case 91:
                     return '/models/object/Sofa_1.glb';
                 case 92:

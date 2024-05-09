@@ -196,7 +196,7 @@ export function Content() {
                                                     : {}
                                             }
                                         >
-                                            리롤하기
+                                            다시뽑기
                                         </p>
                                     </div>
                                 );

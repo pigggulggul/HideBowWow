@@ -95,7 +95,20 @@ export function AttackRules() {
                                     },
                                 })
                             );
-                            // item.isDead = true;
+                            const data = `도망자 '${item.nickname}' 님이 발견됐습니다.`;
+                            stompClient.sendMessage(
+                                `/chat.player`,
+                                JSON.stringify({
+                                    type: 'chat.player',
+                                    roomId: currentRoom.roomId,
+                                    sender: meInfo.nickname,
+                                    data: {
+                                        nickname: '<SYSTEM>',
+                                        content: data,
+                                    },
+                                })
+                            );
+                            item.isDead = true;
                         }
                     });
                 });

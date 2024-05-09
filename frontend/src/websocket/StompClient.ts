@@ -71,24 +71,7 @@ class StompClient {
                                 if (meInfo.nickname === msg.data.nickname) {
                                     store.dispatch(meDead(true));
                                 }
-                                if (msg.data.isSeeker) {
-                                    const data = `술래 '${msg.data.nickname}' 님이 죽었습니다.`;
 
-                                    store.dispatch(
-                                        addChatDataState({
-                                            nickname: '<SYSTEM>',
-                                            content: data,
-                                        })
-                                    );
-                                } else {
-                                    const data = `도망자 '${msg.data.nickname}' 님이 발견됐습니다.`;
-                                    store.dispatch(
-                                        addChatDataState({
-                                            nickname: '<SYSTEM>',
-                                            content: data,
-                                        })
-                                    );
-                                }
                                 break;
                             }
                             case 'player.fix': {
@@ -180,24 +163,7 @@ class StompClient {
                         if (meInfo.nickname === msg.data.nickname) {
                             store.dispatch(meDead(true));
                         }
-                        if (msg.data.isSeeker) {
-                            const data = `술래 '${msg.data.nickname}' 님이 죽었습니다.`;
 
-                            store.dispatch(
-                                addChatDataState({
-                                    nickname: '<SYSTEM>',
-                                    content: data,
-                                })
-                            );
-                        } else {
-                            const data = `도망자 '${msg.data.nickname}' 님이 발견됐습니다.`;
-                            store.dispatch(
-                                addChatDataState({
-                                    nickname: '<SYSTEM>',
-                                    content: data,
-                                })
-                            );
-                        }
                         break;
                     }
                     /** 게임 입장 (요청 필요) */

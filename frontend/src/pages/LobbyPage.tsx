@@ -10,7 +10,7 @@ import backgroundImage from '../assets/images/bg/background-main.png';
 
 export default function LobbyPage() {
     const [makeRoomFlag, setMakeRoomFlag] = useState<boolean>(false);
-    const [searchRoomFlag, setSearchRoomFlag] = useState<boolean>(false);
+    const [, setSearchRoomFlag] = useState<boolean>(false);
     const [privateRoomFlag, setPrivateRoomFlag] = useState<boolean>(false);
     const [privateRoomId, setPrivateRoomId] = useState<string>('');
     const [privateRoomPassword, setPrivateRoomPassword] = useState<string>('');
@@ -40,16 +40,16 @@ export default function LobbyPage() {
         setPrivateRoomPassword('');
         setPrivateRoomFlag(false);
     };
-    const changeSearchRoomFlag = () => {
-        setMakeRoomFlag(false);
-        setSearchRoomFlag(!searchRoomFlag);
-        setMakeRoomTitle('');
-        setMakeRoomPassword('');
-        setMakeRoomIsPublic(true);
-        setPrivateRoomId('');
-        setPrivateRoomPassword('');
-        setPrivateRoomFlag(false);
-    };
+    // const changeSearchRoomFlag = () => {
+    //     setMakeRoomFlag(false);
+    //     setSearchRoomFlag(!searchRoomFlag);
+    //     setMakeRoomTitle('');
+    //     setMakeRoomPassword('');
+    //     setMakeRoomIsPublic(true);
+    //     setPrivateRoomId('');
+    //     setPrivateRoomPassword('');
+    //     setPrivateRoomFlag(false);
+    // };
     const closePrivateRoom = () => {
         setPrivateRoomId('');
         setPrivateRoomPassword('');
@@ -181,9 +181,9 @@ export default function LobbyPage() {
         >
             <div className="relative w-[80%] h-[90%] flex justify-between border-[0.3vw] rounded-[0.6vw] border-white bg-sky-50 overflow-y-auto">
                 <div className="w-[15%]">
-                    <p className="w-[80%] mx-auto my-[1vw] px-[1vw] py-[1.2vw] text-[1.2vw] border-[0.2vw] border-white bg-sky-400 text-white rounded-[0.6vw] hover:color-bg-main cursor-pointer">
+                    {/* <p className="w-[80%] mx-auto my-[1vw] px-[1vw] py-[1.2vw] text-[1.2vw] border-[0.2vw] border-white bg-sky-400 text-white rounded-[0.6vw] hover:color-bg-main cursor-pointer">
                         빠른시작
-                    </p>
+                    </p> */}
                     <p
                         className="w-[80%] mx-auto my-[1vw] px-[1vw] py-[1.2vw] text-[1.2vw] border-[0.2vw] border-white bg-sky-400 text-white rounded-[0.6vw] hover:color-bg-main cursor-pointer"
                         onClick={() => {
@@ -192,14 +192,14 @@ export default function LobbyPage() {
                     >
                         방 만들기
                     </p>
-                    <p
+                    {/* <p
                         className="w-[80%] mx-auto my-[1vw] px-[1vw] py-[1.2vw] text-[1.2vw] border-[0.2vw] border-white bg-sky-400 text-white rounded-[0.6vw] hover:color-bg-main cursor-pointer"
                         onClick={() => {
                             changeSearchRoomFlag();
                         }}
                     >
                         방 찾기
-                    </p>
+                    </p> */}
                 </div>
                 <div className="w-[85%] h-full flex flex-wrap content-start overflow-y-auto">
                     {room.map((item, index) => {
@@ -228,7 +228,7 @@ export default function LobbyPage() {
                                     </div>
                                     <div className="flex flex-col">
                                         <p className="text-[1.6vw]">
-                                            {item.roomPlayers.length}/6
+                                            {item.roomPlayers.length}/12
                                         </p>
                                         {item.roomState === 0 ? (
                                             <p className="text-[1.6vw] text-white">
@@ -340,7 +340,7 @@ export default function LobbyPage() {
             ) : (
                 <></>
             )}
-            {searchRoomFlag ? (
+            {/* {searchRoomFlag ? (
                 <div className="absolute w-[40%] h-[40%] flex flex-col items-center justify-between border-[0.3vw] rounded-[0.6vw] border-gray-950 bg-white overflow-y-auto">
                     <p className="text-[1.8vw] my-[1vw]">방 찾기</p>
                     <div className="relative w-[90%] flex justify-start items-center my-[0.4vw]">
@@ -374,7 +374,7 @@ export default function LobbyPage() {
                 </div>
             ) : (
                 <></>
-            )}
+            )} */}
             {privateRoomFlag ? (
                 <div className="absolute w-[40%] h-[40%] flex flex-col items-center justify-center border-[0.3vw] rounded-[0.6vw] border-gray-950 bg-white overflow-y-auto">
                     <p className="text-[2vw]">비밀번호입력</p>
