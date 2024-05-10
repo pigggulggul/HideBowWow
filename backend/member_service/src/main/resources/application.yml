@@ -44,6 +44,6 @@ spring:
 logging:
   level:
     org:
-      springframework.web: DEBUG
-      hibernate.orm.jdbc.bind: TRACE
-    com.s10p31a709.member.aop: TRACE
+      springframework.web: INFO
+      hibernate.orm.jdbc.bind: INFO
+    com.s10p31a709.member.aop: INFO
