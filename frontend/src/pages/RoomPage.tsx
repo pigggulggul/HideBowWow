@@ -47,7 +47,7 @@ export default function RoomPage() {
     const loadRoom = async (state: string) => {
         const res = await getRoom(state);
         if (res.status === httpStatusCode.OK) {
-            console.log(res.data);
+            // console.log(res.data);
             setRoom(res.data.data);
             dispatch(currentRoomState(res.data.data));
         }
@@ -111,14 +111,14 @@ export default function RoomPage() {
         }
     }, [isReady]);
     useEffect(() => {
-        console.log('방정보', currentRoom);
+        // console.log('방정보', currentRoom);
         setRoom(currentRoom);
     }, [currentRoom]);
 
     const sendEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             if (inputRef.current && chatContent !== '') {
-                console.log('보낼게염');
+                // console.log('보낼게염');
                 stompClient.sendMessage(
                     `/chat.player`,
                     JSON.stringify({
