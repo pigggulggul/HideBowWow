@@ -23,7 +23,7 @@ export function Drawer_brown_2(props: ObjectSettingType) {
         '/models/object/Drawer_brown_2.glb'
     ) as GLTFResult;
     const [ref] = useBox<THREE.Mesh>(() => ({
-        args: [3, 3, 2.5],
+        args: [3, 8, 2.5],
         mass: 0.1,
         position: props.position,
         rotation: props.rotation,

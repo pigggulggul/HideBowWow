@@ -706,7 +706,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
 
                     if (
                         !moveVector.equals(new Vector3(0, 0, 0)) ||
-                        isJumping != 0
+                        isJumping >= 0
                     ) {
                         console.log(isJumping);
 
@@ -756,6 +756,8 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                                     ) {
                                         originPos.y += 0.1;
                                         newPos.y += 0.1;
+                                        console.log('충돌 범위', item);
+                                        console.log(originPos, newPos);
                                         if (originPos.x < centerX) {
                                             if (newPos.x > originPos.x) {
                                                 moveDirection.x = 0;

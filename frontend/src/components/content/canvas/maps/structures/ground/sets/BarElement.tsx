@@ -154,86 +154,86 @@ export function BarElement() {
                 rotation={[Math.PI / 2, 0, Math.PI / 2]}
             />
             <Sofa_1
-                position={[35, 1, -3.5]}
+                position={[30, 1, -3.5]}
                 rotation={[Math.PI / 2, 0, Math.PI / 2]}
             />
             <Sofa_2
-                position={[35, 1, -8.5]}
+                position={[30, 1, -9.5]}
                 rotation={[Math.PI / 2, 0, Math.PI / 2]}
             />
             <Drawer_brown_1
-                position={[33, 1, -33.2]}
+                position={[32, 1, -33.2]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
             <Drawer_brown_2
-                position={[33, 1, -30.4]}
+                position={[32, 1, -30.4]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
             <Drawer_brown_5
-                position={[33, 1, -26.8]}
+                position={[32, 1, -26.8]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
             <Drawer_brown_5
-                position={[33, 1, -22.3]}
+                position={[32, 1, -22.3]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
             <Shelve_brown
-                position={[34, 5, -22.8]}
+                position={[33, 5, -22.8]}
                 rotation={[Math.PI / 2, 0, Math.PI / 2]}
             />
             <Shelve_brown
-                position={[34, 5, -30.8]}
+                position={[33, 5, -30.8]}
                 rotation={[Math.PI / 2, 0, Math.PI / 2]}
             />
             {/* 카페테리아 냉장고쪽 선반 */}
             <Meet_full
-                position={[33, 2.4, -23.8]}
+                position={[32, 2.4, -23.8]}
                 rotation={[Math.PI / 2, 0, 0]}
             />
             {/* 카페테리아 냉장고쪽 위 선반 */}
             <Pot_pink
-                position={[34, 5.45, -24.8]}
+                position={[33, 5.45, -24.8]}
                 rotation={[Math.PI / 2, 0, 0]}
             />
             <Pot_pink
-                position={[34, 5.45, -22.8]}
+                position={[33, 5.45, -22.8]}
                 rotation={[Math.PI / 2, 0, 0]}
             />
             <Pot_pink
-                position={[34, 5.45, -20.8]}
+                position={[33, 5.45, -20.8]}
                 rotation={[Math.PI / 2, 0, 0]}
             />
             <Pot_orange
-                position={[34, 5.45, -29.0]}
+                position={[33, 5.45, -29.0]}
                 rotation={[Math.PI / 2, 0, 0]}
             />
             <Pot_orange
-                position={[34, 5.45, -32.0]}
+                position={[33, 5.45, -32.0]}
                 rotation={[Math.PI / 2, 0, 0]}
             />
             <Pot_pink
-                position={[34, 5.45, -30.5]}
+                position={[33, 5.45, -30.5]}
                 rotation={[Math.PI / 2, 0, 0]}
             />
             {/* 카페테리아 냉장고쪽 아래 선반 */}
             <Pot_pink
-                position={[33, 2.4, -21.8]}
+                position={[32, 2.4, -21.8]}
                 rotation={[Math.PI / 2, 0, 0]}
             />
             <Pot_orange
-                position={[33, 2.4, -25.0]}
+                position={[32, 2.4, -25.0]}
                 rotation={[Math.PI / 2, 0, 0]}
             />
             <Pot_orange
-                position={[33, 2.4, -26.1]}
+                position={[32, 2.4, -26.1]}
                 rotation={[Math.PI / 2, 0, 0]}
             />
             <Pot_orange
-                position={[33, 2.4, -27.3]}
+                position={[32, 2.4, -27.3]}
                 rotation={[Math.PI / 2, 0, 0]}
             />
             <Pot_pink
-                position={[33, 2.4, -33.0]}
+                position={[32, 2.4, -33.0]}
                 rotation={[Math.PI / 2, 0, 0]}
             />
             {/* 냉장고 주방 쪽 바닥 */}
@@ -246,10 +246,7 @@ export function BarElement() {
                 rotation={[Math.PI / 2, 0, -1]}
             />
             {/* 오른쪽 냉장고 */}
-            <Refrigerator
-                position={[32, 2.8, 3.1]}
-                rotation={[Math.PI / 2, 0, Math.PI / 1]}
-            />
+
             <Shelve_brown
                 position={[25, 5, 4]}
                 rotation={[Math.PI / 2, 0, Math.PI / 1]}
@@ -279,11 +276,11 @@ export function BarElement() {
                 rotation={[Math.PI / 2, 0, -Math.PI / 1]}
             />
             <Window_8
-                position={[5.55, 4, 4]}
+                position={[5.55, 4, 3.5]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 1]}
             />
             <Window_9
-                position={[-5, 4, 4]}
+                position={[-5, 4, 3.5]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 1]}
             />
             <Drawer_blue_1
@@ -320,10 +317,6 @@ export function BarElement() {
             />
             <Sandwich_1
                 position={[28.5, 2.6, 3]}
-                rotation={[Math.PI / 2, 0, -Math.PI / 1]}
-            />
-            <Sausages_1
-                position={[31.5, 2.75, 3]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 1]}
             />
 
@@ -503,7 +496,7 @@ export function BarElement() {
                 rotation={[Math.PI / 2, -0, 0]}
             />
             <Ladder_brown
-                position={[30, 1, -12.8]}
+                position={[30, 1, -15]}
                 rotation={[Math.PI / 2, 0, 0]}
             />
             <Ladder_white
@@ -968,11 +961,11 @@ export function BarElement() {
                 rotation={[Math.PI / 2, 0, Math.PI]}
             />
             <Bed_1
-                position={[-21.5, 1, 40]}
+                position={[-21, 1, 40]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
             <Bed_1
-                position={[-21.5, 1, 60]}
+                position={[-21, 1, 60]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
             <Bed_2
@@ -1020,12 +1013,12 @@ export function BarElement() {
                 position={[-11.5, 1, 73]}
                 rotation={[Math.PI / 2, 0, Math.PI]}
             />
-            <Drawer_pink_1
-                position={[-6.7, 1.1, 73]}
+            <Drawer_blue_1
+                position={[-9, 1.1, 73]}
                 rotation={[Math.PI / 2, 0, Math.PI]}
             />
-            <Drawer_pink_1
-                position={[-13.4, 1.1, 73]}
+            <Drawer_blue_1
+                position={[-15, 1.1, 73]}
                 rotation={[Math.PI / 2, 0, Math.PI]}
             />
 
@@ -1326,10 +1319,7 @@ export function BarElement() {
                 position={[-53, 1, -12]}
                 rotation={[Math.PI / 2, 0, Math.PI / 4]}
             />
-            <Frame_1
-                position={[-45, 5, -34.5]}
-                rotation={[Math.PI / 2, 0, 0]}
-            />
+            <Frame_1 position={[-45, 5, -34]} rotation={[Math.PI / 2, 0, 0]} />
             <Clock_1
                 position={[-40, 0.7, -34]}
                 rotation={[Math.PI / 2, 0, 0]}
@@ -1398,7 +1388,7 @@ export function BarElement() {
                 position={[-53.4, 2.85, 20]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
-            <Drawer_brown_1
+            <Drawer_brown_3
                 position={[-53.4, 1.2, 20]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
@@ -1421,13 +1411,13 @@ export function BarElement() {
                 position={[-45, 1, -23]}
                 rotation={[Math.PI / 2, 0, 0]}
             />
-            <Vase_5 position={[-45, 3, -20]} rotation={[Math.PI / 2, 0, 0]} />
+            <Vase_5 position={[-45, 1, -20]} rotation={[Math.PI / 2, 0, 0]} />
             <Vase_2
                 position={[-45, 1, -17]}
                 rotation={[Math.PI / 2, 0, Math.PI / 2]}
             />
             <Vase_2 position={[-45, 1, -13]} rotation={[Math.PI / 2, 0, 0]} />
-            <Vase_5 position={[-45, 3, -10]} rotation={[Math.PI / 2, 0, 0]} />
+            <Vase_5 position={[-45, 1, -10]} rotation={[Math.PI / 2, 0, 0]} />
             <Armchair_1
                 position={[-45, 1, -7]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
@@ -1436,17 +1426,17 @@ export function BarElement() {
                 position={[-45, 1, -3]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
-            <Vase_5 position={[-45, 3, 0]} rotation={[Math.PI / 2, 0, 0]} />
-            <Vase_5 position={[-45, 3, 10]} rotation={[Math.PI / 2, 0, 0]} />
+            <Vase_5 position={[-45, 1, 0]} rotation={[Math.PI / 2, 0, 0]} />
+            <Vase_5 position={[-45, 1, 10]} rotation={[Math.PI / 2, 0, 0]} />
             <Chair_brown
                 position={[-45, 1, 8]}
                 rotation={[Math.PI / 2, 0, Math.PI / 4]}
             />
-            <Vase_5 position={[-45, 3, 5]} rotation={[Math.PI / 2, 0, 0]} />
+            <Vase_5 position={[-45, 1, 5]} rotation={[Math.PI / 2, 0, 0]} />
 
             {/* 카페 복도 - 카페쪽 벽*/}
             <Lamp_4
-                position={[-36.5, 4, -30]}
+                position={[-37, 4, -30]}
                 rotation={[Math.PI / 2, 0, Math.PI / 2]}
             />
             <Vase_1 position={[-37, 1, -25]} rotation={[Math.PI / 2, 0, 0]} />
@@ -1463,10 +1453,6 @@ export function BarElement() {
                 rotation={[Math.PI / 2, 0, Math.PI / 2]}
             />
             <Vase_1 position={[-37, 1, -27]} rotation={[Math.PI / 2, 0, 0]} />
-            <Lamp_3
-                position={[-36.5, 4, -19.5]}
-                rotation={[Math.PI / 2, 0, Math.PI / 2]}
-            />
 
             <Puzzle_1
                 position={[-36, 1, -3]}
@@ -1514,7 +1500,7 @@ export function BarElement() {
                 rotation={[Math.PI / 2, 0, Math.PI / 2]}
             />
 
-            <Vase_5 position={[7, 3, 13]} rotation={[Math.PI / 2, 0, 0]} />
+            <Vase_5 position={[7, 3, 113]} rotation={[Math.PI / 2, 0, 0]} />
             <Ottoman_1 position={[5, 0.8, 13]} rotation={[Math.PI / 2, 0, 0]} />
             <Ottoman_1 position={[1, 0.8, 13]} rotation={[Math.PI / 2, 0, 0]} />
             <Ottoman_2 position={[3, 0.8, 13]} rotation={[Math.PI / 2, 0, 0]} />
@@ -1572,10 +1558,7 @@ export function BarElement() {
                 position={[-25, 0.8, 22.93]}
                 rotation={[Math.PI / 2, 0, 0]}
             />
-            <Lamp_4
-                position={[-30, 5, 23.3]}
-                rotation={[Math.PI / 2, 0, -Math.PI]}
-            />
+
             <Lamp_5
                 position={[-33, 1.23, 23.3]}
                 rotation={[Math.PI / 2, 0, 0]}
