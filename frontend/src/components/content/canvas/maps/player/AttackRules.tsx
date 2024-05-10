@@ -82,7 +82,7 @@ export function AttackRules() {
                         ) {
                             console.log('죽인다 빵야빵야');
                             killFlag = true;
-                            dispatch(heartState(5));
+                            dispatch(heartState(7));
                             stompClient.sendMessage(
                                 `/player.dead`,
                                 JSON.stringify({
