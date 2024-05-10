@@ -31,7 +31,7 @@ export function Vase_5(props: ObjectSettingType) {
         angularFactor: [0, 0, 0], // 모든 축에 대해 회전 제한
     }));
     return (
-        <group dispose={null}>
+        <group position={[0, 2, 0]} dispose={null}>
             <mesh
                 ref={ref}
                 geometry={nodes.Plant_17.geometry}
