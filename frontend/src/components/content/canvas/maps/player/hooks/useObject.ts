@@ -539,17 +539,17 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         // 3초마다 호출
         if (meInfo?.nickname === playerNickname) {
             const intervalId = setInterval(() => {
-                console.log(
-                    '초당 평균 프레임 :',
-                    callsInLastSecondRef.current / 3
-                );
+                // console.log(
+                //     '초당 평균 프레임 :',
+                //     callsInLastSecondRef.current / 3
+                // );
                 setCallsInLastSecond(0); // 85 ~ 95
                 if (callsInLastSecondRef.current > 95) {
                     setDelay((preDelay) => preDelay + 0.00001);
-                    console.log('딜레이 값을 올리겠습니다.');
+                    // console.log('딜레이 값을 올리겠습니다.');
                 } else if (callsInLastSecondRef.current < 85) {
                     setDelay((preDelay) => preDelay - 0.00001);
-                    console.log('딜레이 값을 낮추겠습니다.');
+                    // console.log('딜레이 값을 낮추겠습니다.');
                 }
             }, 3000);
 
@@ -615,7 +615,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     useEffect(() => {
         const handleKeyDown = (event: any) => {
             keyState.current[event.key] = true;
-            if (event.key === 'r') {
+            if (event.key === 'r' || event.key === 'R') {
                 toggleFreeViewMode();
             }
         };
@@ -660,13 +660,13 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     }, []);
     useEffect(() => {
         if (isJumping === 1) {
-            console.log('점프중입니다.');
+            // console.log('점프중입니다.');
             setTimeout(() => {
-                console.log('점프 내려가는 중입니다.');
+                // console.log('점프 내려가는 중입니다.');
                 setIsJumping(2);
             }, 600); // Return after half a second
             setTimeout(() => {
-                console.log('점프 끝입니다.');
+                // console.log('점프 끝입니다.');
                 setIsJumping(0);
             }, 1200);
         }
@@ -689,11 +689,11 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 if (!freeViewMode) {
                     // 3인칭 모드
                     const moveVector = new Vector3(
-                        (keyState.current['d'] ? 1 : 0) -
-                            (keyState.current['a'] ? 1 : 0), // 수정: 오른쪽이면 1, 왼쪽이면 -1
+                        (keyState.current['d']||keyState.current['D']||keyState.current['ㅇ']? 1 : 0) -
+                            (keyState.current['a']||keyState.current['A']||keyState.current['ㅁ'] ? 1 : 0), // 수정: 오른쪽이면 1, 왼쪽이면 -1
                         0,
-                        (keyState.current['w'] ? 1 : 0) -
-                            (keyState.current['s'] ? 1 : 0) // 수정: 위쪽이면 1, 아래쪽이면 -1
+                        (keyState.current['w']||keyState.current['W']||keyState.current['ㅈ'] ? 1 : 0) -
+                            (keyState.current['s']||keyState.current['S']||keyState.current['ㄴ'] ? 1 : 0) // 수정: 위쪽이면 1, 아래쪽이면 -1
                     );
 
                     if (keyState.current['q']) {
@@ -708,7 +708,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                         !moveVector.equals(new Vector3(0, 0, 0)) ||
                         isJumping >= 0
                     ) {
-                        console.log(isJumping);
+                        // console.log(isJumping);
 
                         // 이동중
                         lockPointer();
@@ -756,8 +756,8 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                                     ) {
                                         originPos.y += 0.1;
                                         newPos.y += 0.1;
-                                        console.log('충돌 범위', item);
-                                        console.log(originPos, newPos);
+                                        // console.log('충돌 범위', item);
+                                        // console.log(originPos, newPos);
                                         if (originPos.x < centerX) {
                                             if (newPos.x > originPos.x) {
                                                 moveDirection.x = 0;
@@ -928,11 +928,11 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                         }
 
                         const moveVector = new Vector3(
-                            (keyState.current['d'] ? 1 : 0) -
-                                (keyState.current['a'] ? 1 : 0),
+                            (keyState.current['d']||keyState.current['D']||keyState.current['ㅇ'] ? 1 : 0) -
+                                (keyState.current['a']||keyState.current['A']||keyState.current['ㅁ'] ? 1 : 0),
                             0,
-                            (keyState.current['w'] ? 1 : 0) -
-                                (keyState.current['s'] ? 1 : 0)
+                            (keyState.current['w']||keyState.current['W']||keyState.current['ㅈ'] ? 1 : 0) -
+                                (keyState.current['s']||keyState.current['S']||keyState.current['ㄴ'] ? 1 : 0)
                         );
 
                         if (!moveVector.equals(new Vector3(0, 0, 0))) {
@@ -1068,11 +1068,11 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 // 자유시점 모드
 
                 const moveVector = new Vector3(
-                    (keyState.current['d'] ? 1 : 0) -
-                        (keyState.current['a'] ? 1 : 0),
+                    (keyState.current['d']||keyState.current['D']||keyState.current['ㅇ'] ? 1 : 0) -
+                        (keyState.current['a']||keyState.current['A']||keyState.current['ㅁ'] ? 1 : 0),
                     0,
-                    (keyState.current['w'] ? 1 : 0) -
-                        (keyState.current['s'] ? 1 : 0)
+                    (keyState.current['w']||keyState.current['W']||keyState.current['ㅈ'] ? 1 : 0) -
+                        (keyState.current['s']||keyState.current['S']||keyState.current['ㄴ'] ? 1 : 0)
                 );
 
                 if (!moveVector.equals(new Vector3(0, 0, 0))) {

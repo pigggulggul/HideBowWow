@@ -9,7 +9,7 @@ export default function SelectChannelPage() {
     useEffect(() => {
         const channel = async () => {
             await getChannel().then((res) => {
-                console.log(res.data.data);
+                // console.log(res.data.data);
                 const countArr = res.data.data;
                 const countNum: number[] = [];
                 countArr.forEach((element: { count: number }) => {

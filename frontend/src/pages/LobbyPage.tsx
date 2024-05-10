@@ -59,7 +59,7 @@ export default function LobbyPage() {
     const showRoomListAPI = async () => {
         const showRes = await roomList();
         if (showRes.status === httpStatusCode.OK) {
-            console.log(showRes.data);
+            // console.log(showRes.data);
             setRoom(showRes.data.data);
         }
     };
@@ -76,13 +76,13 @@ export default function LobbyPage() {
                 roomAdmin: meName,
             };
             const makeRes = await roomMake(makeRoomInfo);
-            console.log(makeRes);
+            // console.log(makeRes);
             if (makeRes.status === httpStatusCode.CREATE) {
-                console.log('만들어졌습니다.', makeRes.data.data.roomId);
+                // console.log('만들어졌습니다.', makeRes.data.data.roomId);
                 setRoomId(makeRes.data.data.roomId);
                 dispatch(roomIdState(makeRes.data.data.roomId));
                 stompClient.connect(makeRes.data.data.roomId, setWebsocketFlag);
-                console.log(websocketFlag);
+                // console.log(websocketFlag);
                 showRoomListAPI();
             }
             changeMakeRoomFlag();
@@ -94,7 +94,7 @@ export default function LobbyPage() {
     const checkPublicRoom = async (id: string) => {
         const checkData: EnterRoomState = { roomId: id, nickname: meName };
         const res = await enterRoom(checkData);
-        console.log(res);
+        // console.log(res);
         if (res.status === httpStatusCode.OK) {
             setRoomId(id);
             dispatch(roomIdState(id));
@@ -106,15 +106,15 @@ export default function LobbyPage() {
         setPrivateRoomFlag(true);
     };
     const checkPrivateRoomAPI = async () => {
-        console.log(privateRoomPassword);
+        // console.log(privateRoomPassword);
         const checkData: EnterRoomState = {
             roomId: privateRoomId,
             roomPassword: privateRoomPassword,
             nickname: meName,
         };
         const res = await enterRoom(checkData);
-        console.log('비번데이터', checkData);
-        console.log(res);
+        // console.log('비번데이터', checkData);
+        // console.log(res);
         if (res.status === httpStatusCode.OK) {
             setRoomId(privateRoomId);
             dispatch(roomIdState(privateRoomId));
@@ -140,10 +140,10 @@ export default function LobbyPage() {
                 roomTitle: '',
             })
         );
-        console.log('Lobby 시작', meName);
+        // console.log('Lobby 시작', meName);
         showRoomListAPI();
         const interval = setInterval(() => {
-            console.log('방 조회'); // value의 현재 값인 vaule.current를 가져오도록 한다.
+            // console.log('방 조회'); // value의 현재 값인 vaule.current를 가져오도록 한다.
             setCount((prev) => prev + 1);
             value.current++; // value.current에 1씩 더한다.
             showRoomListAPI();
@@ -153,13 +153,13 @@ export default function LobbyPage() {
         }, 5000);
 
         return () => {
-            console.log('방 조회 제거');
+            // console.log('방 조회 제거');
             clearInterval(interval);
         };
     }, []);
 
     useEffect(() => {
-        console.log(websocketFlag);
+        // console.log(websocketFlag);
         if (websocketFlag) {
             stompClient.sendMessage(
                 `/player.enter`,

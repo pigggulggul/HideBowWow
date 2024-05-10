@@ -14,6 +14,7 @@ import {
 } from '../assets/js/voice';
 import winnerSeeker from '../assets/images/icon/winner_seeker.png';
 import winnerHider from '../assets/images/icon/winner_hider.png';
+import gameInit from '../assets/images/icon/round_start.png';
 import keyA from '../assets/images/icon/key_a.png';
 import keyD from '../assets/images/icon/key_d.png';
 import keyE from '../assets/images/icon/key_e.png';
@@ -58,7 +59,7 @@ export default function GamePage() {
     const [audio] = useState(new Audio(ingameMusic));
 
     const [toggleChat, setToggleChat] = useState<boolean>(false);
-
+    const [roundStart, setRoundStart] = useState<boolean>(false);
     const [chatContent, setChatContent] = useState<string>('');
 
     //공격
@@ -90,6 +91,8 @@ export default function GamePage() {
             navigate(`/room/${currentRoom.roomId}`, {
                 state: currentRoom.roomId,
             });
+        } else if (currentRoom.roomState === 3 && !roundStart) {
+            startRound();
         }
     }, [currentRoom.roomState]);
     useEffect(() => {
@@ -108,7 +111,7 @@ export default function GamePage() {
     useEffect(() => {
         if (meInfo) {
             if (meInfo.isSeeker) {
-                console.log('헤헤');
+                // console.log('헤헤');
                 dispatch(heartState(7));
             } else {
                 dispatch(heartState(1));
@@ -155,7 +158,7 @@ export default function GamePage() {
             }
         } else {
             if (inputRef.current && chatContent !== '') {
-                console.log('보낼게염');
+                // console.log('보낼게염');
                 stompClient.sendMessage(
                     `/chat.player`,
                     JSON.stringify({
@@ -196,7 +199,7 @@ export default function GamePage() {
 
         // c나 m을 누르면 음성채널과 마이크 동작 실행
         const handleKeyPress = (event: KeyboardEvent) => {
-            if (event.key == 'c') {
+            if (event.key == 'c' || event.key == 'C') {
                 if (!getStream()) {
                     stompClient.enterVoiceChannel(
                         currentRoom.roomId,
@@ -205,7 +208,7 @@ export default function GamePage() {
                 } else {
                     stompClient.exitVoiceChannel();
                 }
-            } else if (event.key == 'm') {
+            } else if (event.key == 'm' || event.key == 'M') {
                 if (!getInterval()) {
                     startRecording();
                 } else {
@@ -229,6 +232,12 @@ export default function GamePage() {
         setTimeout(() => {
             setShot(false);
         }, 300); // 0.5초 후에 isRed 상태를 false로 변경
+    };
+    const startRound = () => {
+        setRoundStart(true);
+        setTimeout(() => {
+            setRoundStart(false);
+        }, 5000); // 0.5초 후에 isRed 상태를 false로 변경
     };
 
     return (
@@ -263,7 +272,20 @@ export default function GamePage() {
             )} */}
             {currentRoom.roomState === 2 && meInfo.isSeeker ? (
                 <div className="absolute w-full h-full flex flex-col justify-center items-center bg-black">
-                    <img className="w-[90%]" src={seekerDisplay} alt="" />
+                    <div className="flex top-4 w-full justify-center items-center text-[2vw]">
+                        <p className=" text-sky-400">술래</p>
+                        <p className=" text-sky-400 ms-[1vw]">{seekerNum}</p>
+                        <p className="text-[2vw] mx-[1vw] text-white">
+                            숨는 시간 : {currentRoom.roomTime}
+                        </p>
+                        <p className=" text-orange-400">도망자</p>
+                        <p className=" text-orange-400 ms-[1vw]">{hiderNum}</p>
+                    </div>
+                    <img
+                        className="w-[80%] h-[70%]"
+                        src={seekerDisplay}
+                        alt=""
+                    />
                     <p className="text-[3vw] text-white">
                         당신은 술래입니다. 조금만 기다려주시기 바랍니다.
                     </p>
@@ -521,6 +543,16 @@ export default function GamePage() {
 
             {shot ? (
                 <div className="absolute w-full h-full bg-red-400 opacity-35"></div>
+            ) : (
+                <></>
+            )}
+            {roundStart ? (
+                <div className="absolute flex flex-col items-center justify-center">
+                    <img src={gameInit} alt="" />
+                    <p className="text-[2vw] text-black">
+                        술래는 도망자를 찾으세요!
+                    </p>
+                </div>
             ) : (
                 <></>
             )}

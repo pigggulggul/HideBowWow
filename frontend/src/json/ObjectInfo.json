@@ -1,7 +1,7 @@
 [
     {
         "index": 0,
-        "thumbnail": "/images/thumbnail/Barrel.jpg",
+        "thumbnail": "/images/thumbnail/Barrel.png",
         "name": "통"
     },
     {
@@ -191,7 +191,7 @@
     },
     {
         "index": 38,
-        "thumbnail": "/images/thumbnail/Cake_1.png",
+        "thumbnail": "/images/thumbnail/Cake.png",
         "name": "케이크1"
     },
     {
@@ -396,7 +396,7 @@
     },
     {
         "index": 79,
-        "thumbnail": "/images/thumbnail/Pot_full_1.png",
+        "thumbnail": "/images/thumbnail/Pot_full.png",
         "name": "가득찬 냄비1"
     },
     {
