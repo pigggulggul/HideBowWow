@@ -82,7 +82,7 @@ public class MemberService {
 
             LocalDateTime now = LocalDateTime.now();
             Duration duration = Duration.between(now, member.getUpdatedTime());
-            if (Math.abs(duration.getSeconds()) > 2){
+            if (Math.abs(duration.getSeconds()) > 5){
                 deleteGuest(member.getNickname());
                 log.info("heartbeat 시간만료: {}", member);
 
