@@ -21,7 +21,7 @@ export default function GuestLoginPage() {
 
             const res = await guestLogin(guestLoginInfo);
             if (res.status === httpStatusCode.OK) {
-                console.log('로그인 성공');
+                // console.log('로그인 성공');
                 dispatch(userNicknameState(guestLoginInfo.nickname));
                 navigate('/selectchannel');
             } else {
