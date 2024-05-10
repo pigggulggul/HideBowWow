@@ -23,7 +23,7 @@ export function Sofa_1(props: ObjectSettingType) {
         '/models/object/Sofa_1.glb'
     ) as GLTFResult;
     const [ref] = useBox<THREE.Mesh>(() => ({
-        args: [3, 5, 1.6],
+        args: [3, 7, 1.6],
         mass: 0.1,
         position: props.position,
         rotation: props.rotation,
