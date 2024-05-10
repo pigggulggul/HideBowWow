@@ -70,5 +70,12 @@ public class RoomController {
         return new Channel(applicationName, cnt, contextPath);
     }
 
+    @DeleteMapping("/player/{nickname}")
+    @Operation(summary = "해당 멤버 방에서 삭제")
+    public ResponseEntity<?> deletePlayer(@PathVariable("nickname") String nickname){
+        roomService.deletePlayer(nickname);
+        return BaseResponse.success(200, "멤버 삭제 성공");
+    }
+
 
 }

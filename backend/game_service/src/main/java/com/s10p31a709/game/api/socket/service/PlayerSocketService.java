@@ -36,21 +36,21 @@ public class PlayerSocketService {
 
         StompPayload<Player> payload = new StompPayload<>("player.exit", room.getRoomId(), "system", player);
         simpMessagingTemplate.convertAndSend("/sub/room/"+room.getRoomId(), payload);
-        try {
-            memberServiceClient.deleteGuest(player.getNickname());
-        }catch (Exception e){
-            log.error(e.toString());
-        }
+//        try {
+//            memberServiceClient.deleteGuest(player.getNickname());
+//        }catch (Exception e){
+//            log.error(e.toString());
+//        }
         roomRepository.deletePlayerByNickname(player.getNickname());
     }
 
     public void enterPlayer(StompPayload<Player> message){
         Player player = roomRepository.savePlayer(message.getRoomId(), message.getData());
-        try {
-            memberServiceClient.enterGuest(new Member(message.getData().getNickname(), ""));
-        }catch (Exception e){
-            log.info(e.toString());
-        }
+//        try {
+//            memberServiceClient.enterGuest(new Member(message.getData().getNickname(), ""));
+//        }catch (Exception e){
+//            log.info(e.toString());
+//        }
 
         StompPayload<Player> payload = new StompPayload<>("player.enter", message.getRoomId(), "system", player);
         simpMessagingTemplate.convertAndSend("/sub/room/"+message.getRoomId(), payload);

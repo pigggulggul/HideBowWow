@@ -15,4 +15,7 @@ public interface GameServiceClient {
     @GetMapping("/rooms/channel")
     Channel channelInfo();
 
+    @DeleteMapping("rooms/player/{nickname}")
+    void deletePlayer(@PathVariable("nickname") String nickname);
+
 }
