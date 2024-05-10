@@ -1,7 +1,5 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
-import { heartbeat } from '../api/auth';
 import {
     collideObjectState,
     currentRoomState,
@@ -31,26 +29,6 @@ export default function MainPage() {
         })
     );
     dispatch(collideObjectState([]));
-
-    // member-service에 주기적으로 heartbeat 날린다.
-    const meInfo = useSelector(
-        (state: any) => state.reduxFlag.userSlice.meInfo
-    );
-    let interval: any = null;
-    useEffect(() => {
-        if(interval) return;
-        if(!meInfo.nickname) return;
-
-        interval = setInterval(async () => {
-            await heartbeat(meInfo.nickname);
-            console.log(new Date().getSeconds())
-        }, 3000)
-
-        return () => {
-            clearInterval(interval);
-            interval = null;
-        }
-    }, [])
 
     return (
         <section
