@@ -22,6 +22,6 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: VERSION
-              value: "172"
+              value: "197"
       imagePullSecrets:
         - name: docker-key
