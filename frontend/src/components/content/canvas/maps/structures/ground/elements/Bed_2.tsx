@@ -23,7 +23,7 @@ export function Bed_2(props: ObjectSettingType) {
         '/models/object/Bed_2.glb'
     ) as GLTFResult;
     const [ref] = useBox<THREE.Mesh>(() => ({
-        args: [4, 6, 1.6],
+        args: [4, 6, 2],
         mass: 0.1,
         position: props.position,
         rotation: props.rotation,

@@ -109,7 +109,7 @@ export default function GamePage() {
         if (meInfo) {
             if (meInfo.isSeeker) {
                 console.log('헤헤');
-                dispatch(heartState(5));
+                dispatch(heartState(7));
             } else {
                 dispatch(heartState(1));
             }
