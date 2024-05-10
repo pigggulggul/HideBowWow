@@ -10,7 +10,6 @@ import {
 import backgroundImage from '../assets/images/bg/background-main.png';
 import textTitleSub from '../assets/images/text/text_title_sub.png';
 import textTitle from '../assets/images/text/text_title.png';
-import { useEffect } from 'react';
 
 export default function MainPage() {
     const dispatch = useDispatch();
