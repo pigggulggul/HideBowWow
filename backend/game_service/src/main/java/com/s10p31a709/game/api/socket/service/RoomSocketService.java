@@ -52,11 +52,16 @@ public class RoomSocketService {
         // 맵 판단해서 적용
         GameProperties.RichHouse map = gameProperties.getMap().getRichHouse();
 
+
         int seekerNumber1 = new Random().nextInt(room.getRoomPlayers().size());
-        int seekerNumber2 = (room.getRoomPlayers().size() > 7)? new Random().nextInt(room.getRoomPlayers().size()): -1;
+        int seekerNumber2 = (room.getRoomPlayers().size() >= 6)? new Random().nextInt(room.getRoomPlayers().size()): -1;
         while (seekerNumber2 != -1 && seekerNumber1 == seekerNumber2){
             seekerNumber2 = new Random().nextInt(room.getRoomPlayers().size());
         }
+        log.info("room.getRoomPlayers().size(): {}", room.getRoomPlayers().size());
+        log.info("seekerNumber1: {}", seekerNumber1);
+        log.info("seekerNumber2: {}", seekerNumber2);
+
         for (int i = 0; i < room.getRoomPlayers().size(); i++) {
             Player player = room.getRoomPlayers().get(i);
             player.setPosition(new Double[]{map.getStartPoint().getX()+(i*0.5), map.getStartPoint().getY(), map.getStartPoint().getZ()+(i*0.5)});
@@ -65,6 +70,7 @@ public class RoomSocketService {
             if(i == seekerNumber1 || i == seekerNumber2) {
                 player.setIsSeeker(true);
                 player.setSelectedIndex(new Random().nextInt(gameProperties.getObject().getMaxSeekerIdx()));
+                log.info("seekerIdx: {}", i);
             }else {
                 player.setIsSeeker(false);
                 player.setSelectedIndex(null);
