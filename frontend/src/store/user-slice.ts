@@ -35,6 +35,7 @@ const initialState: UserState = {
         roomState: null,
         roomTime: null,
         roomTitle: '',
+        botCnt: 0,
     },
     meInfo: {
         nickname: '',

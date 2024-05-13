@@ -30,7 +30,6 @@ import keyLeft from '../assets/images/icon/key_arrowL.png';
 import keySpace from '../assets/images/icon/key_space.png';
 import ingameMusic from '../assets/bgm/ingame_music.mp3';
 import ObjectInfo from '../json/ObjectInfo.json';
-import seekerDisplay from '../assets/images/bg/seekerBg.png';
 
 export default function GamePage() {
     const stompClient = StompClient.getInstance();
