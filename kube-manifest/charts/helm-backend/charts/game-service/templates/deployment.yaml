@@ -1,7 +1,8 @@
 #deployment.yaml
 # jenkins.build.number=44444
 apiVersion: apps/v1
-kind: Deployment
+#kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ include "game-service.fullname" . }}
 spec:
