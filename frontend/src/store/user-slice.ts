@@ -107,7 +107,18 @@ export const userSlice = createSlice({
             state.collideObj = action.payload;
         },
         addCollideObjectState: (state, action) => {
-            state.collideObj = [...state.collideObj, action.payload];
+            const isExisting = state.collideObj.some(
+                (obj) =>
+                    obj.minX === action.payload.minX &&
+                    obj.maxX === action.payload.maxX &&
+                    obj.minY === action.payload.minY &&
+                    obj.maxY === action.payload.maxY &&
+                    obj.minZ === action.payload.minZ &&
+                    obj.maxZ === action.payload.maxZ
+            );
+            if (!isExisting) {
+                state.collideObj = [...state.collideObj, action.payload];
+            }
         },
         removeCollideObjectState: (state, action) => {
             // action.payload에 해당하는 인덱스의 객체를 제거

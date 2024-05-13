@@ -61,12 +61,12 @@ export function Content() {
     }, [roomState]);
 
     useEffect(() => {
-        console.log('선택 랜덤');
+        // console.log('선택 랜덤');
         if (roomState.roomState === 3 && meInfo.selectedIndex == null) {
             const random = Math.floor(Math.random() * 3);
             setMe((prevMe) => ({ ...prevMe, selectedIndex: random })); // 새 객체를 반환하여 selectedIndex 업데이트
 
-            console.log('처음 players', players);
+            // console.log('처음 players', players);
             const updatedPlayers = players.map((player) => {
                 if (player.nickname === me.nickname && !choiceFlag) {
                     setMe((prev) => ({
@@ -95,7 +95,7 @@ export function Content() {
                 return player;
             });
             setPlayers(updatedPlayers);
-            console.log('바뀐 Player정보', updatedPlayers);
+            // console.log('바뀐 Player정보', updatedPlayers);
             dispatch(meSelectedInfoState(random));
         }
     }, [roomState.roomState]);
@@ -105,14 +105,14 @@ export function Content() {
             Math.floor(Math.random() * 100),
             Math.floor(Math.random() * 100),
         ];
-        console.log('숫자 배정', randomChoice);
+        // console.log('숫자 배정', randomChoice);
         setChoice(randomChoice);
     }, []);
 
     const handleSelectedIndex = (index: number) => {
         setMe((prevMe) => ({ ...prevMe, selectedIndex: index })); // 새 객체를 반환하여 selectedIndex 업데이트
 
-        console.log('처음 players', players);
+        // console.log('처음 players', players);
         const updatedPlayers = players.map((player) => {
             if (player.nickname === me.nickname && !choiceFlag) {
                 setMe((prev) => ({ ...prev, selectedIndex: index }));
@@ -138,7 +138,7 @@ export function Content() {
             return player;
         });
         setPlayers(updatedPlayers);
-        console.log('바뀐 Player정보', updatedPlayers);
+        // console.log('바뀐 Player정보', updatedPlayers);
         dispatch(meSelectedInfoState(index));
     };
 

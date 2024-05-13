@@ -15,8 +15,20 @@ import backgroundImage from '../assets/images/bg/background-main.png';
 import mainMap from '../assets/images/bg/map-Rich.png';
 
 export default function RoomPage() {
+    const mapInfo = ['richroom', 'farm'];
     const [settingRoomFlag, setSettingRoomFlag] = useState<boolean>(false);
-    const [room, setRoom] = useState<RoomInfo>();
+    const [room, setRoom] = useState<RoomInfo>({
+        isPublic: true,
+        roomId: '',
+        roomAdmin: '',
+        roomMap: '',
+        roomPassword: '',
+        roomPlayers: [],
+        roomState: 0,
+        roomTime: 0,
+        roomTitle: '',
+    });
+    const [mapIndex, setMapIndex] = useState<number>(0);
     const stompClient = StompClient.getInstance();
     const { state } = useLocation();
     const navigate = useNavigate();
@@ -47,7 +59,7 @@ export default function RoomPage() {
     const loadRoom = async (state: string) => {
         const res = await getRoom(state);
         if (res.status === httpStatusCode.OK) {
-            console.log(res.data);
+            // console.log(res.data);
             setRoom(res.data.data);
             dispatch(currentRoomState(res.data.data));
         }
@@ -79,6 +91,7 @@ export default function RoomPage() {
         }
         dispatch(chatDataState([]));
         if (currentRoom.roomAdmin === meName) {
+            console.log('시작 룸', room);
             stompClient.sendMessage(
                 `/room.gameInit`,
                 JSON.stringify({
@@ -114,11 +127,34 @@ export default function RoomPage() {
         console.log('방정보', currentRoom);
         setRoom(currentRoom);
     }, [currentRoom]);
+    useEffect(() => {
+        console.log('바뀐정보', room);
+    }, [room]);
+    useEffect(() => {
+        stompClient.sendMessage(
+            `/room.modify`,
+            JSON.stringify({
+                type: 'room.modify',
+                roomId: currentRoom.roomId,
+                sender: meName,
+                data: {
+                    roomId: room.roomId,
+                    roomAdmin: room.roomAdmin,
+                    roomTitle: room.roomTitle,
+                    roomPassword: room.roomPassword,
+                    roomState: room.roomState,
+                    roomTime: room.roomTime,
+                    roomMap: mapInfo[mapIndex],
+                    roomPlayers: room.roomPlayers,
+                },
+            })
+        );
+    }, [mapIndex]);
 
     const sendEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             if (inputRef.current && chatContent !== '') {
-                console.log('보낼게염');
+                // console.log('보낼게염');
                 stompClient.sendMessage(
                     `/chat.player`,
                     JSON.stringify({
@@ -156,6 +192,21 @@ export default function RoomPage() {
             })
         );
         window.location.replace('/lobby');
+    };
+
+    const prevMap = () => {
+        if (mapIndex <= 0) {
+            setMapIndex(mapInfo.length - 1);
+        } else {
+            setMapIndex((prev) => prev - 1);
+        }
+    };
+    const nextMap = () => {
+        if (mapIndex >= mapInfo.length - 1) {
+            setMapIndex(0);
+        } else {
+            setMapIndex((prev) => prev + 1);
+        }
     };
 
     return (
@@ -255,9 +306,13 @@ export default function RoomPage() {
                             style={{ aspectRatio: 1 / 1 }}
                         />
                         <div className="flex text-[2vw] text-white">
-                            <p className="mx-[1vw]">-</p>
-                            <p>농장</p>
-                            <p className="mx-[1vw]">+</p>
+                            <p className="mx-[1vw]" onClick={prevMap}>
+                                ⬅
+                            </p>
+                            <p>{mapInfo[mapIndex]}</p>
+                            <p className="mx-[1vw]" onClick={nextMap}>
+                                ➡
+                            </p>
                         </div>
                     </div>
 
