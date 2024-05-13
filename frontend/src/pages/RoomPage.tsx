@@ -155,7 +155,7 @@ export default function RoomPage() {
                 })
             );
         }
-    }, [mapIndex]);
+    }, [mapIndex, botCount]);
 
     const sendEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
