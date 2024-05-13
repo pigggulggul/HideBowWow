@@ -195,7 +195,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 case 0:
                     return '/models/object/Barrel.glb';
                 case 1:
-                    return '/models/object/Closet.glb';
+                    return '/models/object/Barrel.glb';
                 case 2:
                     return '/models/object/Chair_brown.glb';
                 case 3:
@@ -519,15 +519,18 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         // 플레이어
         setObservedPlayerIndex((prevIndex) => {
             // 관전 중인 플레이어의 인덱스를 증가시킵니다.
-            return (prevIndex + 1) % (roomState.roomPlayers.length+1);
-        }); 
+            return (prevIndex + 1) % (roomState.roomPlayers.length + 1);
+        });
     };
 
     const handlePageDown = () => {
         setObservedPlayerIndex((prevIndex) => {
-            // 관전 중인 플레이어의 인덱스를 감소시킵니다. 
-            return (prevIndex - 1 + roomState.roomPlayers.length+1) % (roomState.roomPlayers.length+1)
-        }); 
+            // 관전 중인 플레이어의 인덱스를 감소시킵니다.
+            return (
+                (prevIndex - 1 + roomState.roomPlayers.length + 1) %
+                (roomState.roomPlayers.length + 1)
+            );
+        });
     };
 
     useEffect(() => {
@@ -538,10 +541,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         // 3초마다 호출
         if (meInfo?.nickname === playerNickname) {
             const intervalId = setInterval(() => {
-                console.log(
-                    '평균 프레임 :',
-                    callsInLastSecondRef.current / 3
-                );
+                console.log('평균 프레임 :', callsInLastSecondRef.current / 3);
                 setCallsInLastSecond(0); // 85 ~ 95
                 if (callsInLastSecondRef.current > 95) {
                     setDelay((preDelay) => preDelay + 0.00001);
@@ -738,8 +738,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     if (
                         !moveVector.equals(new Vector3(0, 0, 0)) ||
                         isJumping != 0
-                    ) { 
-
+                    ) {
                         // 이동중
                         lockPointer();
                         moveVector.normalize().multiplyScalar(0.17);
@@ -1056,14 +1055,18 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             }
         } else {
             // 다른 플레이어의 캐릭터
-            // if(meInfo) 
-            roomState.roomPlayers.forEach((otherPlayer: any) => { 
-                if ( 
+            // if(meInfo)
+            roomState.roomPlayers.forEach((otherPlayer: any) => {
+                if (
                     otherPlayer.nickname === playerNickname &&
                     otherPlayer.isSeeker === false
-                ) { 
-                    if(meInfo.isSeeker === true && (roomState.roomState == 1 || roomState.roomState == 2)) return; // 준비시간동안 술래는 사물을 볼 수 없다
-                    const otherPlayerRef = playerRef.current;  
+                ) {
+                    if (
+                        meInfo.isSeeker === true &&
+                        (roomState.roomState == 1 || roomState.roomState == 2)
+                    )
+                        return; // 준비시간동안 술래는 사물을 볼 수 없다
+                    const otherPlayerRef = playerRef.current;
                     if (otherPlayerRef) {
                         // 위치 적용
                         otherPlayerRef?.position.set(
@@ -1091,10 +1094,10 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     }
                 }
             });
-        } 
- 
-        if (meInfo.isDead) {  
-            if(meInfo.isSeeker === true) return;   
+        }
+
+        if (meInfo.isDead) {
+            if (meInfo.isSeeker === true) return;
 
             if (observedPlayerIndex === roomState.roomPlayers.length) {
                 // 자유시점 모드
@@ -1226,7 +1229,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             case 0:
                 return (nodes.Barrel_1 as SkinnedMesh).geometry;
             case 1:
-                return (nodes.Cabinet_18 as SkinnedMesh).geometry;
+                return (nodes.Barrel_1 as SkinnedMesh).geometry;
             case 2:
                 return (nodes.Chair_11 as SkinnedMesh).geometry;
             case 3:

@@ -101,8 +101,7 @@ export default function RoomPage() {
                     roomId: state,
                     sender: meName,
                     data: {
-                        ...room,
-                        botCnt: botCount,
+                        room
                     },
                 })
             );
@@ -129,29 +128,33 @@ export default function RoomPage() {
     useEffect(() => {
         console.log('방정보', currentRoom);
         setRoom(currentRoom);
+        setBotCount(currentRoom.botCnt)
     }, [currentRoom]);
     useEffect(() => {
         console.log('바뀐정보', room);
     }, [room]);
     useEffect(() => {
-        stompClient.sendMessage(
-            `/room.modify`,
-            JSON.stringify({
-                type: 'room.modify',
-                roomId: currentRoom.roomId,
-                sender: meName,
-                data: {
-                    roomId: room.roomId,
-                    roomAdmin: room.roomAdmin,
-                    roomTitle: room.roomTitle,
-                    roomPassword: room.roomPassword,
-                    roomState: room.roomState,
-                    roomTime: room.roomTime,
-                    roomMap: mapInfo[mapIndex],
-                    roomPlayers: room.roomPlayers,
-                },
-            })
-        );
+        if (room.roomId && room.roomTitle && room.roomPlayers) {
+            stompClient.sendMessage(
+                `/room.modify`,
+                JSON.stringify({
+                    type: 'room.modify',
+                    roomId: currentRoom.roomId,
+                    sender: meName,
+                    data: {
+                        roomId: room.roomId,
+                        roomAdmin: room.roomAdmin,
+                        roomTitle: room.roomTitle,
+                        roomPassword: room.roomPassword,
+                        roomState: room.roomState,
+                        roomTime: room.roomTime,
+                        roomMap: mapInfo[mapIndex],
+                        roomPlayers: room.roomPlayers,
+                        botCnt: botCount,
+                    },
+                })
+            );
+        }
     }, [mapIndex]);
 
     const sendEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -211,6 +214,14 @@ export default function RoomPage() {
             setMapIndex((prev) => prev + 1);
         }
     };
+
+    const handleBotCntIncrease = () => {
+        if(currentRoom.roomAdmin == meName) setBotCount(botCount >= 3? 4: botCount + 1)
+    }
+
+    const handleBotCntDecrease = () => {
+        if(currentRoom.roomAdmin == meName) setBotCount(botCount > 0? botCount - 1 : 0)
+    }
 
     return (
         <section
@@ -321,9 +332,9 @@ export default function RoomPage() {
 
                     <div className="flex flex-col items-center">
                         <div className="flex text-[2vw] text-white">
-                            <button className="mx-[1vw]" onClick={()=> setBotCount(botCount > 0? botCount - 1 : 0)}> - </button>
+                            <button className="mx-[1vw]" onClick={()=> handleBotCntDecrease()}> - </button>
                                 <p>{botCount}</p>
-                            <button className="mx-[1vw]" onClick={()=> setBotCount(botCount > 3? 4: botCount + 1)}> + </button>
+                            <button className="mx-[1vw]" onClick={()=> handleBotCntIncrease()}> + </button>
                         </div>
                         <p className="text-white">봇의 개수</p>
                     </div>
