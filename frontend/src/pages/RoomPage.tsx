@@ -17,6 +17,7 @@ import mainMap from '../assets/images/bg/map-Rich.png';
 export default function RoomPage() {
     const [settingRoomFlag, setSettingRoomFlag] = useState<boolean>(false);
     const [room, setRoom] = useState<RoomInfo>();
+    const [botCount, setBotCount] = useState(0);
     const stompClient = StompClient.getInstance();
     const { state } = useLocation();
     const navigate = useNavigate();
@@ -86,7 +87,8 @@ export default function RoomPage() {
                     roomId: state,
                     sender: meName,
                     data: {
-                        room,
+                        ...room,
+                        botCnt: botCount,
                     },
                 })
             );
@@ -259,6 +261,15 @@ export default function RoomPage() {
                             <p>농장</p>
                             <p className="mx-[1vw]">+</p>
                         </div>
+                    </div>
+
+                    <div className="flex flex-col items-center">
+                        <div className="flex text-[2vw] text-white">
+                            <button className="mx-[1vw]" onClick={()=> setBotCount(botCount > 0? botCount - 1 : 0)}> - </button>
+                                <p>{botCount}</p>
+                            <button className="mx-[1vw]" onClick={()=> setBotCount(botCount + 1)}> + </button>
+                        </div>
+                        <p className="text-white">봇의 개수</p>
                     </div>
 
                     <div className="w-full flex justify-between">
