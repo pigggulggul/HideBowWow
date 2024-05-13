@@ -147,6 +147,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const playerNickname = player?.nickname;
     const keyState = useRef<{ [key: string]: boolean }>({});
     const [isJumping, setIsJumping] = useState(0);
+    const [jumpFlag, setJumpFlag] = useState<boolean>(false);
     const [mouseWheelValue, setMouseWheelValue] = useState(Number);
     const [freeViewMode, setFreeViewMode] = useState(false);
     const [callsInLastSecond, setCallsInLastSecond] = useState(0);
@@ -172,6 +173,9 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     );
     const collideState = useSelector(
         (state: any) => state.reduxFlag.userSlice.collideObj
+    );
+    const chatFlag = useSelector(
+        (state: any) => state.reduxFlag.userSlice.chatFlag
     );
 
     const initialHeight = returnHeightSize(modelIndex);
@@ -614,18 +618,22 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     // 키 입력
     useEffect(() => {
         const handleKeyDown = (event: any) => {
-            keyState.current[event.key] = true;
-            if (event.key === 'r' || event.key === 'R') {
-                toggleFreeViewMode();
+            if (!chatFlag) {
+                keyState.current[event.key] = true;
+                if (event.key === 'r' || event.key === 'R') {
+                    toggleFreeViewMode();
+                }
             }
         };
 
         const handleKeyUp = (event: any) => {
-            keyState.current[event.key] = false;
-            if (event.key === 'ArrowRight') {
-                handlePageUp();
-            } else if (event.key === 'ArrowLeft') {
-                handlePageDown();
+            if (!chatFlag) {
+                keyState.current[event.key] = false;
+                if (event.key === 'ArrowRight') {
+                    handlePageUp();
+                } else if (event.key === 'ArrowLeft') {
+                    handlePageDown();
+                }
             }
         };
 
@@ -636,19 +644,20 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             document.removeEventListener('keydown', handleKeyDown);
             document.removeEventListener('keyup', handleKeyUp);
         };
-    }, [observedPlayerIndex]);
+    }, [observedPlayerIndex, chatFlag]);
 
     // 키 입력
     useEffect(() => {
         const handleKeyDown = (event: any) => {
-            keyState.current[event.key] = true;
-            if (event.code === 'Space' && isJumping === 0) {
-                setIsJumping(1);
+            if (!chatFlag) {
+                keyState.current[event.key] = true;
             }
         };
 
         const handleKeyUp = (event: any) => {
-            keyState.current[event.key] = false;
+            if (!chatFlag) {
+                keyState.current[event.key] = false;
+            }
         };
 
         document.addEventListener('keydown', handleKeyDown);
@@ -657,20 +666,31 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             document.removeEventListener('keydown', handleKeyDown);
             document.removeEventListener('keyup', handleKeyUp);
         };
-    }, []);
+    }, [chatFlag]);
     useEffect(() => {
-        if (isJumping === 1) {
-            // console.log('점프중입니다.');
+        const handleJumpDown = (event: any) => {
+            if (event.code === 'Space' && !jumpFlag && !chatFlag) {
+                setIsJumping(1);
+                setJumpFlag(true);
+            }
+        };
+        if (isJumping === 1 && jumpFlag) {
+            console.log('점프중입니다.');
             setTimeout(() => {
-                // console.log('점프 내려가는 중입니다.');
+                console.log('점프 내려가는 중입니다.');
                 setIsJumping(2);
             }, 600); // Return after half a second
             setTimeout(() => {
-                // console.log('점프 끝입니다.');
+                console.log('점프 끝입니다.');
                 setIsJumping(0);
+                setJumpFlag(false);
             }, 1200);
         }
-    }, [isJumping]);
+        document.addEventListener('keydown', handleJumpDown);
+        return () => {
+            document.removeEventListener('keydown', handleJumpDown);
+        };
+    }, [isJumping, chatFlag]);
 
     // useEffect(() => {
     //     console.log("플레이어 인덱스 : " + observedPlayerIndex + " of " +roomState.roomPlayers.length );
