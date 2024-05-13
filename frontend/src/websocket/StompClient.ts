@@ -118,6 +118,10 @@ class StompClient {
                                 // console.log('방장 위임', msg);
                                 break;
                             }
+                            case 'room.modify': {
+                                // console.log('방 수정', msg);
+                                break;
+                            }
                             case 'room.backRoom': {
                                 // console.log('대기실로 이동', msg);
                                 store.dispatch(currentRoomState(msg.data));
@@ -215,6 +219,10 @@ class StompClient {
                         // console.log('대기실로 이동', msg);
                         store.dispatch(currentRoomState(msg.data));
                         this.exitVoiceChannel();
+                        break;
+                    }
+                    case 'room.modify': {
+                        // console.log('방 수정', msg);
                         break;
                     }
                     case 'chat.player': {
