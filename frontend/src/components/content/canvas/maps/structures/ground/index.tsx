@@ -10,7 +10,7 @@ export function GroundElements() {
     const currentRoom = useSelector(
         (state: any) => state.reduxFlag.userSlice.currentRoom
     );
-    console.log(currentRoom.roomMap);
+    // console.log(currentRoom.roomMap);
     return (
         <>
             {/* <JungleGym />
@@ -23,7 +23,7 @@ export function GroundElements() {
             <PineTrees position={[-30, 0, -20]} />
             <PineTrees position={[-20, 0, -20]} /> */}
             {/* <Floor /> */}
-            {currentRoom.roomMap !== 'farm' ? (
+            {currentRoom.roomMap === 'farm' ? (
                 <>
                     <FarmElement />
                     <FarmWall />
