@@ -517,16 +517,14 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         setObservedPlayerIndex((prevIndex) => {
             // 관전 중인 플레이어의 인덱스를 증가시킵니다.
             return (prevIndex + 1) % (roomState.roomPlayers.length+1);
-        });
-        // console.log(">> 참조 플레이어 :" + observedPlayerIndex + "of " + roomState.roomPlayers.length)
+        }); 
     };
 
     const handlePageDown = () => {
         setObservedPlayerIndex((prevIndex) => {
             // 관전 중인 플레이어의 인덱스를 감소시킵니다. 
             return (prevIndex - 1 + roomState.roomPlayers.length+1) % (roomState.roomPlayers.length+1)
-        });
-        // console.log("<<참조 플레이어 :" + observedPlayerIndex + "of " + roomState.roomPlayers.length)
+        }); 
     };
 
     useEffect(() => {
@@ -538,16 +536,16 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         if (meInfo?.nickname === playerNickname) {
             const intervalId = setInterval(() => {
                 console.log(
-                    '초당 평균 프레임 :',
+                    '평균 프레임 :',
                     callsInLastSecondRef.current / 3
                 );
                 setCallsInLastSecond(0); // 85 ~ 95
                 if (callsInLastSecondRef.current > 95) {
                     setDelay((preDelay) => preDelay + 0.00001);
-                    console.log('딜레이 값을 올리겠습니다.');
+                    // console.log('딜레이 값을 올리겠습니다.');
                 } else if (callsInLastSecondRef.current < 85) {
                     setDelay((preDelay) => preDelay - 0.00001);
-                    console.log('딜레이 값을 낮추겠습니다.');
+                    // console.log('딜레이 값을 낮추겠습니다.');
                 }
             }, 3000);
 
@@ -658,13 +656,13 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     }, []);
     useEffect(() => {
         if (isJumping === 1) {
-            console.log('점프중입니다.');
+            // console.log('점프중입니다.');
             setTimeout(() => {
-                console.log('점프 내려가는 중입니다.');
+                // console.log('점프 내려가는 중입니다.');
                 setIsJumping(2);
             }, 600); // Return after half a second
             setTimeout(() => {
-                console.log('점프 끝입니다.');
+                // console.log('점프 끝입니다.');
                 setIsJumping(0);
             }, 1200);
         }
@@ -705,8 +703,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     if (
                         !moveVector.equals(new Vector3(0, 0, 0)) ||
                         isJumping != 0
-                    ) {
-                        console.log(isJumping);
+                    ) { 
 
                         // 이동중
                         lockPointer();
@@ -997,13 +994,14 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             }
         } else {
             // 다른 플레이어의 캐릭터
-            roomState.roomPlayers.forEach((otherPlayer: any) => {
-                if (
-                    otherPlayer.nickname !== meInfo?.nickname &&
+            // if(meInfo) 
+            roomState.roomPlayers.forEach((otherPlayer: any) => { 
+                if ( 
                     otherPlayer.nickname === playerNickname &&
                     otherPlayer.isSeeker === false
-                ) {
-                    const otherPlayerRef = playerRef.current;
+                ) { 
+                    if(meInfo.isSeeker === true && (roomState.roomState == 1 || roomState.roomState == 2)) return; // 준비시간동안 술래는 사물을 볼 수 없다
+                    const otherPlayerRef = playerRef.current;  
                     if (otherPlayerRef) {
                         // 위치 적용
                         otherPlayerRef?.position.set(
@@ -1032,24 +1030,9 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 }
             });
         } 
-
-        ////////////////////////////////////////////////  
+ 
         if (meInfo.isDead) {  
-            if(meInfo.isSeeker === true) return;  
-            
-            // if (!observerRef.current) {
-            //     console.log("생성2")
-            //     observerRef.current = new Observer();
-            //     observerRef.current.position = new Vector3(
-            //         playerRef.current.position.x + 12,
-            //         playerRef.current.position.y + 12,
-            //         playerRef.current.position.z + 12
-            //     );
-            //     observerRef.current.viewLR = playerRef.current.viewLR;
-            //     observerRef.current.viewUpDown = playerRef.current.viewUpDown;
-            //  } 
-
-            // console.log(observerRef.current.viewLR)
+            if(meInfo.isSeeker === true) return;   
 
             if(observedPlayerIndex === roomState.roomPlayers.length) { // 자유시점 모드  
                 
