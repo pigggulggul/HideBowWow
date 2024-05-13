@@ -39,10 +39,10 @@ public class HideLocationService {
         List<HideLocation> result = new ArrayList<>();
 
         while (n > 0){
-            int k = new Random().nextInt(list.size());
             if(list.isEmpty()){
                 result.add(new HideLocation("", "", new Double[]{0d, 0d, 0d}, new Double[]{0d, 0d, 0d}, 0));
             }else {
+                int k = new Random().nextInt(list.size());
                 result.add(list.remove(k));
             }
             n--;
