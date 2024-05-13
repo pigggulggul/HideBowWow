@@ -323,7 +323,7 @@ export default function RoomPage() {
                         <div className="flex text-[2vw] text-white">
                             <button className="mx-[1vw]" onClick={()=> setBotCount(botCount > 0? botCount - 1 : 0)}> - </button>
                                 <p>{botCount}</p>
-                            <button className="mx-[1vw]" onClick={()=> setBotCount(botCount + 1)}> + </button>
+                            <button className="mx-[1vw]" onClick={()=> setBotCount(botCount > 3? 4: botCount + 1)}> + </button>
                         </div>
                         <p className="text-white">봇의 개수</p>
                     </div>
