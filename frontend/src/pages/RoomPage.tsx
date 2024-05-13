@@ -134,26 +134,28 @@ export default function RoomPage() {
         console.log('바뀐정보', room);
     }, [room]);
     useEffect(() => {
-        stompClient.sendMessage(
-            `/room.modify`,
-            JSON.stringify({
-                type: 'room.modify',
-                roomId: currentRoom.roomId,
-                sender: meName,
-                data: {
-                    roomId: room.roomId,
-                    roomAdmin: room.roomAdmin,
-                    roomTitle: room.roomTitle,
-                    roomPassword: room.roomPassword,
-                    roomState: room.roomState,
-                    roomTime: room.roomTime,
-                    roomMap: mapInfo[mapIndex],
-                    roomPlayers: room.roomPlayers,
-                    botCnt: botCount,
-                },
-            })
-        );
-    }, [mapIndex, botCount]);
+        if (room.roomId && room.roomTitle && room.roomPlayers) {
+            stompClient.sendMessage(
+                `/room.modify`,
+                JSON.stringify({
+                    type: 'room.modify',
+                    roomId: currentRoom.roomId,
+                    sender: meName,
+                    data: {
+                        roomId: room.roomId,
+                        roomAdmin: room.roomAdmin,
+                        roomTitle: room.roomTitle,
+                        roomPassword: room.roomPassword,
+                        roomState: room.roomState,
+                        roomTime: room.roomTime,
+                        roomMap: mapInfo[mapIndex],
+                        roomPlayers: room.roomPlayers,
+                        botCnt: botCount,
+                    },
+                })
+            );
+        }
+    }, [mapIndex]);
 
     const sendEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
