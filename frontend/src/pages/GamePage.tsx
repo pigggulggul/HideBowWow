@@ -60,6 +60,7 @@ export default function GamePage() {
 
     const [toggleChat, setToggleChat] = useState<boolean>(false);
     const [roundStart, setRoundStart] = useState<boolean>(false);
+    const [toggleSetting, setToggleSetting] = useState<boolean>(false);
     const [chatContent, setChatContent] = useState<string>('');
 
     //공격
@@ -216,14 +217,37 @@ export default function GamePage() {
                 }
             } else if (event.key === 'Enter') {
                 setToggleChat((prev) => !prev);
+            } else if (event.key === 'Escape') {
+                setToggleSetting((prev) => !prev);
+                const element = document.body;
+                console.log('헤헤');
+                const requestPointerLock = element.requestPointerLock;
+                requestPointerLock.call(element);
             }
         };
+        const onPointerLockChange = () => {
+            if (document.pointerLockElement === null) {
+                setToggleSetting(true);
+                console.log('Pointer has been unlocked.');
+                // 포인터가 잠금 해제되었을 때 실행할 추가 로직
+                // 예: 팝업 표시, 상태 업데이트 등
+            } else {
+                setToggleSetting(false);
+            }
+        };
+
         // 이벤트 리스너 추가
         window.addEventListener('keydown', handleKeyPress);
         window.addEventListener('beforeunload', handleBeforeUnload);
+        document.addEventListener('pointerlockchange', onPointerLockChange);
+
         return () => {
             window.removeEventListener('keydown', handleKeyPress);
             window.removeEventListener('beforeunload', handleBeforeUnload);
+            document.removeEventListener(
+                'pointerlockchange',
+                onPointerLockChange
+            );
         };
     }, []);
 
@@ -238,6 +262,9 @@ export default function GamePage() {
         setTimeout(() => {
             setRoundStart(false);
         }, 5000); // 0.5초 후에 isRed 상태를 false로 변경
+    };
+    const closeSetting = () => {
+        setToggleSetting(false);
     };
 
     return (
@@ -552,6 +579,21 @@ export default function GamePage() {
                     <p className="text-[2vw] text-black">
                         술래는 도망자를 찾으세요!
                     </p>
+                </div>
+            ) : (
+                <></>
+            )}
+            {toggleSetting ? (
+                <div className="absolute w-[50%] h-[50%] bg-white rounded-[0.6vw] z-20">
+                    <div className="relative w-full h-full  flex flex-col items-center justify-center ">
+                        <p className="text-[2vw] text-black">환경설정입니다</p>
+                        <div
+                            className="absolute top-0 right-0 bg-slate-600 cursor-pointer"
+                            onClick={closeSetting}
+                        >
+                            X
+                        </div>
+                    </div>
                 </div>
             ) : (
                 <></>

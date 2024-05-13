@@ -689,11 +689,27 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 if (!freeViewMode) {
                     // 3인칭 모드
                     const moveVector = new Vector3(
-                        (keyState.current['d']||keyState.current['D']||keyState.current['ㅇ']? 1 : 0) -
-                            (keyState.current['a']||keyState.current['A']||keyState.current['ㅁ'] ? 1 : 0), // 수정: 오른쪽이면 1, 왼쪽이면 -1
+                        (keyState.current['d'] ||
+                        keyState.current['D'] ||
+                        keyState.current['ㅇ']
+                            ? 1
+                            : 0) -
+                            (keyState.current['a'] ||
+                            keyState.current['A'] ||
+                            keyState.current['ㅁ']
+                                ? 1
+                                : 0), // 수정: 오른쪽이면 1, 왼쪽이면 -1
                         0,
-                        (keyState.current['w']||keyState.current['W']||keyState.current['ㅈ'] ? 1 : 0) -
-                            (keyState.current['s']||keyState.current['S']||keyState.current['ㄴ'] ? 1 : 0) // 수정: 위쪽이면 1, 아래쪽이면 -1
+                        (keyState.current['w'] ||
+                        keyState.current['W'] ||
+                        keyState.current['ㅈ']
+                            ? 1
+                            : 0) -
+                            (keyState.current['s'] ||
+                            keyState.current['S'] ||
+                            keyState.current['ㄴ']
+                                ? 1
+                                : 0) // 수정: 위쪽이면 1, 아래쪽이면 -1
                     );
 
                     if (keyState.current['q']) {
@@ -928,11 +944,27 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                         }
 
                         const moveVector = new Vector3(
-                            (keyState.current['d']||keyState.current['D']||keyState.current['ㅇ'] ? 1 : 0) -
-                                (keyState.current['a']||keyState.current['A']||keyState.current['ㅁ'] ? 1 : 0),
+                            (keyState.current['d'] ||
+                            keyState.current['D'] ||
+                            keyState.current['ㅇ']
+                                ? 1
+                                : 0) -
+                                (keyState.current['a'] ||
+                                keyState.current['A'] ||
+                                keyState.current['ㅁ']
+                                    ? 1
+                                    : 0),
                             0,
-                            (keyState.current['w']||keyState.current['W']||keyState.current['ㅈ'] ? 1 : 0) -
-                                (keyState.current['s']||keyState.current['S']||keyState.current['ㄴ'] ? 1 : 0)
+                            (keyState.current['w'] ||
+                            keyState.current['W'] ||
+                            keyState.current['ㅈ']
+                                ? 1
+                                : 0) -
+                                (keyState.current['s'] ||
+                                keyState.current['S'] ||
+                                keyState.current['ㄴ']
+                                    ? 1
+                                    : 0)
                         );
 
                         if (!moveVector.equals(new Vector3(0, 0, 0))) {
@@ -1068,11 +1100,27 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 // 자유시점 모드
 
                 const moveVector = new Vector3(
-                    (keyState.current['d']||keyState.current['D']||keyState.current['ㅇ'] ? 1 : 0) -
-                        (keyState.current['a']||keyState.current['A']||keyState.current['ㅁ'] ? 1 : 0),
+                    (keyState.current['d'] ||
+                    keyState.current['D'] ||
+                    keyState.current['ㅇ']
+                        ? 1
+                        : 0) -
+                        (keyState.current['a'] ||
+                        keyState.current['A'] ||
+                        keyState.current['ㅁ']
+                            ? 1
+                            : 0),
                     0,
-                    (keyState.current['w']||keyState.current['W']||keyState.current['ㅈ'] ? 1 : 0) -
-                        (keyState.current['s']||keyState.current['S']||keyState.current['ㄴ'] ? 1 : 0)
+                    (keyState.current['w'] ||
+                    keyState.current['W'] ||
+                    keyState.current['ㅈ']
+                        ? 1
+                        : 0) -
+                        (keyState.current['s'] ||
+                        keyState.current['S'] ||
+                        keyState.current['ㄴ']
+                            ? 1
+                            : 0)
                 );
 
                 if (!moveVector.equals(new Vector3(0, 0, 0))) {
