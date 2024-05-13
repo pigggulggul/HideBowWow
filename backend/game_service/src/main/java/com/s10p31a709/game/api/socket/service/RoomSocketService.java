@@ -147,7 +147,7 @@ public class RoomSocketService {
 
         // 봇 삭제
         List<Player> players = room.getRoomPlayers();
-        room.setRoomPlayers(players.stream().filter(player -> !player.getNickname().startsWith("Computer")).toList());
+        room.setRoomPlayers(players.stream().filter(player -> !player.getNickname().startsWith("Computer")).collect(Collectors.toList()));
 
         StompPayload<Room> payload = new StompPayload<>("room.backRoom", roomId, "system", room);
         simpMessagingTemplate.convertAndSend("/sub/room/"+roomId, payload);
