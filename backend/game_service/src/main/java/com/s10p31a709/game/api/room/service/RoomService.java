@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +46,7 @@ public class RoomService {
     public void checkEnter(String roomId, String password, String nickname){
         Room room = roomRepository.findRoomByRoomId(roomId);
         if(room == null) throw new CustomException(404, "방이 존재하지 않습니다");
-        if(room.getRoomPlayers().stream().filter(player -> !player.getNickname().startsWith("Computer")).toList().size() >= gameProperties.getMaxCapacity()) throw new CustomException(400, "방이 가득 찼습니다.");
+        if(room.getRoomPlayers().stream().filter(player -> !player.getNickname().startsWith("Computer")).collect(Collectors.toList()).size() >= gameProperties.getMaxCapacity()) throw new CustomException(400, "방이 가득 찼습니다.");
         if(!room.getRoomState().equals(0)) throw new CustomException(400, "게임이 진행중인 방 입니다");
         if(!room.getIsPublic() && !room.getRoomPassword().equals(password)) throw new CustomException(400, "비밀번호가 틀렸습니다.");
     }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -64,7 +65,7 @@ public class RoomController {
         List<Room> list = roomService.getRoomList();
         int cnt = 0;
         for (Room room : list){
-            cnt += room.getRoomPlayers().stream().filter(player -> !player.getNickname().startsWith("Computer")).toList().size();
+            cnt += room.getRoomPlayers().stream().filter(player -> !player.getNickname().startsWith("Computer")).collect(Collectors.toList()).size();
         }
 
         return new Channel(applicationName, cnt, contextPath);
