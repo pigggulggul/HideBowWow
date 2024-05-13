@@ -737,7 +737,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
 
                     if (
                         !moveVector.equals(new Vector3(0, 0, 0)) ||
-                        isJumping != 0
+                        isJumping >= 0
                     ) {
                         // 이동중
                         lockPointer();
