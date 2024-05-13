@@ -1,5 +1,5 @@
 # jenkins.build.number=
-replicaCount: 1
+replicaCount: 4
 
 image:
   repository: choichangho514/backend_game_service_test
@@ -7,7 +7,8 @@ image:
   tag: "latest"
 
 service:
-  type: ClusterIP
+#  type: ClusterIP
+  type: None
   port: 8002
   targetPort: 8002
 
