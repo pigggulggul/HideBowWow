@@ -515,20 +515,15 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         // 플레이어
         setObservedPlayerIndex((prevIndex) => {
             // 관전 중인 플레이어의 인덱스를 증가시킵니다.
-            return (prevIndex + 1) % (roomState.roomPlayers.length + 1);
-        });
-        // console.log(">> 참조 플레이어 :" + observedPlayerIndex + "of " + roomState.roomPlayers.length)
+            return (prevIndex + 1) % (roomState.roomPlayers.length+1);
+        }); 
     };
 
     const handlePageDown = () => {
         setObservedPlayerIndex((prevIndex) => {
-            // 관전 중인 플레이어의 인덱스를 감소시킵니다.
-            return (
-                (prevIndex - 1 + roomState.roomPlayers.length + 1) %
-                (roomState.roomPlayers.length + 1)
-            );
-        });
-        // console.log("<<참조 플레이어 :" + observedPlayerIndex + "of " + roomState.roomPlayers.length)
+            // 관전 중인 플레이어의 인덱스를 감소시킵니다. 
+            return (prevIndex - 1 + roomState.roomPlayers.length+1) % (roomState.roomPlayers.length+1)
+        }); 
     };
 
     useEffect(() => {
@@ -539,10 +534,10 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         // 3초마다 호출
         if (meInfo?.nickname === playerNickname) {
             const intervalId = setInterval(() => {
-                // console.log(
-                //     '초당 평균 프레임 :',
-                //     callsInLastSecondRef.current / 3
-                // );
+                console.log(
+                    '평균 프레임 :',
+                    callsInLastSecondRef.current / 3
+                );
                 setCallsInLastSecond(0); // 85 ~ 95
                 if (callsInLastSecondRef.current > 95) {
                     setDelay((preDelay) => preDelay + 0.00001);
@@ -722,9 +717,8 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
 
                     if (
                         !moveVector.equals(new Vector3(0, 0, 0)) ||
-                        isJumping >= 0
-                    ) {
-                        // console.log(isJumping);
+                        isJumping != 0
+                    ) { 
 
                         // 이동중
                         lockPointer();
@@ -1042,13 +1036,14 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             }
         } else {
             // 다른 플레이어의 캐릭터
-            roomState.roomPlayers.forEach((otherPlayer: any) => {
-                if (
-                    otherPlayer.nickname !== meInfo?.nickname &&
+            // if(meInfo) 
+            roomState.roomPlayers.forEach((otherPlayer: any) => { 
+                if ( 
                     otherPlayer.nickname === playerNickname &&
                     otherPlayer.isSeeker === false
-                ) {
-                    const otherPlayerRef = playerRef.current;
+                ) { 
+                    if(meInfo.isSeeker === true && (roomState.roomState == 1 || roomState.roomState == 2)) return; // 준비시간동안 술래는 사물을 볼 수 없다
+                    const otherPlayerRef = playerRef.current;  
                     if (otherPlayerRef) {
                         // 위치 적용
                         otherPlayerRef?.position.set(
@@ -1076,25 +1071,10 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     }
                 }
             });
-        }
-
-        ////////////////////////////////////////////////
-        if (meInfo.isDead) {
-            if (meInfo.isSeeker === true) return;
-
-            // if (!observerRef.current) {
-            //     console.log("생성2")
-            //     observerRef.current = new Observer();
-            //     observerRef.current.position = new Vector3(
-            //         playerRef.current.position.x + 12,
-            //         playerRef.current.position.y + 12,
-            //         playerRef.current.position.z + 12
-            //     );
-            //     observerRef.current.viewLR = playerRef.current.viewLR;
-            //     observerRef.current.viewUpDown = playerRef.current.viewUpDown;
-            //  }
-
-            // console.log(observerRef.current.viewLR)
+        } 
+ 
+        if (meInfo.isDead) {  
+            if(meInfo.isSeeker === true) return;   
 
             if (observedPlayerIndex === roomState.roomPlayers.length) {
                 // 자유시점 모드

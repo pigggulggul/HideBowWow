@@ -46,7 +46,11 @@ export function MainCanvas() {
 
                 <Physics>
                     {/* <Debug> */}
+<<<<<<< HEAD
+                        <RootMap />
+=======
                     <RootMap />
+>>>>>>> 832d55236b430e02659bbf7ca74ec1f1cf54ed39
                     {/* </Debug> */}
                 </Physics>
                 {/* 최적화 관련 */}
