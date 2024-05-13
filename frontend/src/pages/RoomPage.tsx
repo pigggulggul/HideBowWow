@@ -126,7 +126,7 @@ export default function RoomPage() {
         }
     }, [isReady]);
     useEffect(() => {
-        console.log('방정보', currentRoom);
+        // console.log('방정보', currentRoom);
         setRoom(currentRoom);
         setBotCount(currentRoom.botCnt);
     }, [currentRoom]);
@@ -135,7 +135,7 @@ export default function RoomPage() {
         console.log('botcnt', botCount);
     }, [botCount]);
     useEffect(() => {
-        console.log('바뀐정보', room);
+        // console.log('바뀐정보', room);
     }, [room]);
     useEffect(() => {
         if (room.roomId && room.roomTitle && room.roomPlayers) {
@@ -159,7 +159,7 @@ export default function RoomPage() {
                 })
             );
         }
-    }, [mapIndex]);
+    }, [mapIndex, botCount]);
 
     const sendEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
