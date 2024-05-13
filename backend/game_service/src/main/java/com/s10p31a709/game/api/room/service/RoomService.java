@@ -37,6 +37,7 @@ public class RoomService {
         room.setRoomPlayers(new CopyOnWriteArrayList<>());
         room.setRoomState(0);
         room.setRoomTime(0);
+        room.setBotCnt(0);
         room.setRoomMap("richRoom");
         return roomRepository.saveRoom(room);
     }
