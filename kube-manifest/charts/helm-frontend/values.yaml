@@ -10,7 +10,7 @@ service:
   port: 8081
   targetPort: 80
 env:
-  value: 211
+  value: 215
 
 nameOverride: ""
 fullnameOverride: ""
