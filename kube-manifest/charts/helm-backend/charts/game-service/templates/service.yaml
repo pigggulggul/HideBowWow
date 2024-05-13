@@ -2,14 +2,63 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "game-service.fullname" . }}
+  name: k709-game-service-0
 spec:
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.targetPort }}
       protocol: TCP
-  clusterIP: None
+#  clusterIP: None
   selector:
-    app: {{ include "game-service.fullname" . }}
+#    app: {{ include "game-service.fullname" . }}
+    statefulset.kubernetes.io/pod-name: k709-game-service-0
+  sessionAffinity: ClientIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: k709-game-service-
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+      protocol: TCP
+  #  clusterIP: None
+  selector:
+    #    app: {{ include "game-service.fullname" . }}
+    statefulset.kubernetes.io/pod-name: k709-game-service-1
+  sessionAffinity: ClientIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: k709-game-service-2
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+      protocol: TCP
+  #  clusterIP: None
+  selector:
+    #    app: {{ include "game-service.fullname" . }}
+    statefulset.kubernetes.io/pod-name: k709-game-service-2
+  sessionAffinity: ClientIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: k709-game-service-3
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+      protocol: TCP
+  #  clusterIP: None
+  selector:
+    #    app: {{ include "game-service.fullname" . }}
+    statefulset.kubernetes.io/pod-name: k709-game-service-3
   sessionAffinity: ClientIP
