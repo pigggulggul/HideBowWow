@@ -37,6 +37,7 @@ export const RoomAtom = atom<RoomInfo>({
         roomMap: '',
         roomId: '',
         roomPlayers: [],
+        botCnt: 0,
     },
 });
 

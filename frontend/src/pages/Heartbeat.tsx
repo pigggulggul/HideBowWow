@@ -17,8 +17,9 @@ export default function Heartbeat() {
                 heartbeat(meName)
                 .catch(e => {
                     if(e.response.status >= 400){
-                        alert('로그아웃되었습니다. 다시 로그인 해 주세요');
-                        window.location.href = "/";
+                        console.log('로그아웃되었습니다.')
+                        // alert('로그아웃되었습니다. 다시 로그인 해 주세요');
+                        // window.location.href = "/";
                     }
                 })
             }, 1000)

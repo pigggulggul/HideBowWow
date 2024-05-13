@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChatType, CurrentPlayersInfo } from '../types/GameType';
-import { heartState } from '../store/user-slice';
+import { chatFlagState, heartState } from '../store/user-slice';
 import StompClient from '../websocket/StompClient';
 import {
     startRecording,
@@ -25,10 +25,11 @@ import keyW from '../assets/images/icon/key_w.png';
 import keyC from '../assets/images/icon/key_c.png';
 import keyM from '../assets/images/icon/key_m.png';
 import keyR from '../assets/images/icon/key_r.png';
+import keyRight from '../assets/images/icon/key_arrowR.png';
+import keyLeft from '../assets/images/icon/key_arrowL.png';
 import keySpace from '../assets/images/icon/key_space.png';
 import ingameMusic from '../assets/bgm/ingame_music.mp3';
 import ObjectInfo from '../json/ObjectInfo.json';
-import seekerDisplay from '../assets/images/bg/seekerBg.png';
 
 export default function GamePage() {
     const stompClient = StompClient.getInstance();
@@ -60,6 +61,7 @@ export default function GamePage() {
 
     const [toggleChat, setToggleChat] = useState<boolean>(false);
     const [roundStart, setRoundStart] = useState<boolean>(false);
+    const [toggleSetting, setToggleSetting] = useState<boolean>(false);
     const [chatContent, setChatContent] = useState<string>('');
 
     //공격
@@ -152,6 +154,7 @@ export default function GamePage() {
     }, [meHeart]);
 
     useEffect(() => {
+        dispatch(chatFlagState(toggleChat));
         if (toggleChat) {
             if (inputRef.current) {
                 inputRef.current.focus();
@@ -216,14 +219,37 @@ export default function GamePage() {
                 }
             } else if (event.key === 'Enter') {
                 setToggleChat((prev) => !prev);
+            } else if (event.key === 'Escape') {
+                setToggleSetting((prev) => !prev);
+                const element = document.body;
+                console.log('헤헤');
+                const requestPointerLock = element.requestPointerLock;
+                requestPointerLock.call(element);
             }
         };
+        const onPointerLockChange = () => {
+            if (document.pointerLockElement === null) {
+                setToggleSetting(true);
+                console.log('Pointer has been unlocked.');
+                // 포인터가 잠금 해제되었을 때 실행할 추가 로직
+                // 예: 팝업 표시, 상태 업데이트 등
+            } else {
+                setToggleSetting(false);
+            }
+        };
+
         // 이벤트 리스너 추가
         window.addEventListener('keydown', handleKeyPress);
         window.addEventListener('beforeunload', handleBeforeUnload);
+        document.addEventListener('pointerlockchange', onPointerLockChange);
+
         return () => {
             window.removeEventListener('keydown', handleKeyPress);
             window.removeEventListener('beforeunload', handleBeforeUnload);
+            document.removeEventListener(
+                'pointerlockchange',
+                onPointerLockChange
+            );
         };
     }, []);
 
@@ -238,6 +264,9 @@ export default function GamePage() {
         setTimeout(() => {
             setRoundStart(false);
         }, 5000); // 0.5초 후에 isRed 상태를 false로 변경
+    };
+    const closeSetting = () => {
+        setToggleSetting(false);
     };
 
     return (
@@ -270,7 +299,7 @@ export default function GamePage() {
             ) : (
                 <></>
             )} */}
-            {currentRoom.roomState === 2 && meInfo.isSeeker ? (
+            {/* {currentRoom.roomState === 2 && meInfo.isSeeker ? (
                 <div className="absolute w-full h-full flex flex-col justify-center items-center bg-black">
                     <div className="flex top-4 w-full justify-center items-center text-[2vw]">
                         <p className=" text-sky-400">술래</p>
@@ -292,7 +321,7 @@ export default function GamePage() {
                 </div>
             ) : (
                 <></>
-            )}
+            )} */}
             {currentRoom.roomState === 2 && !meInfo.isSeeker ? (
                 <div className="absolute flex top-4 w-full justify-center items-center text-[2vw]">
                     <p className=" text-sky-400">술래</p>
@@ -408,7 +437,7 @@ export default function GamePage() {
             ) : (
                 <></>
             )}
-            <div className="absolute flex flex-col top-1 left-1 w-[25s%] h-[40%] bg-black bg-opacity-20 p-[0.4vw]">
+            <div className="absolute flex flex-col top-1 left-1 w-[25s%] h-[50%] bg-black bg-opacity-20 p-[0.4vw]">
                 <div className="flex items-center">
                     <img className="px-[0.2vw]" src={keyW} alt="" />
                     <img className="px-[0.2vw]" src={keyA} alt="" />
@@ -444,6 +473,13 @@ export default function GamePage() {
                             />
                             <p className="px-[0.4vw] text-[1.6vw]">
                                 고정 / 해제
+                            </p>
+                        </div>
+                        <div className="flex items-center mb-[1vw]">
+                            <img className="px-[0.2vw]" src={keyLeft} alt="" />
+                            <img className="px-[0.2vw]" src={keyRight} alt="" />
+                            <p className="px-[0.4vw] text-[1.6vw]">
+                                관전 (고정시에만)
                             </p>
                         </div>
                     </>
@@ -552,6 +588,21 @@ export default function GamePage() {
                     <p className="text-[2vw] text-black">
                         술래는 도망자를 찾으세요!
                     </p>
+                </div>
+            ) : (
+                <></>
+            )}
+            {toggleSetting ? (
+                <div className="absolute w-[50%] h-[50%] bg-white rounded-[0.6vw] z-20">
+                    <div className="relative w-full h-full  flex flex-col items-center justify-center ">
+                        <p className="text-[2vw] text-black">환경설정입니다</p>
+                        <div
+                            className="absolute top-0 right-0 bg-slate-600 cursor-pointer"
+                            onClick={closeSetting}
+                        >
+                            X
+                        </div>
+                    </div>
                 </div>
             ) : (
                 <></>
