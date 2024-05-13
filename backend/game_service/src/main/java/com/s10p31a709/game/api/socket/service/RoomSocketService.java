@@ -47,7 +47,7 @@ public class RoomSocketService {
 
     public void gameInit(StompPayload<Room> message){
         Room room = roomRepository.findRoomByRoomId(message.getRoomId());
-        room.setBotCnt(message.getData().getBotCnt());
+        // room.setBotCnt(message.getData().getBotCnt());
         room.setRoomTime(gameProperties.getTime().getWaiting());
         room.setRoomState(1);
 
