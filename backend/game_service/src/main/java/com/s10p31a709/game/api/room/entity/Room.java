@@ -31,7 +31,7 @@ public class Room {
 
     private List<Player> roomPlayers;
 
-    private List<Player> computers;
+    private Integer botCnt;
 
     @JsonIgnore
     private boolean flag;

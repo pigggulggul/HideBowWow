@@ -34,14 +34,14 @@ game:
   time:
     waiting: 3
     hide: 30
-    seek: 90
+    seek: 120
     result: 10
   maxCapacity: 12
   object:
     maxSeekerIdx: 14
     maxHiderIdx: 101
   map:
-    richHouse:
+    richRoom:
       startPoint:
         x: -43.8823
         y: 0.03

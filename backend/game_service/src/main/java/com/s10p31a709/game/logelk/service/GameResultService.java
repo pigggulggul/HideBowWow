@@ -36,7 +36,7 @@ public class GameResultService {
 
     public void sendGameResult(Room room){
 
-        int seeker = 0, hider = room.getComputers().size();
+        int seeker = 0, hider = 0;
         for (Player player : room.getRoomPlayers()){
             if(player.getIsSeeker()) seeker++;
             else hider ++;

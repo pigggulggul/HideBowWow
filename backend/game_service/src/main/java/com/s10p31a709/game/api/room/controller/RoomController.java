@@ -64,7 +64,7 @@ public class RoomController {
         List<Room> list = roomService.getRoomList();
         int cnt = 0;
         for (Room room : list){
-            cnt += room.getRoomPlayers().size();
+            cnt += room.getRoomPlayers().stream().filter(player -> !player.getNickname().startsWith("Computer")).toList().size();
         }
 
         return new Channel(applicationName, cnt, contextPath);

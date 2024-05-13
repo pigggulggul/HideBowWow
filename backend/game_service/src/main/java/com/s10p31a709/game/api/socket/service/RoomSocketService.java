@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +38,7 @@ public class RoomSocketService {
         if(message.getData().getRoomMap() != null) room.setRoomMap(message.getData().getRoomMap());
         if(message.getData().getRoomAdmin() != null) room.setRoomAdmin(message.getData().getRoomAdmin());
         if(message.getData().getRoomTitle() != null) room.setRoomTitle(message.getData().getRoomTitle());
-        if(message.getData().getComputers() != null) room.setComputers(message.getData().getComputers());
+        if(message.getData().getBotCnt() != null) room.setBotCnt(message.getData().getBotCnt());
 
         StompPayload<Room> payload = new StompPayload<>("room.modify", message.getRoomId(), "system", room);
         simpMessagingTemplate.convertAndSend("/sub/room/"+message.getRoomId(), payload);
@@ -45,29 +46,34 @@ public class RoomSocketService {
 
     public void gameInit(StompPayload<Room> message){
         Room room = roomRepository.findRoomByRoomId(message.getRoomId());
-        room.setComputers(message.getData().getComputers());
+        room.setBotCnt(message.getData().getBotCnt());
         room.setRoomTime(gameProperties.getTime().getWaiting());
         room.setRoomState(1);
 
         // 맵 판단해서 적용
-        GameProperties.RichHouse map = gameProperties.getMap().getRichHouse();
+        GameProperties.RichRoom map = gameProperties.getMap().getRichRoom();
 
 
         int seekerNumber1 = new Random().nextInt(room.getRoomPlayers().size());
-        int seekerNumber2 = (room.getRoomPlayers().size() >= 6)? new Random().nextInt(room.getRoomPlayers().size()): -1;
+        int seekerNumber2 = (room.getRoomPlayers().size() + room.getBotCnt() >= 6)? new Random().nextInt(room.getRoomPlayers().size()): -1;
         while (seekerNumber2 != -1 && seekerNumber1 == seekerNumber2){
             seekerNumber2 = new Random().nextInt(room.getRoomPlayers().size());
+        }
+        int seekerNumber3 = (room.getRoomPlayers().size() + room.getBotCnt() >= 9)? new Random().nextInt(room.getRoomPlayers().size()): -1;
+        while (seekerNumber3 != -1 && (seekerNumber1 == seekerNumber3 || seekerNumber2 == seekerNumber3)){
+            seekerNumber3 = new Random().nextInt(room.getRoomPlayers().size());
         }
         log.info("room.getRoomPlayers().size(): {}", room.getRoomPlayers().size());
         log.info("seekerNumber1: {}", seekerNumber1);
         log.info("seekerNumber2: {}", seekerNumber2);
+        log.info("seekerNumber3: {}", seekerNumber3);
 
         for (int i = 0; i < room.getRoomPlayers().size(); i++) {
             Player player = room.getRoomPlayers().get(i);
             player.setPosition(new Double[]{map.getStartPoint().getX()+(i*0.5), map.getStartPoint().getY(), map.getStartPoint().getZ()+(i*0.5)});
             player.setDirection(new Double[]{0d, 0d, 0d});
             player.setIsDead(false);
-            if(i == seekerNumber1 || i == seekerNumber2) {
+            if(i == seekerNumber1 || i == seekerNumber2 || i == seekerNumber3) {
                 player.setIsSeeker(true);
                 player.setSelectedIndex(new Random().nextInt(gameProperties.getObject().getMaxSeekerIdx()));
                 log.info("seekerIdx: {}", i);
@@ -75,13 +81,11 @@ public class RoomSocketService {
                 player.setIsSeeker(false);
                 player.setSelectedIndex(null);
             }
-            if (room.getComputers() != null && !room.getComputers().isEmpty()){
-                log.info(room.getComputers().toString());
-                List<Player> list = aiService.hideLocationComputer(room.getComputers().size(), room.getRoomMap());
-                room.setComputers(list);
-                log.info(list.toString());
-            }else {
-                room.setComputers(new ArrayList<>());
+            if (room.getBotCnt() != null && !room.getBotCnt().equals(0)){
+                log.info("botCnt: {}", room.getBotCnt());
+                List<Player> list = aiService.hideLocationComputer(room.getBotCnt(), room.getRoomMap());
+                room.getRoomPlayers().addAll(list);
+                log.info("players: {}", room.getRoomPlayers());
             }
         }
 
@@ -136,6 +140,10 @@ public class RoomSocketService {
         Room room = roomRepository.findRoomByRoomId(roomId);
         room.setRoomTime(0);
         room.setRoomState(0);
+
+        // 봇 삭제
+        List<Player> players = room.getRoomPlayers();
+        players = players.stream().filter(player -> !player.getNickname().startsWith("Computer")).toList();
 
         StompPayload<Room> payload = new StompPayload<>("room.backRoom", roomId, "system", room);
         simpMessagingTemplate.convertAndSend("/sub/room/"+roomId, payload);

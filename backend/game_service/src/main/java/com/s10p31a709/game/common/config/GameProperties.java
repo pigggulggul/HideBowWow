@@ -31,11 +31,11 @@ public class GameProperties {
 
     @Data
     public static class Map {
-        private RichHouse richHouse;
+        private RichRoom richRoom;
     }
 
     @Data
-    public static class RichHouse {
+    public static class RichRoom {
         private StartPoint startPoint;
     }
 
