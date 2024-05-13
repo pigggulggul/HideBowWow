@@ -87,6 +87,7 @@ public class RoomSocketService {
         if (room.getBotCnt() != null && !room.getBotCnt().equals(0)){
             log.info("botCnt: {}", room.getBotCnt());
             List<Player> list = aiService.hideLocationComputer(room.getBotCnt(), room.getRoomMap());
+            log.info("컴퓨터 추가! : {}", list);
             room.getRoomPlayers().addAll(list);
             log.info("players: {}", room.getRoomPlayers());
         }
