@@ -1078,11 +1078,11 @@ export function BarElement() {
                 rotation={[Math.PI / 2, 0, Math.PI]}
             />
             <Cabinet_1
-                position={[7, 1, 65]}
+                position={[7, 2.4, 65]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
             <Cabinet_1
-                position={[7, 1, 68]}
+                position={[7, 2.4, 68]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
 
