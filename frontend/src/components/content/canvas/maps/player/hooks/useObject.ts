@@ -670,13 +670,13 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             }
         };
         if (isJumping === 1 && jumpFlag) {
-            console.log('점프중입니다.');
+            // console.log('점프중입니다.');
             setTimeout(() => {
-                console.log('점프 내려가는 중입니다.');
+                // console.log('점프 내려가는 중입니다.');
                 setIsJumping(2);
             }, 600); // Return after half a second
             setTimeout(() => {
-                console.log('점프 끝입니다.');
+                // console.log('점프 끝입니다.');
                 setIsJumping(0);
                 setJumpFlag(false);
             }, 1200);

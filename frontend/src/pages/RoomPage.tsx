@@ -126,12 +126,12 @@ export default function RoomPage() {
         }
     }, [isReady]);
     useEffect(() => {
-        console.log('방정보', currentRoom);
+        // console.log('방정보', currentRoom);
         setRoom(currentRoom);
         setBotCount(currentRoom.botCnt)
     }, [currentRoom]);
     useEffect(() => {
-        console.log('바뀐정보', room);
+        // console.log('바뀐정보', room);
     }, [room]);
     useEffect(() => {
         if (room.roomId && room.roomTitle && room.roomPlayers) {
