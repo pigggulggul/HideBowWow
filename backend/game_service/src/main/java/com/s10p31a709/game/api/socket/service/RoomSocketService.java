@@ -40,6 +40,7 @@ public class RoomSocketService {
         if(message.getData().getRoomAdmin() != null) room.setRoomAdmin(message.getData().getRoomAdmin());
         if(message.getData().getRoomTitle() != null && !message.getData().getRoomTitle().isEmpty()) room.setRoomTitle(message.getData().getRoomTitle());
         if(message.getData().getBotCnt() != null) room.setBotCnt(message.getData().getBotCnt());
+        log.info(message.toString());
 
         StompPayload<Room> payload = new StompPayload<>("room.modify", message.getRoomId(), "system", room);
         simpMessagingTemplate.convertAndSend("/sub/room/"+message.getRoomId(), payload);
@@ -102,6 +103,7 @@ public class RoomSocketService {
         Room room = roomRepository.findRoomByRoomId(roomId);
         room.setRoomTime(gameProperties.getTime().getHide());
         room.setRoomState(2);
+        log.info(room.toString());
 
         StompPayload<Room> payload = new StompPayload<>("room.hideStart", roomId, "system", room);
         simpMessagingTemplate.convertAndSend("/sub/room/"+roomId, payload);
@@ -111,6 +113,7 @@ public class RoomSocketService {
         Room room = roomRepository.findRoomByRoomId(roomId);
         room.setRoomTime(gameProperties.getTime().getSeek());
         room.setRoomState(3);
+        log.info(room.toString());
 
         StompPayload<Room> payload = new StompPayload<>("room.findStart", roomId, "system", room);
         simpMessagingTemplate.convertAndSend("/sub/room/"+roomId, payload);
@@ -119,6 +122,7 @@ public class RoomSocketService {
     public void seekerWin(String roomId){
         Room room = roomRepository.findRoomByRoomId(roomId);
         room.setRoomState(4);
+        log.info(room.toString());
 
         // 게임 결과 log 전송
         gameResultService.sendGameResult(room);
@@ -131,6 +135,7 @@ public class RoomSocketService {
     public void hiderWin(String roomId){
         Room room = roomRepository.findRoomByRoomId(roomId);
         room.setRoomState(5);
+        log.info(room.toString());
 
         // 게임 결과 log 전송
         gameResultService.sendGameResult(room);
@@ -144,10 +149,12 @@ public class RoomSocketService {
         Room room = roomRepository.findRoomByRoomId(roomId);
         room.setRoomTime(0);
         room.setRoomState(0);
+        log.info(room.toString());
 
         // 봇 삭제
         List<Player> players = room.getRoomPlayers();
         room.setRoomPlayers(players.stream().filter(player -> !player.getNickname().startsWith("Computer")).collect(Collectors.toList()));
+
 
         StompPayload<Room> payload = new StompPayload<>("room.backRoom", roomId, "system", room);
         simpMessagingTemplate.convertAndSend("/sub/room/"+roomId, payload);
