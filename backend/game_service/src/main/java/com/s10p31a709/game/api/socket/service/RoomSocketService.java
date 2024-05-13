@@ -31,13 +31,14 @@ public class RoomSocketService {
 
 
     public void modifyRoom(StompPayload<Room> message){
-        Room room = roomRepository.findRoomByRoomId(message.getRoomId());
+        Room room = roomRepository.findRoomByRoomId(message.getData().getRoomId());
+        if(room == null) return;
 
         if(message.getData().getIsPublic() != null) room.setIsPublic(message.getData().getIsPublic());
         if(message.getData().getRoomPassword() != null) room.setRoomPassword(message.getData().getRoomPassword());
         if(message.getData().getRoomMap() != null) room.setRoomMap(message.getData().getRoomMap());
         if(message.getData().getRoomAdmin() != null) room.setRoomAdmin(message.getData().getRoomAdmin());
-        if(message.getData().getRoomTitle() != null) room.setRoomTitle(message.getData().getRoomTitle());
+        if(message.getData().getRoomTitle() != null && !message.getData().getRoomTitle().isEmpty()) room.setRoomTitle(message.getData().getRoomTitle());
         if(message.getData().getBotCnt() != null) room.setBotCnt(message.getData().getBotCnt());
 
         StompPayload<Room> payload = new StompPayload<>("room.modify", message.getRoomId(), "system", room);
