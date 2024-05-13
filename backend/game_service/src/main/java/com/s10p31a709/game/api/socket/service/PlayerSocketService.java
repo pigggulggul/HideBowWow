@@ -70,6 +70,11 @@ public class PlayerSocketService {
 
     public void deadPlayer(StompPayload<Player> message){
         Player player = roomRepository.findPlayerByNickname(message.getData().getNickname());
+        if(player == null || player.getNickname() == null || player.getNickname().isEmpty()){
+            log.error("잘못된 player.dead요청: {}", message);
+            return;
+        }
+
         player.setIsDead(true);
 
         StompPayload<Player> payload = new StompPayload<>("player.dead", message.getRoomId(), "system", player);
