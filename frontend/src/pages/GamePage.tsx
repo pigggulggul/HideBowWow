@@ -297,7 +297,7 @@ export default function GamePage() {
             ) : (
                 <></>
             )} */}
-            {currentRoom.roomState === 2 && meInfo.isSeeker ? (
+            {/* {currentRoom.roomState === 2 && meInfo.isSeeker ? (
                 <div className="absolute w-full h-full flex flex-col justify-center items-center bg-black">
                     <div className="flex top-4 w-full justify-center items-center text-[2vw]">
                         <p className=" text-sky-400">술래</p>
@@ -319,7 +319,7 @@ export default function GamePage() {
                 </div>
             ) : (
                 <></>
-            )}
+            )} */}
             {currentRoom.roomState === 2 && !meInfo.isSeeker ? (
                 <div className="absolute flex top-4 w-full justify-center items-center text-[2vw]">
                     <p className=" text-sky-400">술래</p>
