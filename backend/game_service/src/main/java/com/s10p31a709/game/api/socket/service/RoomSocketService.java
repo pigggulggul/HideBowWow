@@ -81,12 +81,14 @@ public class RoomSocketService {
                 player.setIsSeeker(false);
                 player.setSelectedIndex(null);
             }
-            if (room.getBotCnt() != null && !room.getBotCnt().equals(0)){
-                log.info("botCnt: {}", room.getBotCnt());
-                List<Player> list = aiService.hideLocationComputer(room.getBotCnt(), room.getRoomMap());
-                room.getRoomPlayers().addAll(list);
-                log.info("players: {}", room.getRoomPlayers());
-            }
+        }
+
+        // 봇 생성
+        if (room.getBotCnt() != null && !room.getBotCnt().equals(0)){
+            log.info("botCnt: {}", room.getBotCnt());
+            List<Player> list = aiService.hideLocationComputer(room.getBotCnt(), room.getRoomMap());
+            room.getRoomPlayers().addAll(list);
+            log.info("players: {}", room.getRoomPlayers());
         }
 
         StompPayload<Room> payload = new StompPayload<>("room.gameInit", message.getRoomId(), "system", room);
