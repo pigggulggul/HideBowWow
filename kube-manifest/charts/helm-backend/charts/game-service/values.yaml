@@ -7,8 +7,7 @@ image:
   tag: "latest"
 
 service:
-#  type: ClusterIP
-  type: None
+  type: ClusterIP
   port: 8002
   targetPort: 8002
 

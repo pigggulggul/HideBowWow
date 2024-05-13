@@ -9,6 +9,7 @@ spec:
     - port: {{ .Values.service.port }}
       targetPort: {{ .Values.service.targetPort }}
       protocol: TCP
+  clusterIP: None
   selector:
     app: {{ include "game-service.fullname" . }}
 #  sessionAffinity: ClientIP
