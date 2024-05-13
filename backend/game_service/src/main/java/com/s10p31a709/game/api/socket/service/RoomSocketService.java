@@ -87,6 +87,7 @@ public class RoomSocketService {
         if (room.getBotCnt() != null && !room.getBotCnt().equals(0)){
             log.info("botCnt: {}", room.getBotCnt());
             List<Player> list = aiService.hideLocationComputer(room.getBotCnt(), room.getRoomMap());
+            log.info("컴퓨터 추가! : {}", list);
             room.getRoomPlayers().addAll(list);
             log.info("players: {}", room.getRoomPlayers());
         }
@@ -145,7 +146,7 @@ public class RoomSocketService {
 
         // 봇 삭제
         List<Player> players = room.getRoomPlayers();
-        players = players.stream().filter(player -> !player.getNickname().startsWith("Computer")).toList();
+        room.setRoomPlayers(players.stream().filter(player -> !player.getNickname().startsWith("Computer")).toList());
 
         StompPayload<Room> payload = new StompPayload<>("room.backRoom", roomId, "system", room);
         simpMessagingTemplate.convertAndSend("/sub/room/"+roomId, payload);
