@@ -206,7 +206,6 @@ export function Content() {
         });
         setPlayers(updatedPlayers);
         setSelectCount((prev) => prev + 1);
-        console.log('바뀐 Player정보', updatedPlayers);
         dispatch(meSelectedInfoState(index));
         setSecondChoiceFlag(false);
     };
@@ -234,7 +233,8 @@ export function Content() {
                     (roomState.roomState === 3 &&
                         !me.isSeeker &&
                         rerollTime === 1 &&
-                        !choiceFlag) ? (
+                        !choiceFlag &&
+                        !me.isDead) ? (
                         <>
                             <div className="absolute flex items-center justify-between w-[80%] h-[80%] z-10">
                                 {choice.map((item, index) => {
@@ -278,7 +278,8 @@ export function Content() {
                                 })}
                             </div>
                             <div className="absolute flex justify-center bottom-8 text-[2vw] z-10">
-                                20초 후에 셋 중 하나의 물체로 변신합니다.
+                                20초 후에 셋 중 하나의 물체로 변신합니다. ESC 후
+                                선택하세요.
                             </div>
                         </>
                     ) : (
