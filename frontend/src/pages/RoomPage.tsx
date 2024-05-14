@@ -94,7 +94,7 @@ export default function RoomPage() {
         }
         dispatch(chatDataState([]));
         if (currentRoom.roomAdmin === meName) {
-            console.log('시작 룸', room);
+            // console.log('시작 룸', room);
             stompClient.sendMessage(
                 `/room.gameInit`,
                 JSON.stringify({
@@ -133,9 +133,6 @@ export default function RoomPage() {
         setBotCount(currentRoom.botCnt);
     }, [currentRoom]);
 
-    useEffect(() => {
-        console.log('botcnt', botCount);
-    }, [botCount]);
     useEffect(() => {
         // console.log('바뀐정보', room);
     }, [room]);
