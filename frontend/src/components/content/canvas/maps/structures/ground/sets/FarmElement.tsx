@@ -69,12 +69,12 @@ export function FarmElement() {
     <>
       {/* --------------------------------<교차로>-------------------------------------- */}
       {/* 9<=x<=84 y=0 */}
-      <Road_1
+      {/* <Road_1
         position={[0, 0.5, 85]}
         rotation={[-Math.PI / 2, 0, Math.PI / 2]}
-      />
+      /> */}
       <Road_1
-        position={[0, 0.5, 81.5]}
+        position={[0, 0.5, 84.5]}
         rotation={[-Math.PI / 2, 0, Math.PI / 2]}
       />
       <Road_1
@@ -119,12 +119,12 @@ export function FarmElement() {
         rotation={[-Math.PI / 2, 0, Math.PI / 2]}
       />
       {/* -9<=x<=-84 y=0 */}
-      <Road_1
+      {/* <Road_1
         position={[0, 0.5, -85]}
         rotation={[-Math.PI / 2, 0, Math.PI / 2]}
-      />
+      /> */}
       <Road_1
-        position={[0, 0.5, -81.5]}
+        position={[0, 0.5, -84.5]}
         rotation={[-Math.PI / 2, 0, Math.PI / 2]}
       />
       <Road_1
@@ -164,9 +164,9 @@ export function FarmElement() {
         rotation={[-Math.PI / 2, 0, Math.PI / 2]}
       />
       {/* x=0 -84<=y<=-9 */}
-      <Road_1 position={[-85, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} />
+      {/* <Road_1 position={[-85, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} />
       <Road_1 position={[-81.5, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Road_1 position={[-81.5, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} />
+      <Road_1 position={[-81.5, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} /> */}
       <Road_1 position={[-72.5, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} />
       <Road_1 position={[-63.5, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} />
       <Road_1 position={[-54.5, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} />
@@ -177,9 +177,9 @@ export function FarmElement() {
       <Road_1 position={[-9, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} />
 
       {/* x=0 9<=y<=84 */}
-      <Road_1 position={[-85, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} />
+      {/* <Road_1 position={[-85, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} />
       <Road_1 position={[81.5, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Road_1 position={[81.5, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} />
+      <Road_1 position={[81.5, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} /> */}
       <Road_1 position={[72.5, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} />
       <Road_1 position={[63.5, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} />
       <Road_1 position={[54.5, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} />
@@ -207,7 +207,7 @@ export function FarmElement() {
       <Tree_4 position={[50, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
       <Tree_4 position={[60, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
       <Tree_4 position={[70, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[80, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
+      {/* <Tree_4 position={[80, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} /> */}
 
       <Barn
         position={[30, 0.5, 30]}
@@ -308,7 +308,7 @@ export function FarmElement() {
       <Tree_4 position={[50, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} />
       <Tree_4 position={[60, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} />
       <Tree_4 position={[70, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[80, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} />
+      {/* <Tree_4 position={[80, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} /> */}
 
       <House_3 position={[30, 0.5, -20]} rotation={[-Math.PI / 2, 0, 0]} />
       <House_4 position={[50, 0.5, -20]} rotation={[-Math.PI / 2, 0, 0]} />
@@ -407,7 +407,7 @@ export function FarmElement() {
       <Tree_4 position={[-50, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} />
       <Tree_4 position={[-60, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} />
       <Tree_4 position={[-70, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[-80, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} />
+      {/* <Tree_4 position={[-80, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} /> */}
 
       <Building_2 position={[-30, 0.5, -30]} rotation={[-Math.PI / 2, 0, 0]} />
       <Building_3 position={[-40, 0.5, -30]} rotation={[-Math.PI / 2, 0, 0]} />
@@ -513,7 +513,7 @@ export function FarmElement() {
       <Tree_4 position={[-50, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
       <Tree_4 position={[-60, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
       <Tree_4 position={[-70, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[-80, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
+      {/* <Tree_4 position={[-80, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} /> */}
 
       <Tree_1 position={[-30, 0.5, 30]} rotation={[-Math.PI / 2, 0, 0]} />
       <Tree_7 position={[-30, 0.5, 40]} rotation={[-Math.PI / 2, 0, 0]} />
