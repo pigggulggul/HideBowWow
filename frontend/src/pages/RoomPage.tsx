@@ -93,7 +93,7 @@ export default function RoomPage() {
         }
         dispatch(chatDataState([]));
         if (currentRoom.roomAdmin === meName) {
-            console.log('시작 룸', room);
+            // console.log('시작 룸', room);
             stompClient.sendMessage(
                 `/room.gameInit`,
                 JSON.stringify({

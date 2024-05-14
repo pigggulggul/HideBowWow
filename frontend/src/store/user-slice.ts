@@ -18,9 +18,11 @@ export interface UserState {
     meHeart: number;
     bgmFlag: boolean;
     mapSize: MapSize;
-    chatData: ChatType[];
+    chatData: ChatType[]; 
+    observer: string;  
     chatFlag: boolean;
-    rerollFlag: number;
+    rerollFlag: number; 
+    observserMode: boolean;
 }
 const initialState: UserState = {
     userNickname: '',
@@ -44,7 +46,7 @@ const initialState: UserState = {
         position: [0, 0, 0],
         direction: [0, 0, 0],
         isDead: null,
-        isSeeker: null,
+        isSeeker: null, 
     },
     collideObj: [],
     meHeart: 0,
@@ -57,9 +59,11 @@ const initialState: UserState = {
         minY: -1,
         maxY: 8,
     },
-    chatData: [],
+    chatData: [], 
+    observer: '',
+    observserMode: false, 
     chatFlag: false,
-    rerollFlag: 0,
+    rerollFlag: 0, 
 };
 
 export const userSlice = createSlice({
@@ -156,10 +160,13 @@ export const userSlice = createSlice({
         },
         addChatDataState: (state, action) => {
             state.chatData = [...state.chatData, action.payload];
-        },
+        }, 
+        observerState: (state, action) => {
+            state.observer = action.payload;
+        },  
         chatFlagState: (state, action) => {
             state.chatFlag = action.payload;
-        },
+        }, 
     },
 });
 export const {
@@ -180,8 +187,9 @@ export const {
     bgmFlagState,
     mapSizeState,
     chatDataState,
-    addChatDataState,
+    addChatDataState, 
+    observerState,  
     chatFlagState,
-    deadPeopleState,
+    deadPeopleState, 
 } = userSlice.actions;
 export default userSlice.reducer;
