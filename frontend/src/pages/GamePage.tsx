@@ -31,6 +31,7 @@ import keyLeft from '../assets/images/icon/key_arrowL.png';
 import keySpace from '../assets/images/icon/key_space.png';
 import ingameMusic from '../assets/bgm/ingame_music.mp3';
 import ObjectInfo from '../json/ObjectInfo.json';
+import { store } from '../store/store';
 
 export default function GamePage() {
     const stompClient = StompClient.getInstance();
@@ -184,14 +185,15 @@ export default function GamePage() {
                 inputRef.current.blur();
             }
         }
-    }, [toggleChat]);
+    }, [toggleChat]);observerState
     useEffect(() => {
         if (messageEndRef.current) {
             messageEndRef.current.scrollIntoView({
                 behavior: 'smooth',
             });
         }
-    }, [chatList]);
+    }, [chatList]); 
+    
     useEffect(() => {
         // 키보드(C, M) 이벤트 리스너 & voice.js의 stream과 interval값 갱신 & 페이지 이탈 시 이벤트리스너 삭제
         setInterval(() => {
@@ -603,7 +605,7 @@ export default function GamePage() {
             </div>
             {/* /////////////// */}
             <div className="absolute flex flex-col bottom-20 justify-center"> 
-            {observerState.trim() !== '' ? (
+            {observerState?.trim() !== '' ? (
                 (!observerState.startsWith("당신은")) ? (
                     <div className='flex justify-center items-center text-[2vw]'
                     >
