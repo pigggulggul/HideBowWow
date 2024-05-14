@@ -20,6 +20,7 @@ export interface UserState {
     mapSize: MapSize;
     chatData: ChatType[];
     chatFlag: boolean;
+    rerollFlag: number;
 }
 const initialState: UserState = {
     userNickname: '',
@@ -58,6 +59,7 @@ const initialState: UserState = {
     },
     chatData: [],
     chatFlag: false,
+    rerollFlag: 0,
 };
 
 export const userSlice = createSlice({
@@ -88,6 +90,20 @@ export const userSlice = createSlice({
                 ...state.currentRoom,
                 roomPlayers: state.currentRoom.roomPlayers.filter(
                     (player) => player.nickname !== action.payload.nickname
+                ),
+            };
+        },
+        deadPeopleState: (state, action) => {
+            state.currentRoom = {
+                ...state.currentRoom,
+                roomPlayers: state.currentRoom.roomPlayers.map(
+                    (player, index) => {
+                        if (index === action.payload) {
+                            // 해당 인덱스의 플레이어의 isDead 값을 true로 설정
+                            return { ...player, isDead: true };
+                        }
+                        return player; // 다른 플레이어는 그대로 유지
+                    }
                 ),
             };
         },
@@ -166,5 +182,6 @@ export const {
     chatDataState,
     addChatDataState,
     chatFlagState,
+    deadPeopleState,
 } = userSlice.actions;
 export default userSlice.reducer;

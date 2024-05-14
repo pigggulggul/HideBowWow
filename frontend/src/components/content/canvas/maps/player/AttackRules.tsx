@@ -4,6 +4,7 @@ import { CurrentPlayersInfo } from '../../../../../types/GameType';
 import { useThree } from '@react-three/fiber';
 import StompClient from '../../../../../websocket/StompClient';
 import {
+    deadPeopleState,
     decrementHeartState,
     heartState,
 } from '../../../../../store/user-slice';
@@ -77,16 +78,17 @@ export function AttackRules() {
 
                 // console.log(seeker.position);
                 if (intersects.length > 0) {
-                    intersects.map((item, index) => {
-                        if (index > 8) {
+                    let flag = false;
+                    intersects.map((obj, index) => {
+                        if (index > 8 || flag) {
                             return;
                         }
-                        const closestObject = item.object;
+                        const closestObject = obj.object;
                         // console.log('감지된 객체:', closestObject);
                         setDetectedObject(closestObject);
                         // drawRayLine(camera.position, intersects[0].point); // 레이를 그리는 함수 호출
                         currentRoom.roomPlayers.map(
-                            (item: CurrentPlayersInfo) => {
+                            (item: CurrentPlayersInfo, index: number) => {
                                 // 모든 부모 이름을 가져옵니다.
                                 const parentNames =
                                     getParentNames(closestObject);
@@ -122,8 +124,11 @@ export function AttackRules() {
                                             },
                                         })
                                     );
-                                    item.isDead = true;
+                                    flag = true;
+                                    dispatch(deadPeopleState(index));
+                                    return { ...item, isDead: true };
                                 }
+                                return item;
                             }
                         );
                     });
