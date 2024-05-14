@@ -25,6 +25,7 @@ import keyW from '../assets/images/icon/key_w.png';
 import keyC from '../assets/images/icon/key_c.png';
 import keyM from '../assets/images/icon/key_m.png';
 import keyR from '../assets/images/icon/key_r.png';
+import keyEsc from '../assets/images/icon/key_esc.png';
 import keyRight from '../assets/images/icon/key_arrowR.png';
 import keyLeft from '../assets/images/icon/key_arrowL.png';
 import keySpace from '../assets/images/icon/key_space.png';
@@ -61,7 +62,7 @@ export default function GamePage() {
 
     const [toggleChat, setToggleChat] = useState<boolean>(false);
     const [roundStart, setRoundStart] = useState<boolean>(false);
-    const [toggleSetting, setToggleSetting] = useState<boolean>(false);
+    const [, setToggleSetting] = useState<boolean>(false);
     const [chatContent, setChatContent] = useState<string>('');
 
     //공격
@@ -265,9 +266,9 @@ export default function GamePage() {
             setRoundStart(false);
         }, 5000); // 0.5초 후에 isRed 상태를 false로 변경
     };
-    const closeSetting = () => {
-        setToggleSetting(false);
-    };
+    // const closeSetting = () => {
+    //     setToggleSetting(false);
+    // };
 
     return (
         <RecoilRoot>
@@ -437,48 +438,64 @@ export default function GamePage() {
             ) : (
                 <></>
             )}
-            <div className="absolute flex flex-col top-1 left-1 w-[25s%] h-[50%] bg-black bg-opacity-20 p-[0.4vw]">
+            <div className="absolute flex flex-col top-1 left-1 w-[25s%] h-[auto] bg-black bg-opacity-20 p-[0.4vw]">
                 <div className="flex items-center">
-                    <img className="px-[0.2vw]" src={keyW} alt="" />
-                    <img className="px-[0.2vw]" src={keyA} alt="" />
-                    <img className="px-[0.2vw]" src={keyS} alt="" />
-                    <img className="px-[0.2vw]" src={keyD} alt="" />
-                    <p className="px-[0.4vw] text-[1.6vw]">이동</p>
+                    <img className="w-[40px] px-[0.2vw]" src={keyW} alt="" />
+                    <img className="w-[40px] px-[0.2vw]" src={keyA} alt="" />
+                    <img className="w-[40px] px-[0.2vw]" src={keyS} alt="" />
+                    <img className="w-[40px] px-[0.2vw]" src={keyD} alt="" />
+                    <p className="px-[0.4vw] text-[1.4vw]">이동</p>
                 </div>
                 {meInfo.isSeeker ? (
                     <>
                         <div className="flex items-center my-[1vw]">
                             <img
-                                className="px-[0.2vw]"
+                                className="w-[40px] px-[0.2vw]"
                                 src={keyMouseleft}
                                 alt=""
                             />
-                            <p className="px-[0.4vw] text-[1.6vw]">공격</p>
+                            <p className="px-[0.4vw] text-[1.4vw]">공격</p>
                         </div>
                     </>
                 ) : (
                     <>
                         <div className="flex items-center my-[1vw]">
-                            <img className="px-[0.2vw]" src={keyQ} alt="" />
-                            <img className="px-[0.2vw]" src={keyE} alt="" />
-                            <p className="px-[0.4vw] text-[1.6vw]">
+                            <img
+                                className="w-[40px] px-[0.2vw]"
+                                src={keyQ}
+                                alt=""
+                            />
+                            <img
+                                className="w-[40px] px-[0.2vw]"
+                                src={keyE}
+                                alt=""
+                            />
+                            <p className="px-[0.4vw] text-[1.4vw]">
                                 회전 (좌, 우)
                             </p>
                         </div>
                         <div className="flex items-center mb-[1vw]">
                             <img
-                                className="px-[0.2vw]"
+                                className="w-[40px] px-[0.2vw]"
                                 src={keyR}
                                 alt="key_r.png"
                             />
-                            <p className="px-[0.4vw] text-[1.6vw]">
+                            <p className="px-[0.4vw] text-[1.4vw]">
                                 고정 / 해제
                             </p>
                         </div>
                         <div className="flex items-center mb-[1vw]">
-                            <img className="px-[0.2vw]" src={keyLeft} alt="" />
-                            <img className="px-[0.2vw]" src={keyRight} alt="" />
-                            <p className="px-[0.4vw] text-[1.6vw]">
+                            <img
+                                className="w-[40px] px-[0.2vw]"
+                                src={keyLeft}
+                                alt=""
+                            />
+                            <img
+                                className="w-[40px] px-[0.2vw]"
+                                src={keyRight}
+                                alt=""
+                            />
+                            <p className="px-[0.4vw] text-[1.4vw]">
                                 관전 (고정시에만)
                             </p>
                         </div>
@@ -487,17 +504,29 @@ export default function GamePage() {
 
                 <div className="flex items-center mb-[1vw]">
                     <img
-                        className="px-[0.2vw]"
+                        className="w-[80px] px-[0.2vw]"
                         src={keySpace}
                         alt="key_space.png"
                     />
-                    <p className="px-[0.4vw] text-[1.6vw]">점프</p>
+                    <p className="px-[0.4vw] text-[1.4vw]">점프</p>
+                </div>
+                <div className="flex items-center mb-[1vw]">
+                    <img
+                        className="w-[40px] px-[0.2vw]"
+                        src={keyEsc}
+                        alt="key_esc.png"
+                    />
+                    <p className="px-[0.4vw] text-[1.4vw]">마우스 고정 해제</p>
                 </div>
 
                 {/* 음성채팅 입, 퇴장 관련 키 가이드 */}
                 <div className="flex items-center">
-                    <img className="px-[0.2vw]" src={keyC} alt="key_c.png" />
-                    <p className="px-[0.4vw] text-[1.6vw]">
+                    <img
+                        className="w-[40px] px-[0.2vw]"
+                        src={keyC}
+                        alt="key_c.png"
+                    />
+                    <p className="px-[0.4vw] text-[1.4vw]">
                         {stream ? '음성채팅 퇴장' : '음성채팅 입장'}
                     </p>
                 </div>
@@ -506,11 +535,11 @@ export default function GamePage() {
                 {stream ? (
                     <div className="flex items-center">
                         <img
-                            className="px-[0.2vw]"
+                            className="w-[40px] px-[0.2vw]"
                             src={keyM}
                             alt="key_m.png"
                         />
-                        <p className="px-[0.4vw] text-[1.6vw]">
+                        <p className="px-[0.4vw] text-[1.4vw]">
                             {microphone ? '마이크 OFF' : '마이크 ON'}
                         </p>
                     </div>
@@ -592,7 +621,7 @@ export default function GamePage() {
             ) : (
                 <></>
             )}
-            {toggleSetting ? (
+            {/* {toggleSetting ? (
                 <div className="absolute w-[50%] h-[50%] bg-white rounded-[0.6vw] z-20">
                     <div className="relative w-full h-full  flex flex-col items-center justify-center ">
                         <p className="text-[2vw] text-black">환경설정입니다</p>
@@ -606,7 +635,7 @@ export default function GamePage() {
                 </div>
             ) : (
                 <></>
-            )}
+            )} */}
         </RecoilRoot>
     );
 }

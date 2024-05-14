@@ -20,7 +20,7 @@ export interface UserState {
     mapSize: MapSize;
     chatData: ChatType[];
     chatFlag: boolean;
-    rerollFlag: number;
+    rerollTime: number;
 }
 const initialState: UserState = {
     userNickname: '',
@@ -59,7 +59,7 @@ const initialState: UserState = {
     },
     chatData: [],
     chatFlag: false,
-    rerollFlag: 0,
+    rerollTime: 0,
 };
 
 export const userSlice = createSlice({
@@ -160,6 +160,9 @@ export const userSlice = createSlice({
         chatFlagState: (state, action) => {
             state.chatFlag = action.payload;
         },
+        rerollState: (state, action) => {
+            state.rerollTime = action.payload;
+        },
     },
 });
 export const {
@@ -183,5 +186,6 @@ export const {
     addChatDataState,
     chatFlagState,
     deadPeopleState,
+    rerollState,
 } = userSlice.actions;
 export default userSlice.reducer;
