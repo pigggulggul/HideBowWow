@@ -64,7 +64,7 @@ export function RootMap() {
                             return (
                                 <>
                                     <ObjectPlayer
-                                        key={'animal player : ' + player.id}
+                                        key={'object player : ' + player.id}
                                         player={player}
                                         position={
                                             new Vector3(

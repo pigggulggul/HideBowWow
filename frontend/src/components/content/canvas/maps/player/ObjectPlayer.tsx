@@ -57,7 +57,6 @@ export function ObjectPlayer({
         position,
         modelIndex,
     });
-
     useFrame(() => {
         if (playerRef.current) {
             const { x, y, z } = playerRef.current.position;

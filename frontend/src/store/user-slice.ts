@@ -21,7 +21,7 @@ export interface UserState {
     chatData: ChatType[]; 
     observer: string;  
     chatFlag: boolean;
-    rerollFlag: number; 
+    rerollTime: number; 
     observserMode: boolean;
 }
 const initialState: UserState = {
@@ -63,7 +63,7 @@ const initialState: UserState = {
     observer: '',
     observserMode: false, 
     chatFlag: false,
-    rerollFlag: 0, 
+    rerollTime: 0,
 };
 
 export const userSlice = createSlice({
@@ -166,7 +166,10 @@ export const userSlice = createSlice({
         },  
         chatFlagState: (state, action) => {
             state.chatFlag = action.payload;
-        }, 
+        },
+        rerollState: (state, action) => {
+            state.rerollTime = action.payload;
+        },
     },
 });
 export const {
@@ -190,6 +193,7 @@ export const {
     addChatDataState, 
     observerState,  
     chatFlagState,
-    deadPeopleState, 
+    deadPeopleState,
+    rerollState,
 } = userSlice.actions;
 export default userSlice.reducer;
