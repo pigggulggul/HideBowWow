@@ -132,9 +132,6 @@ export default function RoomPage() {
     }, [currentRoom]);
 
     useEffect(() => {
-        console.log('botcnt', botCount);
-    }, [botCount]);
-    useEffect(() => {
         // console.log('바뀐정보', room);
     }, [room]);
     useEffect(() => {
