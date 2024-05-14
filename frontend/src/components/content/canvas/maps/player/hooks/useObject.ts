@@ -737,7 +737,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
 
                     if (
                         !moveVector.equals(new Vector3(0, 0, 0)) ||
-                        isJumping != 0
+                        isJumping >= 0
                     ) {
                         // 이동중
                         lockPointer();
@@ -1455,8 +1455,6 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             case 12:
             case 17:
             case 18:
-            case 39:
-            case 40:
                 return 0.2;
             case 77:
             case 78:
@@ -1468,6 +1466,8 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 return 0.3;
             case 94:
             case 48:
+            case 39:
+            case 40:
                 return 0.4;
             case 38:
             case 49:

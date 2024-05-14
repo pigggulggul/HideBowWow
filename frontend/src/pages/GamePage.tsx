@@ -121,10 +121,10 @@ export default function GamePage() {
         }
     }, [meInfo.isSeeker]);
     useEffect(() => {
-        if (meHeart < 5 && meHeart >= 0) {
+        if (meHeart < 7 && meHeart >= 0) {
             handleShot();
         }
-        if (meHeart === 0) {
+        if (currentRoom.roomState === 3 && meHeart === 0) {
             stompClient.sendMessage(
                 `/player.dead`,
                 JSON.stringify({
