@@ -185,7 +185,7 @@ export default function GamePage() {
                 inputRef.current.blur();
             }
         }
-    }, [toggleChat]);observerState
+    }, [toggleChat]); 
     useEffect(() => {
         if (messageEndRef.current) {
             messageEndRef.current.scrollIntoView({
