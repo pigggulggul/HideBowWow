@@ -9,7 +9,7 @@ import {
     Vector3,
     Quaternion,
 } from 'three';
-import { GLTF, SkeletonUtils } from 'three-stdlib';
+import { GLTF } from 'three-stdlib';
 import {
     CollideObject,
     PlayerInitType,
@@ -192,7 +192,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const [observedPlayerIndex, setObservedPlayerIndex] = useState(0);
     const callsInLastSecondRef = useRef(callsInLastSecond); 
 
-    const { scene: scene_, materials } = useGLTF(
+    const { scene: scene, materials } = useGLTF(
         (() => {
             switch (modelIndex) {
                 case 0:
@@ -409,13 +409,22 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const scale = getScaleByModelIndex(modelIndex);
 
     //개별 모델링을 통하여 다른 객체임을 알려줘야한다.
-    const scene = useMemo(() => {
-        return SkeletonUtils.clone(scene_);
-    }, []);
+    // const scene = useMemo(() => {
+    //     return SkeletonUtils.clone(scene_);
+    // }, []);
     const objectMap = useGraph(scene);
     const nodes = objectMap.nodes;
     const material = returnMaterial(modelIndex);
     const node = returnNode(modelIndex);
+
+    // console.log(
+    //     'scale : ',
+    //     scale,
+    //     ' scene : ',
+    //     scene.children,
+    //     ' modelIndex : ',
+    //     modelIndex
+    // );
 
     // const [ref] = useBox(() => ({
     //     mass: 0,

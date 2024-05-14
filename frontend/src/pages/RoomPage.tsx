@@ -10,6 +10,7 @@ import {
     currentRoomState,
     mapSizeState,
     readyState,
+    rerollState,
 } from '../store/user-slice';
 import backgroundImage from '../assets/images/bg/background-main.png';
 import mainMap from '../assets/images/bg/map-Rich.png';
@@ -114,6 +115,7 @@ export default function RoomPage() {
     useEffect(() => {
         dispatch(readyState(false));
         dispatch(chatDataState([]));
+        dispatch(rerollState(0));
     }, []);
     useEffect(() => {
         if (state) {
