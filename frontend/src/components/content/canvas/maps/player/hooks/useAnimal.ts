@@ -344,7 +344,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
             store.dispatch(observerState("당신은 술래입니다. 사물팀이 숨는동안 맵을 외우세요!")); 
             // 관전모드 
             if (!observerRef.current) {
-                console.log("생성!")
+                // console.log("생성!")
                 observerRef.current = new Observer();
                 observerRef.current.position = new Vector3(
                     playerRef.current.position.x + 12,
