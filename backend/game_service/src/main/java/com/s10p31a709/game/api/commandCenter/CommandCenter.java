@@ -5,6 +5,7 @@ import com.s10p31a709.game.api.room.entity.Room;
 import com.s10p31a709.game.api.room.repository.RoomRepository;
 import com.s10p31a709.game.api.socket.model.StompPayload;
 import com.s10p31a709.game.api.socket.service.RoomSocketService;
+import com.s10p31a709.game.common.config.GameProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -20,6 +21,7 @@ public class CommandCenter {
 
     private final RoomRepository roomRepository;
     private final RoomSocketService roomSocketService;
+    private final GameProperties gameProperties;
 
     @Scheduled(fixedRate = 1000)
     public void timeSchedule(){
@@ -44,6 +46,16 @@ public class CommandCenter {
                         roomSocketService.backRoom(room.getRoomId());
                     }
                     continue;
+                }
+
+                // 리롤타임판단
+                if(room.getRoomState() == 3){
+                    int halfTime = gameProperties.getTime().getSeek()/2;
+                    if(room.getRoomTime().equals(halfTime)){
+                        roomSocketService.rerollStart(room.getRoomId());
+                    }else if(room.getRoomTime().equals(halfTime-20)){
+                        roomSocketService.rerollEnd(room.getRoomId());
+                    }
                 }
 
                 // 한쪽팀이 다 죽어서 게임이 끝났는지 확인

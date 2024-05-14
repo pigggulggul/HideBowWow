@@ -176,4 +176,16 @@ public class RoomSocketService {
         simpMessagingTemplate.convertAndSend("/sub/room/"+room.getRoomId(), payload);
     }
 
+    public void rerollStart(String roomId){
+        StompPayload<Room> payload = new StompPayload<>("room.rerollStart", roomId, "system", null);
+        simpMessagingTemplate.convertAndSend("/sub/room/"+roomId, payload);
+        log.info("rerollStart: {}", roomId);
+    }
+
+    public void rerollEnd(String roomId){
+        StompPayload<Room> payload = new StompPayload<>("room.rerollEnd", roomId, "system", null);
+        simpMessagingTemplate.convertAndSend("/sub/room/"+roomId, payload);
+        log.info("rerollEnd: {}", roomId);
+    }
+
 }
