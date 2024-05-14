@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ChatType, RoomInfo } from '../types/GameType';
@@ -46,6 +47,7 @@ export default function RoomPage() {
     const currentRoom = useSelector(
         (state: any) => state.reduxFlag.userSlice.currentRoom
     );
+    const channelIndex = useSelector((state:any) => state.reduxFlag.userSlice.channelIndex);
 
     ///////// 채팅 관련 //////////
     const chatList = useSelector(
@@ -59,7 +61,7 @@ export default function RoomPage() {
 
     const dispatch = useDispatch();
     const loadRoom = async (state: string) => {
-        const res = await getRoom(state);
+        const res = await getRoom(state, channelIndex);
         if (res.status === httpStatusCode.OK) {
             // console.log(res.data);
             setRoom(res.data.data);
@@ -93,7 +95,7 @@ export default function RoomPage() {
         }
         dispatch(chatDataState([]));
         if (currentRoom.roomAdmin === meName) {
-            // console.log('시작 룸', room);
+            console.log('시작 룸', room);
             stompClient.sendMessage(
                 `/room.gameInit`,
                 JSON.stringify({
@@ -101,7 +103,8 @@ export default function RoomPage() {
                     roomId: state,
                     sender: meName,
                     data: {
-                        room,
+                        ...room,
+                        botCnt: botCount,
                     },
                 })
             );
@@ -126,13 +129,11 @@ export default function RoomPage() {
         }
     }, [isReady]);
     useEffect(() => {
-        // console.log('방정보', currentRoom);
+        console.log('방정보', currentRoom);
         setRoom(currentRoom);
-        setBotCount(currentRoom.botCnt);
     }, [currentRoom]);
-
     useEffect(() => {
-        // console.log('바뀐정보', room);
+        console.log('바뀐정보', room);
     }, [room]);
     useEffect(() => {
         if (room.roomId && room.roomTitle && room.roomPlayers) {
@@ -151,12 +152,11 @@ export default function RoomPage() {
                         roomTime: room.roomTime,
                         roomMap: mapInfo[mapIndex],
                         roomPlayers: room.roomPlayers,
-                        botCnt: botCount,
                     },
                 })
             );
         }
-    }, [mapIndex, botCount]);
+    }, [mapIndex]);
 
     const sendEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
@@ -216,16 +216,6 @@ export default function RoomPage() {
         }
     };
 
-    const handleBotCntIncrease = () => {
-        if (currentRoom.roomAdmin == meName)
-            setBotCount(botCount >= 3 ? 4 : botCount + 1);
-    };
-
-    const handleBotCntDecrease = () => {
-        if (currentRoom.roomAdmin == meName)
-            setBotCount(botCount > 0 ? botCount - 1 : 0);
-    };
-
     return (
         <section
             className="relative w-full h-full flex flex-col items-center justify-center"
@@ -278,7 +268,7 @@ export default function RoomPage() {
                                 );
                             })}
                         </div>
-                        <div className="w-full h-[34%] bg-white my-[0.6vw] mx-[0.4vw] rounded-[0.6vw]">
+                        {/* <div className="w-full h-[34%] bg-white my-[0.6vw] mx-[0.4vw] rounded-[0.6vw]">
                             <div className="w-[full] h-[85%] p-[0.4vw] overflow-auto">
                                 {chatList.map(
                                     (item: ChatType, index: number) => {
@@ -310,7 +300,7 @@ export default function RoomPage() {
                                 placeholder="채팅을 입력해주세요"
                                 onKeyDown={sendEnter}
                             />
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 
@@ -337,7 +327,9 @@ export default function RoomPage() {
                         <div className="flex text-[2vw] text-white">
                             <button
                                 className="mx-[1vw]"
-                                onClick={() => handleBotCntDecrease()}
+                                onClick={() =>
+                                    setBotCount(botCount > 0 ? botCount - 1 : 0)
+                                }
                             >
                                 {' '}
                                 -{' '}
@@ -345,7 +337,9 @@ export default function RoomPage() {
                             <p>{botCount}</p>
                             <button
                                 className="mx-[1vw]"
-                                onClick={() => handleBotCntIncrease()}
+                                onClick={() =>
+                                    setBotCount(botCount > 3 ? 4 : botCount + 1)
+                                }
                             >
                                 {' '}
                                 +{' '}

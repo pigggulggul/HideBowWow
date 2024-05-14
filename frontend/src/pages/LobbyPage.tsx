@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { enterRoom, roomList, roomMake } from '../api/rooms';
@@ -26,6 +27,7 @@ export default function LobbyPage() {
     const meName = useSelector(
         (state: any) => state.reduxFlag.userSlice.userNickname
     );
+    const channelIndex = useSelector((state:any) => state.reduxFlag.userSlice.channelIndex);
 
     const navigate = useNavigate();
     // const [room,setRoom] = useState<>();
@@ -57,7 +59,7 @@ export default function LobbyPage() {
     };
 
     const showRoomListAPI = async () => {
-        const showRes = await roomList();
+        const showRes = await roomList(channelIndex);
         if (showRes.status === httpStatusCode.OK) {
             // console.log(showRes.data);
             setRoom(showRes.data.data);
@@ -75,7 +77,7 @@ export default function LobbyPage() {
                 isPublic: makeRoomIsPublic,
                 roomAdmin: meName,
             };
-            const makeRes = await roomMake(makeRoomInfo);
+            const makeRes = await roomMake(makeRoomInfo, channelIndex);
             // console.log(makeRes);
             if (makeRes.status === httpStatusCode.CREATE) {
                 // console.log('만들어졌습니다.', makeRes.data.data.roomId);
@@ -93,7 +95,7 @@ export default function LobbyPage() {
     };
     const checkPublicRoom = async (id: string) => {
         const checkData: EnterRoomState = { roomId: id, nickname: meName };
-        const res = await enterRoom(checkData);
+        const res = await enterRoom(checkData, channelIndex);
         // console.log(res);
         if (res.status === httpStatusCode.OK) {
             setRoomId(id);
@@ -112,7 +114,7 @@ export default function LobbyPage() {
             roomPassword: privateRoomPassword,
             nickname: meName,
         };
-        const res = await enterRoom(checkData);
+        const res = await enterRoom(checkData, channelIndex);
         // console.log('비번데이터', checkData);
         // console.log(res);
         if (res.status === httpStatusCode.OK) {

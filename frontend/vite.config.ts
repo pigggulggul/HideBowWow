@@ -12,11 +12,12 @@ export default defineConfig({
         },
         proxy: {
             '/api/member-service': {
-                target: 'https://k10a709.p.ssafy.io/',
+                // target: 'https://k10a709.p.ssafy.io/',
+                target: 'https://hidebowwow.site/',
                 changeOrigin: true,
             },
             '/api/game-service': {
-                target: 'https://k10a709.p.ssafy.io/',
+                target: 'https://hidebowwow.site/',
                 changeOrigin: true,
             },
         },
