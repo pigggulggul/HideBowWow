@@ -1,7 +1,7 @@
 replicaCount: 2
 
 image:
-  repository: choichangho514/backend_member_service
+  repository: choichangho514/backend_member_service_test
   pullPolicy: Always
   tag: "latest"
 
