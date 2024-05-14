@@ -42,7 +42,7 @@ export function RootMap() {
                                     modelIndex={selectedCharacterGlbNameIndex}
                                 /> */}
                                 <Animal
-                                key={"animal player : "+player.id}
+                                    key={'animal player : ' + player.id}
                                     player={player}
                                     position={
                                         new Vector3(
@@ -64,7 +64,7 @@ export function RootMap() {
                             return (
                                 <>
                                     <ObjectPlayer
-                                        key={player.id}
+                                        key={'animal player : ' + player.id}
                                         player={player}
                                         position={
                                             new Vector3(

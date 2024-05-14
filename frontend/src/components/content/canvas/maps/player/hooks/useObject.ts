@@ -149,8 +149,9 @@ class Observer {
 export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const playerNickname = player?.nickname;
     const keyState = useRef<{ [key: string]: boolean }>({});
-    const [isJumping, setIsJumping] = useState(0);
-    const [mouseWheelValue, setMouseWheelValue] = useState<number>(10);
+    const [isJumping, setIsJumping] = useState(0); 
+    const [mouseWheelValue, setMouseWheelValue] = useState<number>(10); 
+    const [jumpFlag, setJumpFlag] = useState<boolean>(false); 
     const [freeViewMode, setFreeViewMode] = useState(false);
     const [callsInLastSecond, setCallsInLastSecond] = useState(0);
     const [delay, setDelay] = useState(0.00008);
@@ -174,8 +175,11 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         (state: any) => state.reduxFlag.userSlice.mapSize
     );  
     const collideState = useSelector(
-        (state: any) => state.reduxFlag.userSlice.collideObj
-    );   
+        (state: any) => state.reduxFlag.userSlice.collideObj 
+    );
+    const chatFlag = useSelector(
+        (state: any) => state.reduxFlag.userSlice.chatFlag
+    ); 
 
     const initialHeight = returnHeightSize(modelIndex);
     position.y = initialHeight;
@@ -194,7 +198,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 case 0:
                     return '/models/object/Barrel.glb';
                 case 1:
-                    return '/models/object/Closet.glb';
+                    return '/models/object/Barrel.glb';
                 case 2:
                     return '/models/object/Chair_brown.glb';
                 case 3:
@@ -517,16 +521,16 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const handlePageUp = () => {
         // 플레이어
         setObservedPlayerIndex((prevIndex) => {
-            // 관전 중인 플레이어의 인덱스를 증가시킵니다.
+            // 관전 중인 플레이어의 인덱스를 증가시킵니다. 
             return (prevIndex + 1) % (roomState.roomPlayers.length+1);
-        });  
+        });   
     };
 
     const handlePageDown = () => {
-        setObservedPlayerIndex((prevIndex) => {
+        setObservedPlayerIndex((prevIndex) => { 
             // 관전 중인 플레이어의 인덱스를 감소시킵니다. 
             return (prevIndex - 1 + roomState.roomPlayers.length+1) % (roomState.roomPlayers.length+1)
-        });  
+        });   
     };
 
     useEffect(() => {
@@ -537,10 +541,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         // 3초마다 호출
         if (meInfo?.nickname === playerNickname) {
             const intervalId = setInterval(() => {
-                console.log(
-                    '평균 프레임 :',
-                    callsInLastSecondRef.current / 3
-                );
+                console.log('평균 프레임 :', callsInLastSecondRef.current / 3);
                 setCallsInLastSecond(0); // 85 ~ 95
                 if (callsInLastSecondRef.current > 95) {
                     setDelay((preDelay) => preDelay + 0.00001);
@@ -611,18 +612,22 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
 
     // 키 입력
     useEffect(() => {
-        const handleKeyDown = (event: any) => {
-            keyState.current[event.key] = true;
-            if (event.key === 'r' || event.key === 'R') {
-                toggleFreeViewMode(); 
+        const handleKeyDown = (event: any) => { 
+            if (!chatFlag) {
+                keyState.current[event.key] = true;
+                if (event.key === 'r' || event.key === 'R') {
+                    toggleFreeViewMode();
+                } 
             }
         }; 
         const handleKeyUp = (event: any) => {
-            keyState.current[event.key] = false;
-            if (event.key === 'ArrowRight') {
-                handlePageUp();
-            } else if (event.key === 'ArrowLeft') {
-                handlePageDown();
+            if (!chatFlag) {
+                keyState.current[event.key] = false;
+                if (event.key === 'ArrowRight') {
+                    handlePageUp();
+                } else if (event.key === 'ArrowLeft') {
+                    handlePageDown();
+                }
             }
         }; 
 
@@ -632,20 +637,21 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
             document.removeEventListener('keyup', handleKeyUp);
-        };
-    }, [observedPlayerIndex, freeViewMode]);
-  
+        }; 
+    }, [observedPlayerIndex, freeViewMode, chatFlag]);
+ 
     // 키 입력
     useEffect(() => {
         const handleKeyDown = (event: any) => {
-            keyState.current[event.key] = true;
-            if (event.code === 'Space' && isJumping === 0) {
-                setIsJumping(1);
+            if (!chatFlag) {
+                keyState.current[event.key] = true;
             }
         };
 
         const handleKeyUp = (event: any) => {
-            keyState.current[event.key] = false;
+            if (!chatFlag) {
+                keyState.current[event.key] = false;
+            }
         };
 
         document.addEventListener('keydown', handleKeyDown);
@@ -654,9 +660,15 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             document.removeEventListener('keydown', handleKeyDown);
             document.removeEventListener('keyup', handleKeyUp);
         };
-    }, []);
+    }, [chatFlag]);
     useEffect(() => {
-        if (isJumping === 1) {
+        const handleJumpDown = (event: any) => {
+            if (event.code === 'Space' && !jumpFlag && !chatFlag) {
+                setIsJumping(1);
+                setJumpFlag(true);
+            }
+        };
+        if (isJumping === 1 && jumpFlag) {
             // console.log('점프중입니다.');
             setTimeout(() => {
                 // console.log('점프 내려가는 중입니다.');
@@ -665,9 +677,14 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             setTimeout(() => {
                 // console.log('점프 끝입니다.');
                 setIsJumping(0);
+                setJumpFlag(false);
             }, 1200);
         }
-    }, [isJumping]);
+        document.addEventListener('keydown', handleJumpDown);
+        return () => {
+            document.removeEventListener('keydown', handleJumpDown);
+        };
+    }, [isJumping, chatFlag]);
 
     // useEffect(() => {
     //     console.log("플레이어 인덱스 : " + observedPlayerIndex + " of " +roomState.roomPlayers.length );
@@ -719,9 +736,8 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
 
                     if (
                         !moveVector.equals(new Vector3(0, 0, 0)) ||
-                        isJumping != 0
-                    ) { 
-
+                        isJumping >= 0
+                    ) {
                         // 이동중
                         lockPointer();
                         moveVector.normalize().multiplyScalar(0.17);
@@ -1041,14 +1057,18 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             }
         } else {
             // 다른 플레이어의 캐릭터
-            // if(meInfo) 
-            roomState.roomPlayers.forEach((otherPlayer: any) => { 
-                if ( 
+            // if(meInfo)
+            roomState.roomPlayers.forEach((otherPlayer: any) => {
+                if (
                     otherPlayer.nickname === playerNickname &&
                     otherPlayer.isSeeker === false
-                ) { 
-                    if(meInfo.isSeeker === true && (roomState.roomState == 1 || roomState.roomState == 2)) return; // 준비시간동안 술래는 사물을 볼 수 없다
-                    const otherPlayerRef = playerRef.current;  
+                ) {
+                    if (
+                        meInfo.isSeeker === true &&
+                        (roomState.roomState == 1 || roomState.roomState == 2)
+                    )
+                        return; // 준비시간동안 술래는 사물을 볼 수 없다
+                    const otherPlayerRef = playerRef.current;
                     if (otherPlayerRef) {
                         // 위치 적용
                         otherPlayerRef?.position.set(
@@ -1076,10 +1096,10 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     }
                 }
             });
-        } 
- 
-        if (meInfo.isDead) {  
-            if(meInfo.isSeeker === true) return;   
+        }
+
+        if (meInfo.isDead) {
+            if (meInfo.isSeeker === true) return;
 
             if (observedPlayerIndex === roomState.roomPlayers.length) {
                 // 자유시점 모드 
@@ -1211,7 +1231,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             case 0:
                 return (nodes.Barrel_1 as SkinnedMesh).geometry;
             case 1:
-                return (nodes.Cabinet_18 as SkinnedMesh).geometry;
+                return (nodes.Barrel_1 as SkinnedMesh).geometry;
             case 2:
                 return (nodes.Chair_11 as SkinnedMesh).geometry;
             case 3:
@@ -1437,8 +1457,6 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             case 12:
             case 17:
             case 18:
-            case 39:
-            case 40:
                 return 0.2;
             case 77:
             case 78:
@@ -1450,6 +1468,8 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 return 0.3;
             case 94:
             case 48:
+            case 39:
+            case 40:
                 return 0.4;
             case 38:
             case 49:

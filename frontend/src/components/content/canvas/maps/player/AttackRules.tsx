@@ -4,6 +4,7 @@ import { CurrentPlayersInfo } from '../../../../../types/GameType';
 import { useThree } from '@react-three/fiber';
 import StompClient from '../../../../../websocket/StompClient';
 import {
+    deadPeopleState,
     decrementHeartState,
     heartState,
 } from '../../../../../store/user-slice';
@@ -23,6 +24,7 @@ export function AttackRules() {
     const meInfo = useSelector(
         (state: any) => state.reduxFlag.userSlice.meInfo
     );
+    const [roomState, setRoomState] = useState<number>(0);
     // const meHeart = useSelector(
     //     (state: any) => state.reduxFlag.userSlice.meHeart
     // );
@@ -38,86 +40,104 @@ export function AttackRules() {
             window.addEventListener('mousedown', handleKeyDown);
             return () => window.removeEventListener('mousedown', handleKeyDown);
         }
-    }, []);
+    }, [roomState]);
+
+    useEffect(() => {
+        setRoomState(currentRoom.roomState);
+    }, [currentRoom.roomState]);
 
     const handleInteraction = () => {
-        console.log('작동');
-        const newPlayers = currentRoom.roomPlayers.map(
-            (player: CurrentPlayersInfo) => ({
-                ...player,
-                position: new Vector3(...player.position),
-            })
-        );
-        const seeker = newPlayers.find(
-            (p: CurrentPlayersInfo) => p.isSeeker && !p.isDead
-        );
-        // console.log(seeker);
+        if (roomState === 3) {
+            const newPlayers = currentRoom.roomPlayers.map(
+                (player: CurrentPlayersInfo) => ({
+                    ...player,
+                    position: new Vector3(...player.position),
+                })
+            );
 
-        if (seeker && seeker.nickname === meName) {
-            // console.log('간다 공격!~');
-            let killFlag = false;
-            // console.log(killFlag, meHeart);
+            const seeker = newPlayers.find(
+                (p: CurrentPlayersInfo) =>
+                    p.isSeeker && !p.isDead && p.nickname === meName
+            );
+            // console.log(seeker);
 
-            const direction = new Vector3();
-            camera.getWorldDirection(direction); // 카메라의 방향을 얻음
+            if (seeker && seeker.nickname === meName) {
+                // console.log('간다 공격!~');
+                let killFlag = false;
+                // console.log(killFlag, meHeart);
 
-            raycaster.set(camera.position, direction); // 카메라 위치와 방향을 기반으로 레이캐스터 설정
-            const intersects = raycaster.intersectObjects(scene.children, true);
+                const direction = new Vector3();
+                camera.getWorldDirection(direction); // 카메라의 방향을 얻음
 
-            // console.log(seeker.position);
-            if (intersects.length > 0) {
-                intersects.map((item, index) => {
-                    if (index > 8) {
-                        return;
-                    }
-                    const closestObject = item.object;
-                    // console.log('감지된 객체:', closestObject);
-                    setDetectedObject(closestObject);
-                    // drawRayLine(camera.position, intersects[0].point); // 레이를 그리는 함수 호출
-                    currentRoom.roomPlayers.map((item: CurrentPlayersInfo) => {
-                        // 모든 부모 이름을 가져옵니다.
-                        const parentNames = getParentNames(closestObject);
-                        if (
-                            !item.isDead &&
-                            parentNames.includes(item.nickname)
-                        ) {
-                            console.log('죽인다 빵야빵야');
-                            killFlag = true;
-                            dispatch(heartState(7));
-                            stompClient.sendMessage(
-                                `/player.dead`,
-                                JSON.stringify({
-                                    type: 'player.dead',
-                                    roomId: currentRoom.roomId,
-                                    sender: item.nickname,
-                                    data: {
-                                        nickname: item.nickname,
-                                        isDead: true,
-                                    },
-                                })
-                            );
-                            const data = `도망자 '${item.nickname}' 님이 발견됐습니다.`;
-                            stompClient.sendMessage(
-                                `/chat.player`,
-                                JSON.stringify({
-                                    type: 'chat.player',
-                                    roomId: currentRoom.roomId,
-                                    sender: meInfo.nickname,
-                                    data: {
-                                        nickname: '<SYSTEM>',
-                                        content: data,
-                                    },
-                                })
-                            );
-                            item.isDead = true;
+                raycaster.params.Mesh.threshold = 4;
+                raycaster.set(camera.position, direction); // 카메라 위치와 방향을 기반으로 레이캐스터 설정
+                const intersects = raycaster.intersectObjects(
+                    scene.children,
+                    true
+                );
+
+                // console.log(seeker.position);
+                if (intersects.length > 0) {
+                    let flag = false;
+                    intersects.map((obj, index) => {
+                        if (index > 8 || flag) {
+                            return;
                         }
+                        const closestObject = obj.object;
+                        // console.log('감지된 객체:', closestObject);
+                        setDetectedObject(closestObject);
+                        // drawRayLine(camera.position, intersects[0].point); // 레이를 그리는 함수 호출
+                        currentRoom.roomPlayers.map(
+                            (item: CurrentPlayersInfo, index: number) => {
+                                // 모든 부모 이름을 가져옵니다.
+                                const parentNames =
+                                    getParentNames(closestObject);
+                                if (
+                                    !item.isDead &&
+                                    parentNames.includes(item.nickname)
+                                ) {
+                                    console.log('죽인다 빵야빵야');
+                                    killFlag = true;
+                                    dispatch(heartState(7));
+                                    stompClient.sendMessage(
+                                        `/player.dead`,
+                                        JSON.stringify({
+                                            type: 'player.dead',
+                                            roomId: currentRoom.roomId,
+                                            sender: item.nickname,
+                                            data: {
+                                                nickname: item.nickname,
+                                                isDead: true,
+                                            },
+                                        })
+                                    );
+                                    const data = `도망자 '${item.nickname}' 님이 발견됐습니다.`;
+                                    stompClient.sendMessage(
+                                        `/chat.player`,
+                                        JSON.stringify({
+                                            type: 'chat.player',
+                                            roomId: currentRoom.roomId,
+                                            sender: meInfo.nickname,
+                                            data: {
+                                                nickname: '<SYSTEM>',
+                                                content: data,
+                                            },
+                                        })
+                                    );
+                                    flag = true;
+                                    dispatch(deadPeopleState(index));
+                                    return { ...item, isDead: true };
+                                }
+                                return item;
+                            }
+                        );
                     });
-                });
-                if (!killFlag) {
-                    dispatch(decrementHeartState());
-                    killFlag = false;
+                    if (!killFlag) {
+                        dispatch(decrementHeartState());
+                        killFlag = false;
+                    }
+                    // closestObject.parent?.name 지준영
                 }
-                // closestObject.parent?.name 지준영
             }
         }
     };

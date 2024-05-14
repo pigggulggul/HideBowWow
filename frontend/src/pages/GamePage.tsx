@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChatType, CurrentPlayersInfo } from '../types/GameType';
-import { heartState } from '../store/user-slice';
+import { chatFlagState, heartState } from '../store/user-slice';
 import StompClient from '../websocket/StompClient';
 import {
     startRecording,
@@ -25,10 +25,11 @@ import keyW from '../assets/images/icon/key_w.png';
 import keyC from '../assets/images/icon/key_c.png';
 import keyM from '../assets/images/icon/key_m.png';
 import keyR from '../assets/images/icon/key_r.png';
+import keyRight from '../assets/images/icon/key_arrowR.png';
+import keyLeft from '../assets/images/icon/key_arrowL.png';
 import keySpace from '../assets/images/icon/key_space.png';
 import ingameMusic from '../assets/bgm/ingame_music.mp3';
 import ObjectInfo from '../json/ObjectInfo.json';
-import seekerDisplay from '../assets/images/bg/seekerBg.png';
 
 export default function GamePage() {
     const stompClient = StompClient.getInstance();
@@ -124,10 +125,10 @@ export default function GamePage() {
         }
     }, [meInfo.isSeeker]); 
     useEffect(() => {
-        if (meHeart < 5 && meHeart >= 0) {
+        if (meHeart < 7 && meHeart >= 0) {
             handleShot();
         }
-        if (meHeart === 0) {
+        if (currentRoom.roomState === 3 && meHeart === 0) {
             stompClient.sendMessage(
                 `/player.dead`,
                 JSON.stringify({
@@ -157,6 +158,7 @@ export default function GamePage() {
     }, [meHeart]);
 
     useEffect(() => {
+        dispatch(chatFlagState(toggleChat));
         if (toggleChat) {
             if (inputRef.current) {
                 inputRef.current.focus();
@@ -437,9 +439,9 @@ export default function GamePage() {
                     <p className="w-[10px] h-[10px] rounded-full bg-black"></p>
                 </div>
             ) : ( 
-                <></>
-            )}   
-            <div className="absolute flex flex-col top-1 left-1 w-[25s%] h-[40%] bg-black bg-opacity-20 p-[0.4vw]">
+                <></> 
+            )}
+            <div className="absolute flex flex-col top-1 left-1 w-[25s%] h-[50%] bg-black bg-opacity-20 p-[0.4vw]"> 
                 <div className="flex items-center">
                     <img className="px-[0.2vw]" src={keyW} alt="" />
                     <img className="px-[0.2vw]" src={keyA} alt="" />
@@ -475,6 +477,13 @@ export default function GamePage() {
                             />
                             <p className="px-[0.4vw] text-[1.6vw]">
                                 고정 / 해제
+                            </p>
+                        </div>
+                        <div className="flex items-center mb-[1vw]">
+                            <img className="px-[0.2vw]" src={keyLeft} alt="" />
+                            <img className="px-[0.2vw]" src={keyRight} alt="" />
+                            <p className="px-[0.4vw] text-[1.6vw]">
+                                관전 (고정시에만)
                             </p>
                         </div>
                     </>

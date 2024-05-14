@@ -237,10 +237,10 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     };
 
     useEffect(() => {
-        callsInLastSecondRef.current = callsInLastSecond;  
+        callsInLastSecondRef.current = callsInLastSecond;
     }, [callsInLastSecond]);
-     
-    useEffect(() => {  
+
+    useEffect(() => {
         // 3초마다 호출
         if (meInfo?.nickname === playerNickname) {
             const intervalId = setInterval(() => {
@@ -259,8 +259,8 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
             }, 3000);
 
             return () => clearInterval(intervalId);
-        }  
-    }, []); 
+        }
+    }, []);
 
     useEffect(() => {
         const handleMouseMove = (event: MouseEvent) => {
@@ -330,7 +330,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     }, [isJumping]);
 
     // Frame
-    useFrame(({ camera , clock }) => {
+    useFrame(({ camera, clock }) => {
         if (isFirstFrame.current) {
             isFirstFrame.current = false;
             prevPosition.current = playerRef.current
@@ -356,11 +356,27 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
             }
 
             const moveVector = new Vector3(
-                (keyState.current['d']||keyState.current['D']||keyState.current['ㅇ'] ? 1 : 0) -
-                    (keyState.current['a']||keyState.current['A']||keyState.current['ㅁ'] ? 1 : 0),
+                (keyState.current['d'] ||
+                keyState.current['D'] ||
+                keyState.current['ㅇ']
+                    ? 1
+                    : 0) -
+                    (keyState.current['a'] ||
+                    keyState.current['A'] ||
+                    keyState.current['ㅁ']
+                        ? 1
+                        : 0),
                 0,
-                (keyState.current['w']||keyState.current['W']||keyState.current['ㅈ'] ? 1 : 0) -
-                    (keyState.current['s']||keyState.current['S']||keyState.current['ㄴ'] ? 1 : 0)
+                (keyState.current['w'] ||
+                keyState.current['W'] ||
+                keyState.current['ㅈ']
+                    ? 1
+                    : 0) -
+                    (keyState.current['s'] ||
+                    keyState.current['S'] ||
+                    keyState.current['ㄴ']
+                        ? 1
+                        : 0)
             );
             if (!moveVector.equals(new Vector3(0, 0, 0))) {
                 lockPointer();
@@ -408,11 +424,27 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
 
                 // 내 캐릭터의 경우
                 const moveVector = new Vector3(
-                    (keyState.current['a']||keyState.current['A']||keyState.current['ㅁ'] ? 1 : 0) -
-                        (keyState.current['d']||keyState.current['D']||keyState.current['ㅇ'] ? 1 : 0),
+                    (keyState.current['a'] ||
+                    keyState.current['A'] ||
+                    keyState.current['ㅁ']
+                        ? 1
+                        : 0) -
+                        (keyState.current['d'] ||
+                        keyState.current['D'] ||
+                        keyState.current['ㅇ']
+                            ? 1
+                            : 0),
                     0,
-                    (keyState.current['s']||keyState.current['S']||keyState.current['ㄴ'] ? 1 : 0) -
-                        (keyState.current['w']||keyState.current['W']||keyState.current['ㅈ'] ? 1 : 0)
+                    (keyState.current['s'] ||
+                    keyState.current['S'] ||
+                    keyState.current['ㄴ']
+                        ? 1
+                        : 0) -
+                        (keyState.current['w'] ||
+                        keyState.current['W'] ||
+                        keyState.current['ㅈ']
+                            ? 1
+                            : 0)
                 );
 
                 if (
@@ -600,21 +632,21 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                 camera.zoom = 0.4;
                 camera.updateProjectionMatrix();
             } else {
-            // 다른 플레이어의 캐릭터
-            roomState.roomPlayers.forEach((otherPlayer: any) => {
-                if (
-                    otherPlayer.nickname !== meInfo?.nickname &&
-                    otherPlayer.nickname === playerNickname && 
-                    otherPlayer.isSeeker === true
-                ) {
-                    const otherPlayerRef = playerRef.current;
-                    if (otherPlayerRef) {
-                        // 위치 적용
-                        otherPlayerRef?.position.set(
-                            otherPlayer.position[0],
-                            otherPlayer.position[1],
-                            otherPlayer.position[2]
-                        );
+                // 다른 플레이어의 캐릭터
+                roomState.roomPlayers.forEach((otherPlayer: any) => {
+                    if (
+                        otherPlayer.nickname !== meInfo?.nickname &&
+                        otherPlayer.nickname === playerNickname &&
+                        otherPlayer.isSeeker === true
+                    ) {
+                        const otherPlayerRef = playerRef.current;
+                        if (otherPlayerRef) {
+                            // 위치 적용
+                            otherPlayerRef?.position.set(
+                                otherPlayer.position[0],
+                                otherPlayer.position[1],
+                                otherPlayer.position[2]
+                            );
 
                             const rotationVector = new Vector3(
                                 otherPlayer.direction[0],
@@ -659,16 +691,16 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                 });
             } 
         }
-            
+
         if (nicknameRef.current) {
             nicknameRef.current.position.set(
                 playerRef.current.position.x,
                 playerRef.current.position.y + 3,
                 playerRef.current.position.z
-            ); 
+            );
             nicknameRef.current.lookAt(camera.position);
-        }   
-    }); 
+        }
+    });
 
     return {
         meInfo,
