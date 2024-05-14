@@ -479,13 +479,13 @@ export default function GamePage() {
                                 고정 / 해제
                             </p>
                         </div>
-                        <div className="flex items-center mb-[1vw]">
+                        {/* <div className="flex items-center mb-[1vw]">
                             <img className="px-[0.2vw]" src={keyLeft} alt="" />
                             <img className="px-[0.2vw]" src={keyRight} alt="" />
                             <p className="px-[0.4vw] text-[1.6vw]">
                                 관전 (고정시에만)
                             </p>
-                        </div>
+                        </div> */}
                     </>
                 )}
 
@@ -582,11 +582,22 @@ export default function GamePage() {
             </div>
             {/* /////////////// */}
             <div className="absolute flex flex-col bottom-20 justify-center"> 
-                <p className="text-[2vw] text-black">
+            {observerState.trim() !== '' ? (
+                (!observerState.startsWith("당신은")) ? (
+                    <div className='flex justify-center items-center text-[2vw]'
+                    >
+                    <img className="px-[0.2vw]" src={keyLeft} alt="" />
+                    <p className='mx-[2vw]'>{observerState}</p>
+                    <img className="px-[0.2vw]" src={keyRight} alt="" />
+                    </div>
+
+                ) : (
+                    <p className="text-[2vw] text-black">
                     {observerState}
-                </p>
-            </div>
-            {/* /////////////// */}
+                    </p>
+                )
+            ) : null}
+            </div> 
 
             {shot ? (
                 <div className="absolute w-full h-full bg-red-400 opacity-35"></div>
