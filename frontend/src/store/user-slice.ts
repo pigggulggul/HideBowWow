@@ -21,6 +21,8 @@ export interface UserState {
     chatData: ChatType[];
     chatFlag: boolean;
     channelIndex: number;
+    rerollTime: number; 
+    observserMode: boolean;
 }
 const initialState: UserState = {
     userNickname: '',
@@ -57,9 +59,12 @@ const initialState: UserState = {
         minY: -1,
         maxY: 8,
     },
-    chatData: [],
+    chatData: [], 
+    observer: '',
+    observserMode: false, 
     chatFlag: false,
-    channelIndex :1
+    channelIndex :1,
+    rerollTime: 0,
 };
 
 export const userSlice = createSlice({
@@ -90,6 +95,20 @@ export const userSlice = createSlice({
                 ...state.currentRoom,
                 roomPlayers: state.currentRoom.roomPlayers.filter(
                     (player) => player.nickname !== action.payload.nickname
+                ),
+            };
+        },
+        deadPeopleState: (state, action) => {
+            state.currentRoom = {
+                ...state.currentRoom,
+                roomPlayers: state.currentRoom.roomPlayers.map(
+                    (player, index) => {
+                        if (index === action.payload) {
+                            // 해당 인덱스의 플레이어의 isDead 값을 true로 설정
+                            return { ...player, isDead: true };
+                        }
+                        return player; // 다른 플레이어는 그대로 유지
+                    }
                 ),
             };
         },
@@ -142,9 +161,15 @@ export const userSlice = createSlice({
         },
         addChatDataState: (state, action) => {
             state.chatData = [...state.chatData, action.payload];
-        },
+        }, 
+        observerState: (state, action) => {
+            state.observer = action.payload;
+        },  
         chatFlagState: (state, action) => {
             state.chatFlag = action.payload;
+        },
+        rerollState: (state, action) => {
+            state.rerollTime = action.payload;
         },
         channelIndexState: (state, action) => {
             state.channelIndex = action.payload;
@@ -169,8 +194,11 @@ export const {
     bgmFlagState,
     mapSizeState,
     chatDataState,
-    addChatDataState,
+    addChatDataState, 
+    observerState,  
     chatFlagState,
+    deadPeopleState,
+    rerollState,
     channelIndexState
 } = userSlice.actions;
 export default userSlice.reducer;
