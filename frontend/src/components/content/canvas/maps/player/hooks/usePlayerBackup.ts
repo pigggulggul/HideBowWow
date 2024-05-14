@@ -124,7 +124,7 @@ export const usePlayer = ({ player, position, modelIndex }: PlayerInitType) => {
             setAnimation(
                 'CharacterArmature|CharacterArmature|CharacterArmature|Run'
             );
-            console.log(moveVector);
+            // console.log(moveVector);
         } else {
             setIsWalking(false);
             setAnimation(

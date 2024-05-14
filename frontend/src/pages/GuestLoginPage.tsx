@@ -25,7 +25,8 @@ export default function GuestLoginPage() {
                 dispatch(userNicknameState(guestLoginInfo.nickname));
                 navigate('/selectchannel');
             } else {
-                console.log('로그인 실패');
+                alert("로그인에 실패하였습니다.")
+                // console.log('로그인 실패');
             }
         }
     };

@@ -65,7 +65,7 @@ export default function GamePage() {
 
     const [toggleChat, setToggleChat] = useState<boolean>(false);
     const [roundStart, setRoundStart] = useState<boolean>(false);
-    const [toggleSetting, setToggleSetting] = useState<boolean>(false);
+    const [, setToggleSetting] = useState<boolean>(false);
     const [chatContent, setChatContent] = useState<string>('');  
 
     //공격
@@ -226,7 +226,7 @@ export default function GamePage() {
             } else if (event.key === 'Escape') {
                 setToggleSetting((prev) => !prev);
                 const element = document.body;
-                console.log('헤헤');
+                // console.log('헤헤');
                 const requestPointerLock = element.requestPointerLock;
                 requestPointerLock.call(element);
             }
@@ -234,7 +234,7 @@ export default function GamePage() {
         const onPointerLockChange = () => {
             if (document.pointerLockElement === null) {
                 setToggleSetting(true);
-                console.log('Pointer has been unlocked.');
+                // console.log('Pointer has been unlocked.');
                 // 포인터가 잠금 해제되었을 때 실행할 추가 로직
                 // 예: 팝업 표시, 상태 업데이트 등
             } else {
@@ -269,9 +269,9 @@ export default function GamePage() {
             setRoundStart(false);
         }, 5000); // 0.5초 후에 isRed 상태를 false로 변경
     };
-    const closeSetting = () => {
-        setToggleSetting(false);
-    }; 
+    // const closeSetting = () => {
+    //     setToggleSetting(false);
+    // }; 
 
     return (
         <RecoilRoot>

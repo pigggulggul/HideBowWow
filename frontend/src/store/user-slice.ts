@@ -22,6 +22,7 @@ export interface UserState {
     observer: string;  
     chatFlag: boolean;
     rerollFlag: number; 
+    observserMode: boolean;
 }
 const initialState: UserState = {
     userNickname: '',
