@@ -17,8 +17,10 @@ import {
 import StompClient from '../../../../../../websocket/StompClient';
 import { useSelector } from 'react-redux';
 import { GLTF, SkeletonUtils } from 'three-stdlib';
-import { removeCollideObjectState } from '../../../../../../store/user-slice';
-import { store } from '../../../../../../store/store';
+import { removeCollideObjectState,
+        observerState
+ } from '../../../../../../store/user-slice';
+import { store } from '../../../../../../store/store'; 
 
 interface GLTFAction extends AnimationClip {
     name: ActionName;
@@ -339,6 +341,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
         if (!player || !playerRef.current) return;
 
         if((roomState.roomState == 1 || roomState.roomState == 2) && meInfo.isSeeker === true) { // 게임 대기시간  
+            store.dispatch(observerState("당신은 술래입니다. 사물팀이 숨는동안 맵을 외우세요!")); 
             // 관전모드 
             if (!observerRef.current) {
                 observerRef.current = new Observer();
@@ -399,6 +402,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
             camera.lookAt(cameraTarget);  
         } else { // 게임 시작
             if (meInfo?.nickname === playerNickname) { // 내 캐릭터인 경우 
+                store.dispatch(observerState(" ")); 
                 const delta = clock.getDelta(); // 프레임 간 시간 간격을 가져옵니다.
                 accumulatedTimeRef.current += delta;
 
@@ -653,22 +657,13 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                         }
                     }
                 });
-            }
-
-            if (nicknameRef.current) {
-                nicknameRef.current.position.set(
-                    playerRef.current.position.x,
-                    playerRef.current.position.y + 3.5,
-                    playerRef.current.position.z
-                );
-                nicknameRef.current.lookAt(camera.position);
-            }
+            } 
         }
             
         if (nicknameRef.current) {
             nicknameRef.current.position.set(
                 playerRef.current.position.x,
-                playerRef.current.position.y + 3.5,
+                playerRef.current.position.y + 3,
                 playerRef.current.position.z
             ); 
             nicknameRef.current.lookAt(camera.position);
