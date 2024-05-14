@@ -25,11 +25,12 @@ export default function UserLoginPage() {
 
             const res = await userLogin(userLoginInfo);
             if (res.status === httpStatusCode.OK) {
-                console.log('로그인 성공');
+                // console.log('로그인 성공');
                 dispatch(userNicknameState(userLoginInfo.nickname));
                 navigate('/selectchannel');
             } else {
-                console.log('로그인 실패');
+                alert("로그인에 실패하였습니다.");
+                // console.log('로그인 실패');
             }
         }
     };

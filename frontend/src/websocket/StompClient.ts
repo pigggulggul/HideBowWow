@@ -62,9 +62,9 @@ class StompClient {
                                 break;
                             }
                             case 'player.dead': {
-                                console.log(
-                                    '플레이어 사망 : ' + msg.data.nickname
-                                );
+                                // console.log(
+                                //     '플레이어 사망 : ' + msg.data.nickname
+                                // );
                                 const {
                                     reduxFlag: { userSlice },
                                 } = store.getState(); // userSlice만 추출

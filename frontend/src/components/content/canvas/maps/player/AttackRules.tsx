@@ -96,7 +96,7 @@ export function AttackRules() {
                                     !item.isDead &&
                                     parentNames.includes(item.nickname)
                                 ) {
-                                    console.log('죽인다 빵야빵야');
+                                    // console.log('죽인다 빵야빵야');
                                     killFlag = true;
                                     dispatch(heartState(7));
                                     stompClient.sendMessage(

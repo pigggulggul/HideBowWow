@@ -52,6 +52,10 @@ export default function GamePage() {
         (state: any) => state.reduxFlag.userSlice.chatData
     );
 
+    const observerState = useSelector(
+        (state: any) => state.reduxFlag.userSlice.observer
+    ); 
+
     const [seekerNum, setSeekerNum] = useState<number>(0);
     const [hiderNum, setHiderNum] = useState<number>(0);
     const [stream, setStream] = useState<any>();
@@ -63,7 +67,7 @@ export default function GamePage() {
     const [toggleChat, setToggleChat] = useState<boolean>(false);
     const [roundStart, setRoundStart] = useState<boolean>(false);
     const [, setToggleSetting] = useState<boolean>(false);
-    const [chatContent, setChatContent] = useState<string>('');
+    const [chatContent, setChatContent] = useState<string>('');  
 
     //공격
     const [shot, setShot] = useState<boolean>(false);
@@ -120,7 +124,7 @@ export default function GamePage() {
                 dispatch(heartState(1));
             }
         }
-    }, [meInfo.isSeeker]);
+    }, [meInfo.isSeeker]); 
     useEffect(() => {
         if (meHeart < 7 && meHeart >= 0) {
             handleShot();
@@ -223,7 +227,7 @@ export default function GamePage() {
             } else if (event.key === 'Escape') {
                 setToggleSetting((prev) => !prev);
                 const element = document.body;
-                console.log('헤헤');
+                // console.log('헤헤');
                 const requestPointerLock = element.requestPointerLock;
                 requestPointerLock.call(element);
             }
@@ -231,7 +235,7 @@ export default function GamePage() {
         const onPointerLockChange = () => {
             if (document.pointerLockElement === null) {
                 setToggleSetting(true);
-                console.log('Pointer has been unlocked.');
+                // console.log('Pointer has been unlocked.');
                 // 포인터가 잠금 해제되었을 때 실행할 추가 로직
                 // 예: 팝업 표시, 상태 업데이트 등
             } else {
@@ -253,7 +257,7 @@ export default function GamePage() {
             );
         };
     }, []);
-
+  
     const handleShot = () => {
         setShot(true);
         setTimeout(() => {
@@ -268,11 +272,11 @@ export default function GamePage() {
     };
     // const closeSetting = () => {
     //     setToggleSetting(false);
-    // };
+    // }; 
 
     return (
         <RecoilRoot>
-            <Content />
+            <Content /> 
             {currentRoom.roomState === 1 ? (
                 <div className="absolute flex top-4 w-full justify-center items-center text-[2vw]">
                     <p className=" text-sky-400">술래</p>
@@ -323,7 +327,7 @@ export default function GamePage() {
             ) : (
                 <></>
             )} */}
-            {currentRoom.roomState === 2 && !meInfo.isSeeker ? (
+            {currentRoom.roomState === 2 ? (
                 <div className="absolute flex top-4 w-full justify-center items-center text-[2vw]">
                     <p className=" text-sky-400">술래</p>
                     <p className=" text-sky-400 ms-[1vw]">{seekerNum}</p>
@@ -331,7 +335,7 @@ export default function GamePage() {
                         숨는 시간 : {currentRoom.roomTime}
                     </p>
                     <p className=" text-orange-400">도망자</p>
-                    <p className=" text-orange-400 ms-[1vw]">{hiderNum}</p>
+                    <p className=" text-orange-400 ms-[1vw]">{hiderNum}</p>  
                 </div>
             ) : (
                 <></>
@@ -435,10 +439,10 @@ export default function GamePage() {
                 <div className="absolute w-full h-full flex justify-center items-center">
                     <p className="w-[10px] h-[10px] rounded-full bg-black"></p>
                 </div>
-            ) : (
-                <></>
+            ) : ( 
+                <></> 
             )}
-            <div className="absolute flex flex-col top-1 left-1 w-[25s%] h-[auto] bg-black bg-opacity-20 p-[0.4vw]">
+            <div className="absolute flex flex-col top-1 left-1 w-[25s%] h-[50%] bg-black bg-opacity-20 p-[0.4vw]"> 
                 <div className="flex items-center">
                     <img className="w-[40px] px-[0.2vw]" src={keyW} alt="" />
                     <img className="w-[40px] px-[0.2vw]" src={keyA} alt="" />
@@ -484,21 +488,13 @@ export default function GamePage() {
                                 고정 / 해제
                             </p>
                         </div>
-                        <div className="flex items-center mb-[1vw]">
-                            <img
-                                className="w-[40px] px-[0.2vw]"
-                                src={keyLeft}
-                                alt=""
-                            />
-                            <img
-                                className="w-[40px] px-[0.2vw]"
-                                src={keyRight}
-                                alt=""
-                            />
-                            <p className="px-[0.4vw] text-[1.4vw]">
+                        {/* <div className="flex items-center mb-[1vw]">
+                            <img className="px-[0.2vw]" src={keyLeft} alt="" />
+                            <img className="px-[0.2vw]" src={keyRight} alt="" />
+                            <p className="px-[0.4vw] text-[1.6vw]">
                                 관전 (고정시에만)
                             </p>
-                        </div>
+                        </div> */}
                     </>
                 )}
 
@@ -605,6 +601,24 @@ export default function GamePage() {
                     }
                 />
             </div>
+            {/* /////////////// */}
+            <div className="absolute flex flex-col bottom-20 justify-center"> 
+            {observerState.trim() !== '' ? (
+                (!observerState.startsWith("당신은")) ? (
+                    <div className='flex justify-center items-center text-[2vw]'
+                    >
+                    <img className="px-[0.2vw]" src={keyLeft} alt="" />
+                    <p className='mx-[2vw]'>{observerState}</p>
+                    <img className="px-[0.2vw]" src={keyRight} alt="" />
+                    </div>
+
+                ) : (
+                    <p className="text-[2vw] text-black">
+                    {observerState}
+                    </p>
+                )
+            ) : null}
+            </div> 
 
             {shot ? (
                 <div className="absolute w-full h-full bg-red-400 opacity-35"></div>
