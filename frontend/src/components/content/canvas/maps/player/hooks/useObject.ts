@@ -604,7 +604,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         // }
         if (!observerRef.current) {
             observerRef.current = new Observer();
-            observerRef.current.position = new Vector3(-100, 30, -20);
+            observerRef.current.position = new Vector3(-70, 30, -20);
             observerRef.current.viewLR = 0;
             observerRef.current.viewUpDown = 0;
         }
@@ -693,6 +693,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     useFrame(({ camera, clock }) => {
         if (!player || !playerRef.current) return;
         if (!observerRef.current) return;
+        
 
         if (meInfo?.nickname === playerNickname) { 
             const delta = clock.getDelta(); // 프레임 간 시간 간격을 가져옵니다.

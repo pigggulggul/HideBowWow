@@ -340,10 +340,11 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
 
         if (!player || !playerRef.current) return;
 
-        if((roomState.roomState == 1 || roomState.roomState == 2) && meInfo.isSeeker === true) { // 게임 대기시간  
+        if((roomState.roomState == 1 || roomState.roomState == 2) && meInfo.isSeeker === true && meInfo.nickname === playerNickname) { // 게임 대기시간  
             store.dispatch(observerState("당신은 술래입니다. 사물팀이 숨는동안 맵을 외우세요!")); 
             // 관전모드 
             if (!observerRef.current) {
+                // console.log("생성!")
                 observerRef.current = new Observer();
                 observerRef.current.position = new Vector3(
                     playerRef.current.position.x + 12,
