@@ -23,7 +23,7 @@ type GLTFResult = GLTF & {
 export function Grass(props: ObjectSettingType) {
     const { nodes, materials } = useGLTF('/models/object/Grass.glb') as GLTFResult;
     const [ref] = useBox<THREE.Mesh>(() => ({
-        args: [1, 1, 1],
+        args: [0.5, 0.5, 0.5],
         mass: 0.1,
         position: props.position,
         rotation: props.rotation,

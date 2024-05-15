@@ -28,7 +28,7 @@ export function Hay_1(props: ObjectSettingType) {
     ) as GLTFResult;
 
     const [ref] = useBox<THREE.Mesh>(() => ({
-        args: [1, 1, 1],
+        args: [2, 4, 3],
 
         mass: 0.1,
 
@@ -49,7 +49,7 @@ export function Hay_1(props: ObjectSettingType) {
                     material={materials.Brown_2}
                     position={props.position}
                     rotation={props.rotation}
-                    scale={props.scale}
+                    scale={[3, 3, 3]}
                 />
                 <mesh
                     ref={ref}
@@ -57,7 +57,7 @@ export function Hay_1(props: ObjectSettingType) {
                     material={materials.Yellow}
                     position={props.position}
                     rotation={props.rotation}
-                    scale={props.scale}
+                    scale={[3, 3, 3]}
                 />
             </group>
         </group>

@@ -1,6 +1,7 @@
 import { Alley_stones } from "../elements/Alley_stones";
 import { Axe } from "../elements/Axe";
 import { Barn } from "../elements/Barn";
+import { Barrel } from "../elements/Barrel";
 import { Barrel_2 } from "../elements/Barrel_2";
 import { Bench_2 } from "../elements/Bench_2";
 import { Bridge_1 } from "../elements/Bridge_1";
@@ -500,12 +501,10 @@ export function FarmElement() {
       <House_6
         position={[-25, 0.5, 30]}
         rotation={[-Math.PI / 2, 0, Math.PI / 2]}
-        scale={[2, 2, 2]}
       />
       <Dog_house
         position={[-25, 0.5, 20]}
         rotation={[-Math.PI / 2, 0, Math.PI / 2]}
-        scale={[2, 2, 2]}
       />
       <Fence
         position={[-16, 0.5, 15]}
@@ -573,28 +572,24 @@ export function FarmElement() {
       ))}
 
       <Hay_1
-        position={[-42, 0.5, 65]}
+        position={[-40, 0.5, 65]}
         rotation={[-Math.PI / 2, 0, Math.PI / 1]}
-        scale={[3, 3, 3]}
       />
       <Hay_2
-        position={[-42, 0.5, 55]}
+        position={[-40, 0.5, 55]}
         rotation={[-Math.PI / 2, 0, Math.PI / 1]}
-        scale={[3, 3, 3]}
       />
       <Hay_2
-        position={[-42, 0.5, 53]}
+        position={[-40, 0.5, 53]}
         rotation={[-Math.PI / 2, 0, Math.PI / 1]}
-        scale={[3, 3, 3]}
       />
 
       <Tree_house_trunk
         position={[-65, 0.5, 65]}
         rotation={[-Math.PI / 2, 0, Math.PI / 2]}
-        scale={[3, 3, 3]}
       />
 
-      {Array.from({ length: 7 }, (_, i) => -50 - i * 5).map((x) =>
+      {Array.from({ length: 7 }, (_, i) => -45 - i * 5).map((x) =>
         Array.from({ length: 12 }, (_, i) => 70 - i * 5).map((z) =>
           Math.random() < 0.2 ? (
             <Tree_4
@@ -606,11 +601,57 @@ export function FarmElement() {
               position={[x, 0.5, z]}
               rotation={[-Math.PI / 2, 0, Math.PI / 1]}
             />
-          ) : (
-            <></>
-          )
+          ) : Math.random() < 0.3 ? (
+            <Tree_trunk
+              position={[x, 0.5, z]}
+              rotation={[-Math.PI / 2, 0, Math.PI / 1]}
+            />
+          ) : <></>
         )
       )}
+
+      <Axe
+        position={[-50, 0.5, 10]}
+        rotation={[-Math.PI / 2, 0, Math.PI / 1]}
+      />
+      <Axe
+        position={[-35, 0.5, 45]}
+        rotation={[-Math.PI / 2, 0, Math.PI / 1]}
+      />
+      <Barrel
+        position={[-25, 1.9, 45]}
+        rotation={[-Math.PI / 2, 0, Math.PI / 1]}
+      />
+      <Barrel
+        position={[-30, 1.9, 10]}
+        rotation={[-Math.PI / 2, 0, Math.PI / 1]}
+      />
+      <Logs
+        position={[-65, 0.5, 10]}
+        rotation={[-Math.PI / 2, 0, Math.PI / 1]}
+      />
+      <Logs
+        position={[-55, 0.5, 75]}
+        rotation={[-Math.PI / 2, 0, Math.PI / 1]}
+      />
+      <Bench_2
+        position={[-10, 0.5, 50]}
+        rotation={[-Math.PI / 2, 0, Math.PI / 0.5]}
+      />
+      <Bench_2
+        position={[-10, 0.5, 55]}
+        rotation={[-Math.PI / 2, 0, Math.PI / 0.5]}
+      />
+      <Bench_2
+        position={[-10, 0.5, 60]}
+        rotation={[-Math.PI / 2, 0, Math.PI / 0.5]}
+      />
+      <Bench_2
+        position={[-10, 0.5, 65]}
+        rotation={[-Math.PI / 2, 0, Math.PI / 0.5]}
+      />
+
+
     </>
   );
 }
