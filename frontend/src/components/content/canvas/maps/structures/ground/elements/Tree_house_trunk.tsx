@@ -53,6 +53,7 @@ export function Tree_house_trunk(props: ObjectSettingType) {
           material={materials.Brown_2}
           position={props.position}
           rotation={props.rotation}
+          scale={props.scale}
         />
         <mesh
           ref={ref}
@@ -60,6 +61,7 @@ export function Tree_house_trunk(props: ObjectSettingType) {
           material={materials.Brown_3}
           position={props.position}
           rotation={props.rotation}
+          scale={props.scale}
         />
         <mesh
           ref={ref}
@@ -67,6 +69,7 @@ export function Tree_house_trunk(props: ObjectSettingType) {
           material={materials.Brown_4}
           position={props.position}
           rotation={props.rotation}
+          scale={props.scale}
         />
         <mesh
           ref={ref}
@@ -74,6 +77,7 @@ export function Tree_house_trunk(props: ObjectSettingType) {
           material={materials.Brown}
           position={props.position}
           rotation={props.rotation}
+          scale={props.scale}
         />
       </group>
     </group>

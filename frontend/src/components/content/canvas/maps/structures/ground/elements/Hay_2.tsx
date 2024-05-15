@@ -49,6 +49,7 @@ export function Hay_2(props: ObjectSettingType) {
                     material={materials.Brown_2}
                     position={props.position}
                     rotation={props.rotation}
+                    scale={props.scale}
                 />
                 <mesh
                     ref={ref}
@@ -56,6 +57,7 @@ export function Hay_2(props: ObjectSettingType) {
                     material={materials.Yellow}
                     position={props.position}
                     rotation={props.rotation}
+                    scale={props.scale}
                 />
             </group>
         </group>

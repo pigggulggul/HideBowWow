@@ -56,6 +56,7 @@ export function House_6(props: ObjectSettingType) {
           material={materials.Blue}
           position={props.position}
           rotation={props.rotation}
+          scale={props.scale}
         />
         <mesh
           ref={ref}
@@ -63,6 +64,7 @@ export function House_6(props: ObjectSettingType) {
           material={materials.Brown_2}
           position={props.position}
           rotation={props.rotation}
+          scale={props.scale}
         />
         <mesh
           ref={ref}
@@ -70,6 +72,7 @@ export function House_6(props: ObjectSettingType) {
           material={materials.Brown_3}
           position={props.position}
           rotation={props.rotation}
+          scale={props.scale}
         />
         <mesh
           ref={ref}
@@ -77,6 +80,7 @@ export function House_6(props: ObjectSettingType) {
           material={materials.Brown_4}
           position={props.position}
           rotation={props.rotation}
+          scale={props.scale}
         />
         <mesh
           ref={ref}
@@ -84,6 +88,7 @@ export function House_6(props: ObjectSettingType) {
           material={materials.Gray}
           position={props.position}
           rotation={props.rotation}
+          scale={props.scale}
         />
         <mesh
           ref={ref}
@@ -91,6 +96,7 @@ export function House_6(props: ObjectSettingType) {
           material={materials.Light_Gray}
           position={props.position}
           rotation={props.rotation}
+          scale={props.scale}
         />
       </group>
     </group>

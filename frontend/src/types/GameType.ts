@@ -71,6 +71,7 @@ export interface CollideObject {
 export interface ObjectSettingType {
     position: Triplet;
     rotation?: Triplet;
+    scale?: Triplet;
 }
 
 export interface MapSize {
