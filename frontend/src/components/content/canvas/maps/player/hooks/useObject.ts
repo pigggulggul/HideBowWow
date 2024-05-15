@@ -700,13 +700,16 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         return () => {
             document.removeEventListener('keydown', handleJumpDown);
         };
-    }, [isJumping, chatFlag]); 
+    }, [isJumping, chatFlag]);
 
     useFrame(({ camera, clock }) => {
         if (!player || !playerRef.current) return;
         if (!observerRef.current) return;
-        if((roomState.roomState == 1 || roomState.roomState == 2) && meInfo.isSeeker === true) { 
-            playerRef.current.position.set(-100,-100,-100)
+        if (
+            (roomState.roomState == 1 || roomState.roomState == 2) &&
+            meInfo.isSeeker === true
+        ) {
+            playerRef.current.position.set(-100, -100, -100);
             return;
         }
 

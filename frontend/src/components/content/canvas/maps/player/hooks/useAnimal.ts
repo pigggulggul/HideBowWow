@@ -106,6 +106,9 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     const collideState = useSelector(
         (state: any) => state.reduxFlag.userSlice.collideObj
     );
+    const mapState = useSelector(
+        (state: any) => state.reduxFlag.userSlice.mapSize
+    );
 
     const stompClient = StompClient.getInstance();
 
@@ -564,6 +567,16 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                             playerRef.current.position.y = 0.1;
                         }
                         playerRef.current.position.add(moveDirection);
+                    }
+                    if (
+                        playerRef.current.position.x > mapState.maxX ||
+                        playerRef.current.position.x < mapState.minX ||
+                        playerRef.current.position.z > mapState.maxZ ||
+                        playerRef.current.position.z < mapState.minZ ||
+                        playerRef.current.position.y > mapState.maxY ||
+                        playerRef.current.position.y < mapState.minY
+                    ) {
+                        playerRef.current.position.set(0, 0, 0);
                     }
 
                     if (accumulatedTimeRef.current >= delay) {
