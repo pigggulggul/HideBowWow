@@ -28,7 +28,7 @@ export function Wheelbarrow(props: ObjectSettingType) {
     ) as GLTFResult;
 
     const [ref] = useBox<THREE.Mesh>(() => ({
-        args: [1, 1, 1],
+        args: [3, 5, 3],
 
         mass: 0.1,
 
@@ -49,6 +49,7 @@ export function Wheelbarrow(props: ObjectSettingType) {
                     material={materials.Brown_4}
                     position={props.position}
                     rotation={props.rotation}
+                    scale={[2,2,2]}
                 />
                 <mesh
                     ref={ref}
@@ -56,6 +57,7 @@ export function Wheelbarrow(props: ObjectSettingType) {
                     material={materials.Brown}
                     position={props.position}
                     rotation={props.rotation}
+                    scale={[2,2,2]}
                 />
             </group>
         </group>
