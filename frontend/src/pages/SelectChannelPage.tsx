@@ -3,15 +3,18 @@ import backgroundImage from '../assets/images/bg/background-main.png';
 import textChannelSelect from '../assets/images/text/text_channel_select.png';
 import { useEffect, useState } from 'react';
 import { getChannel } from '../api/rooms';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { channelIndexState } from '../store/user-slice';
 import { useNavigate } from 'react-router-dom';
 
 export default function SelectChannelPage() {
     const [channelCount, setChannelCount] = useState<number[]>([0]);
+    const channelVal = useSelector(
+        (state: any) => state.reduxFlag.userSlice.channelIndex
+    );
     const dispatch = useDispatch();
     
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     useEffect(() => {
         const channel = async () => {
             await getChannel().then((res) => {
@@ -27,11 +30,12 @@ export default function SelectChannelPage() {
         };
         channel();
     }, []);
+
     const goChannel = (num : number)=>{
         console.log(num);
         dispatch(channelIndexState(num));
         // 네비게이트 사용해서 그쪽 링크로 이동
-        navigate('/lobby')
+        // navigate('/lobby')
     }
     return (
         <section

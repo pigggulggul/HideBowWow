@@ -270,7 +270,7 @@ export default function RoomPage() {
                                 );
                             })}
                         </div>
-                        {/* <div className="w-full h-[34%] bg-white my-[0.6vw] mx-[0.4vw] rounded-[0.6vw]">
+                        <div className="w-full h-[34%] bg-white my-[0.6vw] mx-[0.4vw] rounded-[0.6vw]">
                             <div className="w-[full] h-[85%] p-[0.4vw] overflow-auto">
                                 {chatList.map(
                                     (item: ChatType, index: number) => {
@@ -302,7 +302,7 @@ export default function RoomPage() {
                                 placeholder="채팅을 입력해주세요"
                                 onKeyDown={sendEnter}
                             />
-                        </div> */}
+                        </div>
                     </div>
                 </div>
 

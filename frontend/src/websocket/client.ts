@@ -4,10 +4,13 @@ import { Client } from '@stomp/stompjs';
 import { useSelector } from 'react-redux';
 
 let stompClient: Stomp.Client;
-
+let url = `${import.meta.env.VITE_REACT_WEBSOCKET_URL}`
 export const handshake = (channelIndex: any) => {
+    if(`${import.meta.env.VITE_REACT_WEBSOCKET_URL}`.includes("hidebowwow")){
+        url = `${import.meta.env.VITE_REACT_WEBSOCKET_URL}` + "/ch/";
+    }
   stompClient = new Client({
-    brokerURL: `${import.meta.env.VITE_REACT_WEBSOCKET_URL}` + "/ch/" + channelIndex + "/ws",
+    brokerURL: url + "/ws",
     // debug: function (str: any) {
     //   console.log(str);
     // },

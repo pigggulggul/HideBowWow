@@ -23,6 +23,7 @@ export interface UserState {
     channelIndex: number;
     rerollTime: number; 
     observserMode: boolean;
+    observer: string;
 }
 const initialState: UserState = {
     userNickname: '',
