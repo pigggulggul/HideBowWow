@@ -85,6 +85,7 @@ export function Content() {
     useEffect(() => {
         // console.log('선택 랜덤');
         if (roomState.roomState === 3 && meInfo.selectedIndex == null) {
+            console.log('작동1');
             const random = Math.floor(Math.random() * 3);
             setMe((prevMe) => ({ ...prevMe, selectedIndex: choice[random] })); // 새 객체를 반환하여 selectedIndex 업데이트
 
@@ -126,6 +127,7 @@ export function Content() {
             rerollTime === 2 &&
             selectCount !== 2
         ) {
+            console.log('작동2');
             const random = Math.floor(Math.random() * 3);
             setMe((prevMe) => ({ ...prevMe, selectedIndex: choice[random] })); // 새 객체를 반환하여 selectedIndex 업데이트
 
@@ -206,7 +208,6 @@ export function Content() {
         });
         setPlayers(updatedPlayers);
         setSelectCount((prev) => prev + 1);
-        console.log('바뀐 Player정보', updatedPlayers);
         dispatch(meSelectedInfoState(index));
         setSecondChoiceFlag(false);
     };
@@ -216,7 +217,6 @@ export function Content() {
             const newChoice = [...choice];
             newChoice[num] = Math.floor(Math.random() * 100);
             setChoice(newChoice);
-
             const newRerollFlag = [...rerollFlag];
             newRerollFlag[num] = true;
             setRerollFlag(newRerollFlag);
@@ -234,7 +234,8 @@ export function Content() {
                     (roomState.roomState === 3 &&
                         !me.isSeeker &&
                         rerollTime === 1 &&
-                        !choiceFlag) ? (
+                        !choiceFlag &&
+                        !me.isDead) ? (
                         <>
                             <div className="absolute flex items-center justify-between w-[80%] h-[80%] z-10">
                                 {choice.map((item, index) => {
@@ -278,7 +279,8 @@ export function Content() {
                                 })}
                             </div>
                             <div className="absolute flex justify-center bottom-8 text-[2vw] z-10">
-                                20초 후에 셋 중 하나의 물체로 변신합니다.
+                                20초 후에 셋 중 하나의 물체로 변신합니다. ESC 후
+                                선택하세요.
                             </div>
                         </>
                     ) : (

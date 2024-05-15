@@ -17,10 +17,10 @@ import {
 import StompClient from '../../../../../../websocket/StompClient';
 import { useSelector } from 'react-redux';
 import { store } from '../../../../../../store/store';
-import { 
+import {
     removeCollideObjectState,
-    observerState, 
- } from '../../../../../../store/user-slice';
+    observerState,
+} from '../../../../../../store/user-slice';
 
 // interface GLTFAction extends AnimationClip {
 //     name: ActionName;
@@ -149,9 +149,9 @@ class Observer {
 export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const playerNickname = player?.nickname;
     const keyState = useRef<{ [key: string]: boolean }>({});
-    const [isJumping, setIsJumping] = useState(0); 
-    const [mouseWheelValue, setMouseWheelValue] = useState<number>(10); 
-    const [jumpFlag, setJumpFlag] = useState<boolean>(false); 
+    const [isJumping, setIsJumping] = useState(0);
+    const [mouseWheelValue, setMouseWheelValue] = useState<number>(10);
+    const [jumpFlag, setJumpFlag] = useState<boolean>(false);
     const [freeViewMode, setFreeViewMode] = useState(false);
     const [callsInLastSecond, setCallsInLastSecond] = useState(0);
     const [delay, setDelay] = useState(0.00008);
@@ -173,13 +173,13 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     );
     const mapState = useSelector(
         (state: any) => state.reduxFlag.userSlice.mapSize
-    );  
+    );
     const collideState = useSelector(
-        (state: any) => state.reduxFlag.userSlice.collideObj 
+        (state: any) => state.reduxFlag.userSlice.collideObj
     );
     const chatFlag = useSelector(
         (state: any) => state.reduxFlag.userSlice.chatFlag
-    ); 
+    );
 
     const initialHeight = returnHeightSize(modelIndex);
     position.y = initialHeight;
@@ -190,7 +190,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const accumulatedTimeRef = useRef(0.0);
     const observerRef = useRef<Observer | null>(null);
     const [observedPlayerIndex, setObservedPlayerIndex] = useState(0);
-    const callsInLastSecondRef = useRef(callsInLastSecond); 
+    const callsInLastSecondRef = useRef(callsInLastSecond);
 
     const { scene: scene, materials } = useGLTF(
         (() => {
@@ -400,22 +400,26 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 default:
                     return '/models/object/Closet.glb';
             }
-        })()
+        })(),
+        true
     ) as GLTFResult;
     const getScaleByModelIndex = (_: number | undefined) => {
         return 0.025;
     };
-
+    const { scene: defaultScene } = useGLTF('/models/object/Barrel.glb');
     const scale = getScaleByModelIndex(modelIndex);
 
     //개별 모델링을 통하여 다른 객체임을 알려줘야한다.
     // const scene = useMemo(() => {
-    //     return SkeletonUtils.clone(scene_);
-    // }, []);
-    const objectMap = useGraph(scene);
+    //     return scene_ ? SkeletonUtils.clone(scene_) : defaultScene;
+    // }, [scene_, modelIndex]);
+    const objectMap =
+        scene && scene.visible ? useGraph(scene) : useGraph(defaultScene);
     const nodes = objectMap.nodes;
-    const material = returnMaterial(modelIndex);
-    const node = returnNode(modelIndex);
+    const material =
+        scene && scene.visible ? returnMaterial(modelIndex) : returnMaterial(0);
+    const node =
+        scene && scene.visible ? returnNode(modelIndex) : returnNode(0);
 
     // console.log(
     //     'scale : ',
@@ -524,28 +528,31 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             );
         }
 
-        setFreeViewMode((prevMode) => !prevMode); 
+        setFreeViewMode((prevMode) => !prevMode);
     };
 
     const handlePageUp = () => {
         // 플레이어
         setObservedPlayerIndex((prevIndex) => {
-            // 관전 중인 플레이어의 인덱스를 증가시킵니다. 
-            return (prevIndex + 1) % (roomState.roomPlayers.length+1);
-        });   
+            // 관전 중인 플레이어의 인덱스를 증가시킵니다.
+            return (prevIndex + 1) % (roomState.roomPlayers.length + 1);
+        });
     };
 
     const handlePageDown = () => {
-        setObservedPlayerIndex((prevIndex) => { 
-            // 관전 중인 플레이어의 인덱스를 감소시킵니다. 
-            return (prevIndex - 1 + roomState.roomPlayers.length+1) % (roomState.roomPlayers.length+1)
-        });   
+        setObservedPlayerIndex((prevIndex) => {
+            // 관전 중인 플레이어의 인덱스를 감소시킵니다.
+            return (
+                (prevIndex - 1 + roomState.roomPlayers.length + 1) %
+                (roomState.roomPlayers.length + 1)
+            );
+        });
     };
 
     useEffect(() => {
         callsInLastSecondRef.current = callsInLastSecond;
     }, [callsInLastSecond]);
- 
+
     useEffect(() => {
         // 3초마다 호출
         if (meInfo?.nickname === playerNickname) {
@@ -592,7 +599,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             document.removeEventListener('wheel', handleMouseWheel);
         };
     }, [meInfo, meInfo.isDead]);
-     
+
     useEffect(() => {
         if (playerRef.current) {
             // if (ref.current) {
@@ -621,14 +628,14 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
 
     // 키 입력
     useEffect(() => {
-        const handleKeyDown = (event: any) => { 
+        const handleKeyDown = (event: any) => {
             if (!chatFlag) {
                 keyState.current[event.key] = true;
                 if (event.key === 'r' || event.key === 'R') {
                     toggleFreeViewMode();
-                } 
+                }
             }
-        }; 
+        };
         const handleKeyUp = (event: any) => {
             if (!chatFlag) {
                 keyState.current[event.key] = false;
@@ -638,7 +645,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     handlePageDown();
                 }
             }
-        }; 
+        };
 
         document.addEventListener('keydown', handleKeyDown);
         document.addEventListener('keyup', handleKeyUp);
@@ -646,9 +653,9 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
             document.removeEventListener('keyup', handleKeyUp);
-        }; 
+        };
     }, [observedPlayerIndex, freeViewMode, chatFlag]);
- 
+
     // 키 입력
     useEffect(() => {
         const handleKeyDown = (event: any) => {
@@ -702,15 +709,14 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     useFrame(({ camera, clock }) => {
         if (!player || !playerRef.current) return;
         if (!observerRef.current) return;
-        
 
-        if (meInfo?.nickname === playerNickname) { 
+        if (meInfo?.nickname === playerNickname) {
             const delta = clock.getDelta(); // 프레임 간 시간 간격을 가져옵니다.
             accumulatedTimeRef.current += delta;
 
             if (meInfo?.isDead === false) {
                 // 살아있는 경우
-                if (!freeViewMode) {  
+                if (!freeViewMode) {
                     // 3인칭 모드
                     const moveVector = new Vector3(
                         (keyState.current['d'] ||
@@ -948,11 +954,11 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                         playerPosition.z + playerDirection.z
                     );
                     camera.lookAt(carmeraTarget);
-                    store.dispatch(observerState(" ")); 
+                    store.dispatch(observerState(' '));
                 } else {
-                    // (R클릭)  
+                    // (R클릭)
                     if (observedPlayerIndex === roomState.roomPlayers.length) {
-                        store.dispatch(observerState("자유시점")); 
+                        store.dispatch(observerState('자유시점'));
                         // 자유시점 모드
                         if (!observerRef.current) {
                             observerRef.current = new Observer();
@@ -1033,7 +1039,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                         camera.lookAt(cameraTarget);
                     } else {
                         // 관전모드
-                        lockPointer(); 
+                        lockPointer();
                         if (!observerRef.current) {
                             observerRef.current = new Observer();
                             observerRef.current.position = new Vector3(0, 0, 0);
@@ -1046,7 +1052,11 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                         const observedPlayer =
                             roomState.roomPlayers[observedPlayerIndex];
 
-                        store.dispatch(observerState("관전 중 : " + observedPlayer.nickname)); 
+                        store.dispatch(
+                            observerState(
+                                '관전 중 : ' + observedPlayer.nickname
+                            )
+                        );
                         if (observedPlayer) {
                             camera.position.set(
                                 //
@@ -1112,8 +1122,8 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             if (meInfo.isSeeker === true) return;
 
             if (observedPlayerIndex === roomState.roomPlayers.length) {
-                // 자유시점 모드 
-                store.dispatch(observerState("자유시점")); 
+                // 자유시점 모드
+                store.dispatch(observerState('자유시점'));
                 const moveVector = new Vector3(
                     (keyState.current['d'] ||
                     keyState.current['D'] ||
@@ -1184,7 +1194,9 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 const observedPlayer =
                     roomState.roomPlayers[observedPlayerIndex];
 
-                store.dispatch(observerState("관전 중 : " + observedPlayer.nickname)); 
+                store.dispatch(
+                    observerState('관전 중 : ' + observedPlayer.nickname)
+                );
                 if (observedPlayer) {
                     camera.position.set(
                         //
@@ -1201,7 +1213,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     );
                 }
             }
-        } 
+        }
 
         if (meInfo.isSeeker === false) {
             // 사물만 사물의 이름을 식별할 수 있다

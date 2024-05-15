@@ -31,6 +31,7 @@ import keyLeft from '../assets/images/icon/key_arrowL.png';
 import keySpace from '../assets/images/icon/key_space.png';
 import ingameMusic from '../assets/bgm/ingame_music.mp3';
 import ObjectInfo from '../json/ObjectInfo.json';
+import { store } from '../store/store';
 
 export default function GamePage() {
     const stompClient = StompClient.getInstance();
@@ -54,7 +55,7 @@ export default function GamePage() {
 
     const observerState = useSelector(
         (state: any) => state.reduxFlag.userSlice.observer
-    ); 
+    );
 
     const [seekerNum, setSeekerNum] = useState<number>(0);
     const [hiderNum, setHiderNum] = useState<number>(0);
@@ -67,7 +68,7 @@ export default function GamePage() {
     const [toggleChat, setToggleChat] = useState<boolean>(false);
     const [roundStart, setRoundStart] = useState<boolean>(false);
     const [, setToggleSetting] = useState<boolean>(false);
-    const [chatContent, setChatContent] = useState<string>('');  
+    const [chatContent, setChatContent] = useState<string>('');
 
     //공격
     const [shot, setShot] = useState<boolean>(false);
@@ -124,7 +125,7 @@ export default function GamePage() {
                 dispatch(heartState(1));
             }
         }
-    }, [meInfo.isSeeker]); 
+    }, [meInfo.isSeeker]);
     useEffect(() => {
         if (meHeart < 7 && meHeart >= 0) {
             handleShot();
@@ -184,7 +185,7 @@ export default function GamePage() {
                 inputRef.current.blur();
             }
         }
-    }, [toggleChat]);
+    }, [toggleChat]); 
     useEffect(() => {
         if (messageEndRef.current) {
             messageEndRef.current.scrollIntoView({
@@ -192,6 +193,7 @@ export default function GamePage() {
             });
         }
     }, [chatList]);
+
     useEffect(() => {
         // 키보드(C, M) 이벤트 리스너 & voice.js의 stream과 interval값 갱신 & 페이지 이탈 시 이벤트리스너 삭제
         setInterval(() => {
@@ -257,7 +259,7 @@ export default function GamePage() {
             );
         };
     }, []);
-  
+
     const handleShot = () => {
         setShot(true);
         setTimeout(() => {
@@ -272,11 +274,11 @@ export default function GamePage() {
     };
     // const closeSetting = () => {
     //     setToggleSetting(false);
-    // }; 
+    // };
 
     return (
         <RecoilRoot>
-            <Content /> 
+            <Content />
             {currentRoom.roomState === 1 ? (
                 <div className="absolute flex top-4 w-full justify-center items-center text-[2vw]">
                     <p className=" text-sky-400">술래</p>
@@ -335,7 +337,7 @@ export default function GamePage() {
                         숨는 시간 : {currentRoom.roomTime}
                     </p>
                     <p className=" text-orange-400">도망자</p>
-                    <p className=" text-orange-400 ms-[1vw]">{hiderNum}</p>  
+                    <p className=" text-orange-400 ms-[1vw]">{hiderNum}</p>
                 </div>
             ) : (
                 <></>
@@ -439,10 +441,10 @@ export default function GamePage() {
                 <div className="absolute w-full h-full flex justify-center items-center">
                     <p className="w-[10px] h-[10px] rounded-full bg-black"></p>
                 </div>
-            ) : ( 
-                <></> 
+            ) : (
+                <></>
             )}
-            <div className="absolute flex flex-col top-1 left-1 w-[25s%] h-[50%] bg-black bg-opacity-20 p-[0.4vw]"> 
+            <div className="absolute flex flex-col top-1 left-1 w-[25s%] h-[50%] bg-black bg-opacity-20 p-[0.4vw]">
                 <div className="flex items-center">
                     <img className="w-[40px] px-[0.2vw]" src={keyW} alt="" />
                     <img className="w-[40px] px-[0.2vw]" src={keyA} alt="" />
@@ -602,23 +604,19 @@ export default function GamePage() {
                 />
             </div>
             {/* /////////////// */}
-            <div className="absolute flex flex-col bottom-20 justify-center"> 
-            {observerState.trim() !== '' ? (
-                (!observerState.startsWith("당신은")) ? (
-                    <div className='flex justify-center items-center text-[2vw]'
-                    >
-                    <img className="px-[0.2vw]" src={keyLeft} alt="" />
-                    <p className='mx-[2vw]'>{observerState}</p>
-                    <img className="px-[0.2vw]" src={keyRight} alt="" />
-                    </div>
-
-                ) : (
-                    <p className="text-[2vw] text-black">
-                    {observerState}
-                    </p>
-                )
-            ) : null}
-            </div> 
+            <div className="absolute flex flex-col bottom-20 justify-center">
+                {observerState?.trim() !== '' ? (
+                    !observerState.startsWith('당신은') ? (
+                        <div className="flex justify-center items-center text-[2vw]">
+                            <img className="px-[0.2vw]" src={keyLeft} alt="" />
+                            <p className="mx-[2vw]">{observerState}</p>
+                            <img className="px-[0.2vw]" src={keyRight} alt="" />
+                        </div>
+                    ) : (
+                        <p className="text-[2vw] text-black">{observerState}</p>
+                    )
+                ) : null}
+            </div>
 
             {shot ? (
                 <div className="absolute w-full h-full bg-red-400 opacity-35"></div>
