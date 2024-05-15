@@ -289,6 +289,49 @@ export function FarmElement() {
 
       <Bush_4 position={[20, 0.5, 20]} rotation={[-Math.PI / 2, 0, Math.PI]} />
 
+      <Fence
+        position={[45, 0.5, 20]}
+        rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
+      />
+      <Fence
+        position={[45, 0.5, 29]}
+        rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
+      />
+      <Fence
+        position={[49.5, 0.5, 24.5]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Fence
+        position={[40.5, 0.5, 24.5]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Sheep
+        position={[47, 0.5, 24]}
+        rotation={[-Math.PI / 2, 0, -Math.PI / 6]}
+      />
+      <Sheep
+        position={[47, 0.5, 26]}
+        rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
+      />
+
+      <Sheep position={[45, 0.5, 26]} rotation={[-Math.PI / 2, 0, -Math.PI]} />
+      <Sheep position={[44, 0.5, 24]} rotation={[-Math.PI / 2, 0, -Math.PI]} />
+      <Sheep
+        position={[44.5, 0.5, 22]}
+        rotation={[-Math.PI / 2, 0, -Math.PI]}
+      />
+      <Sheep
+        position={[43, 0.5, 28]}
+        rotation={[-Math.PI / 2, 0, -Math.PI / 4]}
+      />
+      <Sheep
+        position={[43, 0.5, 22]}
+        rotation={[-Math.PI / 2, 0, Math.PI / 4]}
+      />
+      <Sheep
+        position={[42, 0.5, 24]}
+        rotation={[-Math.PI / 2, 0, Math.PI / 2]}
+      />
       {/* --------------------------------<2사분면 x<0, y>0: 주거지역>-------------------------------------- */}
 
       <Tree_4 position={[10, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} />
