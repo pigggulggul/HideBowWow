@@ -170,6 +170,9 @@ export const userSlice = createSlice({
         rerollState: (state, action) => {
             state.rerollTime = action.payload;
         },
+        observserModeState: (state, action) => {
+            state.observserMode = action.payload;
+        },
     },
 });
 export const {
@@ -195,5 +198,6 @@ export const {
     chatFlagState,
     deadPeopleState,
     rerollState,
+    observserModeState,
 } = userSlice.actions;
 export default userSlice.reducer;

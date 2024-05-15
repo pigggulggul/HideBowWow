@@ -30,8 +30,7 @@ import keyRight from '../assets/images/icon/key_arrowR.png';
 import keyLeft from '../assets/images/icon/key_arrowL.png';
 import keySpace from '../assets/images/icon/key_space.png';
 import ingameMusic from '../assets/bgm/ingame_music.mp3';
-import ObjectInfo from '../json/ObjectInfo.json';
-import { store } from '../store/store';
+import ObjectInfo from '../json/ObjectInfo.json'; 
 
 export default function GamePage() {
     const stompClient = StompClient.getInstance();
@@ -55,6 +54,10 @@ export default function GamePage() {
 
     const observerState = useSelector(
         (state: any) => state.reduxFlag.userSlice.observer
+    ); 
+
+    const isObserver = useSelector(
+        (state: any) => state.reduxFlag.userSlice.observserMode
     ); 
 
     const [seekerNum, setSeekerNum] = useState<number>(0);
@@ -185,7 +188,7 @@ export default function GamePage() {
                 inputRef.current.blur();
             }
         }
-    }, [toggleChat]); 
+    }, [toggleChat]);  
     useEffect(() => {
         if (messageEndRef.current) {
             messageEndRef.current.scrollIntoView({
@@ -193,6 +196,11 @@ export default function GamePage() {
             });
         }
     }, [chatList]); 
+
+    // useEffect(() => { 
+    //     console.log("isObserver : " + isObserver)
+    //     console.log("observerState : " + observerState)
+    // }, [isObserver, observerState]); 
     
     useEffect(() => {
         // 키보드(C, M) 이벤트 리스너 & voice.js의 stream과 interval값 갱신 & 페이지 이탈 시 이벤트리스너 삭제
@@ -603,25 +611,31 @@ export default function GamePage() {
                     }
                 />
             </div>
-            {/* /////////////// */}
-            <div className="absolute flex flex-col bottom-20 justify-center"> 
-            {observerState?.trim() !== '' ? (
-                (!observerState.startsWith("당신은")) ? (
-                    <div className='flex justify-center items-center text-[2vw]'
-                    >
-                    <img className="px-[0.2vw]" src={keyLeft} alt="" />
-                    <p className='mx-[2vw]'>{observerState}</p>
-                    <img className="px-[0.2vw]" src={keyRight} alt="" />
-                    </div>
-
-                ) : (
+            
+            {/* 숨는시간 술래 자막 */}
+            {((currentRoom.roomState === 1 || currentRoom.roomState === 2) && meInfo.isSeeker) ? ( 
+                <div className="absolute flex flex-col bottom-20 justify-center">  
                     <p className="text-[2vw] text-black">
-                    {observerState}
+                        당신은 술래입니다. 사물팀이 숨는동안 맵을 외우세요!
                     </p>
-                )
-            ) : null}
-            </div> 
+                </div>
+            ) : (
+                <></>
+            )}
 
+            {/* 관전 중 자막 */}
+            {(!isObserver && observerState) ? ( 
+                <div className="absolute flex flex-col bottom-20 justify-center"> 
+                    <div className='flex justify-center items-center text-[2vw]'>
+                        <img className="px-[0.2vw]" src={keyLeft} alt="" />
+                            <p className='mx-[2vw]'>{observerState}</p>
+                        <img className="px-[0.2vw]" src={keyRight} alt="" />
+                    </div>  
+                </div>
+            ) : (
+                <></>
+            )}
+  
             {shot ? (
                 <div className="absolute w-full h-full bg-red-400 opacity-35"></div>
             ) : (

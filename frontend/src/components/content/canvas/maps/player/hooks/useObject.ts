@@ -20,6 +20,7 @@ import { store } from '../../../../../../store/store';
 import {
     removeCollideObjectState,
     observerState,
+    observserModeState,
 } from '../../../../../../store/user-slice';
 
 // interface GLTFAction extends AnimationClip {
@@ -525,6 +526,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         }
 
         setFreeViewMode((prevMode) => !prevMode);
+        store.dispatch(observserModeState(freeViewMode));
     };
 
     const handlePageUp = () => {
@@ -949,8 +951,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                         0,
                         playerPosition.z + playerDirection.z
                     );
-                    camera.lookAt(carmeraTarget);
-                    store.dispatch(observerState(' '));
+                    camera.lookAt(carmeraTarget); 
                 } else {
                     // (R클릭)
                     if (observedPlayerIndex === roomState.roomPlayers.length) {
@@ -1072,8 +1073,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 }
             }
         } else {
-            // 다른 플레이어의 캐릭터
-            // if(meInfo)
+            // 다른 플레이어의 캐릭터 
             roomState.roomPlayers.forEach((otherPlayer: any) => {
                 if (
                     otherPlayer.nickname === playerNickname &&
