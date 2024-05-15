@@ -17,10 +17,11 @@ import {
 import StompClient from '../../../../../../websocket/StompClient';
 import { useSelector } from 'react-redux';
 import { GLTF, SkeletonUtils } from 'three-stdlib';
-import { removeCollideObjectState,
-        observerState
- } from '../../../../../../store/user-slice';
-import { store } from '../../../../../../store/store'; 
+import {
+    removeCollideObjectState,
+    observerState,
+} from '../../../../../../store/user-slice';
+import { store } from '../../../../../../store/store';
 
 interface GLTFAction extends AnimationClip {
     name: ActionName;
@@ -85,6 +86,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     const [isWalking, setIsWalking] = useState(false);
     const keyState = useRef<{ [key: string]: boolean }>({});
     const [isJumping, setIsJumping] = useState(0);
+    const [jumpFlag, setJumpFlag] = useState<boolean>(false);
     const [callsInLastSecond, setCallsInLastSecond] = useState(0);
     const [delay, setDelay] = useState(0.00008);
     // Redux
@@ -299,9 +301,6 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     useEffect(() => {
         const handleKeyDown = (event: any) => {
             keyState.current[event.key] = true;
-            if (event.code === 'Space' && isJumping === 0) {
-                setIsJumping(1);
-            }
         };
 
         const handleKeyUp = (event: any) => {
@@ -316,7 +315,13 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
         };
     }, [isWalking]);
     useEffect(() => {
-        if (isJumping === 1) {
+        const handleJumpDown = (event: any) => {
+            if (event.code === 'Space' && !jumpFlag) {
+                setIsJumping(1);
+                setJumpFlag(true);
+            }
+        };
+        if (isJumping === 1 && jumpFlag) {
             // console.log('점프중입니다.');
             setTimeout(() => {
                 // console.log('점프 내려가는 중입니다.');
@@ -325,8 +330,13 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
             setTimeout(() => {
                 // console.log('점프 끝입니다.');
                 setIsJumping(0);
+                setJumpFlag(false);
             }, 1200);
         }
+        document.addEventListener('keydown', handleJumpDown);
+        return () => {
+            document.removeEventListener('keydown', handleJumpDown);
+        };
     }, [isJumping]);
 
     // Frame
@@ -340,9 +350,18 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
 
         if (!player || !playerRef.current) return;
 
-        if((roomState.roomState == 1 || roomState.roomState == 2) && meInfo.isSeeker === true && meInfo.nickname === playerNickname) { // 게임 대기시간  
-            store.dispatch(observerState("당신은 술래입니다. 사물팀이 숨는동안 맵을 외우세요!")); 
-            // 관전모드 
+        if (
+            (roomState.roomState == 1 || roomState.roomState == 2) &&
+            meInfo.isSeeker === true &&
+            meInfo.nickname === playerNickname
+        ) {
+            // 게임 대기시간
+            store.dispatch(
+                observerState(
+                    '당신은 술래입니다. 사물팀이 숨는동안 맵을 외우세요!'
+                )
+            );
+            // 관전모드
             if (!observerRef.current) {
                 // console.log("생성!")
                 observerRef.current = new Observer();
@@ -416,11 +435,12 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                 observerRef.current.position.y,
                 observerRef.current.position.z
             );
-            camera.lookAt(cameraTarget);   
-
-        } else { // 게임 시작
-            if (meInfo?.nickname === playerNickname) { // 내 캐릭터인 경우 
-                store.dispatch(observerState(" ")); 
+            camera.lookAt(cameraTarget);
+        } else {
+            // 게임 시작
+            if (meInfo?.nickname === playerNickname) {
+                // 내 캐릭터인 경우
+                store.dispatch(observerState(' '));
                 const delta = clock.getDelta(); // 프레임 간 시간 간격을 가져옵니다.
                 accumulatedTimeRef.current += delta;
 
@@ -691,7 +711,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                         }
                     }
                 });
-            } 
+            }
         }
 
         if (nicknameRef.current) {
