@@ -128,10 +128,14 @@ type GLTFResult = GLTF & {
         Plant_65: Mesh;
         Tree_1: Mesh;
         Plant_17: Mesh;
+        Axe_Brown_4_0: Mesh;
+        Axe_Gray_0: Mesh;
     };
     materials: {
         Cartoon_Room_Mat: MeshStandardMaterial;
         ['Cartoon_Room_Mat.002']: MeshStandardMaterial;
+        Brown_4: MeshStandardMaterial;
+        Gray: MeshStandardMaterial;
     };
     animations: any[];
 };
@@ -398,14 +402,23 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     return '/models/object/Vase_4.glb';
                 case 100:
                     return '/models/object/Vase_5.glb';
+                case 101:
+                    return '/models/object/Axe.glb';
                 default:
                     return '/models/object/Closet.glb';
             }
         })(),
         true
     ) as GLTFResult;
-    const getScaleByModelIndex = (_: number | undefined) => {
-        return 0.025;
+    const getScaleByModelIndex = (modelIndex: number | undefined) => {
+        if (modelIndex === undefined) {
+            return 0.025;
+        } else if (modelIndex < 0) return 0.025;
+        else if (modelIndex > 100) {
+            return 2;
+        } else {
+            return 0.025;
+        }
     };
     const { scene: defaultScene } = useGLTF('/models/object/Barrel.glb');
     const scale = getScaleByModelIndex(modelIndex);
@@ -1246,217 +1259,224 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
 
     function returnMaterial(num: number | undefined) {
         if (num === undefined || num < 19) {
-            return materials['Cartoon_Room_Mat.002'];
+            return [materials['Cartoon_Room_Mat.002']];
+        } else if (num === 101) {
+            return [materials.Brown_4, materials.Gray];
         } else {
-            return materials.Cartoon_Room_Mat;
+            return [materials.Cartoon_Room_Mat];
         }
     }
     function returnNode(num: number | undefined) {
         switch (num) {
             case 0:
-                return (nodes.Barrel_1 as SkinnedMesh).geometry;
+                return [(nodes.Barrel_1 as SkinnedMesh).geometry];
             case 1:
-                return (nodes.Barrel_1 as SkinnedMesh).geometry;
+                return [(nodes.Barrel_1 as SkinnedMesh).geometry];
             case 2:
-                return (nodes.Chair_11 as SkinnedMesh).geometry;
+                return [(nodes.Chair_11 as SkinnedMesh).geometry];
             case 3:
-                return (nodes.Chair_4 as SkinnedMesh).geometry;
+                return [(nodes.Chair_4 as SkinnedMesh).geometry];
             case 4:
-                return (nodes.Toy_Pig_1 as SkinnedMesh).geometry;
+                return [(nodes.Toy_Pig_1 as SkinnedMesh).geometry];
             case 5:
-                return (nodes.Kitchen_Cabinet_4 as SkinnedMesh).geometry;
+                return [(nodes.Kitchen_Cabinet_4 as SkinnedMesh).geometry];
             case 6:
-                return (nodes.Washstand_2 as SkinnedMesh).geometry;
+                return [(nodes.Washstand_2 as SkinnedMesh).geometry];
             case 7:
-                return (nodes.Kitchen_Cabinet_5 as SkinnedMesh).geometry;
+                return [(nodes.Kitchen_Cabinet_5 as SkinnedMesh).geometry];
             case 8:
-                return (nodes.Kitchen_Cabinet_5 as SkinnedMesh).geometry;
+                return [(nodes.Kitchen_Cabinet_5 as SkinnedMesh).geometry];
             case 9:
-                return (nodes.Kitchen_Cabinet_6 as SkinnedMesh).geometry;
+                return [(nodes.Kitchen_Cabinet_6 as SkinnedMesh).geometry];
             case 10:
-                return (nodes.Ladder_1 as SkinnedMesh).geometry;
+                return [(nodes.Ladder_1 as SkinnedMesh).geometry];
             case 11:
-                return (nodes.Shelf_4 as SkinnedMesh).geometry;
+                return [(nodes.Shelf_4 as SkinnedMesh).geometry];
             case 12:
-                return (nodes.Table_5 as SkinnedMesh).geometry;
+                return [(nodes.Table_5 as SkinnedMesh).geometry];
             case 13:
-                return (nodes.Ham_1 as SkinnedMesh).geometry;
+                return [(nodes.Ham_1 as SkinnedMesh).geometry];
             case 14:
-                return (nodes.Ham_2 as SkinnedMesh).geometry;
+                return [(nodes.Ham_2 as SkinnedMesh).geometry];
             case 15:
-                return (nodes.Pot_2 as SkinnedMesh).geometry;
+                return [(nodes.Pot_2 as SkinnedMesh).geometry];
             case 16:
-                return (nodes.Pot_1 as SkinnedMesh).geometry;
+                return [(nodes.Pot_1 as SkinnedMesh).geometry];
             case 17:
-                return (nodes.Fridge_2 as SkinnedMesh).geometry;
+                return [(nodes.Fridge_2 as SkinnedMesh).geometry];
             case 18:
-                return (nodes.Table_13 as SkinnedMesh).geometry;
+                return [(nodes.Table_13 as SkinnedMesh).geometry];
             case 19:
-                return (nodes.Armchair_1 as SkinnedMesh).geometry;
+                return [(nodes.Armchair_1 as SkinnedMesh).geometry];
             case 20:
-                return (nodes.Armchair_2 as SkinnedMesh).geometry;
+                return [(nodes.Armchair_2 as SkinnedMesh).geometry];
             case 21:
-                return (nodes.Basket_2 as SkinnedMesh).geometry;
+                return [(nodes.Basket_2 as SkinnedMesh).geometry];
             case 22:
-                return (nodes.Bath_1 as SkinnedMesh).geometry;
+                return [(nodes.Bath_1 as SkinnedMesh).geometry];
             case 23:
-                return (nodes.Bed_2 as SkinnedMesh).geometry;
+                return [(nodes.Bed_2 as SkinnedMesh).geometry];
             case 24:
-                return (nodes.Bed_6 as SkinnedMesh).geometry;
+                return [(nodes.Bed_6 as SkinnedMesh).geometry];
             case 25:
-                return (nodes.Bed_3 as SkinnedMesh).geometry;
+                return [(nodes.Bed_3 as SkinnedMesh).geometry];
             case 26:
-                return (nodes.Books_6 as SkinnedMesh).geometry;
+                return [(nodes.Books_6 as SkinnedMesh).geometry];
             case 27:
-                return (nodes.Books_8 as SkinnedMesh).geometry;
+                return [(nodes.Books_8 as SkinnedMesh).geometry];
             case 28:
-                return (nodes.Books_4 as SkinnedMesh).geometry;
+                return [(nodes.Books_4 as SkinnedMesh).geometry];
             case 29:
-                return (nodes.Books_2 as SkinnedMesh).geometry;
+                return [(nodes.Books_2 as SkinnedMesh).geometry];
             case 30:
-                return (nodes.Books_15 as SkinnedMesh).geometry;
+                return [(nodes.Books_15 as SkinnedMesh).geometry];
             case 31:
-                return (nodes.Bottle_20 as SkinnedMesh).geometry;
+                return [(nodes.Bottle_20 as SkinnedMesh).geometry];
             case 32:
-                return (nodes.Bottle_22 as SkinnedMesh).geometry;
+                return [(nodes.Bottle_22 as SkinnedMesh).geometry];
             case 33:
-                return (nodes.Box_7 as SkinnedMesh).geometry;
+                return [(nodes.Box_7 as SkinnedMesh).geometry];
             case 34:
-                return (nodes.Bread_1 as SkinnedMesh).geometry;
+                return [(nodes.Bread_1 as SkinnedMesh).geometry];
             case 35:
-                return (nodes.Cactus_5 as SkinnedMesh).geometry;
+                return [(nodes.Cactus_5 as SkinnedMesh).geometry];
             case 36:
-                return (nodes.Cactus_6 as SkinnedMesh).geometry;
+                return [(nodes.Cactus_6 as SkinnedMesh).geometry];
             case 37:
-                return (nodes.Cactus_4 as SkinnedMesh).geometry;
+                return [(nodes.Cactus_4 as SkinnedMesh).geometry];
             case 38:
-                return (nodes.Cake_1 as SkinnedMesh).geometry;
+                return [(nodes.Cake_1 as SkinnedMesh).geometry];
             case 39:
-                return (nodes.Carpet_16 as SkinnedMesh).geometry;
+                return [(nodes.Carpet_16 as SkinnedMesh).geometry];
             case 40:
-                return (nodes.Carpet_8 as SkinnedMesh).geometry;
+                return [(nodes.Carpet_8 as SkinnedMesh).geometry];
             case 41:
-                return (nodes.Chair_5 as SkinnedMesh).geometry;
+                return [(nodes.Chair_5 as SkinnedMesh).geometry];
             case 42:
-                return (nodes.Clock_1 as SkinnedMesh).geometry;
+                return [(nodes.Clock_1 as SkinnedMesh).geometry];
             case 43:
-                return (nodes.Coffee_Drink_1 as SkinnedMesh).geometry;
+                return [(nodes.Coffee_Drink_1 as SkinnedMesh).geometry];
             case 44:
-                return (nodes.Cup_1 as SkinnedMesh).geometry;
+                return [(nodes.Cup_1 as SkinnedMesh).geometry];
             case 45:
-                return (nodes.Cup_2 as SkinnedMesh).geometry;
+                return [(nodes.Cup_2 as SkinnedMesh).geometry];
             case 46:
-                return (nodes.Toy_1 as SkinnedMesh).geometry;
+                return [(nodes.Toy_1 as SkinnedMesh).geometry];
             case 47:
-                return (nodes.Chicken_Toy_1 as SkinnedMesh).geometry;
+                return [(nodes.Chicken_Toy_1 as SkinnedMesh).geometry];
             case 48:
-                return (nodes.Toy_Mushroom_1 as SkinnedMesh).geometry;
+                return [(nodes.Toy_Mushroom_1 as SkinnedMesh).geometry];
             case 49:
-                return (nodes.Toy_Mushroom_2 as SkinnedMesh).geometry;
+                return [(nodes.Toy_Mushroom_2 as SkinnedMesh).geometry];
             case 50:
-                return (nodes.Toy_Cat_1 as SkinnedMesh).geometry;
+                return [(nodes.Toy_Cat_1 as SkinnedMesh).geometry];
             case 51:
-                return (nodes.Toy_Rabbit_1 as SkinnedMesh).geometry;
+                return [(nodes.Toy_Rabbit_1 as SkinnedMesh).geometry];
             case 52:
-                return (nodes.Cabinet_19 as SkinnedMesh).geometry;
+                return [(nodes.Cabinet_19 as SkinnedMesh).geometry];
             case 53:
-                return (nodes.Kitchen_Cabinet_3 as SkinnedMesh).geometry;
+                return [(nodes.Kitchen_Cabinet_3 as SkinnedMesh).geometry];
             case 54:
-                return (nodes.Flower_5 as SkinnedMesh).geometry;
+                return [(nodes.Flower_5 as SkinnedMesh).geometry];
             case 55:
-                return (nodes.Flower_2 as SkinnedMesh).geometry;
+                return [(nodes.Flower_2 as SkinnedMesh).geometry];
             case 56:
-                return (nodes.Flower_1 as SkinnedMesh).geometry;
+                return [(nodes.Flower_1 as SkinnedMesh).geometry];
             case 57:
-                return (nodes.Vase_with_Flowers_1 as SkinnedMesh).geometry;
+                return [(nodes.Vase_with_Flowers_1 as SkinnedMesh).geometry];
             case 58:
-                return (nodes.Vase_with_Flowers_3 as SkinnedMesh).geometry;
+                return [(nodes.Vase_with_Flowers_3 as SkinnedMesh).geometry];
             case 59:
-                return (nodes.Flower_6 as SkinnedMesh).geometry;
+                return [(nodes.Flower_6 as SkinnedMesh).geometry];
             case 60:
-                return (nodes.Flower_7 as SkinnedMesh).geometry;
+                return [(nodes.Flower_7 as SkinnedMesh).geometry];
             case 61:
-                return (nodes.Flower_8 as SkinnedMesh).geometry;
+                return [(nodes.Flower_8 as SkinnedMesh).geometry];
             case 62:
-                return (nodes.Flower_9 as SkinnedMesh).geometry;
+                return [(nodes.Flower_9 as SkinnedMesh).geometry];
             case 63:
-                return (nodes.Flower_10 as SkinnedMesh).geometry;
+                return [(nodes.Flower_10 as SkinnedMesh).geometry];
             case 64:
-                return (nodes.Spatula_1 as SkinnedMesh).geometry;
+                return [(nodes.Spatula_1 as SkinnedMesh).geometry];
             case 65:
-                return (nodes.Painting_18 as SkinnedMesh).geometry;
+                return [(nodes.Painting_18 as SkinnedMesh).geometry];
             case 66:
-                return (nodes.Painting_19 as SkinnedMesh).geometry;
+                return [(nodes.Painting_19 as SkinnedMesh).geometry];
             case 67:
-                return (nodes.Painting_20 as SkinnedMesh).geometry;
+                return [(nodes.Painting_20 as SkinnedMesh).geometry];
             case 68:
-                return (nodes.Childrens_Drawing_3 as SkinnedMesh).geometry;
+                return [(nodes.Childrens_Drawing_3 as SkinnedMesh).geometry];
             case 69:
-                return (nodes.Childrens_Drawing_1 as SkinnedMesh).geometry;
+                return [(nodes.Childrens_Drawing_1 as SkinnedMesh).geometry];
             case 70:
-                return (nodes.Childrens_Drawing_2 as SkinnedMesh).geometry;
+                return [(nodes.Childrens_Drawing_2 as SkinnedMesh).geometry];
             case 71:
-                return (nodes.Flags_1 as SkinnedMesh).geometry;
+                return [(nodes.Flags_1 as SkinnedMesh).geometry];
             case 72:
-                return (nodes.Mannequin_1 as SkinnedMesh).geometry;
+                return [(nodes.Mannequin_1 as SkinnedMesh).geometry];
             case 73:
-                return (nodes.Mirror_1 as SkinnedMesh).geometry;
+                return [(nodes.Mirror_1 as SkinnedMesh).geometry];
             case 74:
-                return (nodes.Ottoman_1 as SkinnedMesh).geometry;
+                return [(nodes.Ottoman_1 as SkinnedMesh).geometry];
             case 75:
-                return (nodes.Ottoman_2 as SkinnedMesh).geometry;
+                return [(nodes.Ottoman_2 as SkinnedMesh).geometry];
             case 76:
-                return (nodes.Ottoman_3 as SkinnedMesh).geometry;
+                return [(nodes.Ottoman_3 as SkinnedMesh).geometry];
             case 77:
-                return (nodes.Plate_1 as SkinnedMesh).geometry;
+                return [(nodes.Plate_1 as SkinnedMesh).geometry];
             case 78:
-                return (nodes.Plate_3 as SkinnedMesh).geometry;
+                return [(nodes.Plate_3 as SkinnedMesh).geometry];
             case 79:
-                return (nodes.Pot_Full_1 as SkinnedMesh).geometry;
+                return [(nodes.Pot_Full_1 as SkinnedMesh).geometry];
             case 80:
-                return (nodes.Present_1 as SkinnedMesh).geometry;
+                return [(nodes.Present_1 as SkinnedMesh).geometry];
             case 81:
-                return (nodes.Present_2 as SkinnedMesh).geometry;
+                return [(nodes.Present_2 as SkinnedMesh).geometry];
             case 82:
-                return (nodes.Present_3 as SkinnedMesh).geometry;
+                return [(nodes.Present_3 as SkinnedMesh).geometry];
             case 83:
-                return (nodes.Puzzle_1 as SkinnedMesh).geometry;
+                return [(nodes.Puzzle_1 as SkinnedMesh).geometry];
             case 84:
-                return (nodes.Puzzle_2 as SkinnedMesh).geometry;
+                return [(nodes.Puzzle_2 as SkinnedMesh).geometry];
             case 85:
-                return (nodes.Puzzle_3 as SkinnedMesh).geometry;
+                return [(nodes.Puzzle_3 as SkinnedMesh).geometry];
             case 86:
-                return (nodes.Puzzle_4 as SkinnedMesh).geometry;
+                return [(nodes.Puzzle_4 as SkinnedMesh).geometry];
             case 87:
-                return (nodes.Table_6 as SkinnedMesh).geometry;
+                return [(nodes.Table_6 as SkinnedMesh).geometry];
             case 88:
-                return (nodes.Sandwich_1 as SkinnedMesh).geometry;
+                return [(nodes.Sandwich_1 as SkinnedMesh).geometry];
             case 89:
-                return (nodes.Sausages_1 as SkinnedMesh).geometry;
+                return [(nodes.Sausages_1 as SkinnedMesh).geometry];
             case 90:
-                return (nodes.Sewing_machine_1 as SkinnedMesh).geometry;
+                return [(nodes.Sewing_machine_1 as SkinnedMesh).geometry];
             case 91:
-                return (nodes.Couch_5 as SkinnedMesh).geometry;
+                return [(nodes.Couch_5 as SkinnedMesh).geometry];
             case 92:
-                return (nodes.Couch_1 as SkinnedMesh).geometry;
+                return [(nodes.Couch_1 as SkinnedMesh).geometry];
             case 93:
-                return (nodes.Towels_1 as SkinnedMesh).geometry;
+                return [(nodes.Towels_1 as SkinnedMesh).geometry];
             case 94:
-                return (nodes.Towels_2 as SkinnedMesh).geometry;
+                return [(nodes.Towels_2 as SkinnedMesh).geometry];
             case 95:
-                return (nodes.TV_1 as SkinnedMesh).geometry;
+                return [(nodes.TV_1 as SkinnedMesh).geometry];
             case 96:
-                return (nodes.Plant_44 as SkinnedMesh).geometry;
+                return [(nodes.Plant_44 as SkinnedMesh).geometry];
             case 97:
-                return (nodes.Plant_60 as SkinnedMesh).geometry;
+                return [(nodes.Plant_60 as SkinnedMesh).geometry];
             case 98:
-                return (nodes.Plant_65 as SkinnedMesh).geometry;
+                return [(nodes.Plant_65 as SkinnedMesh).geometry];
             case 99:
-                return (nodes.Tree_1 as SkinnedMesh).geometry;
+                return [(nodes.Tree_1 as SkinnedMesh).geometry];
             case 100:
-                return (nodes.Plant_17 as SkinnedMesh).geometry;
+                return [(nodes.Plant_17 as SkinnedMesh).geometry];
+            case 101:
+                return [
+                    (nodes.Axe_Brown_4_0 as SkinnedMesh).geometry,
+                    (nodes.Axe_Gray_0 as SkinnedMesh).geometry,
+                ];
             default:
-                return (nodes.Cabinet_18 as SkinnedMesh).geometry;
+                return [(nodes.Cabinet_18 as SkinnedMesh).geometry];
         }
     }
     function returnHeightSize(num: number | undefined) {

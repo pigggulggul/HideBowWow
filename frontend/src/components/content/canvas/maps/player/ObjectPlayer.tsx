@@ -95,11 +95,31 @@ export function ObjectPlayer({
                 scale={scale}
             >
                 <mesh
-                    geometry={node}
-                    material={material}
+                    geometry={node[0]}
+                    material={material[0]}
                     name={playerNickname}
                     rotation={[Math.PI / 2, 0, 0]}
                 />
+                {node.length > 1 ? (
+                    <mesh
+                        geometry={node[1]}
+                        material={material[1]}
+                        name={playerNickname}
+                        rotation={[Math.PI / 2, 0, 0]}
+                    />
+                ) : (
+                    <></>
+                )}
+                {node.length > 2 ? (
+                    <mesh
+                        geometry={node[2]}
+                        material={material[2]}
+                        name={playerNickname}
+                        rotation={[Math.PI / 2, 0, 0]}
+                    />
+                ) : (
+                    <></>
+                )}
             </group>
         </>
     );
