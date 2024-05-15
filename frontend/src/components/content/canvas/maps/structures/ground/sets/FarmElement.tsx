@@ -1,3 +1,4 @@
+import { number } from "prop-types";
 import { Alley_stones } from "../elements/Alley_stones";
 import { Axe } from "../elements/Axe";
 import { Barn } from "../elements/Barn";
@@ -65,7 +66,8 @@ import { Tree_trunk } from "../elements/Tree_trunk";
 import { Wheelbarrow } from "../elements/Wheelbarrow";
 import { Wooden_box } from "../elements/Wooden_box";
 
-const randomNumber = import.meta.env.VITE_REACT_RANDOM_NUMBER;
+const randomNumber = import.meta.env.VITE_REACT_RANDOM_NUMBER.split('').map(Number);
+const mapValue = 20;
 
 export function FarmElement() {
   return (
@@ -1081,14 +1083,77 @@ export function FarmElement() {
         rotation={[-Math.PI / 2, 0, Math.PI / 1]}
       />
 
-      {Array.from({ length: 21 }, (_, i) => -15 - i).map((x) =>
-        Array.from({ length: 21 }, (_, i) => 70 - i).map((z) => (
-          <Grass
-            position={[x, 0.5, z]}
-            rotation={[-Math.PI / 2, 0, Math.PI / 1]}
-          />
-        ))
-      )}
+      
+      {/* 잡초밭 */}
+      {
+        (() => {
+          let item = []
+          for (let i = 0; i < 21; i++) {
+            for (let j = 0; j < 21; j++) {
+              item.push(
+                <Grass
+                  position={[-15 - i, 0.5, 70 - j]}
+                  rotation={[-Math.PI / 2, 0, Math.PI / 1]}
+                />
+              )
+            }
+          }
+          return item;
+        })()
+      }
+
+      {/* 나무 */}
+      {
+        (() => {
+          let item = []
+          for (let i = 0; i < 7; i++) {
+            for (let j = 0; j < 12; j++) {
+              let cnt = randomNumber[10+i*j+i+j];
+              if(cnt < 2){
+                item.push(<Tree_4
+                  position={[-45-i*5, 0.5, 70-j*5]}
+                  rotation={[-Math.PI / 2, 0, Math.PI / 1]}
+                />)
+              }else if(cnt < 4){
+                item.push(<Tree_9
+                  position={[-45-i*5, 0.5, 70-j*5]}
+                  rotation={[-Math.PI / 2, 0, Math.PI / 1]}
+                />)
+              }else if(cnt < 6){
+                item.push(<Tree_trunk
+                  position={[-45-i*5, 0.5, 70-j*5]}
+                  rotation={[-Math.PI / 2, 0, Math.PI / 1]}
+                />)
+              }
+            }
+          }
+          return item;
+        })()
+      }
+
+      {/* {Array.from({ length: 7 }, (_, i) => -45 - i * 5).map((x) =>
+        Array.from({ length: 12 }, (_, i) => 70 - i * 5).map((z) =>
+          Math.random() < 0.2 ? (
+            <Tree_4
+              position={[x, 0.5, z]}
+              rotation={[-Math.PI / 2, 0, Math.PI / 1]}
+            />
+          ) : Math.random() < 0.25 ? (
+            <Tree_9
+              position={[x, 0.5, z]}
+              rotation={[-Math.PI / 2, 0, Math.PI / 1]}
+            />
+          ) : Math.random() < 0.3 ? (
+            <Tree_trunk
+              position={[x, 0.5, z]}
+              rotation={[-Math.PI / 2, 0, Math.PI / 1]}
+            />
+          ) : (
+            <></>
+          )
+        )
+      )} */}
+      
 
       {Array.from({ length: 6 }, (_, i) => -15 - i * 4).map((x) => (
         <Bush
@@ -1114,29 +1179,6 @@ export function FarmElement() {
         position={[-65, 0.5, 65]}
         rotation={[-Math.PI / 2, 0, Math.PI / 2]}
       />
-
-      {Array.from({ length: 7 }, (_, i) => -45 - i * 5).map((x) =>
-        Array.from({ length: 12 }, (_, i) => 70 - i * 5).map((z) =>
-          Math.random() < 0.2 ? (
-            <Tree_4
-              position={[x, 0.5, z]}
-              rotation={[-Math.PI / 2, 0, Math.PI / 1]}
-            />
-          ) : Math.random() < 0.25 ? (
-            <Tree_9
-              position={[x, 0.5, z]}
-              rotation={[-Math.PI / 2, 0, Math.PI / 1]}
-            />
-          ) : Math.random() < 0.3 ? (
-            <Tree_trunk
-              position={[x, 0.5, z]}
-              rotation={[-Math.PI / 2, 0, Math.PI / 1]}
-            />
-          ) : (
-            <></>
-          )
-        )
-      )}
 
       <Axe
         position={[-50, 0.5, 10]}
