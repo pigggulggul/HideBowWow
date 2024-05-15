@@ -48,7 +48,9 @@ export default function RoomPage() {
     const currentRoom = useSelector(
         (state: any) => state.reduxFlag.userSlice.currentRoom
     );
-    const channelIndex = useSelector((state:any) => state.reduxFlag.userSlice.channelIndex);
+    const channelIndex = useSelector(
+        (state: any) => state.reduxFlag.userSlice.channelIndex
+    );
 
     ///////// 채팅 관련 //////////
     const chatList = useSelector(
@@ -267,12 +269,12 @@ export default function RoomPage() {
                                                 : {}
                                         }
                                     >
-                                        <p className="text-[1.4vw]">
+                                        <p className="w-[80%] text-[1.4vw] text-start whitespace-nowrap overflow-hidden overflow-ellipsis">
                                             {item.nickname}
                                         </p>
                                         {room?.roomAdmin === item.nickname ? (
-                                            <div className="flex flex-col">
-                                                <p className="text-[1.6vw]">
+                                            <div className="w-[20%] flex flex-col">
+                                                <p className="text-[1.4vw]">
                                                     방장
                                                 </p>
                                             </div>
@@ -292,7 +294,7 @@ export default function RoomPage() {
                                                 className="w-full flex items-center justify-start my-1 text-[1.1vw]"
                                                 key={'chat key : ' + index}
                                             >
-                                                <p className="w-[18%] text-center">
+                                                <p className="w-[18%] text-start whitespace-nowrap overflow-hidden overflow-ellipsis">
                                                     {item.nickname}
                                                 </p>
                                                 <p className="w-[2%]">:</p>

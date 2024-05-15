@@ -21,9 +21,9 @@ export function Content() {
     const meInfo = useSelector(
         (state: any) => state.reduxFlag.userSlice.meInfo
     );
-    const rerollTime = useSelector(
-        (state: any) => state.reduxFlag.userSlice.rerollTime
-    );
+    // const rerollTime = useSelector(
+    //     (state: any) => state.reduxFlag.userSlice.rerollTime
+    // );
     //내정보.
     const [me, setMe] = useState<CurrentPlayersInfo>({
         direction: [0, 0, 0],
@@ -52,15 +52,6 @@ export function Content() {
         }
     }, [meInfo]);
     useEffect(() => {
-        setPlayers(roomState.roomPlayers);
-        if (secondChoiceFlag && document.pointerLockElement === null) {
-            unlockPointer();
-        }
-    }, [roomState]);
-    const unlockPointer = () => {
-        document.exitPointerLock();
-    };
-    useEffect(() => {
         if (roomState) {
             roomState.roomPlayers.map((item: CurrentPlayersInfo) => {
                 if (item.nickname == meName) {
@@ -68,24 +59,25 @@ export function Content() {
                 }
             });
         }
+        setPlayers(roomState.roomPlayers);
     }, [roomState]);
-    useEffect(() => {
-        if (rerollTime === 1) {
-            const randomChoice = [
-                Math.floor(Math.random() * 100),
-                Math.floor(Math.random() * 100),
-                Math.floor(Math.random() * 100),
-            ];
-            setChoice(randomChoice);
-            setChoiceFlag(false);
-            setSecondChoiceFlag(true);
-        }
-    }, [rerollTime]);
+    // useEffect(() => {
+    //     if (rerollTime === 1) {
+    //         const randomChoice = [
+    //             Math.floor(Math.random() * 100),
+    //             Math.floor(Math.random() * 100),
+    //             Math.floor(Math.random() * 100),
+    //         ];
+    //         setChoice(randomChoice);
+    //         setChoiceFlag(false);
+    //         setSecondChoiceFlag(true);
+    //     }
+    // }, [rerollTime]);
 
     useEffect(() => {
         // console.log('선택 랜덤');
         if (roomState.roomState === 3 && meInfo.selectedIndex == null) {
-            console.log('작동1');
+            // console.log('작동1');
             const random = Math.floor(Math.random() * 3);
             setMe((prevMe) => ({ ...prevMe, selectedIndex: choice[random] })); // 새 객체를 반환하여 selectedIndex 업데이트
 
@@ -122,50 +114,50 @@ export function Content() {
             // console.log('바뀐 Player정보', updatedPlayers);
             dispatch(meSelectedInfoState(choice[random]));
         }
-        if (
-            roomState.roomState === 3 &&
-            rerollTime === 2 &&
-            selectCount !== 2
-        ) {
-            console.log('작동2');
-            const random = Math.floor(Math.random() * 3);
-            setMe((prevMe) => ({ ...prevMe, selectedIndex: choice[random] })); // 새 객체를 반환하여 selectedIndex 업데이트
+        // if (
+        //     roomState.roomState === 3 &&
+        //     rerollTime === 2 &&
+        //     selectCount !== 2
+        // ) {
+        //     console.log('작동2');
+        //     const random = Math.floor(Math.random() * 3);
+        //     setMe((prevMe) => ({ ...prevMe, selectedIndex: choice[random] })); // 새 객체를 반환하여 selectedIndex 업데이트
 
-            // console.log('처음 players', players);
-            const updatedPlayers = players.map((player) => {
-                if (player.nickname === me.nickname && !choiceFlag) {
-                    setMe((prev) => ({
-                        ...prev,
-                        selectedIndex: choice[random],
-                    }));
-                    setChoiceFlag(true);
-                    stompClient.sendMessage(
-                        `/player.object`,
-                        JSON.stringify({
-                            type: 'player.object',
-                            roomId: roomState.roomId,
-                            sender: meName,
-                            data: {
-                                nickname: me.nickname,
-                                selectedIndex: choice[random],
-                                position: me.position,
-                                direction: me.direction,
-                                isDead: me.isDead,
-                                isSeeker: me.isSeeker,
-                            },
-                        })
-                    );
-                    return { ...player, selectedIndex: choice[random] };
-                }
-                return player;
-            });
-            setPlayers(updatedPlayers);
-            setSelectCount((prev) => prev + 1);
-            // console.log('바뀐 Player정보', updatedPlayers);
-            dispatch(meSelectedInfoState(choice[random]));
-            setSecondChoiceFlag(false);
-        }
-    }, [roomState.roomState, rerollTime]);
+        //     // console.log('처음 players', players);
+        //     const updatedPlayers = players.map((player) => {
+        //         if (player.nickname === me.nickname && !choiceFlag) {
+        //             setMe((prev) => ({
+        //                 ...prev,
+        //                 selectedIndex: choice[random],
+        //             }));
+        //             setChoiceFlag(true);
+        //             stompClient.sendMessage(
+        //                 `/player.object`,
+        //                 JSON.stringify({
+        //                     type: 'player.object',
+        //                     roomId: roomState.roomId,
+        //                     sender: meName,
+        //                     data: {
+        //                         nickname: me.nickname,
+        //                         selectedIndex: choice[random],
+        //                         position: me.position,
+        //                         direction: me.direction,
+        //                         isDead: me.isDead,
+        //                         isSeeker: me.isSeeker,
+        //                     },
+        //                 })
+        //             );
+        //             return { ...player, selectedIndex: choice[random] };
+        //         }
+        //         return player;
+        //     });
+        //     setPlayers(updatedPlayers);
+        //     setSelectCount((prev) => prev + 1);
+        //     // console.log('바뀐 Player정보', updatedPlayers);
+        //     dispatch(meSelectedInfoState(choice[random]));
+        //     setSecondChoiceFlag(false);
+        // }
+    }, [roomState.roomState]);
     useEffect(() => {
         const rerollChoice = [
             Math.floor(Math.random() * 100),
@@ -227,15 +219,15 @@ export function Content() {
         <>
             {me ? (
                 <CanvasLayout>
-                    {((roomState.roomState === 1 ||
-                        roomState.roomState === 2) &&
-                        !me.isSeeker &&
-                        me.selectedIndex === null) ||
-                    (roomState.roomState === 3 &&
-                        !me.isSeeker &&
-                        rerollTime === 1 &&
-                        !choiceFlag &&
-                        !me.isDead) ? (
+                    {(roomState.roomState === 1 || roomState.roomState === 2) &&
+                    !me.isSeeker &&
+                    me.selectedIndex === null ? (
+                        //     ||
+                        // (roomState.roomState === 3 &&
+                        //     !me.isSeeker &&
+                        //     rerollTime === 1 &&
+                        //     !choiceFlag &&
+                        //     !me.isDead)
                         <>
                             <div className="absolute flex items-center justify-between w-[80%] h-[80%] z-10">
                                 {choice.map((item, index) => {
@@ -278,10 +270,10 @@ export function Content() {
                                     );
                                 })}
                             </div>
-                            <div className="absolute flex justify-center bottom-8 text-[2vw] z-10">
+                            {/* <div className="absolute flex justify-center bottom-8 text-[2vw] z-10">
                                 20초 후에 셋 중 하나의 물체로 변신합니다. ESC 후
                                 선택하세요.
-                            </div>
+                            </div> */}
                         </>
                     ) : (
                         <></>

@@ -106,6 +106,9 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     const collideState = useSelector(
         (state: any) => state.reduxFlag.userSlice.collideObj
     );
+    const mapState = useSelector(
+        (state: any) => state.reduxFlag.userSlice.mapSize
+    );
 
     const stompClient = StompClient.getInstance();
 
@@ -350,18 +353,8 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
 
         if (!player || !playerRef.current) return;
 
-        if (
-            (roomState.roomState == 1 || roomState.roomState == 2) &&
-            meInfo.isSeeker === true &&
-            meInfo.nickname === playerNickname
-        ) {
-            // 게임 대기시간
-            store.dispatch(
-                observerState(
-                    '당신은 술래입니다. 사물팀이 숨는동안 맵을 외우세요!'
-                )
-            );
-            // 관전모드
+        if((roomState.roomState == 1 || roomState.roomState == 2) && meInfo.isSeeker === true && meInfo.nickname === playerNickname) { // 게임 대기시간  
+            // 관전모드 
             if (!observerRef.current) {
                 // console.log("생성!")
                 observerRef.current = new Observer();
@@ -435,12 +428,10 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                 observerRef.current.position.y,
                 observerRef.current.position.z
             );
-            camera.lookAt(cameraTarget);
-        } else {
-            // 게임 시작
-            if (meInfo?.nickname === playerNickname) {
-                // 내 캐릭터인 경우
-                store.dispatch(observerState(' '));
+            camera.lookAt(cameraTarget);   
+
+        } else { // 게임 시작
+            if (meInfo?.nickname === playerNickname) { // 내 캐릭터인 경우  
                 const delta = clock.getDelta(); // 프레임 간 시간 간격을 가져옵니다.
                 accumulatedTimeRef.current += delta;
 
@@ -564,6 +555,16 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                             playerRef.current.position.y = 0.1;
                         }
                         playerRef.current.position.add(moveDirection);
+                    }
+                    if (
+                        playerRef.current.position.x > mapState.maxX ||
+                        playerRef.current.position.x < mapState.minX ||
+                        playerRef.current.position.z > mapState.maxZ ||
+                        playerRef.current.position.z < mapState.minZ ||
+                        playerRef.current.position.y > mapState.maxY ||
+                        playerRef.current.position.y < mapState.minY
+                    ) {
+                        playerRef.current.position.set(0, 0, 0);
                     }
 
                     if (accumulatedTimeRef.current >= delay) {
