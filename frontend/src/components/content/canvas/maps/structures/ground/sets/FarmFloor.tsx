@@ -122,20 +122,20 @@ export function FarmFloor() {
       {/* <Floor_11 position={[-84, 0, 72]} rotation={[Math.PI / 2, 0, 0]} /> */}
 
       {/* y=84*/}
-      <Floor_11 position={[0, 0, 84]} rotation={[Math.PI / 2, 0, 0]} />
+      {/* <Floor_11 position={[0, 0, 84]} rotation={[Math.PI / 2, 0, 0]} />
       <Floor_11 position={[12, 0, 84]} rotation={[Math.PI / 2, 0, 0]} />
       <Floor_11 position={[24, 0, 84]} rotation={[Math.PI / 2, 0, 0]} />
       <Floor_11 position={[36, 0, 84]} rotation={[Math.PI / 2, 0, 0]} />
       <Floor_11 position={[48, 0, 84]} rotation={[Math.PI / 2, 0, 0]} />
       <Floor_11 position={[60, 0, 84]} rotation={[Math.PI / 2, 0, 0]} />
-      <Floor_11 position={[72, 0, 84]} rotation={[Math.PI / 2, 0, 0]} />
+      <Floor_11 position={[72, 0, 84]} rotation={[Math.PI / 2, 0, 0]} /> */}
       {/* <Floor_11 position={[84, 0, 84]} rotation={[Math.PI / 2, 0, 0]} /> */}
-      <Floor_11 position={[-12, 0, 84]} rotation={[Math.PI / 2, 0, 0]} />
+      {/* <Floor_11 position={[-12, 0, 84]} rotation={[Math.PI / 2, 0, 0]} />
       <Floor_11 position={[-24, 0, 84]} rotation={[Math.PI / 2, 0, 0]} />
       <Floor_11 position={[-36, 0, 84]} rotation={[Math.PI / 2, 0, 0]} />
       <Floor_11 position={[-48, 0, 84]} rotation={[Math.PI / 2, 0, 0]} />
       <Floor_11 position={[-60, 0, 84]} rotation={[Math.PI / 2, 0, 0]} />
-      <Floor_11 position={[-72, 0, 84]} rotation={[Math.PI / 2, 0, 0]} />
+      <Floor_11 position={[-72, 0, 84]} rotation={[Math.PI / 2, 0, 0]} /> */}
       {/* <Floor_11 position={[-84, 0, 84]} rotation={[Math.PI / 2, 0, 0]} /> */}
 
       {/* y=-12 */}
@@ -241,20 +241,20 @@ export function FarmFloor() {
       {/* <Floor_11 position={[-84, 0, -72]} rotation={[Math.PI / 2, 0, 0]} /> */}
 
       {/* y=-84*/}
-      <Floor_11 position={[0, 0, -84]} rotation={[Math.PI / 2, 0, 0]} />
+      {/* <Floor_11 position={[0, 0, -84]} rotation={[Math.PI / 2, 0, 0]} />
       <Floor_11 position={[12, 0, -84]} rotation={[Math.PI / 2, 0, 0]} />
       <Floor_11 position={[24, 0, -84]} rotation={[Math.PI / 2, 0, 0]} />
       <Floor_11 position={[36, 0, -84]} rotation={[Math.PI / 2, 0, 0]} />
       <Floor_11 position={[48, 0, -84]} rotation={[Math.PI / 2, 0, 0]} />
       <Floor_11 position={[60, 0, -84]} rotation={[Math.PI / 2, 0, 0]} />
-      <Floor_11 position={[72, 0, -84]} rotation={[Math.PI / 2, 0, 0]} />
+      <Floor_11 position={[72, 0, -84]} rotation={[Math.PI / 2, 0, 0]} /> */}
       {/* <Floor_11 position={[84, 0, -84]} rotation={[Math.PI / 2, 0, 0]} /> */}
-      <Floor_11 position={[-12, 0, -84]} rotation={[Math.PI / 2, 0, 0]} />
+      {/* <Floor_11 position={[-12, 0, -84]} rotation={[Math.PI / 2, 0, 0]} />
       <Floor_11 position={[-24, 0, -84]} rotation={[Math.PI / 2, 0, 0]} />
       <Floor_11 position={[-36, 0, -84]} rotation={[Math.PI / 2, 0, 0]} />
       <Floor_11 position={[-48, 0, -84]} rotation={[Math.PI / 2, 0, 0]} />
       <Floor_11 position={[-60, 0, -84]} rotation={[Math.PI / 2, 0, 0]} />
-      <Floor_11 position={[-72, 0, -84]} rotation={[Math.PI / 2, 0, 0]} />
+      <Floor_11 position={[-72, 0, -84]} rotation={[Math.PI / 2, 0, 0]} /> */}
       {/* <Floor_11 position={[-84, 0, -84]} rotation={[Math.PI / 2, 0, 0]} /> */}
     </>
   );
