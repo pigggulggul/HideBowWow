@@ -18,8 +18,7 @@ import StompClient from '../../../../../../websocket/StompClient';
 import { useSelector } from 'react-redux';
 import { GLTF, SkeletonUtils } from 'three-stdlib';
 import {
-    removeCollideObjectState,
-    observerState,
+    removeCollideObjectState, 
 } from '../../../../../../store/user-slice';
 import { store } from '../../../../../../store/store';
 
@@ -268,6 +267,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     }, []);
 
     useEffect(() => {
+        if(meInfo.nickname !== playerNickname) return; 
         const handleMouseMove = (event: MouseEvent) => {
             // 마우스 포인터가 고정된 상태에서의 마우스 이동량을 감지합니다.
             if (meInfo?.nickname === playerNickname) {
@@ -285,7 +285,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
         };
     }, []);
 
-    useEffect(() => {
+    useEffect(() => { 
         if (isWalking) {
             // lockPointer();
             if (!actions['Walk']?.isRunning()) {
@@ -302,6 +302,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
 
     // 키 입력
     useEffect(() => {
+        if(meInfo.nickname !== playerNickname) return; 
         const handleKeyDown = (event: any) => {
             keyState.current[event.key] = true;
         };
@@ -318,6 +319,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
         };
     }, [isWalking]);
     useEffect(() => {
+        if(meInfo.nickname !== playerNickname) return; 
         const handleJumpDown = (event: any) => {
             if (event.code === 'Space' && !jumpFlag) {
                 setIsJumping(1);
@@ -355,6 +357,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
 
         if((roomState.roomState == 1 || roomState.roomState == 2) && meInfo.isSeeker === true && meInfo.nickname === playerNickname) { // 게임 대기시간  
             // 관전모드 
+            lockPointer();
             if (!observerRef.current) {
                 // console.log("생성!")
                 observerRef.current = new Observer();
@@ -432,6 +435,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
 
         } else { // 게임 시작
             if (meInfo?.nickname === playerNickname) { // 내 캐릭터인 경우  
+                lockPointer();
                 const delta = clock.getDelta(); // 프레임 간 시간 간격을 가져옵니다.
                 accumulatedTimeRef.current += delta;
 

@@ -695,6 +695,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     }, []);
 
     useEffect(() => {
+        if(meInfo.nickname !== playerNickname) return; 
         const handleMouseMove = (event: MouseEvent) => {
             // 마우스 포인터가 고정된 상태에서의 마우스 이동량을 감지합니다.
             if (meInfo?.nickname === playerNickname) {
@@ -722,7 +723,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         };
     }, [meInfo, meInfo.isDead]);
 
-    useEffect(() => {
+    useEffect(() => { 
         if (playerRef.current) {
             // if (ref.current) {
             //     ref.current.name = playerNickname;
@@ -750,6 +751,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
 
     // 키 입력
     useEffect(() => {
+        if(meInfo.nickname !== playerNickname) return; 
         const handleKeyDown = (event: any) => {
             if (!chatFlag) {
                 keyState.current[event.key] = true;
@@ -801,6 +803,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     // }, [chatFlag]);
 
     useEffect(() => {
+        if(meInfo.nickname !== playerNickname) return; 
         const handleJumpDown = (event: any) => {
             if (event.code === 'Space' && !jumpFlag && !chatFlag) {
                 setIsJumping(1);
@@ -837,6 +840,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         }
 
         if (meInfo?.nickname === playerNickname) {
+            lockPointer();
             const delta = clock.getDelta(); // 프레임 간 시간 간격을 가져옵니다.
             accumulatedTimeRef.current += delta;
 
