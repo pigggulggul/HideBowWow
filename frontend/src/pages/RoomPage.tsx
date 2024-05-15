@@ -133,7 +133,7 @@ export default function RoomPage() {
         }
     }, [isReady]);
     useEffect(() => {
-        console.log('방정보', currentRoom);
+        // console.log('방정보', currentRoom);
         setRoom(currentRoom);
         setBotCount(currentRoom.botCnt);
     }, [currentRoom]);
