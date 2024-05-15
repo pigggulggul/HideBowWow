@@ -135,9 +135,10 @@ export default function RoomPage() {
     useEffect(() => {
         console.log('방정보', currentRoom);
         setRoom(currentRoom);
+        setBotCount(currentRoom.botCnt);
     }, [currentRoom]);
     useEffect(() => {
-        console.log('바뀐정보', room);
+        // console.log('바뀐정보', room);
     }, [room]);
     useEffect(() => {
         if (room.roomId && room.roomTitle && room.roomPlayers) {
@@ -156,11 +157,12 @@ export default function RoomPage() {
                         roomTime: room.roomTime,
                         roomMap: mapInfo[mapIndex],
                         roomPlayers: room.roomPlayers,
+                        botCnt: botCount,
                     },
                 })
             );
         }
-    }, [mapIndex]);
+    }, [mapIndex, botCount]);
 
     const sendEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
@@ -219,6 +221,17 @@ export default function RoomPage() {
             setMapIndex((prev) => prev + 1);
         }
     };
+    const handleBotCntIncrease = () => {
+        if (currentRoom.roomAdmin == meName)
+            setBotCount(botCount >= 3 ? 4 : botCount + 1);
+    };
+
+    const handleBotCntDecrease = () => {
+        if (currentRoom.roomAdmin == meName)
+            setBotCount(botCount > 0 ? botCount - 1 : 0);
+    };
+
+
 
     return (
         <section
@@ -331,9 +344,7 @@ export default function RoomPage() {
                         <div className="flex text-[2vw] text-white">
                             <button
                                 className="mx-[1vw]"
-                                onClick={() =>
-                                    setBotCount(botCount > 0 ? botCount - 1 : 0)
-                                }
+                                onClick={() => handleBotCntDecrease()}
                             >
                                 {' '}
                                 -{' '}
@@ -341,9 +352,7 @@ export default function RoomPage() {
                             <p>{botCount}</p>
                             <button
                                 className="mx-[1vw]"
-                                onClick={() =>
-                                    setBotCount(botCount > 3 ? 4 : botCount + 1)
-                                }
+                                onClick={() => handleBotCntIncrease()}
                             >
                                 {' '}
                                 +{' '}
