@@ -1,13 +1,13 @@
 server:
   port: 8002
-  domain: https://k10a709.p.ssafy.io
+  domain: ${SERVER_DOMAIN:https://k10a709.p.ssafy.io}
   servlet:
     contextPath: "/api/game-service"
     encoding:
       charset: UTF-8
       enabled: true
       force: true
-
+  count: 4
 spring:
   application:
     name: game-service
@@ -18,7 +18,12 @@ spring:
     bootstrap-servers: k10a709.p.ssafy.io:19092
   elasticsearch:
     uris: http://k10a709.p.ssafy.io:9200
-
+  # redis 추가 설정
+#  data:
+#    redis:
+#      host: redis-master.redis.svc.cluster.local
+#      port: 6379
+#      password: pass
 #logging
 logging:
   level:

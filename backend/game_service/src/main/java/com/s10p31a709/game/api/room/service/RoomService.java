@@ -21,7 +21,6 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
     private final GameProperties gameProperties;
-
     public List<Room> getRoomList(){
         return roomRepository.findAllRoom();
     }

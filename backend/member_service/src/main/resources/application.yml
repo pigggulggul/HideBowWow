@@ -1,13 +1,14 @@
 server:
   port: 8001
-  domain: https://k10a709.p.ssafy.io
+#  domain: https://hidebowwow.site
+  domain: ${SERVER_DOMAIN:https://k10a709.p.ssafy.io}
   servlet:
     contextPath: "/api/member-service"
     encoding:
       charset: UTF-8
       enabled: true
       force: true
-
+  count: 4
 spring:
   application:
     name: member-service
@@ -47,3 +48,4 @@ logging:
       springframework.web: INFO
       hibernate.orm.jdbc.bind: INFO
     com.s10p31a709.member.aop: INFO
+
