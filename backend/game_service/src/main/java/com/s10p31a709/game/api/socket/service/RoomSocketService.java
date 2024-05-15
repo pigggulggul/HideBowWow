@@ -5,7 +5,6 @@ import com.s10p31a709.game.api.room.entity.Room;
 import com.s10p31a709.game.api.room.repository.RoomRepository;
 import com.s10p31a709.game.api.socket.model.StompPayload;
 import com.s10p31a709.game.common.config.GameProperties;
-import com.s10p31a709.game.logelk.entity.GameResult;
 import com.s10p31a709.game.logelk.service.GameResultService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +23,6 @@ public class RoomSocketService {
 
     private final RoomRepository roomRepository;
     private final SimpMessagingTemplate simpMessagingTemplate;
-    private final PlayerSocketService playerSocketService;
     private final AIService aiService;
     private final GameProperties gameProperties;
     private final GameResultService gameResultService;
@@ -48,12 +46,19 @@ public class RoomSocketService {
 
     public void gameInit(StompPayload<Room> message){
         Room room = roomRepository.findRoomByRoomId(message.getRoomId());
-        // room.setBotCnt(message.getData().getBotCnt());
         room.setRoomTime(gameProperties.getTime().getWaiting());
         room.setRoomState(1);
 
         // 맵 판단해서 적용
-        GameProperties.RichRoom map = gameProperties.getMap().getRichRoom();
+        GameProperties.GameMap gameMap;
+        if(room.getRoomMap().equals("richRoom")){
+            gameMap = gameProperties.getRichRoom();
+        } else if (room.getRoomMap().equals("farm")) {
+            gameMap = gameProperties.getFarm();
+        } else{
+            log.error("{}에 해당하는 맵이 없어 시작할 수 없습니다.", room.getRoomMap());
+            return;
+        }
 
 
         int seekerNumber1 = new Random().nextInt(room.getRoomPlayers().size());
@@ -72,12 +77,12 @@ public class RoomSocketService {
 
         for (int i = 0; i < room.getRoomPlayers().size(); i++) {
             Player player = room.getRoomPlayers().get(i);
-            player.setPosition(new Double[]{map.getStartPoint().getX()+(i*0.5), map.getStartPoint().getY(), map.getStartPoint().getZ()+(i*0.5)});
+            player.setPosition(gameMap.getStartPoint());
             player.setDirection(new Double[]{0d, 0d, 0d});
             player.setIsDead(false);
             if(i == seekerNumber1 || i == seekerNumber2 || i == seekerNumber3) {
                 player.setIsSeeker(true);
-                player.setSelectedIndex(new Random().nextInt(gameProperties.getObject().getMaxSeekerIdx()));
+                player.setSelectedIndex(new Random().nextInt(gameMap.getMaxSeekerIdx()));
                 log.info("seekerIdx: {}", i);
             }else {
                 player.setIsSeeker(false);
