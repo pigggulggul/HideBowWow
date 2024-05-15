@@ -194,148 +194,182 @@ export function FarmElement() {
 
       {/* --------------------------------<1사분면 x>0, y>0 : 농장>-------------------------------------- */}
 
-      <Tree_4 position={[10, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[10, 0.5, 20]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[10, 0.5, 30]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[10, 0.5, 40]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[10, 0.5, 50]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[10, 0.5, 60]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[10, 0.5, 70]} rotation={[-Math.PI / 2, 0, 0]} />
-      {/* <Tree_4 position={[10, 0.5, 80]} rotation={[-Math.PI / 2, 0, 0]} /> */}
+      {/* Barn */}
+      {
+        (() => {
+          let item = []
+          for (let i = 0; i < 4; i++) {
+            item.push(<Barn
+              position={[27, 0.5, 21+13*i]}
+              rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
+            />)
+          }
+          return item;
+        })()
+      }
 
-      <Tree_4 position={[10, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[20, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[30, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[40, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[50, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[60, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[70, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
-      {/* <Tree_4 position={[80, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} /> */}
-
-      <Barn
-        position={[30, 0.5, 30]}
-        rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
-      />
-
-      <Barn
-        position={[30, 0.5, 60]}
-        rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
-      />
-
-      <Chicken_coop
-        position={[50, 0.5, 50]}
-        rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
-      />
-
-      <Chicken_coop
-        position={[50, 0.5, 55]}
-        rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
-      />
-
-      <Chicken_coop
-        position={[50, 0.5, 60]}
-        rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
-      />
-
-      <Logs
-        position={[44, 0.5, 40]}
-        rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
-      />
-      <Logs
-        position={[44, 0.5, 42]}
-        rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
-      />
-      <Logs
-        position={[40, 0.5, 41]}
-        rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
-      />
-      <Logs
-        position={[40, 0.5, 43]}
-        rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
-      />
-
-      <Pig
-        position={[30, 0.5, 43]}
-        rotation={[-Math.PI / 2, 0, -Math.PI / 6]}
-      />
-      <Pig
-        position={[30, 0.5, 45]}
-        rotation={[-Math.PI / 2, 0, Math.PI / 32]}
-      />
-      <Pig position={[28, 0.5, 47]} rotation={[-Math.PI / 2, 0, Math.PI / 8]} />
-      <Pig position={[26, 0.5, 43]} rotation={[-Math.PI / 2, 0, Math.PI / 6]} />
-      <Pig
-        position={[25, 0.5, 44]}
-        rotation={[-Math.PI / 2, 0, -Math.PI / 6]}
-      />
-      <Pig
-        position={[25, 0.5, 47]}
-        rotation={[-Math.PI / 2, 0, -Math.PI / 6]}
-      />
-      <Pig position={[26, 0.5, 45]} rotation={[-Math.PI / 2, 0, Math.PI / 6]} />
-
+      {/* 양 목장 펜스 */}
       <Fence
-        position={[28, 0.5, 41]}
+        position={[45, 0.5, 18]}
         rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
       />
       <Fence
-        position={[28, 0.5, 50]}
+        position={[54, 0.5, 18]}
         rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
       />
       <Fence
-        position={[32.5, 0.5, 45.5]}
-        rotation={[-Math.PI / 2, 0, Math.PI]}
+        position={[63, 0.5, 18]}
+        rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
       />
       <Fence
-        position={[23.5, 0.5, 45.5]}
-        rotation={[-Math.PI / 2, 0, Math.PI]}
+        position={[45, 0.5, 36]}
+        rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
+      />
+      <Fence
+        position={[54, 0.5, 36]}
+        rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
+      />
+      <Fence
+        position={[63, 0.5, 36]}
+        rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
+      />
+      <Fence
+        position={[40.5, 0.5, 22.5]}
+        rotation={[-Math.PI / 2, 0, -Math.PI / 1]}
+      />
+      <Fence
+        position={[40.5, 0.5, 31.5]}
+        rotation={[-Math.PI / 2, 0, -Math.PI / 1]}
+      />
+      <Fence
+        position={[67.5, 0.5, 22.5]}
+        rotation={[-Math.PI / 2, 0, -Math.PI / 1]}
+      />
+      <Fence
+        position={[67.5, 0.5, 31.5]}
+        rotation={[-Math.PI / 2, 0, -Math.PI / 1]}
       />
 
-      <Bush_4 position={[20, 0.5, 20]} rotation={[-Math.PI / 2, 0, Math.PI]} />
+      {/* 양 */}
+      {
+        (() => {
+          let item = []
+          for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 13; j++) {
+              let cnt = randomNumber[mapValue+i*j+i+j+104];
+              if(cnt < 2){
+                item.push(<Sheep
+                  position={[42+j*2, 0.5, 20 + i*2]}
+                  rotation={[-Math.PI / 2, 0, -Math.PI*i / j]}
+                />)
+              }
+            }
+          }
+          return item;
+        })()
+      }
 
+      {/* 돼지 목장 펜스 */}
       <Fence
-        position={[45, 0.5, 20]}
+        position={[45, 0.5, 45]}
         rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
       />
       <Fence
-        position={[45, 0.5, 29]}
+        position={[54, 0.5, 45]}
         rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
       />
       <Fence
-        position={[49.5, 0.5, 24.5]}
-        rotation={[-Math.PI / 2, 0, Math.PI]}
+        position={[63, 0.5, 45]}
+        rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
       />
       <Fence
-        position={[40.5, 0.5, 24.5]}
-        rotation={[-Math.PI / 2, 0, Math.PI]}
-      />
-      <Sheep
-        position={[47, 0.5, 24]}
-        rotation={[-Math.PI / 2, 0, -Math.PI / 6]}
-      />
-      <Sheep
-        position={[47, 0.5, 26]}
+        position={[45, 0.5, 63]}
         rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
+      />
+      <Fence
+        position={[54, 0.5, 63]}
+        rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
+      />
+      <Fence
+        position={[63, 0.5, 63]}
+        rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
+      />
+      <Fence
+        position={[40.5, 0.5, 49.5]}
+        rotation={[-Math.PI / 2, 0, -Math.PI / 1]}
+      />
+      <Fence
+        position={[40.5, 0.5, 58.5]}
+        rotation={[-Math.PI / 2, 0, -Math.PI / 1]}
+      />
+      <Fence
+        position={[67.5, 0.5, 49.5]}
+        rotation={[-Math.PI / 2, 0, -Math.PI / 1]}
+      />
+      <Fence
+        position={[67.5, 0.5, 58.5]}
+        rotation={[-Math.PI / 2, 0, -Math.PI / 1]}
       />
 
-      <Sheep position={[45, 0.5, 26]} rotation={[-Math.PI / 2, 0, -Math.PI]} />
-      <Sheep position={[44, 0.5, 24]} rotation={[-Math.PI / 2, 0, -Math.PI]} />
-      <Sheep
-        position={[44.5, 0.5, 22]}
-        rotation={[-Math.PI / 2, 0, -Math.PI]}
-      />
-      <Sheep
-        position={[43, 0.5, 28]}
-        rotation={[-Math.PI / 2, 0, -Math.PI / 4]}
-      />
-      <Sheep
-        position={[43, 0.5, 22]}
-        rotation={[-Math.PI / 2, 0, Math.PI / 4]}
-      />
-      <Sheep
-        position={[42, 0.5, 24]}
-        rotation={[-Math.PI / 2, 0, Math.PI / 2]}
-      />
+      {/* 돼지 */}
+      {
+        (() => {
+          let item = []
+          for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 13; j++) {
+              let cnt = randomNumber[mapValue+i*j+i+j+1];
+              if(cnt < 2){
+                item.push(<Pig
+                  position={[42+j*2, 0.5, 47 + i*2]}
+                  rotation={[-Math.PI / 2, 0, -Math.PI*i / j]}
+                />)
+              }
+            }
+          }
+          return item;
+        })()
+      }
+
+      {/* 맵전체 */}
+      {
+        (() => {
+          let item = []
+          for (let i = 0; i < 8; i++) {
+            for (let j = 0; j < 8; j++) {
+              let cnt = randomNumber[mapValue+i*j+i+j];
+              if(cnt < 1){
+                item.push(<Flower_pot
+                  position={[15+i*8, 0.5, 5+j*8]}
+                  rotation={[-Math.PI / 2, 0, -Math.PI*i / j]}
+                />)
+              } else if(cnt < 2){
+                item.push(<Tree_trunk
+                  position={[15+i*8, 0.5, 5+j*8]}
+                  rotation={[-Math.PI / 2, 0, -Math.PI*i / j]}
+                />)
+              } else if(cnt < 3) {
+                item.push(<Pumpkin
+                  position={[15+i*8, 0.5, 5+j*8]}
+                  rotation={[-Math.PI / 2, 0, -Math.PI*i / j]}
+                />)
+              }
+            }
+          }
+          return item;
+        })()
+      }
+
+      <Wheelbarrow position={[15, 0.5, 15]} rotation={[-Math.PI / 2, 0, 0]} />
+      <Wheelbarrow position={[35, 0.5, 70]} rotation={[-Math.PI / 2, 0, 0]} />
+      <Bush position={[10, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
+      <Bush_1 position={[10, 0.5, 41]} rotation={[-Math.PI / 2, 0, 0]} />
+      <Bush_2 position={[17, 0.5, 68]} rotation={[-Math.PI / 2, 0, 0]} />
+      <Bush_3 position={[10, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
+      <Bush_4 position={[55, 0.5, 41]} rotation={[-Math.PI / 2, 0, 0]} />
+      <Bush_5 position={[38, 0.5, 11]} rotation={[-Math.PI / 2, 0, 0]} />
+      <Bush_6 position={[15, 0.5, 30]} rotation={[-Math.PI / 2, 0, 0]} />
+
+
       {/* --------------------------------<2사분면 x<0, y>0: 주거지역>-------------------------------------- */}
 
       <Tree_4 position={[10, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} />
@@ -1008,23 +1042,6 @@ export function FarmElement() {
       />
 
       {/* --------------------------------<4사분면 x>0, y<0 : 숲 속>-------------------------------------- */}
-      <Tree_4 position={[-10, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[-10, 0.5, 20]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[-10, 0.5, 30]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[-10, 0.5, 40]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[-10, 0.5, 50]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[-10, 0.5, 60]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[-10, 0.5, 70]} rotation={[-Math.PI / 2, 0, 0]} />
-      {/* <Tree_4 position={[-10, 0.5, -80]} rotation={[-Math.PI / 2, 0, 0]} /> */}
-
-      <Tree_4 position={[-10, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[-20, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[-30, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[-40, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[-50, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[-60, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[-70, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
-      {/* <Tree_4 position={[-80, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} /> */}
 
       <House_6
         position={[-25, 0.5, 30]}
@@ -1090,37 +1107,43 @@ export function FarmElement() {
           let item = []
           for (let i = 0; i < 21; i++) {
             for (let j = 0; j < 21; j++) {
-              item.push(
-                <Grass
-                  position={[-15 - i, 0.5, 70 - j]}
-                  rotation={[-Math.PI / 2, 0, Math.PI / 1]}
-                />
-              )
+              let cnt = randomNumber[mapValue+i*j+i+j];
+                if(cnt < 8){
+                  item.push(<Grass
+                    position={[-15 - i, 0.5, 70 - j]}
+                    rotation={[-Math.PI / 2, 0, Math.PI / 1]}
+                  />)
+                }               
             }
           }
           return item;
         })()
       }
 
-      {/* 나무 */}
+      {/* 숲 */}
       {
         (() => {
           let item = []
           for (let i = 0; i < 7; i++) {
             for (let j = 0; j < 12; j++) {
-              let cnt = randomNumber[10+i*j+i+j];
-              if(cnt < 2){
+              let cnt = randomNumber[mapValue+i*j+i+j];
+              if(cnt < 1){
                 item.push(<Tree_4
                   position={[-45-i*5, 0.5, 70-j*5]}
                   rotation={[-Math.PI / 2, 0, Math.PI / 1]}
                 />)
-              }else if(cnt < 4){
+              }else if(cnt < 2){
                 item.push(<Tree_9
                   position={[-45-i*5, 0.5, 70-j*5]}
                   rotation={[-Math.PI / 2, 0, Math.PI / 1]}
                 />)
-              }else if(cnt < 6){
-                item.push(<Tree_trunk
+              }else if(cnt < 3){
+                item.push(<Tree_2
+                  position={[-45-i*5, 0.5, 70-j*5]}
+                  rotation={[-Math.PI / 2, 0, Math.PI / 1]}
+                />)
+              }else if(cnt < 4){
+                item.push(<Tree_4
                   position={[-45-i*5, 0.5, 70-j*5]}
                   rotation={[-Math.PI / 2, 0, Math.PI / 1]}
                 />)
@@ -1130,30 +1153,6 @@ export function FarmElement() {
           return item;
         })()
       }
-
-      {/* {Array.from({ length: 7 }, (_, i) => -45 - i * 5).map((x) =>
-        Array.from({ length: 12 }, (_, i) => 70 - i * 5).map((z) =>
-          Math.random() < 0.2 ? (
-            <Tree_4
-              position={[x, 0.5, z]}
-              rotation={[-Math.PI / 2, 0, Math.PI / 1]}
-            />
-          ) : Math.random() < 0.25 ? (
-            <Tree_9
-              position={[x, 0.5, z]}
-              rotation={[-Math.PI / 2, 0, Math.PI / 1]}
-            />
-          ) : Math.random() < 0.3 ? (
-            <Tree_trunk
-              position={[x, 0.5, z]}
-              rotation={[-Math.PI / 2, 0, Math.PI / 1]}
-            />
-          ) : (
-            <></>
-          )
-        )
-      )} */}
-      
 
       {Array.from({ length: 6 }, (_, i) => -15 - i * 4).map((x) => (
         <Bush
