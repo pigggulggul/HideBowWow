@@ -85,6 +85,7 @@ export function Content() {
     useEffect(() => {
         // console.log('선택 랜덤');
         if (roomState.roomState === 3 && meInfo.selectedIndex == null) {
+            console.log('작동1');
             const random = Math.floor(Math.random() * 3);
             setMe((prevMe) => ({ ...prevMe, selectedIndex: choice[random] })); // 새 객체를 반환하여 selectedIndex 업데이트
 
@@ -126,6 +127,7 @@ export function Content() {
             rerollTime === 2 &&
             selectCount !== 2
         ) {
+            console.log('작동2');
             const random = Math.floor(Math.random() * 3);
             setMe((prevMe) => ({ ...prevMe, selectedIndex: choice[random] })); // 새 객체를 반환하여 selectedIndex 업데이트
 
@@ -215,7 +217,6 @@ export function Content() {
             const newChoice = [...choice];
             newChoice[num] = Math.floor(Math.random() * 100);
             setChoice(newChoice);
-
             const newRerollFlag = [...rerollFlag];
             newRerollFlag[num] = true;
             setRerollFlag(newRerollFlag);
