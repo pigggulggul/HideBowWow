@@ -659,26 +659,27 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     }, [observedPlayerIndex, freeViewMode, chatFlag]);
 
     // 키 입력
-    useEffect(() => {
-        const handleKeyDown = (event: any) => {
-            if (!chatFlag) {
-                keyState.current[event.key] = true;
-            }
-        };
+    // useEffect(() => {
+    //     const handleKeyDown = (event: any) => {
+    //         if (!chatFlag) {
+    //             keyState.current[event.key] = true;
+    //         }
+    //     };
 
-        const handleKeyUp = (event: any) => {
-            if (!chatFlag) {
-                keyState.current[event.key] = false;
-            }
-        };
+    //     const handleKeyUp = (event: any) => {
+    //         if (!chatFlag) {
+    //             keyState.current[event.key] = false;
+    //         }
+    //     };
 
-        document.addEventListener('keydown', handleKeyDown);
-        document.addEventListener('keyup', handleKeyUp);
-        return () => {
-            document.removeEventListener('keydown', handleKeyDown);
-            document.removeEventListener('keyup', handleKeyUp);
-        };
-    }, [chatFlag]);
+    //     document.addEventListener('keydown', handleKeyDown);
+    //     document.addEventListener('keyup', handleKeyUp);
+    //     return () => {
+    //         document.removeEventListener('keydown', handleKeyDown);
+    //         document.removeEventListener('keyup', handleKeyUp);
+    //     };
+    // }, [chatFlag]);
+    
     useEffect(() => {
         const handleJumpDown = (event: any) => {
             if (event.code === 'Space' && !jumpFlag && !chatFlag) {
@@ -760,7 +761,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                         isJumping >= 0
                     ) {
                         // 이동중
-                        lockPointer();
+                        // lockPointer();
                         moveVector.normalize().multiplyScalar(0.17);
 
                         const forward = new Vector3(
@@ -1002,7 +1003,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                         );
 
                         if (!moveVector.equals(new Vector3(0, 0, 0))) {
-                            lockPointer();
+                            // lockPointer();
                             moveVector.normalize().multiplyScalar(0.35); // 속도조절
 
                             const forward = new Vector3(
@@ -1043,7 +1044,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                         camera.lookAt(cameraTarget);
                     } else {
                         // 관전모드
-                        lockPointer();
+                        // lockPointer();
                         if (!observerRef.current) {
                             observerRef.current = new Observer();
                             observerRef.current.position = new Vector3(0, 0, 0);
@@ -1152,7 +1153,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 );
 
                 if (!moveVector.equals(new Vector3(0, 0, 0))) {
-                    lockPointer();
+                    // lockPointer();
                     moveVector.normalize().multiplyScalar(0.35); // 속도조절
 
                     const forward = new Vector3(
@@ -1193,7 +1194,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 camera.lookAt(cameraTarget);
             } else {
                 // 관전모드
-                lockPointer();
+                // lockPointer();
                 const observedPlayer =
                     roomState.roomPlayers[observedPlayerIndex];
 
