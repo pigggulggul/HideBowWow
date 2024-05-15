@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ChatType, RoomInfo } from '../types/GameType';
@@ -47,6 +48,9 @@ export default function RoomPage() {
     const currentRoom = useSelector(
         (state: any) => state.reduxFlag.userSlice.currentRoom
     );
+    const channelIndex = useSelector(
+        (state: any) => state.reduxFlag.userSlice.channelIndex
+    );
 
     ///////// 채팅 관련 //////////
     const chatList = useSelector(
@@ -60,7 +64,7 @@ export default function RoomPage() {
 
     const dispatch = useDispatch();
     const loadRoom = async (state: string) => {
-        const res = await getRoom(state);
+        const res = await getRoom(state, channelIndex);
         if (res.status === httpStatusCode.OK) {
             // console.log(res.data);
             setRoom(res.data.data);
@@ -94,7 +98,7 @@ export default function RoomPage() {
         }
         dispatch(chatDataState([]));
         if (currentRoom.roomAdmin === meName) {
-            // console.log('시작 룸', room);
+            console.log('시작 룸', room);
             stompClient.sendMessage(
                 `/room.gameInit`,
                 JSON.stringify({
@@ -102,7 +106,8 @@ export default function RoomPage() {
                     roomId: state,
                     sender: meName,
                     data: {
-                        room,
+                        ...room,
+                        botCnt: botCount,
                     },
                 })
             );
@@ -128,11 +133,10 @@ export default function RoomPage() {
         }
     }, [isReady]);
     useEffect(() => {
-        // console.log('방정보', currentRoom);
+        console.log('방정보', currentRoom);
         setRoom(currentRoom);
         setBotCount(currentRoom.botCnt);
     }, [currentRoom]);
-
     useEffect(() => {
         // console.log('바뀐정보', room);
     }, [room]);
@@ -217,7 +221,6 @@ export default function RoomPage() {
             setMapIndex((prev) => prev + 1);
         }
     };
-
     const handleBotCntIncrease = () => {
         if (currentRoom.roomAdmin == meName)
             setBotCount(botCount >= 3 ? 4 : botCount + 1);
@@ -227,6 +230,8 @@ export default function RoomPage() {
         if (currentRoom.roomAdmin == meName)
             setBotCount(botCount > 0 ? botCount - 1 : 0);
     };
+
+
 
     return (
         <section
@@ -264,12 +269,12 @@ export default function RoomPage() {
                                                 : {}
                                         }
                                     >
-                                        <p className="text-[1.4vw]">
+                                        <p className="w-[80%] text-[1.4vw] text-start whitespace-nowrap overflow-hidden overflow-ellipsis">
                                             {item.nickname}
                                         </p>
                                         {room?.roomAdmin === item.nickname ? (
-                                            <div className="flex flex-col">
-                                                <p className="text-[1.6vw]">
+                                            <div className="w-[20%] flex flex-col">
+                                                <p className="text-[1.4vw]">
                                                     방장
                                                 </p>
                                             </div>
@@ -289,7 +294,7 @@ export default function RoomPage() {
                                                 className="w-full flex items-center justify-start my-1 text-[1.1vw]"
                                                 key={'chat key : ' + index}
                                             >
-                                                <p className="w-[18%] text-center">
+                                                <p className="w-[18%] text-start whitespace-nowrap overflow-hidden overflow-ellipsis">
                                                     {item.nickname}
                                                 </p>
                                                 <p className="w-[2%]">:</p>

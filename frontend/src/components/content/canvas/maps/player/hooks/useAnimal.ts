@@ -17,10 +17,11 @@ import {
 import StompClient from '../../../../../../websocket/StompClient';
 import { useSelector } from 'react-redux';
 import { GLTF, SkeletonUtils } from 'three-stdlib';
-import { removeCollideObjectState,
-        observerState
- } from '../../../../../../store/user-slice';
-import { store } from '../../../../../../store/store'; 
+import {
+    removeCollideObjectState,
+    observerState,
+} from '../../../../../../store/user-slice';
+import { store } from '../../../../../../store/store';
 
 interface GLTFAction extends AnimationClip {
     name: ActionName;
@@ -85,6 +86,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     const [isWalking, setIsWalking] = useState(false);
     const keyState = useRef<{ [key: string]: boolean }>({});
     const [isJumping, setIsJumping] = useState(0);
+    const [jumpFlag, setJumpFlag] = useState<boolean>(false);
     const [callsInLastSecond, setCallsInLastSecond] = useState(0);
     const [delay, setDelay] = useState(0.00008);
     // Redux
@@ -103,6 +105,9 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     );
     const collideState = useSelector(
         (state: any) => state.reduxFlag.userSlice.collideObj
+    );
+    const mapState = useSelector(
+        (state: any) => state.reduxFlag.userSlice.mapSize
     );
 
     const stompClient = StompClient.getInstance();
@@ -299,9 +304,6 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     useEffect(() => {
         const handleKeyDown = (event: any) => {
             keyState.current[event.key] = true;
-            if (event.code === 'Space' && isJumping === 0) {
-                setIsJumping(1);
-            }
         };
 
         const handleKeyUp = (event: any) => {
@@ -316,7 +318,13 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
         };
     }, [isWalking]);
     useEffect(() => {
-        if (isJumping === 1) {
+        const handleJumpDown = (event: any) => {
+            if (event.code === 'Space' && !jumpFlag) {
+                setIsJumping(1);
+                setJumpFlag(true);
+            }
+        };
+        if (isJumping === 1 && jumpFlag) {
             // console.log('점프중입니다.');
             setTimeout(() => {
                 // console.log('점프 내려가는 중입니다.');
@@ -325,8 +333,13 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
             setTimeout(() => {
                 // console.log('점프 끝입니다.');
                 setIsJumping(0);
+                setJumpFlag(false);
             }, 1200);
         }
+        document.addEventListener('keydown', handleJumpDown);
+        return () => {
+            document.removeEventListener('keydown', handleJumpDown);
+        };
     }, [isJumping]);
 
     // Frame
@@ -543,6 +556,16 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                         }
                         playerRef.current.position.add(moveDirection);
                     }
+                    if (
+                        playerRef.current.position.x > mapState.maxX ||
+                        playerRef.current.position.x < mapState.minX ||
+                        playerRef.current.position.z > mapState.maxZ ||
+                        playerRef.current.position.z < mapState.minZ ||
+                        playerRef.current.position.y > mapState.maxY ||
+                        playerRef.current.position.y < mapState.minY
+                    ) {
+                        playerRef.current.position.set(0, 0, 0);
+                    }
 
                     if (accumulatedTimeRef.current >= delay) {
                         accumulatedTimeRef.current = 0;
@@ -689,7 +712,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                         }
                     }
                 });
-            } 
+            }
         }
 
         if (nicknameRef.current) {

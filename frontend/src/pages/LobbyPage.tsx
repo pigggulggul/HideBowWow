@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { enterRoom, roomList, roomMake } from '../api/rooms';
@@ -25,6 +26,9 @@ export default function LobbyPage() {
 
     const meName = useSelector(
         (state: any) => state.reduxFlag.userSlice.userNickname
+    );
+    const channelIndex = useSelector(
+        (state: any) => state.reduxFlag.userSlice.channelIndex
     );
 
     const navigate = useNavigate();
@@ -57,7 +61,7 @@ export default function LobbyPage() {
     };
 
     const showRoomListAPI = async () => {
-        const showRes = await roomList();
+        const showRes = await roomList(channelIndex);
         if (showRes.status === httpStatusCode.OK) {
             // console.log(showRes.data);
             setRoom(showRes.data.data);
@@ -75,7 +79,7 @@ export default function LobbyPage() {
                 isPublic: makeRoomIsPublic,
                 roomAdmin: meName,
             };
-            const makeRes = await roomMake(makeRoomInfo);
+            const makeRes = await roomMake(makeRoomInfo, channelIndex);
             // console.log(makeRes);
             if (makeRes.status === httpStatusCode.CREATE) {
                 // console.log('만들어졌습니다.', makeRes.data.data.roomId);
@@ -93,7 +97,7 @@ export default function LobbyPage() {
     };
     const checkPublicRoom = async (id: string) => {
         const checkData: EnterRoomState = { roomId: id, nickname: meName };
-        const res = await enterRoom(checkData);
+        const res = await enterRoom(checkData, channelIndex);
         // console.log(res);
         if (res.status === httpStatusCode.OK) {
             setRoomId(id);
@@ -112,7 +116,7 @@ export default function LobbyPage() {
             roomPassword: privateRoomPassword,
             nickname: meName,
         };
-        const res = await enterRoom(checkData);
+        const res = await enterRoom(checkData, channelIndex);
         // console.log('비번데이터', checkData);
         // console.log(res);
         if (res.status === httpStatusCode.OK) {
@@ -120,6 +124,9 @@ export default function LobbyPage() {
             dispatch(roomIdState(privateRoomId));
             stompClient.connect(privateRoomId, setWebsocketFlag);
         }
+    };
+    const goChannel = () => {
+        navigate('/selectchannel');
     };
 
     /** 일정 시간마다 방 조회 */
@@ -188,7 +195,15 @@ export default function LobbyPage() {
                         빠른시작
                     </p> */}
                     <p
-                        className="w-[80%] mx-auto my-[1vw] px-[1vw] py-[1.2vw] text-[1.2vw] border-[0.2vw] border-white bg-sky-400 text-white rounded-[0.6vw] hover:color-bg-main cursor-pointer"
+                        className="w-[80%] mx-auto my-[1vw] px-[0.6vw] py-[1.2vw] text-[1.1vw] border-[0.2vw] border-white bg-sky-400 text-white rounded-[0.6vw] hover:color-bg-main cursor-pointer"
+                        onClick={() => {
+                            goChannel();
+                        }}
+                    >
+                        ← 채널선택
+                    </p>
+                    <p
+                        className="w-[80%] mx-auto my-[1vw] px-[1vw] py-[1.2vw] text-[1.1vw] border-[0.2vw] border-white bg-sky-400 text-white rounded-[0.6vw] hover:color-bg-main cursor-pointer"
                         onClick={() => {
                             changeMakeRoomFlag();
                         }}

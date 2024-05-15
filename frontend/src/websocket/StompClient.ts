@@ -7,6 +7,7 @@ import {
     removePeopleRoomState,
     meDead,
     addChatDataState,
+    channelIndexState,
     rerollState,
 } from '../store/user-slice';
 import { store } from '../store/store';
@@ -38,7 +39,9 @@ class StompClient {
         setFlag: React.Dispatch<React.SetStateAction<boolean>>
     ): void {
         if (!this.client) {
-            this.client = handshake();
+            const channelIndex =
+                store.getState().reduxFlag.userSlice.channelIndex;
+            this.client = handshake(channelIndex);
 
             this.client.onConnect = () => {
                 //public subscribe
@@ -134,16 +137,17 @@ class StompClient {
                                 store.dispatch(addChatDataState(msg.data));
                                 break;
                             }
-                            case 'room.rerollStart': {
-                                console.log('리롤시작', msg);
-                                store.dispatch(rerollState(1));
-                                break;
-                            }
-                            case 'room.rerollEnd': {
-                                console.log('리롤끝', msg);
-                                store.dispatch(rerollState(2));
-                                break;
-                            }
+                            // case 'room.rerollStart': {
+                            //     console.log('리롤시작', msg);
+                            //     store.dispatch(rerollState(1));
+                            //     break;
+                            // }
+                            // case 'room.rerollEnd': {
+                            //     console.log('리롤끝', msg);
+                            //     store.dispatch(rerollState(2));
+                            //     break;
+                            // }
+
                             default: {
                                 // console.log('여분의 msg', msg);
                                 break;
@@ -170,7 +174,7 @@ class StompClient {
                         break;
                     }
                     case 'player.dead': {
-                        console.log('플레이어 사망 : ' + msg.data.nickname);
+                        // console.log('플레이어 사망 : ' + msg.data.nickname);
                         const {
                             reduxFlag: { userSlice },
                         } = store.getState(); // userSlice만 추출
@@ -236,21 +240,21 @@ class StompClient {
                         // console.log('방 수정', msg);
                         break;
                     }
-                    case 'room.rerollStart': {
-                        console.log('리롤시작', msg);
-                        store.dispatch(rerollState(1));
-                        break;
-                    }
-                    case 'room.rerollEnd': {
-                        console.log('리롤끝', msg);
-                        store.dispatch(rerollState(2));
-                        break;
-                    }
                     case 'chat.player': {
                         // console.log('채팅', msg);
                         store.dispatch(addChatDataState(msg.data));
                         break;
                     }
+                    // case 'room.rerollStart': {
+                    //     console.log('리롤시작', msg);
+                    //     store.dispatch(rerollState(1));
+                    //     break;
+                    // }
+                    // case 'room.rerollEnd': {
+                    //     console.log('리롤끝', msg);
+                    //     store.dispatch(rerollState(2));
+                    //     break;
+                    // }
                 }
             });
         }
