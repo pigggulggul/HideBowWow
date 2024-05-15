@@ -29,7 +29,7 @@ export function Dog_house(props: ObjectSettingType) {
         '/models/object/Dog_house.glb'
     ) as GLTFResult;
     const [ref] = useBox<THREE.Mesh>(() => ({
-        args: [1, 1, 1],
+        args: [3, 3, 5],
         mass: 0.1,
         position: props.position,
         rotation: props.rotation,
@@ -45,7 +45,7 @@ export function Dog_house(props: ObjectSettingType) {
                     material={materials.Brown_2}
                     position={props.position}
                     rotation={props.rotation}
-                    scale={props.scale}
+                    scale={[2, 2, 2]}
                 />
                 <mesh
                     ref={ref}
@@ -53,7 +53,7 @@ export function Dog_house(props: ObjectSettingType) {
                     material={materials.Gray}
                     position={props.position}
                     rotation={props.rotation}
-                    scale={props.scale}
+                    scale={[2, 2, 2]}
                 />
                 <mesh
                     ref={ref}
@@ -61,7 +61,7 @@ export function Dog_house(props: ObjectSettingType) {
                     material={materials.material}
                     position={props.position}
                     rotation={props.rotation}
-                    scale={props.scale}
+                    scale={[2, 2, 2]}
                 />
                 <mesh
                     ref={ref}
@@ -69,7 +69,7 @@ export function Dog_house(props: ObjectSettingType) {
                     material={materials.Yellow_2}
                     position={props.position}
                     rotation={props.rotation}
-                    scale={props.scale}
+                    scale={[2, 2, 2]}
                 />
             </group>
         </group>

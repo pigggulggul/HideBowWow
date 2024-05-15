@@ -32,7 +32,7 @@ export function Tree_house_trunk(props: ObjectSettingType) {
   ) as GLTFResult;
 
   const [ref] = useBox<THREE.Mesh>(() => ({
-    args: [7, 7, 7],
+    args: [17, 17, 22],
 
     mass: 0.1,
 
@@ -53,7 +53,7 @@ export function Tree_house_trunk(props: ObjectSettingType) {
           material={materials.Brown_2}
           position={props.position}
           rotation={props.rotation}
-          scale={props.scale}
+          scale={[3, 3, 3]}
         />
         <mesh
           ref={ref}
@@ -61,7 +61,7 @@ export function Tree_house_trunk(props: ObjectSettingType) {
           material={materials.Brown_3}
           position={props.position}
           rotation={props.rotation}
-          scale={props.scale}
+          scale={[3, 3, 3]}
         />
         <mesh
           ref={ref}
@@ -69,7 +69,7 @@ export function Tree_house_trunk(props: ObjectSettingType) {
           material={materials.Brown_4}
           position={props.position}
           rotation={props.rotation}
-          scale={props.scale}
+          scale={[3, 3, 3]}
         />
         <mesh
           ref={ref}
@@ -77,7 +77,7 @@ export function Tree_house_trunk(props: ObjectSettingType) {
           material={materials.Brown}
           position={props.position}
           rotation={props.rotation}
-          scale={props.scale}
+          scale={[3, 3, 3]}
         />
       </group>
     </group>

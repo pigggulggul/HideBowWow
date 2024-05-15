@@ -29,7 +29,7 @@ export function Tree_9(props: ObjectSettingType) {
     ) as GLTFResult;
 
     const [ref] = useBox<THREE.Mesh>(() => ({
-        args: [1, 1, 1],
+        args: [3.2, 3.2, 10.5],
 
         mass: 0.1,
 

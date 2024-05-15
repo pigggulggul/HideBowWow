@@ -23,7 +23,7 @@ export function Barrel(props: ObjectSettingType) {
         '/models/object/Barrel.glb'
     ) as GLTFResult;
     const [ref] = useBox<THREE.Mesh>(() => ({
-        args: [4, 4, 4],
+        args: [1.5, 1.5, 1.5],
         mass: 0.1,
         position: props.position,
         rotation: props.rotation,

@@ -35,7 +35,7 @@ export function House_6(props: ObjectSettingType) {
   ) as GLTFResult;
 
   const [ref] = useBox<THREE.Mesh>(() => ({
-    args: [7, 5, 9.5],
+    args: [12, 12, 20],
 
     mass: 0.1,
 
@@ -56,7 +56,7 @@ export function House_6(props: ObjectSettingType) {
           material={materials.Blue}
           position={props.position}
           rotation={props.rotation}
-          scale={props.scale}
+          scale={[2, 2, 2]}
         />
         <mesh
           ref={ref}
@@ -64,7 +64,7 @@ export function House_6(props: ObjectSettingType) {
           material={materials.Brown_2}
           position={props.position}
           rotation={props.rotation}
-          scale={props.scale}
+          scale={[2, 2, 2]}
         />
         <mesh
           ref={ref}
@@ -72,7 +72,7 @@ export function House_6(props: ObjectSettingType) {
           material={materials.Brown_3}
           position={props.position}
           rotation={props.rotation}
-          scale={props.scale}
+          scale={[2, 2, 2]}
         />
         <mesh
           ref={ref}
@@ -80,7 +80,7 @@ export function House_6(props: ObjectSettingType) {
           material={materials.Brown_4}
           position={props.position}
           rotation={props.rotation}
-          scale={props.scale}
+          scale={[2, 2, 2]}
         />
         <mesh
           ref={ref}
@@ -88,7 +88,7 @@ export function House_6(props: ObjectSettingType) {
           material={materials.Gray}
           position={props.position}
           rotation={props.rotation}
-          scale={props.scale}
+          scale={[2, 2, 2]}
         />
         <mesh
           ref={ref}
@@ -96,7 +96,7 @@ export function House_6(props: ObjectSettingType) {
           material={materials.Light_Gray}
           position={props.position}
           rotation={props.rotation}
-          scale={props.scale}
+          scale={[2, 2, 2]}
         />
       </group>
     </group>
