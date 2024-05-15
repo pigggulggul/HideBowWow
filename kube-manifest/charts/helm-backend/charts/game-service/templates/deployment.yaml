@@ -22,5 +22,10 @@ spec:
             - containerPort: {{ .Values.service.targetPort }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
+            - name: SERVER_DOMAIN
+              valueFrom:
+                configMapKeyRef:
+                  name: domain-config
+                  key: SERVER_DOMAIN
             - name: VERSION
-              value: "test3"
+              value: "test4"
