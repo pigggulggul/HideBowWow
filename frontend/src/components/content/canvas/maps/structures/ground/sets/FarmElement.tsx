@@ -349,7 +349,7 @@ export function FarmElement() {
       <Table_1 position={[39, 0.5, -51]} rotation={[-Math.PI / 2, 0, 0]} />
 
       <Tree_house_trunk
-        position={[55, 0.5, -65]}
+        position={[60, 0.5, -65]}
         rotation={[-Math.PI / 2, 0, 0]}
       />
 
@@ -413,7 +413,7 @@ export function FarmElement() {
       <Building_2 position={[-60, 0.5, -30]} rotation={[-Math.PI / 2, 0, 0]} />
 
       {/* 카페 */}
-      <House_6
+      <Building_3
         position={[-50, 0.5, -30]}
         rotation={[-Math.PI / 2, 0, -Math.PI]}
       />
@@ -1087,7 +1087,9 @@ export function FarmElement() {
               position={[x, 0.5, z]}
               rotation={[-Math.PI / 2, 0, Math.PI / 1]}
             />
-          ) : <></>
+          ) : (
+            <></>
+          )
         )
       )}
 
@@ -1131,8 +1133,6 @@ export function FarmElement() {
         position={[-10, 0.5, 65]}
         rotation={[-Math.PI / 2, 0, Math.PI / 0.5]}
       />
-
-
     </>
   );
 }
