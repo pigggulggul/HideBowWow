@@ -416,8 +416,10 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const objectMap =
         scene && scene.visible ? useGraph(scene) : useGraph(defaultScene);
     const nodes = objectMap.nodes;
-    const material = returnMaterial(modelIndex);
-    const node = returnNode(modelIndex);
+    const material =
+        scene && scene.visible ? returnMaterial(modelIndex) : returnMaterial(0);
+    const node =
+        scene && scene.visible ? returnNode(modelIndex) : returnNode(0);
 
     // console.log(
     //     'scale : ',
