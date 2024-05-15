@@ -287,7 +287,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
 
     useEffect(() => {
         if (isWalking) {
-            lockPointer();
+            // lockPointer();
             if (!actions['Walk']?.isRunning()) {
                 // Run 상태가 아닌경우 Run으로
                 actions['Walk']?.reset().fadeIn(0.2).play();
@@ -392,7 +392,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                         : 0)
             );
             if (!moveVector.equals(new Vector3(0, 0, 0))) {
-                lockPointer();
+                // lockPointer();
                 moveVector.normalize().multiplyScalar(0.2); // 속도조절
 
                 const forward = new Vector3(
@@ -464,9 +464,9 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                     !moveVector.equals(new Vector3(0, 0, 0)) ||
                     isJumping != 0
                 ) {
-                    lockPointer();
+                    // lockPointer();
                     // 이동중
-                    moveVector.normalize().multiplyScalar(0.2); // 속도조절
+                    moveVector.normalize().multiplyScalar(0.35); // 속도조절
                     setIsWalking(true);
                     setAnimation('Walk');
                     // 캐릭터가 바라보는 방향으로 이동 벡터를 회전시킵니다.

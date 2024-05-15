@@ -231,8 +231,7 @@ export default function GamePage() {
                 setToggleChat((prev) => !prev);
             } else if (event.key === 'Escape') {
                 setToggleSetting((prev) => !prev);
-                const element = document.body;
-                // console.log('헤헤');
+                const element = document.body; 
                 const requestPointerLock = element.requestPointerLock;
                 requestPointerLock.call(element);
             }
