@@ -2,11 +2,71 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Sky } from '@react-three/drei';
 import { RootMap } from './maps/RootMap';
 import { Physics } from '@react-three/cannon';
-import { Suspense } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 
 export function MainCanvas() {
-    const aspectRatio = window.innerWidth / window.innerHeight;
-    // 키보드 이벤트
+    const aspectRatio = window.innerWidth / window.innerHeight; 
+
+    // const lockPointer = () => {
+    //     const element = document.body;
+    //     const requestPointerLock = element.requestPointerLock;
+    //     if (requestPointerLock) {
+    //         requestPointerLock.call(element);
+    //     }
+    // };
+ 
+    // const handleKeyDown = (event : KeyboardEvent) => { 
+    //     if (event.key === ' ') {
+    //         lockPointer();
+    //     }
+    // };
+ 
+    // const handleMouseClick = (event: MouseEvent) => { 
+    //     lockPointer();
+    // };
+ 
+    // useEffect(() => {
+    //     window.addEventListener('keydown', handleKeyDown);
+    //     window.addEventListener('mousedown', handleMouseClick);
+ 
+    //     return () => {
+    //         window.removeEventListener('keydown', handleKeyDown);
+    //         window.removeEventListener('mousedown', handleMouseClick);
+    //     };
+    // }, []);
+    
+    const [pointerLocked, setPointerLocked] = useState(false);
+
+    useEffect(() => {
+        const handleKeyDown = (event : KeyboardEvent) => {
+            if (event.key === ' ' && !pointerLocked) {
+                requestPointerLock();
+            }
+        };
+  
+        const handlePointerLockChange = () => {
+            setPointerLocked(
+                document.pointerLockElement === document.body 
+            );
+        };
+
+        const requestPointerLock = () => {
+            const element = document.body;
+            const requestPointerLock =
+                element.requestPointerLock 
+            if (requestPointerLock) {
+                requestPointerLock.call(element);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown); 
+        document.addEventListener('pointerlockchange', handlePointerLockChange); 
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown); 
+            document.removeEventListener('pointerlockchange', handlePointerLockChange); 
+        };
+    }, [pointerLocked]);
 
     return (
         <Suspense
