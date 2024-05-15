@@ -185,7 +185,7 @@ export default function GamePage() {
                 inputRef.current.blur();
             }
         }
-    }, [toggleChat]); 
+    }, [toggleChat]);
     useEffect(() => {
         if (messageEndRef.current) {
             messageEndRef.current.scrollIntoView({
@@ -577,7 +577,7 @@ export default function GamePage() {
                                     className="w-full flex justify-start my-1"
                                     key={'chat key : ' + index}
                                 >
-                                    <p className="w-[auto] max-w-[25%]">
+                                    <p className="w-[auto] max-w-[25%] whitespace-nowrap overflow-hidden overflow-ellipsis">
                                         {item.nickname} :
                                     </p>
                                     <p className="w-[auto] max-w-[75%] text-start">

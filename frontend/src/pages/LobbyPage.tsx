@@ -27,7 +27,9 @@ export default function LobbyPage() {
     const meName = useSelector(
         (state: any) => state.reduxFlag.userSlice.userNickname
     );
-    const channelIndex = useSelector((state:any) => state.reduxFlag.userSlice.channelIndex);
+    const channelIndex = useSelector(
+        (state: any) => state.reduxFlag.userSlice.channelIndex
+    );
 
     const navigate = useNavigate();
     // const [room,setRoom] = useState<>();
@@ -123,6 +125,9 @@ export default function LobbyPage() {
             stompClient.connect(privateRoomId, setWebsocketFlag);
         }
     };
+    const goChannel = () => {
+        navigate('/selectchannel');
+    };
 
     /** 일정 시간마다 방 조회 */
     const [, setCount] = useState(0);
@@ -190,7 +195,15 @@ export default function LobbyPage() {
                         빠른시작
                     </p> */}
                     <p
-                        className="w-[80%] mx-auto my-[1vw] px-[1vw] py-[1.2vw] text-[1.2vw] border-[0.2vw] border-white bg-sky-400 text-white rounded-[0.6vw] hover:color-bg-main cursor-pointer"
+                        className="w-[80%] mx-auto my-[1vw] px-[0.6vw] py-[1.2vw] text-[1.1vw] border-[0.2vw] border-white bg-sky-400 text-white rounded-[0.6vw] hover:color-bg-main cursor-pointer"
+                        onClick={() => {
+                            goChannel();
+                        }}
+                    >
+                        ← 채널선택
+                    </p>
+                    <p
+                        className="w-[80%] mx-auto my-[1vw] px-[1vw] py-[1.2vw] text-[1.1vw] border-[0.2vw] border-white bg-sky-400 text-white rounded-[0.6vw] hover:color-bg-main cursor-pointer"
                         onClick={() => {
                             changeMakeRoomFlag();
                         }}
