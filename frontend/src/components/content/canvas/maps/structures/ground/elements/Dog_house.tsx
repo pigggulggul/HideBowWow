@@ -45,6 +45,7 @@ export function Dog_house(props: ObjectSettingType) {
                     material={materials.Brown_2}
                     position={props.position}
                     rotation={props.rotation}
+                    scale={props.scale}
                 />
                 <mesh
                     ref={ref}
@@ -52,6 +53,7 @@ export function Dog_house(props: ObjectSettingType) {
                     material={materials.Gray}
                     position={props.position}
                     rotation={props.rotation}
+                    scale={props.scale}
                 />
                 <mesh
                     ref={ref}
@@ -59,6 +61,7 @@ export function Dog_house(props: ObjectSettingType) {
                     material={materials.material}
                     position={props.position}
                     rotation={props.rotation}
+                    scale={props.scale}
                 />
                 <mesh
                     ref={ref}
@@ -66,6 +69,7 @@ export function Dog_house(props: ObjectSettingType) {
                     material={materials.Yellow_2}
                     position={props.position}
                     rotation={props.rotation}
+                    scale={props.scale}
                 />
             </group>
         </group>
