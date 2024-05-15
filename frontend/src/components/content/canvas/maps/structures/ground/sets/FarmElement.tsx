@@ -189,7 +189,7 @@ export function FarmElement() {
       <Road_1 position={[18.5, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} />
       <Road_1 position={[9, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} />
 
-      {/* --------------------------------<1사분면 x>0, y>0>-------------------------------------- */}
+      {/* --------------------------------<1사분면 x>0, y>0 : 농장>-------------------------------------- */}
 
       <Tree_4 position={[10, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
       <Tree_4 position={[10, 0.5, 20]} rotation={[-Math.PI / 2, 0, 0]} />
@@ -290,7 +290,7 @@ export function FarmElement() {
 
       <Bush_4 position={[20, 0.5, 20]} rotation={[-Math.PI / 2, 0, Math.PI]} />
 
-      {/* --------------------------------<2사분면 x<0, y>0>-------------------------------------- */}
+      {/* --------------------------------<2사분면 x<0, y>0: 주거지역>-------------------------------------- */}
 
       <Tree_4 position={[10, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} />
       <Tree_4 position={[10, 0.5, -20]} rotation={[-Math.PI / 2, 0, 0]} />
@@ -389,7 +389,7 @@ export function FarmElement() {
         rotation={[-Math.PI / 2, 0, -Math.PI]}
       />
 
-      {/* --------------------------------<3사분면 x<0, y<0>-------------------------------------- */}
+      {/* --------------------------------<3사분면 x<0, y<0 : 도시 및 카페>-------------------------------------- */}
 
       <Tree_4 position={[-10, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} />
       <Tree_4 position={[-10, 0.5, -20]} rotation={[-Math.PI / 2, 0, 0]} />
@@ -495,7 +495,414 @@ export function FarmElement() {
       <Chair position={[-49, 0.5, -50]} rotation={[-Math.PI / 2, 0, Math.PI]} />
       <Chair position={[-53, 0.5, -50]} rotation={[-Math.PI / 2, 0, Math.PI]} />
 
-      {/* --------------------------------<4사분면 x>0, y<0>-------------------------------------- */}
+      {/* 정원 부분 */}
+
+      {/* 00째 세로 */}
+      <Bush_1
+        position={[-24, 0.5, -56]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_2
+        position={[-26, 0.5, -56]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-30, 0.5, -56]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_2
+        position={[-34, 0.5, -56]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-38, 0.5, -56]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_2
+        position={[-42, 0.5, -56]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-46, 0.5, -56]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_2
+        position={[-50, 0.5, -56]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-54, 0.5, -56]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+
+      {/* 0째 세로 */}
+      <Bush_2
+        position={[-24, 0.5, -58]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-26, 0.5, -58]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_2
+        position={[-30, 0.5, -58]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-34, 0.5, -58]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_2
+        position={[-38, 0.5, -58]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-42, 0.5, -58]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_2
+        position={[-46, 0.5, -58]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-50, 0.5, -58]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_2
+        position={[-54, 0.5, -58]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+
+      {/* 1째 세로 */}
+      <Bush_1
+        position={[-24, 0.5, -60]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_2
+        position={[-26, 0.5, -60]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-30, 0.5, -60]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      {/* <Bush_2
+        position={[-34, 0.5, -60]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-38, 0.5, -60]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      /> */}
+      <Bush_2
+        position={[-42, 0.5, -60]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-46, 0.5, -60]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+
+      <Bush_2
+        position={[-50, 0.5, -60]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-54, 0.5, -60]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+
+      {/* 2째 세로 */}
+      <Bush_2
+        position={[-24, 0.5, -62]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-26, 0.5, -62]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      {/* <Bush_2
+        position={[-30, 0.5, -62]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-34, 0.5, -62]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+
+      <Bush_2
+        position={[-38, 0.5, -62]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-42, 0.5, -62]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      /> */}
+
+      <Bush_2
+        position={[-46, 0.5, -62]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-50, 0.5, -62]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+
+      <Bush_2
+        position={[-54, 0.5, -62]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      {/* 3째 세로 */}
+      <Bush_1
+        position={[-24, 0.5, -64]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_2
+        position={[-26, 0.5, -64]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      {/* <Bush_1
+        position={[-30, 0.5, -64]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_2
+        position={[-34, 0.5, -64]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-38, 0.5, -64]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_2
+        position={[-42, 0.5, -64]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-46, 0.5, -64]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      /> */}
+
+      <Bush_2
+        position={[-50, 0.5, -64]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-54, 0.5, -64]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+
+      {/* 4째 세로 */}
+      <Bush_1
+        position={[-26, 0.5, -66]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_2
+        position={[-30, 0.5, -66]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      {/* <Bush_1
+        position={[-34, 0.5, -66]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+
+      <Bush_2
+        position={[-38, 0.5, -66]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-42, 0.5, -66]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+
+      <Bush_2
+        position={[-46, 0.5, -66]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-50, 0.5, -66]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      /> */}
+      <Bush_2
+        position={[-54, 0.5, -66]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      {/* 5째 세로 */}
+
+      <Bush_2
+        position={[-26, 0.5, -68]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      {/* <Bush_1
+        position={[-30, 0.5, -68]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_2
+        position={[-34, 0.5, -68]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-38, 0.5, -68]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_2
+        position={[-42, 0.5, -68]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-46, 0.5, -68]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      /> */}
+
+      <Bush_2
+        position={[-50, 0.5, -68]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-54, 0.5, -68]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      {/* 6째 세로 */}
+      <Bush_1
+        position={[-26, 0.5, -70]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      {/* <Bush_2
+        position={[-30, 0.5, -70]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-34, 0.5, -70]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+
+      <Bush_2
+        position={[-38, 0.5, -70]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-42, 0.5, -70]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      /> */}
+
+      <Bush_2
+        position={[-46, 0.5, -70]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-50, 0.5, -70]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+
+      <Bush_2
+        position={[-54, 0.5, -70]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      {/* 7째 세로 */}
+      <Bush_2
+        position={[-26, 0.5, -72]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-30, 0.5, -72]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      {/* <Bush_2
+        position={[-34, 0.5, -72]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-38, 0.5, -72]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      /> */}
+      <Bush_2
+        position={[-42, 0.5, -72]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-46, 0.5, -72]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+
+      <Bush_2
+        position={[-50, 0.5, -72]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-54, 0.5, -72]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+
+      {/* 8째 세로 */}
+
+      <Bush_1
+        position={[-26, 0.5, -74]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_2
+        position={[-30, 0.5, -74]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-34, 0.5, -74]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_2
+        position={[-38, 0.5, -74]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-42, 0.5, -74]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_2
+        position={[-46, 0.5, -74]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-50, 0.5, -74]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_2
+        position={[-54, 0.5, -74]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+
+      {/* 9째 세로 */}
+
+      <Bush_1
+        position={[-26, 0.5, -76]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_2
+        position={[-30, 0.5, -76]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-34, 0.5, -76]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_2
+        position={[-38, 0.5, -76]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-42, 0.5, -76]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_2
+        position={[-46, 0.5, -76]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_1
+        position={[-50, 0.5, -76]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+      <Bush_2
+        position={[-54, 0.5, -76]}
+        rotation={[-Math.PI / 2, 0, Math.PI]}
+      />
+
+      {/* --------------------------------<4사분면 x>0, y<0 : 숲 속>-------------------------------------- */}
 
       <Tree_4 position={[-10, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
       <Tree_4 position={[-10, 0.5, 20]} rotation={[-Math.PI / 2, 0, 0]} />
