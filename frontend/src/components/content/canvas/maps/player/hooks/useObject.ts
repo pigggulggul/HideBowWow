@@ -9,7 +9,7 @@ import {
     Vector3,
     Quaternion,
 } from 'three';
-import { GLTF, SkeletonUtils } from 'three-stdlib';
+import { GLTF } from 'three-stdlib';
 import {
     CollideObject,
     PlayerInitType,
@@ -192,7 +192,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const [observedPlayerIndex, setObservedPlayerIndex] = useState(0);
     const callsInLastSecondRef = useRef(callsInLastSecond);
 
-    const { scene: scene_, materials } = useGLTF(
+    const { scene: scene, materials } = useGLTF(
         (() => {
             switch (modelIndex) {
                 case 0:
@@ -400,19 +400,21 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 default:
                     return '/models/object/Closet.glb';
             }
-        })()
+        })(),
+        true
     ) as GLTFResult;
     const getScaleByModelIndex = (_: number | undefined) => {
         return 0.025;
     };
-
+    const { scene: defaultScene } = useGLTF('/models/object/Barrel.glb');
     const scale = getScaleByModelIndex(modelIndex);
 
     //개별 모델링을 통하여 다른 객체임을 알려줘야한다.
-    const scene = useMemo(() => {
-        return SkeletonUtils.clone(scene_);
-    }, [scene_, modelIndex]);
-    const objectMap = useGraph(scene);
+    // const scene = useMemo(() => {
+    //     return scene_ ? SkeletonUtils.clone(scene_) : defaultScene;
+    // }, [scene_, modelIndex]);
+    const objectMap =
+        scene && scene.visible ? useGraph(scene) : useGraph(defaultScene);
     const nodes = objectMap.nodes;
     const material = returnMaterial(modelIndex);
     const node = returnNode(modelIndex);
