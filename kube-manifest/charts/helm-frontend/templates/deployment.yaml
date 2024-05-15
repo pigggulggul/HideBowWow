@@ -23,4 +23,4 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: VERSION
-              value: "test5f1"
+              value: "test5ff1"
