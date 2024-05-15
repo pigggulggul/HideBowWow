@@ -111,7 +111,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     const playerRef = useRef<PlayerRef>(null);
     const nicknameRef = useRef<Group>(null);
     const prevPosition = useRef<Vector3 | null>(null);
-    const isFirstFrame = useRef(true);
+    // const isFirstFrame = useRef(true);
     const observerRef = useRef<Observer | null>(null);
     const accumulatedTimeRef = useRef(0.0);
     const callsInLastSecondRef = useRef(callsInLastSecond);
@@ -331,12 +331,12 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
 
     // Frame
     useFrame(({ camera, clock }) => {
-        if (isFirstFrame.current) {
-            isFirstFrame.current = false;
-            prevPosition.current = playerRef.current
-                ? playerRef.current.position.clone()
-                : null; // 처음 프레임에만 이전 포지션 초기화
-        }
+        // if (isFirstFrame.current) {
+        //     isFirstFrame.current = false;
+        //     prevPosition.current = playerRef.current
+        //         ? playerRef.current.position.clone()
+        //         : null; // 처음 프레임에만 이전 포지션 초기화
+        // }
 
         if (!player || !playerRef.current) return;
 
@@ -416,7 +416,8 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                 observerRef.current.position.y,
                 observerRef.current.position.z
             );
-            camera.lookAt(cameraTarget);  
+            camera.lookAt(cameraTarget);   
+
         } else { // 게임 시작
             if (meInfo?.nickname === playerNickname) { // 내 캐릭터인 경우 
                 store.dispatch(observerState(" ")); 
