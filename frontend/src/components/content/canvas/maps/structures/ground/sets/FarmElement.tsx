@@ -72,7 +72,7 @@ export function FarmElement() {
       {/* <Road_1
         position={[0, 0.5, 85]}
         rotation={[-Math.PI / 2, 0, Math.PI / 2]}
-      /> */}
+      /> 
       <Road_1
         position={[0, 0.5, 84.5]}
         rotation={[-Math.PI / 2, 0, Math.PI / 2]}
@@ -80,7 +80,7 @@ export function FarmElement() {
       <Road_1
         position={[0, 0.5, 81.5]}
         rotation={[-Math.PI / 2, 0, Math.PI / 2]}
-      />
+      />*/}
       <Road_1
         position={[0, 0.5, 72.5]}
         rotation={[-Math.PI / 2, 0, Math.PI / 2]}
@@ -122,7 +122,7 @@ export function FarmElement() {
       {/* <Road_1
         position={[0, 0.5, -85]}
         rotation={[-Math.PI / 2, 0, Math.PI / 2]}
-      /> */}
+      /> 
       <Road_1
         position={[0, 0.5, -84.5]}
         rotation={[-Math.PI / 2, 0, Math.PI / 2]}
@@ -130,7 +130,7 @@ export function FarmElement() {
       <Road_1
         position={[0, 0.5, -81.5]}
         rotation={[-Math.PI / 2, 0, Math.PI / 2]}
-      />
+      />*/}
       <Road_1
         position={[0, 0.5, -72.5]}
         rotation={[-Math.PI / 2, 0, Math.PI / 2]}
@@ -165,7 +165,6 @@ export function FarmElement() {
       />
       {/* x=0 -84<=y<=-9 */}
       {/* <Road_1 position={[-85, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Road_1 position={[-81.5, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} />
       <Road_1 position={[-81.5, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} /> */}
       <Road_1 position={[-72.5, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} />
       <Road_1 position={[-63.5, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} />
@@ -178,7 +177,6 @@ export function FarmElement() {
 
       {/* x=0 9<=y<=84 */}
       {/* <Road_1 position={[-85, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Road_1 position={[81.5, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} />
       <Road_1 position={[81.5, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} /> */}
       <Road_1 position={[72.5, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} />
       <Road_1 position={[63.5, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} />
@@ -198,7 +196,7 @@ export function FarmElement() {
       <Tree_4 position={[10, 0.5, 50]} rotation={[-Math.PI / 2, 0, 0]} />
       <Tree_4 position={[10, 0.5, 60]} rotation={[-Math.PI / 2, 0, 0]} />
       <Tree_4 position={[10, 0.5, 70]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[10, 0.5, 80]} rotation={[-Math.PI / 2, 0, 0]} />
+      {/* <Tree_4 position={[10, 0.5, 80]} rotation={[-Math.PI / 2, 0, 0]} /> */}
 
       <Tree_4 position={[10, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
       <Tree_4 position={[20, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
@@ -299,7 +297,7 @@ export function FarmElement() {
       <Tree_4 position={[10, 0.5, -50]} rotation={[-Math.PI / 2, 0, 0]} />
       <Tree_4 position={[10, 0.5, -60]} rotation={[-Math.PI / 2, 0, 0]} />
       <Tree_4 position={[10, 0.5, -70]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[10, 0.5, -80]} rotation={[-Math.PI / 2, 0, 0]} />
+      {/* <Tree_4 position={[10, 0.5, -80]} rotation={[-Math.PI / 2, 0, 0]} /> */}
 
       <Tree_4 position={[10, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} />
       <Tree_4 position={[20, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} />
@@ -398,7 +396,7 @@ export function FarmElement() {
       <Tree_4 position={[-10, 0.5, -50]} rotation={[-Math.PI / 2, 0, 0]} />
       <Tree_4 position={[-10, 0.5, -60]} rotation={[-Math.PI / 2, 0, 0]} />
       <Tree_4 position={[-10, 0.5, -70]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Tree_4 position={[-10, 0.5, -80]} rotation={[-Math.PI / 2, 0, 0]} />
+      {/* <Tree_4 position={[-10, 0.5, -80]} rotation={[-Math.PI / 2, 0, 0]} /> */}
 
       <Tree_4 position={[-10, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} />
       <Tree_4 position={[-20, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} />
@@ -962,6 +960,23 @@ export function FarmElement() {
       />
 
       {/* --------------------------------<4사분면 x>0, y<0 : 숲 속>-------------------------------------- */}
+      <Tree_4 position={[-10, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} />
+      <Tree_4 position={[-10, 0.5, -20]} rotation={[-Math.PI / 2, 0, 0]} />
+      <Tree_4 position={[-10, 0.5, -30]} rotation={[-Math.PI / 2, 0, 0]} />
+      <Tree_4 position={[-10, 0.5, -40]} rotation={[-Math.PI / 2, 0, 0]} />
+      <Tree_4 position={[-10, 0.5, -50]} rotation={[-Math.PI / 2, 0, 0]} />
+      <Tree_4 position={[-10, 0.5, -60]} rotation={[-Math.PI / 2, 0, 0]} />
+      <Tree_4 position={[-10, 0.5, -70]} rotation={[-Math.PI / 2, 0, 0]} />
+      {/* <Tree_4 position={[-10, 0.5, -80]} rotation={[-Math.PI / 2, 0, 0]} /> */}
+
+      <Tree_4 position={[-10, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} />
+      <Tree_4 position={[-20, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} />
+      <Tree_4 position={[-30, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} />
+      <Tree_4 position={[-40, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} />
+      <Tree_4 position={[-50, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} />
+      <Tree_4 position={[-60, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} />
+      <Tree_4 position={[-70, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} />
+      {/* <Tree_4 position={[-80, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} /> */}
 
       <House_6
         position={[-25, 0.5, 30]}
