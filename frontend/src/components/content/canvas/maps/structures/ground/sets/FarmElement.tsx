@@ -65,6 +65,8 @@ import { Tree_trunk } from "../elements/Tree_trunk";
 import { Wheelbarrow } from "../elements/Wheelbarrow";
 import { Wooden_box } from "../elements/Wooden_box";
 
+const randomNumber = import.meta.env.VITE_REACT_RANDOM_NUMBER;
+
 export function FarmElement() {
   return (
     <>
