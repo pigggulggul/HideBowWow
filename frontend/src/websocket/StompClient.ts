@@ -137,16 +137,16 @@ class StompClient {
                                 store.dispatch(addChatDataState(msg.data));
                                 break;
                             }
-                            case 'room.rerollStart': {
-                                console.log('리롤시작', msg);
-                                store.dispatch(rerollState(1));
-                                break;
-                            }
-                            case 'room.rerollEnd': {
-                                console.log('리롤끝', msg);
-                                store.dispatch(rerollState(2));
-                                break;
-                            }
+                            // case 'room.rerollStart': {
+                            //     console.log('리롤시작', msg);
+                            //     store.dispatch(rerollState(1));
+                            //     break;
+                            // }
+                            // case 'room.rerollEnd': {
+                            //     console.log('리롤끝', msg);
+                            //     store.dispatch(rerollState(2));
+                            //     break;
+                            // }
 
                             default: {
                                 // console.log('여분의 msg', msg);
@@ -245,16 +245,16 @@ class StompClient {
                         store.dispatch(addChatDataState(msg.data));
                         break;
                     }
-                    case 'room.rerollStart': {
-                        console.log('리롤시작', msg);
-                        store.dispatch(rerollState(1));
-                        break;
-                    }
-                    case 'room.rerollEnd': {
-                        console.log('리롤끝', msg);
-                        store.dispatch(rerollState(2));
-                        break;
-                    }
+                    // case 'room.rerollStart': {
+                    //     console.log('리롤시작', msg);
+                    //     store.dispatch(rerollState(1));
+                    //     break;
+                    // }
+                    // case 'room.rerollEnd': {
+                    //     console.log('리롤끝', msg);
+                    //     store.dispatch(rerollState(2));
+                    //     break;
+                    // }
                 }
             });
         }
