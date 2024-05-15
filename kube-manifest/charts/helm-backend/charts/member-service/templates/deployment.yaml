@@ -27,6 +27,6 @@ spec:
                   name: domain-config
                   key: SERVER_DOMAIN
             - name: VERSION
-              value: "228"
+              value: "231"
       imagePullSecrets:
         - name: docker-key
