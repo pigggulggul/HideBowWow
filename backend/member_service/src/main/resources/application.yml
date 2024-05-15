@@ -1,7 +1,7 @@
 server:
   port: 8001
 #  domain: https://hidebowwow.site
-  domain: ${SERVER_DOMAIN:https://k10a709.p.ssafy.io.com}
+  domain: ${SERVER_DOMAIN:https://k10a709.p.ssafy.io}
   servlet:
     contextPath: "/api/member-service"
     encoding:

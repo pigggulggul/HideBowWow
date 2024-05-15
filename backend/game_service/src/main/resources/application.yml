@@ -1,6 +1,6 @@
 server:
   port: 8002
-  domain: ${SERVER_DOMAIN:https://k10a709.p.ssafy.io.com}
+  domain: ${SERVER_DOMAIN:https://k10a709.p.ssafy.io}
   servlet:
     contextPath: "/api/game-service"
     encoding:
