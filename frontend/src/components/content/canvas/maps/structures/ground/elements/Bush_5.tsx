@@ -27,7 +27,7 @@ export function Bush_5(props: ObjectSettingType) {
         '/models/object/Bush_5.glb'
     ) as GLTFResult;
     const [ref] = useBox<THREE.Mesh>(() => ({
-        args: [1, 1, 1],
+        args: [3, 2, 3],
         mass: 0.1,
         position: props.position,
         rotation: props.rotation,
