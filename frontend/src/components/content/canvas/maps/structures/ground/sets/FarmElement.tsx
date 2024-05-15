@@ -66,7 +66,9 @@ import { Tree_trunk } from "../elements/Tree_trunk";
 import { Wheelbarrow } from "../elements/Wheelbarrow";
 import { Wooden_box } from "../elements/Wooden_box";
 
-const randomNumber = import.meta.env.VITE_REACT_RANDOM_NUMBER.split('').map(Number);
+const randomNumber = import.meta.env.VITE_REACT_RANDOM_NUMBER.split("").map(
+  Number
+);
 const mapValue = 20;
 
 export function FarmElement() {
@@ -356,17 +358,46 @@ export function FarmElement() {
       <Tree_4 position={[70, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} />
       {/* <Tree_4 position={[80, 0.5, -10]} rotation={[-Math.PI / 2, 0, 0]} /> */}
 
-      <House_3 position={[30, 0.5, -20]} rotation={[-Math.PI / 2, 0, 0]} />
-      <House_4 position={[50, 0.5, -20]} rotation={[-Math.PI / 2, 0, 0]} />
-      <House_5
-        position={[30, 0.5, -40]}
-        rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
-      />
-
-      <House_7
-        position={[30, 0.5, -60]}
-        rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
-      />
+      {/* 집 랜덤 */}
+      {(() => {
+        const x_list = [-20, -20, -40, -60];
+        const y_list = [30, 50, 30, 30];
+        const p_list = [0, 0, -Math.PI / 2, -Math.PI / 2];
+        let item = [];
+        for (let i = 0; i < 4; i++) {
+          let cnt = randomNumber[mapValue + i];
+          if (cnt < 2) {
+            item.push(
+              <House_3
+                position={[y_list[i], 0.5, x_list[i]]}
+                rotation={[-Math.PI / 2, 0, p_list[i]]}
+              />
+            );
+          } else if (cnt < 4) {
+            item.push(
+              <House_4
+                position={[y_list[i], 0.5, x_list[i]]}
+                rotation={[-Math.PI / 2, 0, p_list[i]]}
+              />
+            );
+          } else if (cnt < 6) {
+            item.push(
+              <House_5
+                position={[y_list[i], 0.5, x_list[i]]}
+                rotation={[-Math.PI / 2, 0, p_list[i]]}
+              />
+            );
+          } else {
+            item.push(
+              <House_7
+                position={[y_list[i], 0.5, x_list[i]]}
+                rotation={[-Math.PI / 2, 0, p_list[i]]}
+              />
+            );
+          }
+        }
+        return item;
+      })()}
 
       <Bridge_1
         position={[50, 0.5, -40]}
@@ -399,41 +430,55 @@ export function FarmElement() {
         position={[60, 0.5, -65]}
         rotation={[-Math.PI / 2, 0, 0]}
       />
+      {/* 나무집 근처 밴치 랜덤 */}
+      {(() => {
+        const y_list = [44, 46, 48, 50];
+        let item = [];
+        for (let i = 0; i < 6; i++) {
+          let cnt = randomNumber[mapValue + i];
+          if (cnt < 5) {
+            item.push(
+              <Bench_2
+                position={[y_list[i], 0.5, -65]}
+                rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
+              />
+            );
+          } else {
+            item.push(
+              <Light_pole_1
+                position={[y_list[i], 0.5, -65]}
+                rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
+              />
+            );
+          }
+        }
+        return item;
+      })()}
 
-      <Bench_2
-        position={[50, 0.5, -65]}
-        rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
-      />
-
-      <Bench_2
-        position={[48, 0.5, -65]}
-        rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
-      />
-
-      <Bench_2
-        position={[46, 0.5, -65]}
-        rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
-      />
-      <Bench_2
-        position={[44, 0.5, -65]}
-        rotation={[-Math.PI / 2, 0, -Math.PI / 2]}
-      />
-
-      {/* 앞쪽 벤치 */}
-
-      <Bench_2
-        position={[30, 0.5, -50]}
-        rotation={[-Math.PI / 2, 0, -Math.PI]}
-      />
-      <Bench_2
-        position={[30, 0.5, -52]}
-        rotation={[-Math.PI / 2, 0, -Math.PI]}
-      />
-
-      <Light_pole_1
-        position={[30, 0.5, -48]}
-        rotation={[-Math.PI / 2, 0, -Math.PI]}
-      />
+      {/* 앞쪽 밴치 랜덤 */}
+      {(() => {
+        const x_list = [-50, -52, -48, -32, -30, -28];
+        let item = [];
+        for (let i = 0; i < 6; i++) {
+          let cnt = randomNumber[mapValue + i];
+          if (cnt < 5) {
+            item.push(
+              <Bench_2
+                position={[30, 0.5, x_list[i]]}
+                rotation={[-Math.PI / 2, 0, -Math.PI]}
+              />
+            );
+          } else {
+            item.push(
+              <Light_pole_1
+                position={[30, 0.5, x_list[i]]}
+                rotation={[-Math.PI / 2, 0, -Math.PI]}
+              />
+            );
+          }
+        }
+        return item;
+      })()}
 
       {/* --------------------------------<3사분면 x<0, y<0 : 도시 및 카페>-------------------------------------- */}
 
@@ -466,6 +511,30 @@ export function FarmElement() {
       />
       <Chalk_Board position={[-52, 0.5, -35]} rotation={[-Math.PI / 2, 0, 0]} />
 
+      {/* 의자 랜덤 */}
+      {(() => {
+        const x_list = [-40, -45, -50];
+        const y_list = [
+          -29, -31, -33, -35, -37, -39, -41, -43, -45, -47, -49, -51, -53, -55,
+        ];
+        const p_list = [Math.PI, 0];
+        let item = [];
+        for (let i = 0; i < 3; i++) {
+          for (let j = 0; j < 14; j++) {
+            let cnt = randomNumber[mapValue + i * j + i + j];
+            if (cnt < 9) {
+              item.push(
+                <Chair
+                  position={[y_list[j], 0.5, x_list[i]]}
+                  rotation={[-Math.PI / 2, 0, p_list[j % 2]]}
+                />
+              );
+            }
+          }
+        }
+        return item;
+      })()}
+
       {/* 첫번째줄  */}
       <Table_2 position={[-30, 0.5, -40]} rotation={[-Math.PI / 2, 0, 0]} />
       <Table_2 position={[-34, 0.5, -40]} rotation={[-Math.PI / 2, 0, 0]} />
@@ -474,22 +543,6 @@ export function FarmElement() {
       <Table_2 position={[-46, 0.5, -40]} rotation={[-Math.PI / 2, 0, 0]} />
       <Table_2 position={[-50, 0.5, -40]} rotation={[-Math.PI / 2, 0, 0]} />
       <Table_2 position={[-54, 0.5, -40]} rotation={[-Math.PI / 2, 0, 0]} />
-
-      <Chair position={[-31, 0.5, -40]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Chair position={[-35, 0.5, -40]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Chair position={[-39, 0.5, -40]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Chair position={[-43, 0.5, -40]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Chair position={[-47, 0.5, -40]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Chair position={[-51, 0.5, -40]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Chair position={[-55, 0.5, -40]} rotation={[-Math.PI / 2, 0, 0]} />
-
-      <Chair position={[-29, 0.5, -40]} rotation={[-Math.PI / 2, 0, Math.PI]} />
-      <Chair position={[-33, 0.5, -40]} rotation={[-Math.PI / 2, 0, Math.PI]} />
-      <Chair position={[-37, 0.5, -40]} rotation={[-Math.PI / 2, 0, Math.PI]} />
-      <Chair position={[-41, 0.5, -40]} rotation={[-Math.PI / 2, 0, Math.PI]} />
-      <Chair position={[-45, 0.5, -40]} rotation={[-Math.PI / 2, 0, Math.PI]} />
-      <Chair position={[-49, 0.5, -40]} rotation={[-Math.PI / 2, 0, Math.PI]} />
-      <Chair position={[-53, 0.5, -40]} rotation={[-Math.PI / 2, 0, Math.PI]} />
 
       {/* 두번째줄  */}
       <Table_2 position={[-30, 0.5, -45]} rotation={[-Math.PI / 2, 0, 0]} />
@@ -500,22 +553,6 @@ export function FarmElement() {
       <Table_2 position={[-50, 0.5, -45]} rotation={[-Math.PI / 2, 0, 0]} />
       <Table_2 position={[-54, 0.5, -45]} rotation={[-Math.PI / 2, 0, 0]} />
 
-      <Chair position={[-31, 0.5, -45]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Chair position={[-35, 0.5, -45]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Chair position={[-39, 0.5, -45]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Chair position={[-43, 0.5, -45]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Chair position={[-47, 0.5, -45]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Chair position={[-51, 0.5, -45]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Chair position={[-55, 0.5, -45]} rotation={[-Math.PI / 2, 0, 0]} />
-
-      <Chair position={[-29, 0.5, -45]} rotation={[-Math.PI / 2, 0, Math.PI]} />
-      <Chair position={[-33, 0.5, -45]} rotation={[-Math.PI / 2, 0, Math.PI]} />
-      <Chair position={[-37, 0.5, -45]} rotation={[-Math.PI / 2, 0, Math.PI]} />
-      <Chair position={[-41, 0.5, -45]} rotation={[-Math.PI / 2, 0, Math.PI]} />
-      <Chair position={[-45, 0.5, -45]} rotation={[-Math.PI / 2, 0, Math.PI]} />
-      <Chair position={[-49, 0.5, -45]} rotation={[-Math.PI / 2, 0, Math.PI]} />
-      <Chair position={[-53, 0.5, -45]} rotation={[-Math.PI / 2, 0, Math.PI]} />
-
       {/* 세번째줄  */}
       <Table_2 position={[-30, 0.5, -50]} rotation={[-Math.PI / 2, 0, 0]} />
       <Table_2 position={[-34, 0.5, -50]} rotation={[-Math.PI / 2, 0, 0]} />
@@ -525,23 +562,7 @@ export function FarmElement() {
       <Table_2 position={[-50, 0.5, -50]} rotation={[-Math.PI / 2, 0, 0]} />
       <Table_2 position={[-54, 0.5, -50]} rotation={[-Math.PI / 2, 0, 0]} />
 
-      <Chair position={[-31, 0.5, -50]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Chair position={[-35, 0.5, -50]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Chair position={[-39, 0.5, -50]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Chair position={[-43, 0.5, -50]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Chair position={[-47, 0.5, -50]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Chair position={[-51, 0.5, -50]} rotation={[-Math.PI / 2, 0, 0]} />
-      <Chair position={[-55, 0.5, -50]} rotation={[-Math.PI / 2, 0, 0]} />
-
-      <Chair position={[-29, 0.5, -50]} rotation={[-Math.PI / 2, 0, Math.PI]} />
-      <Chair position={[-33, 0.5, -50]} rotation={[-Math.PI / 2, 0, Math.PI]} />
-      <Chair position={[-37, 0.5, -50]} rotation={[-Math.PI / 2, 0, Math.PI]} />
-      <Chair position={[-41, 0.5, -50]} rotation={[-Math.PI / 2, 0, Math.PI]} />
-      <Chair position={[-45, 0.5, -50]} rotation={[-Math.PI / 2, 0, Math.PI]} />
-      <Chair position={[-49, 0.5, -50]} rotation={[-Math.PI / 2, 0, Math.PI]} />
-      <Chair position={[-53, 0.5, -50]} rotation={[-Math.PI / 2, 0, Math.PI]} />
-
-      {/* 정원 부분 */}
+      {/* 하트 정원 부분 */}
 
       {/* 00째 세로 */}
       <Bush_1
@@ -1083,53 +1104,54 @@ export function FarmElement() {
         rotation={[-Math.PI / 2, 0, Math.PI / 1]}
       />
 
-      
       {/* 잡초밭 */}
-      {
-        (() => {
-          let item = []
-          for (let i = 0; i < 21; i++) {
-            for (let j = 0; j < 21; j++) {
-              item.push(
-                <Grass
-                  position={[-15 - i, 0.5, 70 - j]}
-                  rotation={[-Math.PI / 2, 0, Math.PI / 1]}
-                />
-              )
-            }
+      {(() => {
+        let item = [];
+        for (let i = 0; i < 21; i++) {
+          for (let j = 0; j < 21; j++) {
+            item.push(
+              <Grass
+                position={[-15 - i, 0.5, 70 - j]}
+                rotation={[-Math.PI / 2, 0, Math.PI / 1]}
+              />
+            );
           }
-          return item;
-        })()
-      }
+        }
+        return item;
+      })()}
 
       {/* 나무 */}
-      {
-        (() => {
-          let item = []
-          for (let i = 0; i < 7; i++) {
-            for (let j = 0; j < 12; j++) {
-              let cnt = randomNumber[10+i*j+i+j];
-              if(cnt < 2){
-                item.push(<Tree_4
-                  position={[-45-i*5, 0.5, 70-j*5]}
+      {(() => {
+        let item = [];
+        for (let i = 0; i < 7; i++) {
+          for (let j = 0; j < 12; j++) {
+            let cnt = randomNumber[10 + i * j + i + j];
+            if (cnt < 2) {
+              item.push(
+                <Tree_4
+                  position={[-45 - i * 5, 0.5, 70 - j * 5]}
                   rotation={[-Math.PI / 2, 0, Math.PI / 1]}
-                />)
-              }else if(cnt < 4){
-                item.push(<Tree_9
-                  position={[-45-i*5, 0.5, 70-j*5]}
+                />
+              );
+            } else if (cnt < 4) {
+              item.push(
+                <Tree_9
+                  position={[-45 - i * 5, 0.5, 70 - j * 5]}
                   rotation={[-Math.PI / 2, 0, Math.PI / 1]}
-                />)
-              }else if(cnt < 6){
-                item.push(<Tree_trunk
-                  position={[-45-i*5, 0.5, 70-j*5]}
+                />
+              );
+            } else if (cnt < 6) {
+              item.push(
+                <Tree_trunk
+                  position={[-45 - i * 5, 0.5, 70 - j * 5]}
                   rotation={[-Math.PI / 2, 0, Math.PI / 1]}
-                />)
-              }
+                />
+              );
             }
           }
-          return item;
-        })()
-      }
+        }
+        return item;
+      })()}
 
       {/* {Array.from({ length: 7 }, (_, i) => -45 - i * 5).map((x) =>
         Array.from({ length: 12 }, (_, i) => 70 - i * 5).map((z) =>
@@ -1153,7 +1175,6 @@ export function FarmElement() {
           )
         )
       )} */}
-      
 
       {Array.from({ length: 6 }, (_, i) => -15 - i * 4).map((x) => (
         <Bush
