@@ -194,6 +194,56 @@ export function FarmElement() {
       <Road_1 position={[18.5, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} />
       <Road_1 position={[9, 0.5, 0]} rotation={[-Math.PI / 2, 0, 0]} />
 
+      {/* 랜덤 신호등 */}
+      {/* 의자 랜덤 */}
+      {(() => {
+        const x_list = [
+          73, 64, 55, 46, 37, 28, 19, 9, -10, -19, -28, -37, -46, -55, -64, -73,
+          73, 64, 55, 46, 37, 28, 19, 9, -10, -19, -28, -37, -46, -55, -64, -73,
+          5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, -5, -5, -5, -5, -5,
+          -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5,
+        ];
+        const y_list = [
+          5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, -5, -5, -5, -5, -5,
+          -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, 73, 64, 55, 46, 37, 28,
+          19, 9, -10, -19, -28, -37, -46, -55, -64, -73, 73, 64, 55, 46, 37, 28,
+          19, 9, -10, -19, -28, -37, -46, -55, -64, -73,
+        ];
+        const p_list = [Math.PI, 0, -Math.PI / 2, Math.PI / 2];
+        const p_list_traffic_light2 = [-Math.PI / 2, Math.PI / 2, 0, Math.PI];
+        let item = [];
+        for (let i = 0; i < x_list.length; i++) {
+          let cnt = randomNumber[mapValue + i];
+          if (cnt < 2) {
+            item.push(
+              <Traffic_light_1
+                position={[x_list[i], 0.5, y_list[i]]}
+                rotation={[-Math.PI / 2, 0, p_list[Math.floor(i / 16)]]}
+              />
+            );
+          } else if (cnt < 4) {
+            item.push(
+              <Traffic_light_2
+                position={[x_list[i], 0.5, y_list[i]]}
+                rotation={[
+                  -Math.PI / 2,
+                  0,
+                  p_list_traffic_light2[Math.floor(i / 16)],
+                ]}
+              />
+            );
+          } else if (cnt < 6) {
+            item.push(
+              <Light_pole_1
+                position={[x_list[i], 0.5, y_list[i]]}
+                rotation={[-Math.PI / 2, 0, p_list[Math.floor(i / 16)]]}
+              />
+            );
+          }
+        }
+        return item;
+      })()}
+
       {/* --------------------------------<1사분면 x>0, y>0 : 농장>-------------------------------------- */}
 
       <Tree_4 position={[10, 0.5, 10]} rotation={[-Math.PI / 2, 0, 0]} />
