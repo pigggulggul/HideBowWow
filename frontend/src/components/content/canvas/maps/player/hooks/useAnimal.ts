@@ -719,23 +719,15 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
             }
         } 
 
-        if (meInfo.isDead && meInfo.isSeeker) { 
-            // roomState.roomPlayers.forEach((otherPlayer: any) => {
-            //     if (
-            //         otherPlayer.nickname !== playerNickname &&
-            //         otherPlayer.isSeeker === true
-            //     ) { 
-            //         break;
-            //     }
-            // }) 
+        if (meInfo.isDead && meInfo.isSeeker) {  
             for (const otherPlayer of roomState.roomPlayers) {
                 // 특정 조건을 만족하면 반복을 중지
                 if (otherPlayer.isSeeker === true && !otherPlayer.isDead) {
                     let observedPlayer = otherPlayer;
                     camera.position.set(
-                        observedPlayer.position[0] + 12,
-                        observedPlayer.position[1] + 10,
-                        observedPlayer.position[2] + 12
+                        observedPlayer.position[0] + 5,
+                        observedPlayer.position[1] + 5,
+                        observedPlayer.position[2] + 5
                     )
                     camera.lookAt(
                         observedPlayer.position[0],

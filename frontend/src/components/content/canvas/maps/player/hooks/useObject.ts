@@ -130,210 +130,6 @@ type GLTFResult = GLTF & {
         Plant_17: Mesh;
         Axe_Brown_4_0: Mesh;
         Axe_Gray_0: Mesh;
-
-        Barn_Dark_Gray_0: Mesh;
-        Barn_Light_Gray_0: Mesh;
-        Barn_Red_0: Mesh;
-
-        Barrel_Brown_4_0: Mesh;
-        Barrel_Gray_0: Mesh;
-
-        Bench_2_Brown_3_0: Mesh;
-        Bench_2_Gray_0: Mesh;
-
-        Bridge_1_Brown_4_0: Mesh;
-        Bridge_1_Brown__0: Mesh;
-
-        Bridge_2_Brown_4_0: Mesh;
-        Bridge_2_Brown__0: Mesh;
-
-        Bush001_Forest_Green_0: Mesh;
-        Bush001_Gold__0: Mesh;
-        Bush001_Red_0: Mesh;
-
-        Bush002_Forest_Green_0: Mesh;
-        Bush002_Grass_Green_0: Mesh;
-        Bush002_Red_0: Mesh;
-        Bush002_Yellow_0: Mesh;
-
-        Bush003_Forest_Green_0: Mesh;
-        Bush003_Grass_Green_0: Mesh;
-
-        Bush004_Forest_Green_0: Mesh;
-        Bush004_Grass_Green_0: Mesh;
-
-        Bush005_Grass_Green_0: Mesh;
-        Bush005_Pink_0: Mesh;
-        Bush005_Yellow_0: Mesh;
-
-        Bush006_Grass_Green_0: Mesh;
-        Bush006_Pink_0: Mesh;
-
-        Bush_Forest_Green_0: Mesh;
-        Bush_Grass_Green_0: Mesh;
-
-        Carrot_Grass_Green_0: Mesh;
-        Carrot_Orange_0: Mesh;
-
-        Chalk_Board_Brown_2_0: Mesh;
-        Chalk_Board_Dark_Gray_0: Mesh;
-
-        Chicken_coop_Brown_2_0: Mesh;
-        Chicken_coop_Brown_3_0: Mesh;
-        Chicken_coop_Brown_4_0: Mesh;
-        Chicken_coop_Gray_Blue_0: Mesh;
-        Chicken_coop_Yellow_2_0: Mesh;
-
-        Dumpster_Dark_Gray_0: Mesh;
-        Dumpster_Forest_Green_0: Mesh;
-
-        Fence_Light_Gray_0: Mesh;
-
-        Fork_Brown_4_0: Mesh;
-        Fork_Gray_0: Mesh;
-
-        Grass_Grass_Green_0: Mesh;
-
-        Grave_1_Brown_2_0: Mesh;
-        Grave_1_Gray_Blue_0: Mesh;
-        Grave_1_Light_Gray_0: Mesh;
-
-        Grave_2_Brown_2_0: Mesh;
-        Grave_2_Gray_Blue_0: Mesh;
-        Grave_2_Light_Gray_0: Mesh;
-
-        Hay_bale_1_Brown_2_0: Mesh;
-        Hay_bale_1_Yellow_0: Mesh;
-
-        House_1_Blue_0: Mesh;
-        House_1_Brown_2_0: Mesh;
-        House_1_Brown_3_0: Mesh;
-        House_1_Brown_4_0: Mesh;
-        House_1_Brown__0: Mesh;
-        House_1_Gray_Blue_0: Mesh;
-        House_1_Gray_0: Mesh;
-
-        House_2_Black_0: Mesh;
-        House_2_Brown__0: Mesh;
-        House_2_Dark_Blue__0: Mesh;
-        House_2_Gray_Blue__0: Mesh;
-        House_2_Gray_0: Mesh;
-        House_2_Light_Gray_0: Mesh;
-        House_2_Purple_2_0: Mesh;
-        House_2_Purple_3_0: Mesh;
-        House_2_Purple_4_0: Mesh;
-
-        House_3_Blue_2_0: Mesh;
-        House_3_Brown_2_0: Mesh;
-        House_3_Brown_3_0: Mesh;
-        House_3_Gray_0: Mesh;
-        House_3_Light_Gray_0: Mesh;
-        House_3_Red_0: Mesh;
-        House_3_Yellow_2_0: Mesh;
-
-        House_4_Blue_2_0: Mesh;
-        House_4_Brown_2_0: Mesh;
-        House_4_Gray_Blue_0: Mesh;
-        House_4_Red_0: Mesh;
-        House_4_Yellow_2_0: Mesh;
-
-        House_5_Black_0: Mesh;
-        House_5_Blue_2_0: Mesh;
-        House_5_Brown_2_0: Mesh;
-        House_5_Brown_3_0: Mesh;
-        House_5_Gray_Blue_0: Mesh;
-        House_5_Gray_0: Mesh;
-        House_5_Red_0: Mesh;
-        House_5_Yellow_2_0: Mesh;
-
-        House_6_Blue_0: Mesh;
-        House_6_Brown_2_0: Mesh;
-        House_6_Brown_3_0: Mesh;
-        House_6_Brown_4_0: Mesh;
-        House_6_Gray_0: Mesh;
-        House_6_Light_Gray_0: Mesh;
-
-        House_7_Blue_0: Mesh;
-        House_7_Brown_2_0: Mesh;
-        House_7_Brown_3_0: Mesh;
-        House_7_Brown_4_0: Mesh;
-        House_7_Gray_Blue_0: Mesh;
-        House_7_Gray_0: Mesh;
-        House_7_Light_Gray_0: Mesh;
-        House_7_Red_0: Mesh;
-        House_7_Yellow_2_0: Mesh;
-
-        Light_pole_1_Gray_0: Mesh;
-        Light_pole_1_Light_Gray_0: Mesh;
-        Light_pole_1_Yellow_0: Mesh;
-
-        Light_pole_2_Gray_0: Mesh;
-        Light_pole_2_Light_Gray_0: Mesh;
-        Light_pole_2_Yellow_0: Mesh;
-
-        Logs_Brown_3_0: Mesh;
-        Logs_Brown_4_0: Mesh;
-
-        Pumpkin_Forest_Green_0: Mesh;
-        Pumpkin_Yellow_2_0: Mesh;
-
-        Rock_Dark_Gray_0: Mesh;
-
-        Scythe_Brown_4_0: Mesh;
-        Scythe_Gray_0: Mesh;
-        Scythe_Light_Gray_0: Mesh;
-
-        Traffic_light_1_Dark_Gray_0: Mesh;
-        Traffic_light_1_Gray_Blue_0: Mesh;
-        Traffic_light_1_Green_0: Mesh;
-        Traffic_light_1_Red_0: Mesh;
-        Traffic_light_1_Yellow_0: Mesh;
-
-        Traffic_light_2_Dark_Gray_0: Mesh;
-        Traffic_light_2_Gray_Blue_0: Mesh;
-        Traffic_light_2_Green_0: Mesh;
-        Traffic_light_2_Red_0: Mesh;
-        Traffic_light_2_Yellow_0: Mesh;
-
-        Tree_1_Brown_2_0: Mesh;
-        Tree_1_Brown_4_0: Mesh;
-        Tree_1_Dark_Gray_0: Mesh;
-        Tree_1_Forest_Green_0: Mesh;
-        Tree_1_Yellow_2_0: Mesh;
-
-        Tree_2_Brown_2_0: Mesh;
-        Tree_2_Forest_Green_0: Mesh;
-        Tree_2_Red_0: Mesh;
-
-        Tree_4_Brown_2_0: Mesh;
-        Tree_4_Grass_Green_0: Mesh;
-
-        Tree_5_Brown_2_0: Mesh;
-        Tree_5_Dark_Gray_0: Mesh;
-        Tree_5_Forest_Green_0: Mesh;
-
-        Tree_6_Brown_2_0: Mesh;
-        Tree_6_Forest_Green_0: Mesh;
-
-        Tree_7_Brown_2_0: Mesh;
-        Tree_7_Brown__0: Mesh;
-        Tree_7_Dark_Gray_0: Mesh;
-        Tree_7_Forest_Green_0: Mesh;
-
-        Tree_9_Brown__0: Mesh;
-        Tree_9_Gold__0: Mesh;
-        Tree_9_Orange_0: Mesh;
-
-        Tree_house_trunk__Brown_2_0: Mesh;
-        Tree_house_trunk__Brown_3_0: Mesh;
-        Tree_house_trunk__Brown_4_0: Mesh;
-        Tree_house_trunk__Brown__0: Mesh;
-
-        Tree_trunk_1_Brown_3_0: Mesh;
-        Tree_trunk_1_Brown_4_0: Mesh;
-
-        Wooden_box_Brown_4_0: Mesh;
-        Wooden_box_Gray_0: Mesh;
     };
     materials: {
         Cartoon_Room_Mat: MeshStandardMaterial;
@@ -631,6 +427,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                         return '/models/object/Vase_4.glb';
                     case 100:
                         return '/models/object/Vase_5.glb';
+
                     default:
                         return '/models/object/Closet.glb';
                 }
@@ -920,7 +717,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     }, []);
 
     useEffect(() => {
-        if (meInfo.nickname !== playerNickname) return;
+        if(meInfo.nickname !== playerNickname) return; 
         const handleMouseMove = (event: MouseEvent) => {
             // 마우스 포인터가 고정된 상태에서의 마우스 이동량을 감지합니다.
             if (meInfo?.nickname === playerNickname) {
@@ -948,7 +745,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         };
     }, [meInfo, meInfo.isDead]);
 
-    useEffect(() => {
+    useEffect(() => { 
         if (playerRef.current) {
             // if (ref.current) {
             //     ref.current.name = playerNickname;
@@ -976,7 +773,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
 
     // 키 입력
     useEffect(() => {
-        if (meInfo.nickname !== playerNickname) return;
+        if(meInfo.nickname !== playerNickname) return; 
         const handleKeyDown = (event: any) => {
             if (!chatFlag) {
                 keyState.current[event.key] = true;
@@ -1028,7 +825,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     // }, [chatFlag]);
 
     useEffect(() => {
-        if (meInfo.nickname !== playerNickname) return;
+        if(meInfo.nickname !== playerNickname) return; 
         const handleJumpDown = (event: any) => {
             if (event.code === 'Space' && !jumpFlag && !chatFlag) {
                 setIsJumping(1);
@@ -1843,7 +1640,6 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     return [materials.Brown_4, materials.Gray];
             }
         }
-        return [materials['Cartoon_Room_Mat.002']];
     }
     function returnNode(num: number | undefined) {
         if (roomState.roomMap === 'richroom') {
@@ -2387,7 +2183,6 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     return [(nodes.Cabinet_18 as SkinnedMesh).geometry];
             }
         }
-        return [(nodes.Cabinet_18 as SkinnedMesh).geometry];
     }
     function returnHeightSize(num: number | undefined) {
         switch (num) {
