@@ -52,6 +52,7 @@ export function ObjectPlayer({
         material,
         scale,
         initialHeight,
+        initialRotation
     } = useObject({
         player,
         position,
@@ -91,6 +92,7 @@ export function ObjectPlayer({
                 name={playerNickname ?? ''}
                 dispose={null}
                 scale={scale}
+                rotation={initialRotation}
             >
                 <mesh
                     geometry={node[0]}

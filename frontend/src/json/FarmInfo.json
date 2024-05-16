@@ -91,13 +91,13 @@
     },
     {
         "index": 18,
-        "thumbnail": "/images/thumbnail/.png",
-        "name": ""
+        "thumbnail": "/images/thumbnail/Fence.png",
+        "name": "울타리"
     },
     {
         "index": 19,
-        "thumbnail": "/images/thumbnail/Fence.png",
-        "name": "울타리"
+        "thumbnail": "/images/thumbnail/Fork.png",
+        "name": "포크"
     },
     {
         "index": 20,
