@@ -14,10 +14,11 @@ import {
     rerollState,
 } from '../store/user-slice';
 import backgroundImage from '../assets/images/bg/background-main.png';
-import mainMap from '../assets/images/bg/map-Rich.png';
+import RichMap from '../assets/images/bg/map-Rich.png';
+import farmMap from '../assets/images/bg/map-Farm.png';
 
 export default function RoomPage() {
-    const mapInfo = ['richroom', 'farm'];
+    const mapInfo = ['richRoom'];
     const [settingRoomFlag, setSettingRoomFlag] = useState<boolean>(false);
     const [botCount, setBotCount] = useState(0);
     const [room, setRoom] = useState<RoomInfo>({
@@ -31,8 +32,10 @@ export default function RoomPage() {
         roomTime: 0,
         roomTitle: '',
         botCnt: 0,
+        mapValue: null,
     });
     const [mapIndex, setMapIndex] = useState<number>(0);
+    const [mapthumb, setMapThumb] = useState<string>(RichMap);
     const stompClient = StompClient.getInstance();
     const { state } = useLocation();
     const navigate = useNavigate();
@@ -73,7 +76,7 @@ export default function RoomPage() {
     };
 
     const playGame = () => {
-        if (currentRoom.roomMap === 'Bar') {
+        if (currentRoom.roomMap === 'richRoom') {
             dispatch(
                 mapSizeState({
                     minX: -60,
@@ -84,6 +87,17 @@ export default function RoomPage() {
                     maxY: 8,
                 })
             );
+        } else if (currentRoom.roomMap === 'farm') {
+            dispatch(
+                mapSizeState({
+                    minX: -76,
+                    maxX: 76,
+                    minZ: -76,
+                    maxZ: 76,
+                    minY: -3,
+                    maxY: 8,
+                })
+            );
         } else {
             dispatch(
                 mapSizeState({
@@ -91,7 +105,7 @@ export default function RoomPage() {
                     maxX: 40,
                     minZ: -40,
                     maxZ: 90,
-                    minY: -1,
+                    minY: -3,
                     maxY: 8,
                 })
             );
@@ -106,8 +120,7 @@ export default function RoomPage() {
                     roomId: state,
                     sender: meName,
                     data: {
-                        ...room,
-                        botCnt: botCount,
+                        room,
                     },
                 })
             );
@@ -136,6 +149,11 @@ export default function RoomPage() {
         // console.log('방정보', currentRoom);
         setRoom(currentRoom);
         setBotCount(currentRoom.botCnt);
+        if (currentRoom.roomMap === 'richRoom') {
+            setMapThumb(RichMap);
+        } else if (currentRoom.roomMap === 'farm') {
+            setMapThumb(farmMap);
+        }
     }, [currentRoom]);
     useEffect(() => {
         // console.log('바뀐정보', room);
@@ -231,8 +249,6 @@ export default function RoomPage() {
             setBotCount(botCount > 0 ? botCount - 1 : 0);
     };
 
-
-
     return (
         <section
             className="relative w-full h-full flex flex-col items-center justify-center"
@@ -325,18 +341,32 @@ export default function RoomPage() {
                     <div className="flex flex-col items-center">
                         <img
                             className="w-[80%] border-[0.3vw] border-white rounded-[0.6vw] bg-white"
-                            src={mainMap}
+                            src={mapthumb}
                             alt=""
                             style={{ aspectRatio: 1 / 1 }}
                         />
                         <div className="flex text-[2vw] text-white">
-                            <p className="mx-[1vw]" onClick={prevMap}>
-                                ⬅
-                            </p>
+                            {currentRoom.roomAdmin === meName ? (
+                                <p
+                                    className="mx-[1vw] cursor-pointer"
+                                    onClick={prevMap}
+                                >
+                                    ⬅
+                                </p>
+                            ) : (
+                                <></>
+                            )}
                             <p>{mapInfo[mapIndex]}</p>
-                            <p className="mx-[1vw]" onClick={nextMap}>
-                                ➡
-                            </p>
+                            {currentRoom.roomAdmin === meName ? (
+                                <p
+                                    className="mx-[1vw] cursor-pointer"
+                                    onClick={nextMap}
+                                >
+                                    ➡
+                                </p>
+                            ) : (
+                                <></>
+                            )}
                         </div>
                     </div>
 

@@ -23,7 +23,7 @@ export function Barrel(props: ObjectSettingType) {
         '/models/object/Barrel.glb'
     ) as GLTFResult;
     const [ref] = useBox<THREE.Mesh>(() => ({
-        args: [1.5, 1.5, 1.5],
+        args: [1.5, 1.5, 1.6],
         mass: 0.1,
         position: props.position,
         rotation: props.rotation,
@@ -31,7 +31,7 @@ export function Barrel(props: ObjectSettingType) {
         angularFactor: [0, 0, 0], // 모든 축에 대해 회전 제한
     }));
     return (
-        <group dispose={null}>
+        <group position={[0,0.6,0]} dispose={null}>
             <mesh
                 ref={ref}
                 geometry={nodes.Barrel_1.geometry}

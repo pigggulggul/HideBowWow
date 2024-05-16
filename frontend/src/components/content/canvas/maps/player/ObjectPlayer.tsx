@@ -21,7 +21,7 @@ export function ObjectPlayer({
 }: PlayerInitType) {
     const dispatch = useDispatch();
     const modelIndex = mIdx ? mIdx : 0;
-    const [, boxApi] = useBox(
+    const [_, boxApi] = useBox(
         () => ({
             mass: 0,
             args: [1, 1, 1],
@@ -52,18 +52,18 @@ export function ObjectPlayer({
         material,
         scale,
         initialHeight,
+        initialRotation,
     } = useObject({
         player,
         position,
         modelIndex,
     });
+
     useFrame(() => {
         if (playerRef.current) {
             const { x, y, z } = playerRef.current.position;
-            if (initialHeight < 1) {
-                boxApi.position.set(x, y, z);
-            } else boxApi.position.set(x, y, z); // 물리 바디의 속도를 업데이트
-            // console.log(playerRef.current.position);
+            boxApi.position.set(x, y, z); // 물리 바디의 속도를 업데이트
+            // console.log(x, y, z);
         }
     });
     function calculateBoundingBox(mesh: any) {
@@ -114,6 +114,76 @@ export function ObjectPlayer({
                     <mesh
                         geometry={node[2]}
                         material={material[2]}
+                        name={playerNickname}
+                        rotation={[Math.PI / 2, 0, 0]}
+                    />
+                ) : (
+                    <></>
+                )}
+                {node.length > 3 ? (
+                    <mesh
+                        geometry={node[3]}
+                        material={material[3]}
+                        name={playerNickname}
+                        rotation={[Math.PI / 2, 0, 0]}
+                    />
+                ) : (
+                    <></>
+                )}
+                {node.length > 4 ? (
+                    <mesh
+                        geometry={node[4]}
+                        material={material[4]}
+                        name={playerNickname}
+                        rotation={[Math.PI / 2, 0, 0]}
+                    />
+                ) : (
+                    <></>
+                )}
+                {node.length > 5 ? (
+                    <mesh
+                        geometry={node[5]}
+                        material={material[5]}
+                        name={playerNickname}
+                        rotation={[Math.PI / 2, 0, 0]}
+                    />
+                ) : (
+                    <></>
+                )}
+                {node.length > 6 ? (
+                    <mesh
+                        geometry={node[6]}
+                        material={material[6]}
+                        name={playerNickname}
+                        rotation={[Math.PI / 2, 0, 0]}
+                    />
+                ) : (
+                    <></>
+                )}
+                {node.length > 7 ? (
+                    <mesh
+                        geometry={node[7]}
+                        material={material[7]}
+                        name={playerNickname}
+                        rotation={[Math.PI / 2, 0, 0]}
+                    />
+                ) : (
+                    <></>
+                )}
+                {node.length > 8 ? (
+                    <mesh
+                        geometry={node[8]}
+                        material={material[8]}
+                        name={playerNickname}
+                        rotation={[Math.PI / 2, 0, 0]}
+                    />
+                ) : (
+                    <></>
+                )}
+                {node.length > 9 ? (
+                    <mesh
+                        geometry={node[9]}
+                        material={material[9]}
                         name={playerNickname}
                         rotation={[Math.PI / 2, 0, 0]}
                     />

@@ -31,7 +31,7 @@ export function Swing(props: ObjectSettingType) {
   ) as GLTFResult;
 
   const [ref] = useBox<THREE.Mesh>(() => ({
-    args: [3, 2, 4.5],
+    args: [3, 1.6, 4.5],
 
     mass: 0.1,
 
