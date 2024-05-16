@@ -717,8 +717,36 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                     }
                 });
             }
-        }
+        } 
 
+        if (meInfo.isDead && meInfo.isSeeker) { 
+            // roomState.roomPlayers.forEach((otherPlayer: any) => {
+            //     if (
+            //         otherPlayer.nickname !== playerNickname &&
+            //         otherPlayer.isSeeker === true
+            //     ) { 
+            //         break;
+            //     }
+            // }) 
+            for (const otherPlayer of roomState.roomPlayers) {
+                // 특정 조건을 만족하면 반복을 중지
+                if (otherPlayer.isSeeker === true && !otherPlayer.isDead) {
+                    let observedPlayer = otherPlayer;
+                    camera.position.set(
+                        observedPlayer.position[0] + 12,
+                        observedPlayer.position[1] + 10,
+                        observedPlayer.position[2] + 12
+                    )
+                    camera.lookAt(
+                        observedPlayer.position[0],
+                        observedPlayer.position[1],
+                        observedPlayer.position[2]
+                    );
+                    break;
+                }
+            }  
+        } 
+         
         if (nicknameRef.current) {
             nicknameRef.current.position.set(
                 playerRef.current.position.x,

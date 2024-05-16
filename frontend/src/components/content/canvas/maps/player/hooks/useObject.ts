@@ -1246,9 +1246,8 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             });
         }
 
-        if (meInfo.isDead) {
-            if (meInfo.isSeeker === true) return;
-
+        if (meInfo.isDead && !meInfo.isSeeker) {
+            // if (meInfo.isSeeker === true) return; 
             if (observedPlayerIndex === roomState.roomPlayers.length) {
                 // 자유시점 모드
                 store.dispatch(observerState('자유시점'));
@@ -1326,8 +1325,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     observerState('관전 중 : ' + observedPlayer.nickname)
                 );
                 if (observedPlayer) {
-                    camera.position.set(
-                        //
+                    camera.position.set( 
                         observedPlayer.position[0] +
                             Math.sin(observerRef.current.viewLR) * 20,
                         observedPlayer.position[1] + 10,
