@@ -26,7 +26,7 @@ public class MemberService {
 
     @Value("${server.domain}")
     private String domain;
-    @Value("${server.count")
+    @Value("${server.count}")
     private int serverCount;
 
     private final MemberRepository memberRepository;

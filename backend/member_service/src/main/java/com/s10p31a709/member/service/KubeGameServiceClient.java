@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 //@FeignClient(name = "member-service", url = "http://localhost:8001/api/member-service")
-@FeignClient(name = "game-service", url = "${server.domain}/api/game-service/ch")
+@FeignClient(name = "kube-game-service", url = "${server.domain}/api/game-service/ch")
 public interface KubeGameServiceClient {
 
     @DeleteMapping("/{channelId}/rooms/player/{nickname}")
