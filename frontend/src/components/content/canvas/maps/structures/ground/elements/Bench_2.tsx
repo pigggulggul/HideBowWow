@@ -26,7 +26,7 @@ export function Bench_2(props: ObjectSettingType) {
   ) as GLTFResult;
 
   const [ref] = useBox<THREE.Mesh>(() => ({
-    args: [2, 2, 2],
+    args: [1.3, 1.8, 1.5],
     mass: 0.1,
     position: props.position,
     rotation: props.rotation,
