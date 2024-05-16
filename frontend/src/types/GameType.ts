@@ -40,6 +40,7 @@ export interface RoomInfo {
     roomTime: number | null;
     roomTitle: string;
     botCnt: number | null;
+    mapValue: number | null,
 }
 
 export interface GuestLoginInfo {

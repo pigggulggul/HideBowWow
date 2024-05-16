@@ -31,6 +31,7 @@ export default function RoomPage() {
         roomTime: 0,
         roomTitle: '',
         botCnt: 0,
+        mapValue: null,
     });
     const [mapIndex, setMapIndex] = useState<number>(0);
     const stompClient = StompClient.getInstance();
@@ -106,8 +107,7 @@ export default function RoomPage() {
                     roomId: state,
                     sender: meName,
                     data: {
-                        ...room,
-                        botCnt: botCount,
+                        room
                     },
                 })
             );

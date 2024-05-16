@@ -65,13 +65,20 @@ import { Tree_house_trunk } from "../elements/Tree_house_trunk";
 import { Tree_trunk } from "../elements/Tree_trunk";
 import { Wheelbarrow } from "../elements/Wheelbarrow";
 import { Wooden_box } from "../elements/Wooden_box";
-
-const randomNumber = import.meta.env.VITE_REACT_RANDOM_NUMBER.split("").map(
-  Number
-);
-const mapValue = 20;
+import { useSelector } from 'react-redux';
 
 export function FarmElement() {
+
+  // currentRoom에서 gameinit에서 받은 mapValue를 가져와서 변수로 지정한다.
+  const mapValue = useSelector(
+    (state: any) => state.reduxFlag.userSlice.currentRoom.mapValue? state.reduxFlag.userSlice.currentRoom.mapValue:30
+  );
+  
+  // .env의 난수를 가져와서 배열로 만들고, mapValue부터 일정개수를 사용하므로 모두가 같은 수들을 사용하게 된다.
+  const randomNumber = import.meta.env.VITE_REACT_RANDOM_NUMBER.split("").map(
+    Number
+  );
+
   return (
     <>
       {/* --------------------------------<교차로>-------------------------------------- */}
