@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -40,9 +39,19 @@ public class HideLocationService {
         List<HideLocation> list = findAllByMap(map);
         List<HideLocation> result = new ArrayList<>();
 
+        GameProperties.GameMap gameMap;
+        if(map.equals("richRoom")){
+            gameMap = gameProperties.getRichRoom();
+        } else if (map.equals("farm")) {
+            gameMap = gameProperties.getFarm();
+        } else{
+            log.error("{}에 해당하는 맵이 없어서 hideLocation을 검색할수 없습니다.", map);
+            return null;
+        }
+
         while (n > 0){
             if(list.isEmpty()){
-                result.add(new HideLocation("", "", new Double[]{0d, 0d, 0d}, new Double[]{0d, 0d, 0d}, new Random().nextInt(gameProperties.getObject().getMaxHiderIdx())));
+                result.add(new HideLocation("", "", gameMap.getStartPoint(), new Double[]{0d, 0d, 0d}, new Random().nextInt(gameMap.getMaxHiderIdx())));
             }else {
                 int k = new Random().nextInt(list.size());
                 result.add(list.remove(k));

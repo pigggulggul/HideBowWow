@@ -4,9 +4,6 @@ import com.s10p31a709.game.api.room.entity.Player;
 import com.s10p31a709.game.api.room.entity.Room;
 import com.s10p31a709.game.api.room.repository.RoomRepository;
 import com.s10p31a709.game.api.socket.model.StompPayload;
-import com.s10p31a709.game.common.config.GameProperties;
-import com.s10p31a709.game.common.feign.entity.Member;
-import com.s10p31a709.game.common.feign.service.MemberServiceClient;
 import com.s10p31a709.game.logelk.service.HideLocationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +21,6 @@ public class PlayerSocketService {
 
     private final RoomRepository roomRepository;
     private final SimpMessagingTemplate simpMessagingTemplate;
-    private final MemberServiceClient memberServiceClient;
-    private final GameProperties gameProperties;
     private final HideLocationService hideLocationService;
 
     public void exitPlayer(String sessionId){
@@ -36,21 +31,11 @@ public class PlayerSocketService {
 
         StompPayload<Player> payload = new StompPayload<>("player.exit", room.getRoomId(), "system", player);
         simpMessagingTemplate.convertAndSend("/sub/room/"+room.getRoomId(), payload);
-//        try {
-//            memberServiceClient.deleteGuest(player.getNickname());
-//        }catch (Exception e){
-//            log.error(e.toString());
-//        }
         roomRepository.deletePlayerByNickname(player.getNickname());
     }
 
     public void enterPlayer(StompPayload<Player> message){
         Player player = roomRepository.savePlayer(message.getRoomId(), message.getData());
-//        try {
-//            memberServiceClient.enterGuest(new Member(message.getData().getNickname(), ""));
-//        }catch (Exception e){
-//            log.info(e.toString());
-//        }
 
         StompPayload<Player> payload = new StompPayload<>("player.enter", message.getRoomId(), "system", player);
         simpMessagingTemplate.convertAndSend("/sub/room/"+message.getRoomId(), payload);

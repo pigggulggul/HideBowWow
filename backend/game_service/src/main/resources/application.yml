@@ -42,13 +42,14 @@ game:
     seek: 120
     result: 10
   maxCapacity: 12
-  object:
+  richRoom:
     maxSeekerIdx: 14
     maxHiderIdx: 101
-  map:
-    richRoom:
-      startPoint:
-        x: -43.8823
-        y: 0.03
-        z: -27.9526
+    startPoint: -43.8823, 0.03, -27.9526
+    maxMapValue: 0
+  farm:
+    maxSeekerIdx: 14
+    maxHiderIdx: 49
+    startPoint: 0.0, 0.03, 0.0
+    maxMapValue: 100
   fps: 30

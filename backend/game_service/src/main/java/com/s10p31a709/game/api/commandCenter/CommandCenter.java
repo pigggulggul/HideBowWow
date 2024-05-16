@@ -3,12 +3,10 @@ package com.s10p31a709.game.api.commandCenter;
 import com.s10p31a709.game.api.room.entity.Player;
 import com.s10p31a709.game.api.room.entity.Room;
 import com.s10p31a709.game.api.room.repository.RoomRepository;
-import com.s10p31a709.game.api.socket.model.StompPayload;
 import com.s10p31a709.game.api.socket.service.RoomSocketService;
 import com.s10p31a709.game.common.config.GameProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
