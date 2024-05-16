@@ -28,4 +28,4 @@ spec:
                   name: domain-config
                   key: SERVER_DOMAIN
             - name: VERSION
-              value: "233"
+              value: "234"
