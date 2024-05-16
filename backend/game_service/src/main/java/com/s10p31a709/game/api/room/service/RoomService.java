@@ -52,6 +52,7 @@ public class RoomService {
 
     public void deletePlayer(String nickname){
         Room room = roomRepository.findRoomByNickname(nickname);
+        if (room == null) return ; // room이 null일경우 예외처리
         for (int i = 0; i < room.getRoomPlayers().size(); i++) {
             if (room.getRoomPlayers().get(i).getNickname().equals(nickname)){
                 room.getRoomPlayers().remove(i);

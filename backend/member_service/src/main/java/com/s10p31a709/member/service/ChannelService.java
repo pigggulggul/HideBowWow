@@ -26,12 +26,12 @@ public class ChannelService {
     @Value("${server.count}")
     private int channelCount;
 
-    private final GameServiceClient gameServiceClient;
+    private final KubeGameServiceClient kubeGameServiceClient;
 
     public List<Channel> getChannel(){
         List<Channel> list = new ArrayList<>();
         for (int i = 0; i < channelCount; i++) {
-            list.add(gameServiceClient.channelInfoKube(i + 1));
+            list.add(kubeGameServiceClient.channelInfoKube(i + 1));
         }
         return list;
     }
