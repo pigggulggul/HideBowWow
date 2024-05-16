@@ -21,11 +21,6 @@ spec:
           ports:
             - containerPort: {{ .Values.service.targetPort }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          resources:
-            requests:
-              cpu: 200m
-            limits:
-              cpu: 200m
           env:
             - name: SERVER_DOMAIN
               valueFrom:
