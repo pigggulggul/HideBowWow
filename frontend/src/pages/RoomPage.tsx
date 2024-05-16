@@ -14,7 +14,8 @@ import {
     rerollState,
 } from '../store/user-slice';
 import backgroundImage from '../assets/images/bg/background-main.png';
-import mainMap from '../assets/images/bg/map-Rich.png';
+import RichMap from '../assets/images/bg/map-Rich.png';
+import farmMap from '../assets/images/bg/map-Farm.png';
 
 export default function RoomPage() {
     const mapInfo = ['richRoom', 'farm'];
@@ -34,6 +35,7 @@ export default function RoomPage() {
         mapValue: null,
     });
     const [mapIndex, setMapIndex] = useState<number>(0);
+    const [mapthumb, setMapThumb] = useState<string>(RichMap);
     const stompClient = StompClient.getInstance();
     const { state } = useLocation();
     const navigate = useNavigate();
@@ -74,13 +76,24 @@ export default function RoomPage() {
     };
 
     const playGame = () => {
-        if (currentRoom.roomMap === 'Bar') {
+        if (currentRoom.roomMap === 'richRoom') {
             dispatch(
                 mapSizeState({
                     minX: -60,
                     maxX: 40,
                     minZ: -40,
                     maxZ: 90,
+                    minY: -1,
+                    maxY: 8,
+                })
+            );
+        } else if (currentRoom.roomMap === 'farm') {
+            dispatch(
+                mapSizeState({
+                    minX: -72,
+                    maxX: 72,
+                    minZ: -72,
+                    maxZ: 72,
                     minY: -1,
                     maxY: 8,
                 })
@@ -107,7 +120,7 @@ export default function RoomPage() {
                     roomId: state,
                     sender: meName,
                     data: {
-                        room
+                        room,
                     },
                 })
             );
@@ -136,6 +149,11 @@ export default function RoomPage() {
         // console.log('방정보', currentRoom);
         setRoom(currentRoom);
         setBotCount(currentRoom.botCnt);
+        if (currentRoom.roomMap === 'richRoom') {
+            setMapThumb(RichMap);
+        } else if (currentRoom.roomMap === 'farm') {
+            setMapThumb(farmMap);
+        }
     }, [currentRoom]);
     useEffect(() => {
         // console.log('바뀐정보', room);
@@ -323,18 +341,32 @@ export default function RoomPage() {
                     <div className="flex flex-col items-center">
                         <img
                             className="w-[80%] border-[0.3vw] border-white rounded-[0.6vw] bg-white"
-                            src={mainMap}
+                            src={mapthumb}
                             alt=""
                             style={{ aspectRatio: 1 / 1 }}
                         />
                         <div className="flex text-[2vw] text-white">
-                            <p className="mx-[1vw]" onClick={prevMap}>
-                                ⬅
-                            </p>
+                            {currentRoom.roomAdmin === meName ? (
+                                <p
+                                    className="mx-[1vw] cursor-pointer"
+                                    onClick={prevMap}
+                                >
+                                    ⬅
+                                </p>
+                            ) : (
+                                <></>
+                            )}
                             <p>{mapInfo[mapIndex]}</p>
-                            <p className="mx-[1vw]" onClick={nextMap}>
-                                ➡
-                            </p>
+                            {currentRoom.roomAdmin === meName ? (
+                                <p
+                                    className="mx-[1vw] cursor-pointer"
+                                    onClick={nextMap}
+                                >
+                                    ➡
+                                </p>
+                            ) : (
+                                <></>
+                            )}
                         </div>
                     </div>
 
