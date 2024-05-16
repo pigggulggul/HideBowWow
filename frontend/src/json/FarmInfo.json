@@ -1,507 +1,247 @@
 [
     {
         "index": 0,
-        "thumbnail": "/images/thumbnail/Barrel.png",
-        "name": "통"
+        "thumbnail": "/images/thumbnail/Axe.png",
+        "name": "도끼"
     },
     {
-        "index": 0,
-        "thumbnail": "/images/thumbnail/Barrel.png",
-        "name": "통"
+        "index": 1,
+        "thumbnail": "/images/thumbnail/Axe.png",
+        "name": "도끼"
     },
     {
         "index": 2,
-        "thumbnail": "/images/thumbnail/Chair_brown.jpg",
-        "name": "갈색 의자"
+        "thumbnail": "/images/thumbnail/Barn.png",
+        "name": "곳간"
     },
     {
         "index": 3,
-        "thumbnail": "/images/thumbnail/Chair_white.jpg",
-        "name": "흰색 의자"
+        "thumbnail": "/images/thumbnail/Barrel.png",
+        "name": "통"
     },
     {
         "index": 4,
-        "thumbnail": "/images/thumbnail/Doll_pig.jpg",
-        "name": "돼지 인형"
+        "thumbnail": "/images/thumbnail/Bench2.png",
+        "name": "의자2"
     },
     {
         "index": 5,
-        "thumbnail": "/images/thumbnail/Drawer_brown_1.jpg",
-        "name": "선반1"
+        "thumbnail": "/images/thumbnail/Bridge1.png",
+        "name": "다리1"
     },
     {
         "index": 6,
-        "thumbnail": "/images/thumbnail/Drawer_brown_2.jpg",
-        "name": "선반2"
+        "thumbnail": "/images/thumbnail/Bridge2.png",
+        "name": "다리2"
     },
     {
         "index": 7,
-        "thumbnail": "/images/thumbnail/Drawer_brown_3.jpg",
-        "name": "선반3"
+        "thumbnail": "/images/thumbnail/Bush1.png",
+        "name": "덤불"
     },
     {
         "index": 8,
-        "thumbnail": "/images/thumbnail/Drawer_brown_4.jpg",
-        "name": "선반4"
+        "thumbnail": "/images/thumbnail/Bush2.png",
+        "name": "덤불2"
     },
     {
         "index": 9,
-        "thumbnail": "/images/thumbnail/Drawer_brown_5.jpg",
-        "name": "선반5"
+        "thumbnail": "/images/thumbnail/Bush3.png",
+        "name": "덤불3"
     },
     {
         "index": 10,
-        "thumbnail": "/images/thumbnail/Ladder_brown.jpg",
-        "name": "갈색 사다리"
+        "thumbnail": "/images/thumbnail/Bush4.png",
+        "name": "덤불4"
     },
     {
         "index": 11,
-        "thumbnail": "/images/thumbnail/Ladder_white.jpg",
-        "name": "흰색 사다리"
+        "thumbnail": "/images/thumbnail/Bush5.png",
+        "name": "덤불5"
     },
     {
         "index": 12,
-        "thumbnail": "/images/thumbnail/LongTable_white.jpg",
-        "name": "긴 테이블"
+        "thumbnail": "/images/thumbnail/Bush6.png",
+        "name": "덤불6"
     },
     {
         "index": 13,
-        "thumbnail": "/images/thumbnail/Meet_full.jpg",
-        "name": "대형 고기"
+        "thumbnail": "/images/thumbnail/Bush.png",
+        "name": "덤불"
     },
     {
         "index": 14,
-        "thumbnail": "/images/thumbnail/Meet_half.jpg",
-        "name": "고기 반쪽"
+        "thumbnail": "/images/thumbnail/Carrot.png",
+        "name": "당근"
     },
     {
         "index": 15,
-        "thumbnail": "/images/thumbnail/Pot_orange.jpg",
-        "name": "오렌지 냄비"
+        "thumbnail": "/images/thumbnail/Chalk_Board.png",
+        "name": "칠판"
     },
     {
         "index": 16,
-        "thumbnail": "/images/thumbnail/Pot_pink.jpg",
-        "name": "핑크색 냄비"
+        "thumbnail": "/images/thumbnail/Chicken_coop.png",
+        "name": "닭장"
     },
     {
         "index": 17,
-        "thumbnail": "/images/thumbnail/Refrigerator.jpg",
-        "name": "냉장고"
+        "thumbnail": "/images/thumbnail/Dumpster.png",
+        "name": "덤프스터"
     },
     {
         "index": 18,
-        "thumbnail": "/images/thumbnail/RoundTable_brown.jpg",
-        "name": "원형탁자"
+        "thumbnail": "/images/thumbnail/.png",
+        "name": ""
     },
     {
         "index": 19,
-        "thumbnail": "/images/thumbnail/Armchair_1.png",
-        "name": "팔걸이의자1"
+        "thumbnail": "/images/thumbnail/Fence.png",
+        "name": "울타리"
     },
     {
         "index": 20,
-        "thumbnail": "/images/thumbnail/Armchair_2.png",
-        "name": "팔걸이의자2"
+        "thumbnail": "/images/thumbnail/Grass.png",
+        "name": "잔디"
     },
     {
         "index": 21,
-        "thumbnail": "/images/thumbnail/Basket_1.png",
-        "name": "바구니1"
+        "thumbnail": "/images/thumbnail/Grave1.png",
+        "name": "무덤1"
     },
     {
         "index": 22,
-        "thumbnail": "/images/thumbnail/Bath_1.png",
-        "name": "욕조1"
+        "thumbnail": "/images/thumbnail/Grave2.png",
+        "name": "무덤2"
     },
     {
         "index": 23,
-        "thumbnail": "/images/thumbnail/Bed_1.png",
-        "name": "침대1"
+        "thumbnail": "/images/thumbnail/Hay1.png",
+        "name": "건초1"
     },
     {
         "index": 24,
-        "thumbnail": "/images/thumbnail/Bed_2.png",
-        "name": "침대2"
+        "thumbnail": "/images/thumbnail/House1.png",
+        "name": "집1"
     },
     {
         "index": 25,
-        "thumbnail": "/images/thumbnail/Bed_3.png",
-        "name": "침대3"
+        "thumbnail": "/images/thumbnail/House2.png",
+        "name": "집2"
     },
     {
         "index": 26,
-        "thumbnail": "/images/thumbnail/Book_1.png",
-        "name": "책1"
+        "thumbnail": "/images/thumbnail/House3.png",
+        "name": "집3"
     },
     {
         "index": 27,
-        "thumbnail": "/images/thumbnail/Book_2.png",
-        "name": "책2"
+        "thumbnail": "/images/thumbnail/House4.png",
+        "name": "집4"
     },
     {
         "index": 28,
-        "thumbnail": "/images/thumbnail/Book_3.png",
-        "name": "책3"
+        "thumbnail": "/images/thumbnail/House5.png",
+        "name": "집5"
     },
     {
         "index": 29,
-        "thumbnail": "/images/thumbnail/Book_4.png",
-        "name": "책4"
+        "thumbnail": "/images/thumbnail/House6.png",
+        "name": "집6"
     },
     {
         "index": 30,
-        "thumbnail": "/images/thumbnail/Book_5.png",
-        "name": "책5"
+        "thumbnail": "/images/thumbnail/House7.png",
+        "name": "집7"
     },
     {
         "index": 31,
-        "thumbnail": "/images/thumbnail/Bottle_1.png",
-        "name": "유리병1"
+        "thumbnail": "/images/thumbnail/Light_pole1.png",
+        "name": "가로등1"
     },
     {
         "index": 32,
-        "thumbnail": "/images/thumbnail/Bottle_2.png",
-        "name": "유리병2"
+        "thumbnail": "/images/thumbnail/Light_pole2.png",
+        "name": "가로등2"
     },
     {
         "index": 33,
-        "thumbnail": "/images/thumbnail/Box_1.png",
-        "name": "상자1"
+        "thumbnail": "/images/thumbnail/Logs.png",
+        "name": "통나무"
     },
     {
         "index": 34,
-        "thumbnail": "/images/thumbnail/Bread.png",
-        "name": "빵"
+        "thumbnail": "/images/thumbnail/Pumpkin.png",
+        "name": "호박"
     },
     {
         "index": 35,
-        "thumbnail": "/images/thumbnail/Cactus_1.png",
-        "name": "선인장1"
+        "thumbnail": "/images/thumbnail/Rock.png",
+        "name": "돌"
     },
     {
         "index": 36,
-        "thumbnail": "/images/thumbnail/Cactus_2.png",
-        "name": "선인장2"
+        "thumbnail": "/images/thumbnail/Scythe.png",
+        "name": "낫"
     },
     {
         "index": 37,
-        "thumbnail": "/images/thumbnail/Cactus_3.png",
-        "name": "선인장3"
+        "thumbnail": "/images/thumbnail/Traffic_light1.png",
+        "name": "신호등1"
     },
     {
         "index": 38,
-        "thumbnail": "/images/thumbnail/Cake.png",
-        "name": "케이크1"
+        "thumbnail": "/images/thumbnail/Traffic_light2.png",
+        "name": "신호등2"
     },
     {
         "index": 39,
-        "thumbnail": "/images/thumbnail/Carpet_1.png",
-        "name": "카펫1"
+        "thumbnail": "/images/thumbnail/Tree1.png",
+        "name": "나무1"
     },
     {
         "index": 40,
-        "thumbnail": "/images/thumbnail/Carpet_2.png",
-        "name": "카펫2"
+        "thumbnail": "/images/thumbnail/Tree2.png",
+        "name": "나무2"
     },
     {
         "index": 41,
-        "thumbnail": "/images/thumbnail/Chair_orange.png",
-        "name": "오렌지색 의자"
+        "thumbnail": "/images/thumbnail/Tree4.png",
+        "name": "나무4"
     },
     {
         "index": 42,
-        "thumbnail": "/images/thumbnail/Clock_1.png",
-        "name": "시계1"
+        "thumbnail": "/images/thumbnail/Tree5.png",
+        "name": "나무5"
     },
     {
         "index": 43,
-        "thumbnail": "/images/thumbnail/Coffee_drink.png",
-        "name": "커피"
+        "thumbnail": "/images/thumbnail/Tree6.png",
+        "name": "나무6"
     },
     {
         "index": 44,
-        "thumbnail": "/images/thumbnail/Cup_1.png",
-        "name": "컵1"
+        "thumbnail": "/images/thumbnail/Tree7.png",
+        "name": "나무7"
     },
     {
         "index": 45,
-        "thumbnail": "/images/thumbnail/Cup_2.png",
-        "name": "컵2"
+        "thumbnail": "/images/thumbnail/Tree9.png",
+        "name": "나무9"
     },
     {
         "index": 46,
-        "thumbnail": "/images/thumbnail/Doll_bear.png",
-        "name": "곰인형"
+        "thumbnail": "/images/thumbnail/Tree_house_trunk.png",
+        "name": "나무 집"
     },
     {
         "index": 47,
-        "thumbnail": "/images/thumbnail/Doll_Chick.png",
-        "name": "병아리인형"
+        "thumbnail": "/images/thumbnail/Tree_trunk.png",
+        "name": "나무 밑동"
     },
     {
         "index": 48,
-        "thumbnail": "/images/thumbnail/Doll_mushroom_1.png",
-        "name": "버섯인형1"
-    },
-    {
-        "index": 49,
-        "thumbnail": "/images/thumbnail/Doll_mushroom_2.png",
-        "name": "버섯인형2"
-    },
-    {
-        "index": 50,
-        "thumbnail": "/images/thumbnail/Doll_Polar.png",
-        "name": "북극곰인형"
-    },
-    {
-        "index": 51,
-        "thumbnail": "/images/thumbnail/Doll_rabbit.png",
-        "name": "토끼인형"
-    },
-    {
-        "index": 52,
-        "thumbnail": "/images/thumbnail/Drawer_blue_1.png",
-        "name": "파란서랍1"
-    },
-    {
-        "index": 53,
-        "thumbnail": "/images/thumbnail/Drawer_pink_1.png",
-        "name": "분홍서랍1"
-    },
-    {
-        "index": 54,
-        "thumbnail": "/images/thumbnail/Flower_1.png",
-        "name": "꽃1"
-    },
-    {
-        "index": 55,
-        "thumbnail": "/images/thumbnail/Flower_2.png",
-        "name": "꽃2"
-    },
-    {
-        "index": 56,
-        "thumbnail": "/images/thumbnail/Flower_3.png",
-        "name": "꽃3"
-    },
-    {
-        "index": 57,
-        "thumbnail": "/images/thumbnail/Flower_5.png",
-        "name": "꽃5"
-    },
-    {
-        "index": 58,
-        "thumbnail": "/images/thumbnail/Flower_6.png",
-        "name": "꽃6"
-    },
-    {
-        "index": 59,
-        "thumbnail": "/images/thumbnail/Flower_7.png",
-        "name": "꽃7"
-    },
-    {
-        "index": 60,
-        "thumbnail": "/images/thumbnail/Flower_8.png",
-        "name": "꽃8"
-    },
-    {
-        "index": 61,
-        "thumbnail": "/images/thumbnail/Flower_9.png",
-        "name": "꽃9"
-    },
-    {
-        "index": 62,
-        "thumbnail": "/images/thumbnail/Flower_10.png",
-        "name": "꽃10"
-    },
-    {
-        "index": 63,
-        "thumbnail": "/images/thumbnail/Flower_11.png",
-        "name": "꽃11"
-    },
-    {
-        "index": 64,
-        "thumbnail": "/images/thumbnail/Fork.png",
-        "name": "포크"
-    },
-    {
-        "index": 65,
-        "thumbnail": "/images/thumbnail/Frame_1.png",
-        "name": "액자1"
-    },
-    {
-        "index": 66,
-        "thumbnail": "/images/thumbnail/Frame_2.png",
-        "name": "액자2"
-    },
-    {
-        "index": 67,
-        "thumbnail": "/images/thumbnail/Frame_3.png",
-        "name": "액자3"
-    },
-    {
-        "index": 68,
-        "thumbnail": "/images/thumbnail/Frame_5.png",
-        "name": "액자5"
-    },
-    {
-        "index": 69,
-        "thumbnail": "/images/thumbnail/Frame_6.png",
-        "name": "액자6"
-    },
-    {
-        "index": 70,
-        "thumbnail": "/images/thumbnail/Frame_7.png",
-        "name": "액자7"
-    },
-    {
-        "index": 71,
-        "thumbnail": "/images/thumbnail/Frame_8.png",
-        "name": "액자8"
-    },
-    {
-        "index": 72,
-        "thumbnail": "/images/thumbnail/Mannequin_1.png",
-        "name": "마네킹1"
-    },
-    {
-        "index": 73,
-        "thumbnail": "/images/thumbnail/Mirror_1.png",
-        "name": "거울1"
-    },
-    {
-        "index": 74,
-        "thumbnail": "/images/thumbnail/Ottoman_1.png",
-        "name": "오토만1"
-    },
-    {
-        "index": 75,
-        "thumbnail": "/images/thumbnail/Ottoman_2.png",
-        "name": "오토만2"
-    },
-    {
-        "index": 76,
-        "thumbnail": "/images/thumbnail/Ottoman_3.png",
-        "name": "오토만3"
-    },
-    {
-        "index": 77,
-        "thumbnail": "/images/thumbnail/Plate_1.png",
-        "name": "접시1"
-    },
-    {
-        "index": 78,
-        "thumbnail": "/images/thumbnail/Plate_2.png",
-        "name": "접시2"
-    },
-    {
-        "index": 79,
-        "thumbnail": "/images/thumbnail/Pot_full.png",
-        "name": "가득찬 냄비1"
-    },
-    {
-        "index": 80,
-        "thumbnail": "/images/thumbnail/Present_1.png",
-        "name": "선물1"
-    },
-    {
-        "index": 81,
-        "thumbnail": "/images/thumbnail/Present_2.png",
-        "name": "선물2"
-    },
-    {
-        "index": 82,
-        "thumbnail": "/images/thumbnail/Present_3.png",
-        "name": "선물3"
-    },
-    {
-        "index": 83,
-        "thumbnail": "/images/thumbnail/Puzzle_1.png",
-        "name": "퍼즐1"
-    },
-    {
-        "index": 84,
-        "thumbnail": "/images/thumbnail/Puzzle_2.png",
-        "name": "퍼즐2"
-    },
-    {
-        "index": 85,
-        "thumbnail": "/images/thumbnail/Puzzle_3.png",
-        "name": "퍼즐3"
-    },
-    {
-        "index": 86,
-        "thumbnail": "/images/thumbnail/Puzzle_4.png",
-        "name": "퍼즐4"
-    },
-    {
-        "index": 87,
-        "thumbnail": "/images/thumbnail/RoundTable_orange.png",
-        "name": "오렌지색 원형탁자"
-    },
-    {
-        "index": 88,
-        "thumbnail": "/images/thumbnail/Sandwich_1.png",
-        "name": "샌드위치1"
-    },
-    {
-        "index": 89,
-        "thumbnail": "/images/thumbnail/Sausages_1.png",
-        "name": "소세지1"
-    },
-    {
-        "index": 90,
-        "thumbnail": "/images/thumbnail/Sewing_machine.png",
-        "name": "재봉틀1"
-    },
-    {
-        "index": 91,
-        "thumbnail": "/images/thumbnail/Sofa_1.png",
-        "name": "소파1"
-    },
-    {
-        "index": 92,
-        "thumbnail": "/images/thumbnail/Sofa_2.png",
-        "name": "소파2"
-    },
-    {
-        "index": 93,
-        "thumbnail": "/images/thumbnail/Towels_1.png",
-        "name": "수건1"
-    },
-    {
-        "index": 94,
-        "thumbnail": "/images/thumbnail/Towels_2.png",
-        "name": "수건2"
-    },
-    {
-        "index": 95,
-        "thumbnail": "/images/thumbnail/Tv.png",
-        "name": "텔레비전"
-    },
-    {
-        "index": 96,
-        "thumbnail": "/images/thumbnail/Vase_1.png",
-        "name": "꽃병1"
-    },
-    {
-        "index": 97,
-        "thumbnail": "/images/thumbnail/Vase_2.png",
-        "name": "꽃병2"
-    },
-    {
-        "index": 98,
-        "thumbnail": "/images/thumbnail/Vase_3.png",
-        "name": "꽃병3"
-    },
-    {
-        "index": 99,
-        "thumbnail": "/images/thumbnail/Vase_4.png",
-        "name": "꽃병4"
-    },
-    {
-        "index": 100,
-        "thumbnail": "/images/thumbnail/Vase_5.png",
-        "name": "꽃병5"
+        "thumbnail": "/images/thumbnail/Wooden_box.png",
+        "name": "나무상자"
     }
 ]
