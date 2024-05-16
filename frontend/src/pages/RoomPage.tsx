@@ -17,7 +17,7 @@ import backgroundImage from '../assets/images/bg/background-main.png';
 import mainMap from '../assets/images/bg/map-Rich.png';
 
 export default function RoomPage() {
-    const mapInfo = ['richroom', 'farm'];
+    const mapInfo = ['richRoom', 'farm'];
     const [settingRoomFlag, setSettingRoomFlag] = useState<boolean>(false);
     const [botCount, setBotCount] = useState(0);
     const [room, setRoom] = useState<RoomInfo>({
@@ -230,8 +230,6 @@ export default function RoomPage() {
         if (currentRoom.roomAdmin == meName)
             setBotCount(botCount > 0 ? botCount - 1 : 0);
     };
-
-
 
     return (
         <section

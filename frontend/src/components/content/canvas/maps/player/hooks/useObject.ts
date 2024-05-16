@@ -604,7 +604,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
 
     const { scene: scene, materials } = useGLTF(
         (() => {
-            if (roomState.roomMap === 'richroom') {
+            if (roomState.roomMap === 'richRoom') {
                 switch (modelIndex) {
                     case 0:
                         return '/models/object/Barrel.glb';
@@ -1774,7 +1774,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     };
 
     function returnMaterial(num: number | undefined) {
-        if (roomState.roomMap === 'richroom') {
+        if (roomState.roomMap === 'richRoom') {
             if (num === undefined || num < 19) {
                 return [materials['Cartoon_Room_Mat.002']];
             } else {
@@ -1801,7 +1801,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         return [materials['Cartoon_Room_Mat.002']];
     }
     function returnNode(num: number | undefined) {
-        if (roomState.roomMap === 'richroom') {
+        if (roomState.roomMap === 'richRoom') {
             switch (num) {
                 case 0:
                     return [(nodes.Barrel_1 as SkinnedMesh).geometry];

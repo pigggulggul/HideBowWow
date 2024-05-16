@@ -3,7 +3,7 @@ import { Content } from '../components/content/Content';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChatType, CurrentPlayersInfo } from '../types/GameType';
+import { ChatType, CurrentPlayersInfo, ThumbnailType } from '../types/GameType';
 import { chatFlagState, heartState } from '../store/user-slice';
 import StompClient from '../websocket/StompClient';
 import {
@@ -30,7 +30,8 @@ import keyRight from '../assets/images/icon/key_arrowR.png';
 import keyLeft from '../assets/images/icon/key_arrowL.png';
 import keySpace from '../assets/images/icon/key_space.png';
 import ingameMusic from '../assets/bgm/ingame_music.mp3';
-import ObjectInfo from '../json/ObjectInfo.json'; 
+import RichRoomInfo from '../json/RichRoomInfo.json';
+import FarmInfo from '../json/FarmInfo.json';
 
 export default function GamePage() {
     const stompClient = StompClient.getInstance();
@@ -58,7 +59,7 @@ export default function GamePage() {
 
     const isObserver = useSelector(
         (state: any) => state.reduxFlag.userSlice.observserMode
-    ); 
+    );
 
     const [seekerNum, setSeekerNum] = useState<number>(0);
     const [hiderNum, setHiderNum] = useState<number>(0);
@@ -72,7 +73,8 @@ export default function GamePage() {
     const [roundStart, setRoundStart] = useState<boolean>(false);
     const [, setToggleSetting] = useState<boolean>(false);
     const [chatContent, setChatContent] = useState<string>('');
-
+    const [thumbnailInfo, setThumbnailInfo] =
+        useState<ThumbnailType[]>(RichRoomInfo);
     //공격
     const [shot, setShot] = useState<boolean>(false);
 
@@ -95,6 +97,15 @@ export default function GamePage() {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    useEffect(() => {
+        if (currentRoom.roomMap === 'richRoom') {
+            setThumbnailInfo(RichRoomInfo);
+        } else if (currentRoom.roomMap === 'farm') {
+            setThumbnailInfo(FarmInfo);
+        } else {
+            setThumbnailInfo(RichRoomInfo);
+        }
+    }, [currentRoom.roomMap]);
     useEffect(() => {
         if (currentRoom.roomState === 0) {
             audio.pause();
@@ -188,7 +199,7 @@ export default function GamePage() {
                 inputRef.current.blur();
             }
         }
-    }, [toggleChat]);  
+    }, [toggleChat]);
     useEffect(() => {
         if (messageEndRef.current) {
             messageEndRef.current.scrollIntoView({
@@ -231,7 +242,7 @@ export default function GamePage() {
                 setToggleChat((prev) => !prev);
             } else if (event.key === 'Escape') {
                 setToggleSetting((prev) => !prev);
-                const element = document.body; 
+                const element = document.body;
                 const requestPointerLock = element.requestPointerLock;
                 requestPointerLock.call(element);
             }
@@ -392,7 +403,7 @@ export default function GamePage() {
                                             <img
                                                 className="relative w-50 h-40 object-fill"
                                                 src={
-                                                    ObjectInfo[
+                                                    thumbnailInfo[
                                                         item.selectedIndex
                                                     ].thumbnail
                                                 }
@@ -404,7 +415,7 @@ export default function GamePage() {
                                         {item.selectedIndex ? (
                                             <p>
                                                 {
-                                                    ObjectInfo[
+                                                    thumbnailInfo[
                                                         item.selectedIndex
                                                     ].name
                                                 }
@@ -605,10 +616,11 @@ export default function GamePage() {
                     }
                 />
             </div>
-            
+
             {/* 숨는시간 술래 자막 */}
-            {((currentRoom.roomState === 1 || currentRoom.roomState === 2) && meInfo.isSeeker) ? ( 
-                <div className="absolute flex flex-col bottom-20 justify-center">  
+            {(currentRoom.roomState === 1 || currentRoom.roomState === 2) &&
+            meInfo.isSeeker ? (
+                <div className="absolute flex flex-col bottom-20 justify-center">
                     <p className="text-[2vw] text-black">
                         당신은 술래입니다. 사물팀이 숨는동안 맵을 외우세요!
                     </p>
@@ -618,18 +630,18 @@ export default function GamePage() {
             )}
 
             {/* 관전 중 자막 */}
-            {(!isObserver && observerState) ? ( 
-                <div className="absolute flex flex-col bottom-20 justify-center"> 
-                    <div className='flex justify-center items-center text-[2vw]'>
+            {!isObserver && observerState ? (
+                <div className="absolute flex flex-col bottom-20 justify-center">
+                    <div className="flex justify-center items-center text-[2vw]">
                         <img className="px-[0.2vw]" src={keyLeft} alt="" />
-                            <p className='mx-[2vw]'>{observerState}</p>
+                        <p className="mx-[2vw]">{observerState}</p>
                         <img className="px-[0.2vw]" src={keyRight} alt="" />
-                    </div>  
+                    </div>
                 </div>
             ) : (
                 <></>
             )}
-  
+
             {shot ? (
                 <div className="absolute w-full h-full bg-red-400 opacity-35"></div>
             ) : (
