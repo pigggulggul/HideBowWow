@@ -18,7 +18,7 @@ import RichMap from '../assets/images/bg/map-Rich.png';
 import farmMap from '../assets/images/bg/map-Farm.png';
 
 export default function RoomPage() {
-    const mapInfo = ['richRoom', 'farm'];
+    const mapInfo = ['richRoom'];
     const [settingRoomFlag, setSettingRoomFlag] = useState<boolean>(false);
     const [botCount, setBotCount] = useState(0);
     const [room, setRoom] = useState<RoomInfo>({
