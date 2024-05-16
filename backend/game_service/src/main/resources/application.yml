@@ -46,8 +46,10 @@ game:
     maxSeekerIdx: 14
     maxHiderIdx: 101
     startPoint: -43.8823, 0.03, -27.9526
+    maxMapValue: 0
   farm:
     maxSeekerIdx: 14
     maxHiderIdx: 49
     startPoint: 0.0, 0.03, 0.0
+    maxMapValue: 100
   fps: 30

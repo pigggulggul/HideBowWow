@@ -28,6 +28,7 @@ public class GameProperties {
         private int maxSeekerIdx;
         private int maxHiderIdx;
         private Double[] startPoint;
+        private int maxMapValue;
     }
 
     public static class RichRoom extends GameMap{

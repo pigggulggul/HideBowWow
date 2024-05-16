@@ -60,7 +60,6 @@ public class RoomSocketService {
             return;
         }
 
-
         int seekerNumber1 = new Random().nextInt(room.getRoomPlayers().size());
         int seekerNumber2 = (room.getRoomPlayers().size() + room.getBotCnt() >= 6)? new Random().nextInt(room.getRoomPlayers().size()): -1;
         while (seekerNumber2 != -1 && seekerNumber1 == seekerNumber2){
@@ -89,6 +88,9 @@ public class RoomSocketService {
                 player.setSelectedIndex(null);
             }
         }
+
+        // mapValue 담기
+        room.setMapValue(new Random().nextInt(gameMap.getMaxMapValue()));
 
         // 봇 생성
         if (room.getBotCnt() != null && !room.getBotCnt().equals(0)){

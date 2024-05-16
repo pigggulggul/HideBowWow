@@ -29,6 +29,8 @@ public class Room {
 
     private String roomMap;
 
+    private Integer mapValue;
+
     private List<Player> roomPlayers;
 
     private Integer botCnt;
