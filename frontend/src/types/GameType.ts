@@ -86,3 +86,9 @@ export interface ChatType {
     nickname: string;
     content: string;
 }
+
+export interface ThumbnailType {
+    index: number;
+    thumbnail: string;
+    name: string;
+}

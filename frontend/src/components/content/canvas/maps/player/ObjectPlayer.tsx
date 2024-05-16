@@ -120,6 +120,76 @@ export function ObjectPlayer({
                 ) : (
                     <></>
                 )}
+                {node.length > 3 ? (
+                    <mesh
+                        geometry={node[3]}
+                        material={material[3]}
+                        name={playerNickname}
+                        rotation={[Math.PI / 2, 0, 0]}
+                    />
+                ) : (
+                    <></>
+                )}
+                {node.length > 4 ? (
+                    <mesh
+                        geometry={node[4]}
+                        material={material[4]}
+                        name={playerNickname}
+                        rotation={[Math.PI / 2, 0, 0]}
+                    />
+                ) : (
+                    <></>
+                )}
+                {node.length > 5 ? (
+                    <mesh
+                        geometry={node[5]}
+                        material={material[5]}
+                        name={playerNickname}
+                        rotation={[Math.PI / 2, 0, 0]}
+                    />
+                ) : (
+                    <></>
+                )}
+                {node.length > 6 ? (
+                    <mesh
+                        geometry={node[6]}
+                        material={material[6]}
+                        name={playerNickname}
+                        rotation={[Math.PI / 2, 0, 0]}
+                    />
+                ) : (
+                    <></>
+                )}
+                {node.length > 7 ? (
+                    <mesh
+                        geometry={node[7]}
+                        material={material[7]}
+                        name={playerNickname}
+                        rotation={[Math.PI / 2, 0, 0]}
+                    />
+                ) : (
+                    <></>
+                )}
+                {node.length > 8 ? (
+                    <mesh
+                        geometry={node[8]}
+                        material={material[8]}
+                        name={playerNickname}
+                        rotation={[Math.PI / 2, 0, 0]}
+                    />
+                ) : (
+                    <></>
+                )}
+                {node.length > 9 ? (
+                    <mesh
+                        geometry={node[9]}
+                        material={material[9]}
+                        name={playerNickname}
+                        rotation={[Math.PI / 2, 0, 0]}
+                    />
+                ) : (
+                    <></>
+                )}
             </group>
         </>
     );

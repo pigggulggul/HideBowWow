@@ -2,11 +2,16 @@ import { MainCanvas } from './canvas/MainCanvas';
 import { CanvasLayout } from './canvasLayout/Layout';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { CurrentPlayersInfo, RoomInfo } from '../../types/GameType';
+import {
+    CurrentPlayersInfo,
+    RoomInfo,
+    ThumbnailType,
+} from '../../types/GameType';
 import { useEffect, useState } from 'react';
 import { meInfoState, meSelectedInfoState } from '../../store/user-slice';
 import StompClient from '../../websocket/StompClient';
-import ObjectInfo from '../../json/ObjectInfo.json';
+import RichRoomInfo from '../../json/RichRoomInfo.json';
+import FarmInfo from '../../json/FarmInfo.json';
 
 export function Content() {
     const dispatch = useDispatch();
@@ -46,6 +51,9 @@ export function Content() {
     ]);
     const [choiceFlag, setChoiceFlag] = useState<boolean>(false);
     const [secondChoiceFlag, setSecondChoiceFlag] = useState<boolean>(false);
+    const [thumbnailInfo, setThumbnailInfo] =
+        useState<ThumbnailType[]>(RichRoomInfo);
+
     useEffect(() => {
         if (meInfo.nickname !== '') {
             setMe(meInfo);
@@ -60,6 +68,13 @@ export function Content() {
             });
         }
         setPlayers(roomState.roomPlayers);
+        if (roomState.roomMap === 'richRoom') {
+            setThumbnailInfo(RichRoomInfo);
+        } else if (roomState.roomMap === 'farm') {
+            setThumbnailInfo(FarmInfo);
+        } else {
+            setThumbnailInfo(RichRoomInfo);
+        }
     }, [roomState]);
     // useEffect(() => {
     //     if (rerollTime === 1) {
@@ -159,11 +174,27 @@ export function Content() {
         // }
     }, [roomState.roomState]);
     useEffect(() => {
-        const rerollChoice = [
-            Math.floor(Math.random() * 100),
-            Math.floor(Math.random() * 100),
-            Math.floor(Math.random() * 100),
-        ];
+        let rerollChoice: number[];
+
+        if (roomState.roomMap === 'richRoom') {
+            rerollChoice = [
+                Math.floor(Math.random() * 100),
+                Math.floor(Math.random() * 100),
+                Math.floor(Math.random() * 100),
+            ];
+        } else if (roomState.roomMap === 'farm') {
+            rerollChoice = [
+                Math.floor(Math.random() * 49),
+                Math.floor(Math.random() * 49),
+                Math.floor(Math.random() * 49),
+            ];
+        } else {
+            rerollChoice = [
+                Math.floor(Math.random() * 100),
+                Math.floor(Math.random() * 100),
+                Math.floor(Math.random() * 100),
+            ];
+        }
         // console.log('숫자 배정', randomChoice);
         setChoice(rerollChoice);
         console.log(rerollChoice);
@@ -207,7 +238,13 @@ export function Content() {
     const rerollIndex = (num: number) => {
         if (!rerollFlag[num]) {
             const newChoice = [...choice];
-            newChoice[num] = Math.floor(Math.random() * 100);
+            if (roomState.roomMap === 'richRoom') {
+                newChoice[num] = Math.floor(Math.random() * 100);
+            } else if (roomState.roomMap === 'farm') {
+                newChoice[num] = Math.floor(Math.random() * 49);
+            } else {
+                newChoice[num] = Math.floor(Math.random() * 100);
+            }
             setChoice(newChoice);
             const newRerollFlag = [...rerollFlag];
             newRerollFlag[num] = true;
@@ -238,10 +275,13 @@ export function Content() {
                                         >
                                             <img
                                                 className="relative w-50 h-40 object-fill"
-                                                src={ObjectInfo[item].thumbnail}
+                                                src={
+                                                    thumbnailInfo[item]
+                                                        .thumbnail
+                                                }
                                                 alt=""
                                             />
-                                            {ObjectInfo[item].name}
+                                            {thumbnailInfo[item].name}
                                             <p
                                                 className="bg-red-200 px-[2vw] py-[1vw] rounded-[0.6vw] border-[0.2vw] border-red-500 cursor-pointer"
                                                 onClick={() => {
