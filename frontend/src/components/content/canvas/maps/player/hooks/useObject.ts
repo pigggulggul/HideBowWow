@@ -223,7 +223,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
 
     const { scene: scene, materials } = useGLTF(
         (() => {
-            if (roomState.roomMap === 'richroom') {
+            if (roomState.roomMap === 'richRoom') {
                 switch (modelIndex) {
                     case 0:
                         return '/models/object/Barrel.glb';
@@ -717,7 +717,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     }, []);
 
     useEffect(() => {
-        if(meInfo.nickname !== playerNickname) return; 
+        if (meInfo.nickname !== playerNickname) return;
         const handleMouseMove = (event: MouseEvent) => {
             // 마우스 포인터가 고정된 상태에서의 마우스 이동량을 감지합니다.
             if (meInfo?.nickname === playerNickname) {
@@ -745,7 +745,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         };
     }, [meInfo, meInfo.isDead]);
 
-    useEffect(() => { 
+    useEffect(() => {
         if (playerRef.current) {
             // if (ref.current) {
             //     ref.current.name = playerNickname;
@@ -773,7 +773,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
 
     // 키 입력
     useEffect(() => {
-        if(meInfo.nickname !== playerNickname) return; 
+        if (meInfo.nickname !== playerNickname) return;
         const handleKeyDown = (event: any) => {
             if (!chatFlag) {
                 keyState.current[event.key] = true;
@@ -825,7 +825,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     // }, [chatFlag]);
 
     useEffect(() => {
-        if(meInfo.nickname !== playerNickname) return; 
+        if (meInfo.nickname !== playerNickname) return;
         const handleJumpDown = (event: any) => {
             if (event.code === 'Space' && !jumpFlag && !chatFlag) {
                 setIsJumping(1);
@@ -1392,7 +1392,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     };
 
     function returnMaterial(num: number | undefined) {
-        if (roomState.roomMap === 'richroom') {
+        if (roomState.roomMap === 'richRoom') {
             if (num === undefined || num < 19) {
                 return [materials['Cartoon_Room_Mat.002']];
             } else {
@@ -1642,7 +1642,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         }
     }
     function returnNode(num: number | undefined) {
-        if (roomState.roomMap === 'richroom') {
+        if (roomState.roomMap === 'richRoom') {
             switch (num) {
                 case 0:
                     return [(nodes.Barrel_1 as SkinnedMesh).geometry];
