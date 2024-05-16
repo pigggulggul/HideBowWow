@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChatType, CurrentPlayersInfo, ThumbnailType } from '../types/GameType';
-import { chatFlagState, heartState } from '../store/user-slice';
+import { chatFlagState, heartState, observserModeState } from '../store/user-slice';
+import { store } from '../store/store'; 
 import StompClient from '../websocket/StompClient';
 import {
     startRecording,
@@ -115,6 +116,8 @@ export default function GamePage() {
             });
         } else if (currentRoom.roomState === 3 && !roundStart) {
             startRound();
+        } else if(currentRoom.roomState === 1) {
+            dispatch(observserModeState(true))
         }
     }, [currentRoom.roomState]);
     useEffect(() => {
@@ -130,16 +133,15 @@ export default function GamePage() {
             setHiderNum(hider);
         });
     }, [currentRoom.roomPlayers]);
-    useEffect(() => {
+    useEffect(() => {               
         if (meInfo) {
-            if (meInfo.isSeeker) {
-                // console.log('헤헤');
+            if (meInfo.isSeeker) { 
                 dispatch(heartState(7));
             } else {
                 dispatch(heartState(1));
             }
         }
-    }, [meInfo.isSeeker]);
+    }, [meInfo.isSeeker]); 
     useEffect(() => {
         if (meHeart < 7 && meHeart >= 0) {
             handleShot();
@@ -629,12 +631,12 @@ export default function GamePage() {
                 <></>
             )}
 
-            {/* 관전 중 자막 */}
-            {!isObserver && observerState ? (
+            {/* 관전 중 자막 */} 
+            {!isObserver && observerState && !meInfo.isSeeker && (currentRoom.roomState === 2 || currentRoom.roomState === 3)? (
                 <div className="absolute flex flex-col bottom-20 justify-center">
                     <div className="flex justify-center items-center text-[2vw]">
-                        <img className="px-[0.2vw]" src={keyLeft} alt="" />
-                        <p className="mx-[2vw]">{observerState}</p>
+                        <img className="px-[0.2vw]" src={keyLeft} alt="" /> 
+                        <p className="mx-[2vw]">{observerState}</p> 
                         <img className="px-[0.2vw]" src={keyRight} alt="" />
                     </div>
                 </div>

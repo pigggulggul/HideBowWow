@@ -203,8 +203,8 @@ export function Content() {
     const handleSelectedIndex = (index: number) => {
         setMe((prevMe) => ({ ...prevMe, selectedIndex: index })); // 새 객체를 반환하여 selectedIndex 업데이트
 
-        console.log('처음 players', players);
-        console.log(choiceFlag, index);
+        // console.log('처음 players', players);
+        // console.log(choiceFlag, index);
         const updatedPlayers = players.map((player) => {
             if (player.nickname === me.nickname && !choiceFlag) {
                 setMe((prev) => ({ ...prev, selectedIndex: index }));

@@ -854,7 +854,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         return () => {
             document.removeEventListener('keydown', handleJumpDown);
         };
-    }, [isJumping, chatFlag]);
+    }, [isJumping, chatFlag]); 
 
     useFrame(({ camera, clock }) => {
         if (!player || !playerRef.current) return;
