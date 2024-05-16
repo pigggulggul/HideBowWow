@@ -40,7 +40,7 @@ public class HideLocationService {
         List<HideLocation> result = new ArrayList<>();
 
         GameProperties.GameMap gameMap;
-        if(map.equals("richRoom")){
+        if(map.equals("richRoom") || map.equals("richroom")){
             gameMap = gameProperties.getRichRoom();
         } else if (map.equals("farm")) {
             gameMap = gameProperties.getFarm();
