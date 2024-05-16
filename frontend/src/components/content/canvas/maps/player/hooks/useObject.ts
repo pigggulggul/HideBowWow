@@ -1,6 +1,5 @@
 import { useGLTF } from '@react-three/drei';
 import { useFrame, useGraph } from '@react-three/fiber';
-import { Euler } from 'three';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
     Group,
@@ -212,7 +211,6 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     );
 
     const initialHeight = returnHeightSize(modelIndex);
-    const initialRotation = returnRotation(modelIndex);
     position.y = initialHeight;
 
     const memoizedPosition = useMemo(() => position, []);
@@ -547,11 +545,6 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 return 0.025;
             } else return 0.025;
         } else if (roomState.roomMap === 'farm') {
-            switch(modelIndex){
-                case 23:
-                case 46:
-                    return 3;
-            }
             return 1;
         }
         return 1;
@@ -1396,7 +1389,6 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         node,
         material,
         initialHeight,
-        initialRotation
     };
 
     function returnMaterial(num: number | undefined) {
@@ -2329,36 +2321,15 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             switch (num) {
                 case 0:
                 case 1:
-                case 36:  
-                    return 0.8;
-                case 34:
-                case 35:
-                    case 48:
+                    return 2;
+                case 2:
                     return 0.6;
-                case 14:
-                case 19:
-                case 20:
-                case 21:
-                case 22:
+                case 4:
+                    return 0.8;
+                default:
                     return 1;
-            
             }
-            return 0.5;
         }
         return 1;
     }
-
-    function returnRotation(num:number | undefined): Euler {
-        let cnt = 1;
-        if (roomState.roomMap === 'farm') {
-            switch (num) {
-                case 36 :
-                case 14 :
-                    cnt = 0.5;
-                    break;
-            }
-        }
-        return new Euler(cnt*Math.PI, 0, 0);
-    }
 };
-
