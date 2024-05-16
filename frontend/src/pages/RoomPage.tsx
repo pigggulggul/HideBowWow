@@ -90,11 +90,11 @@ export default function RoomPage() {
         } else if (currentRoom.roomMap === 'farm') {
             dispatch(
                 mapSizeState({
-                    minX: -72,
-                    maxX: 72,
-                    minZ: -72,
-                    maxZ: 72,
-                    minY: -1,
+                    minX: -76,
+                    maxX: 76,
+                    minZ: -76,
+                    maxZ: 76,
+                    minY: -3,
                     maxY: 8,
                 })
             );
@@ -105,7 +105,7 @@ export default function RoomPage() {
                     maxX: 40,
                     minZ: -40,
                     maxZ: 90,
-                    minY: -1,
+                    minY: -3,
                     maxY: 8,
                 })
             );

@@ -10,7 +10,7 @@ import {
     Vector3,
     Quaternion,
 } from 'three';
-import { GLTF } from 'three-stdlib';
+import { GLTF, SkeletonUtils } from 'three-stdlib';
 import {
     CollideObject,
     PlayerInitType,
@@ -563,8 +563,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     // const scene = useMemo(() => {
     //     return scene_ ? SkeletonUtils.clone(scene_) : defaultScene;
     // }, [scene_, modelIndex]);
-    const objectMap =
-        scene && scene.visible ? useGraph(scene) : useGraph(defaultScene);
+    const objectMap = useGraph(scene);
     const nodes = objectMap.nodes;
     const material =
         scene && scene.visible ? returnMaterial(modelIndex) : returnMaterial(0);
@@ -1021,6 +1020,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                             playerRef.current.position.y > mapState.maxY ||
                             playerRef.current.position.y < mapState.minY
                         ) {
+                            console.log('원점으로 돌아갑니다');
                             playerRef.current.position.set(0, initialHeight, 0);
                         }
                         if (accumulatedTimeRef.current >= delay) {
