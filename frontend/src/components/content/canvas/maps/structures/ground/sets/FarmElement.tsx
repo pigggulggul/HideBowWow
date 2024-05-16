@@ -311,11 +311,11 @@ export function FarmElement() {
         let item = [];
         for (let i = 0; i < 8; i++) {
           for (let j = 0; j < 13; j++) {
-            let cnt = randomNumber[mapValue + i * j + i + j + 104];
+            let cnt = randomNumber[mapValue + i * 13 + j + 104];
             if (cnt < 2) {
               item.push(
                 <Sheep
-                  key={"Sheep : " + mapValue + i * j + i + j + 104}
+                  key={"Sheep : " + mapValue + i * 13 + j + 104}
                   position={[42 + j * 2, 0.5, 20 + i * 2]}
                   rotation={[-Math.PI / 2, 0, (-Math.PI * i) / j]}
                 />
@@ -373,11 +373,11 @@ export function FarmElement() {
         let item = [];
         for (let i = 0; i < 8; i++) {
           for (let j = 0; j < 13; j++) {
-            let cnt = randomNumber[mapValue + i * j + i + j + 1];
+            let cnt = randomNumber[mapValue + i * 8 + j];
             if (cnt < 2) {
               item.push(
                 <Pig
-                  key={"Pig : " + mapValue + i * j + i + j + 1}
+                  key={"Pig : " + mapValue + i * 8 + j}
                   position={[42 + j * 2, 0.5, 47 + i * 2]}
                   rotation={[-Math.PI / 2, 0, (-Math.PI * i) / j]}
                 />
@@ -393,11 +393,11 @@ export function FarmElement() {
         let item = [];
         for (let i = 0; i < 8; i++) {
           for (let j = 0; j < 8; j++) {
-            let cnt = randomNumber[mapValue + i * j + i + j];
+            let cnt = randomNumber[mapValue + i * 8 + j];
             if (cnt < 1) {
               item.push(
                 <Flower_pot
-                  key={"Flower_pot : " + mapValue + i * j + i + j}
+                  key={"Flower_pot : " + mapValue + i * 8 + j}
                   position={[15 + i * 8, 0.5, 5 + j * 8]}
                   rotation={[-Math.PI / 2, 0, (-Math.PI * i) / j]}
                 />
@@ -405,7 +405,7 @@ export function FarmElement() {
             } else if (cnt < 2) {
               item.push(
                 <Tree_trunk
-                  key={"Tree_trunk : " + mapValue + i * j + i + j}
+                  key={"Tree_trunk : " + mapValue + i * 8 + j}
                   position={[15 + i * 8, 0.5, 5 + j * 8]}
                   rotation={[-Math.PI / 2, 0, (-Math.PI * i) / j]}
                 />
@@ -413,7 +413,7 @@ export function FarmElement() {
             } else if (cnt < 3) {
               item.push(
                 <Pumpkin
-                  key={"Pumpkin : " + mapValue + i * j + i + j}
+                  key={"Pumpkin : " + mapValue + i * 8 + j}
                   position={[15 + i * 8, 0.5, 5 + j * 8]}
                   rotation={[-Math.PI / 2, 0, (-Math.PI * i) / j]}
                 />
@@ -625,11 +625,11 @@ export function FarmElement() {
         let item = [];
         for (let i = 0; i < 3; i++) {
           for (let j = 0; j < 14; j++) {
-            let cnt = randomNumber[mapValue + i * j + i + j];
+            let cnt = randomNumber[mapValue + i * 14 + j];
             if (cnt < 9) {
               item.push(
                 <Chair
-                  key={"Chair : " + mapValue + i * j + i + j}
+                  key={"Chair : " + mapValue + i * 14 + j}
                   position={[y_list[j], 0.5, x_list[i]]}
                   rotation={[-Math.PI / 2, 0, p_list[j % 2]]}
                 />
@@ -1197,11 +1197,11 @@ export function FarmElement() {
         let item = [];
         for (let i = 0; i < 21; i++) {
           for (let j = 0; j < 21; j++) {
-            let cnt = randomNumber[mapValue + i * j + j];
+            let cnt = randomNumber[mapValue + i * 21 + j];
             if (cnt < 8) {
               item.push(
                 <Grass
-                  key={`Grass : ${i}-${j}`}
+                  key={`Grass : `+mapValue + i * 21 + j}
                   position={[-15 - i, 0.5, 70 - j]}
                   rotation={[-Math.PI / 2, 0, Math.PI / 1]}
                 />
@@ -1217,11 +1217,11 @@ export function FarmElement() {
         let item = [];
         for (let i = 0; i < 7; i++) {
           for (let j = 0; j < 12; j++) {
-            let cnt = randomNumber[mapValue + i * j + i + j];
+            let cnt = randomNumber[mapValue + i * 12 + j];
             if (cnt < 1) {
               item.push(
                 <Tree_4
-                  key={"Tree_4 : " + mapValue + i * j + i + j}
+                  key={"Tree_4 : " + mapValue + i * 12 + j}
                   position={[-45 - i * 5, 0.5, 70 - j * 5]}
                   rotation={[-Math.PI / 2, 0, Math.PI / 1]}
                 />
@@ -1229,7 +1229,7 @@ export function FarmElement() {
             } else if (cnt < 2) {
               item.push(
                 <Tree_9
-                  key={"Tree_9 : " + mapValue + i * j + i + j}
+                  key={"Tree_9 : " + mapValue + i * 12 + j}
                   position={[-45 - i * 5, 0.5, 70 - j * 5]}
                   rotation={[-Math.PI / 2, 0, Math.PI / 1]}
                 />
@@ -1237,7 +1237,7 @@ export function FarmElement() {
             } else if (cnt < 3) {
               item.push(
                 <Tree_2
-                  key={"Tree_2 : " + mapValue + i * j + i + j}
+                  key={"Tree_2 : " + mapValue + i * 12 + j}
                   position={[-45 - i * 5, 0.5, 70 - j * 5]}
                   rotation={[-Math.PI / 2, 0, Math.PI / 1]}
                 />
@@ -1245,7 +1245,7 @@ export function FarmElement() {
             } else if (cnt < 4) {
               item.push(
                 <Tree_4
-                  key={"Tree_4 : " + mapValue + i * j + i + j}
+                  key={"Tree_4 : " + mapValue + i * 12 + j}
                   position={[-45 - i * 5, 0.5, 70 - j * 5]}
                   rotation={[-Math.PI / 2, 0, Math.PI / 1]}
                 />
