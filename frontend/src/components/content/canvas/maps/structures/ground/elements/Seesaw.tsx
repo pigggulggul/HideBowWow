@@ -30,7 +30,7 @@ export function Seesaw(props: ObjectSettingType) {
     "/models/object/Seesaw.glb"
   ) as GLTFResult;
   const [ref] = useBox<THREE.Mesh>(() => ({
-    args: [4, 3.5, 1.5],
+    args: [0.8, 3.5, 1.5],
 
     mass: 0.1,
 
