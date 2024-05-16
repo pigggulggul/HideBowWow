@@ -105,7 +105,7 @@ export default function RoomPage() {
                     maxX: 40,
                     minZ: -40,
                     maxZ: 90,
-                    minY: -3,
+                    minY: -1,
                     maxY: 8,
                 })
             );
