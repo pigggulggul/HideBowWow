@@ -204,6 +204,136 @@ type GLTFResult = GLTF & {
 
         Hay_bale_1_Brown_2_0: Mesh;
         Hay_bale_1_Yellow_0: Mesh;
+
+        House_1_Blue_0: Mesh;
+        House_1_Brown_2_0: Mesh;
+        House_1_Brown_3_0: Mesh;
+        House_1_Brown_4_0: Mesh;
+        House_1_Brown__0: Mesh;
+        House_1_Gray_Blue_0: Mesh;
+        House_1_Gray_0: Mesh;
+
+        House_2_Black_0: Mesh;
+        House_2_Brown__0: Mesh;
+        House_2_Dark_Blue__0: Mesh;
+        House_2_Gray_Blue__0: Mesh;
+        House_2_Gray_0: Mesh;
+        House_2_Light_Gray_0: Mesh;
+        House_2_Purple_2_0: Mesh;
+        House_2_Purple_3_0: Mesh;
+        House_2_Purple_4_0: Mesh;
+
+        House_3_Blue_2_0: Mesh;
+        House_3_Brown_2_0: Mesh;
+        House_3_Brown_3_0: Mesh;
+        House_3_Gray_0: Mesh;
+        House_3_Light_Gray_0: Mesh;
+        House_3_Red_0: Mesh;
+        House_3_Yellow_2_0: Mesh;
+
+        House_4_Blue_2_0: Mesh;
+        House_4_Brown_2_0: Mesh;
+        House_4_Gray_Blue_0: Mesh;
+        House_4_Red_0: Mesh;
+        House_4_Yellow_2_0: Mesh;
+
+        House_5_Black_0: Mesh;
+        House_5_Blue_2_0: Mesh;
+        House_5_Brown_2_0: Mesh;
+        House_5_Brown_3_0: Mesh;
+        House_5_Gray_Blue_0: Mesh;
+        House_5_Gray_0: Mesh;
+        House_5_Red_0: Mesh;
+        House_5_Yellow_2_0: Mesh;
+
+        House_6_Blue_0: Mesh;
+        House_6_Brown_2_0: Mesh;
+        House_6_Brown_3_0: Mesh;
+        House_6_Brown_4_0: Mesh;
+        House_6_Gray_0: Mesh;
+        House_6_Light_Gray_0: Mesh;
+
+        House_7_Blue_0: Mesh;
+        House_7_Brown_2_0: Mesh;
+        House_7_Brown_3_0: Mesh;
+        House_7_Brown_4_0: Mesh;
+        House_7_Gray_Blue_0: Mesh;
+        House_7_Gray_0: Mesh;
+        House_7_Light_Gray_0: Mesh;
+        House_7_Red_0: Mesh;
+        House_7_Yellow_2_0: Mesh;
+
+        Light_pole_1_Gray_0: Mesh;
+        Light_pole_1_Light_Gray_0: Mesh;
+        Light_pole_1_Yellow_0: Mesh;
+
+        Light_pole_2_Gray_0: Mesh;
+        Light_pole_2_Light_Gray_0: Mesh;
+        Light_pole_2_Yellow_0: Mesh;
+
+        Logs_Brown_3_0: Mesh;
+        Logs_Brown_4_0: Mesh;
+
+        Pumpkin_Forest_Green_0: Mesh;
+        Pumpkin_Yellow_2_0: Mesh;
+
+        Rock_Dark_Gray_0: Mesh;
+
+        Scythe_Brown_4_0: Mesh;
+        Scythe_Gray_0: Mesh;
+        Scythe_Light_Gray_0: Mesh;
+
+        Traffic_light_1_Dark_Gray_0: Mesh;
+        Traffic_light_1_Gray_Blue_0: Mesh;
+        Traffic_light_1_Green_0: Mesh;
+        Traffic_light_1_Red_0: Mesh;
+        Traffic_light_1_Yellow_0: Mesh;
+
+        Traffic_light_2_Dark_Gray_0: Mesh;
+        Traffic_light_2_Gray_Blue_0: Mesh;
+        Traffic_light_2_Green_0: Mesh;
+        Traffic_light_2_Red_0: Mesh;
+        Traffic_light_2_Yellow_0: Mesh;
+
+        Tree_1_Brown_2_0: Mesh;
+        Tree_1_Brown_4_0: Mesh;
+        Tree_1_Dark_Gray_0: Mesh;
+        Tree_1_Forest_Green_0: Mesh;
+        Tree_1_Yellow_2_0: Mesh;
+
+        Tree_2_Brown_2_0: Mesh;
+        Tree_2_Forest_Green_0: Mesh;
+        Tree_2_Red_0: Mesh;
+
+        Tree_4_Brown_2_0: Mesh;
+        Tree_4_Grass_Green_0: Mesh;
+
+        Tree_5_Brown_2_0: Mesh;
+        Tree_5_Dark_Gray_0: Mesh;
+        Tree_5_Forest_Green_0: Mesh;
+
+        Tree_6_Brown_2_0: Mesh;
+        Tree_6_Forest_Green_0: Mesh;
+
+        Tree_7_Brown_2_0: Mesh;
+        Tree_7_Brown__0: Mesh;
+        Tree_7_Dark_Gray_0: Mesh;
+        Tree_7_Forest_Green_0: Mesh;
+
+        Tree_9_Brown__0: Mesh;
+        Tree_9_Gold__0: Mesh;
+        Tree_9_Orange_0: Mesh;
+
+        Tree_house_trunk__Brown_2_0: Mesh;
+        Tree_house_trunk__Brown_3_0: Mesh;
+        Tree_house_trunk__Brown_4_0: Mesh;
+        Tree_house_trunk__Brown__0: Mesh;
+
+        Tree_trunk_1_Brown_3_0: Mesh;
+        Tree_trunk_1_Brown_4_0: Mesh;
+
+        Wooden_box_Brown_4_0: Mesh;
+        Wooden_box_Gray_0: Mesh;
     };
     materials: {
         Cartoon_Room_Mat: MeshStandardMaterial;
@@ -281,6 +411,136 @@ type GLTFResult = GLTF & {
 
         Brown_2: MeshStandardMaterial;
         Yellow: MeshStandardMaterial;
+
+        Blue: MeshStandardMaterial;
+        Brown_2: MeshStandardMaterial;
+        Brown_3: MeshStandardMaterial;
+        Brown_4: MeshStandardMaterial;
+        Brown: MeshStandardMaterial;
+        Gray_Blue: MeshStandardMaterial;
+        Gray: MeshStandardMaterial;
+
+        Black: MeshStandardMaterial;
+        Brown: MeshStandardMaterial;
+        Dark_Blue: MeshStandardMaterial;
+        Gray_Blue_12: MeshStandardMaterial;
+        Gray: MeshStandardMaterial;
+        Light_Gray: MeshStandardMaterial;
+        Purple_2: MeshStandardMaterial;
+        Purple_3: MeshStandardMaterial;
+        Purple_4: MeshStandardMaterial;
+
+        Blue_2: MeshStandardMaterial;
+        Brown_2: MeshStandardMaterial;
+        Brown_3: MeshStandardMaterial;
+        Gray: MeshStandardMaterial;
+        Light_Gray: MeshStandardMaterial;
+        material: MeshStandardMaterial;
+        Yellow_2: MeshStandardMaterial;
+
+        Blue_2: MeshStandardMaterial;
+        Brown_2: MeshStandardMaterial;
+        Gray_Blue: MeshStandardMaterial;
+        material: MeshStandardMaterial;
+        Yellow_2: MeshStandardMaterial;
+
+        Black: MeshStandardMaterial;
+        Blue_2: MeshStandardMaterial;
+        Brown_2: MeshStandardMaterial;
+        Brown_3: MeshStandardMaterial;
+        Gray_Blue: MeshStandardMaterial;
+        Gray: MeshStandardMaterial;
+        material: MeshStandardMaterial;
+        Yellow_2: MeshStandardMaterial;
+
+        Blue: MeshStandardMaterial;
+        Brown_2: MeshStandardMaterial;
+        Brown_3: MeshStandardMaterial;
+        Brown_4: MeshStandardMaterial;
+        Gray: MeshStandardMaterial;
+        Light_Gray: MeshStandardMaterial;
+
+        Blue: MeshStandardMaterial;
+        Brown_2: MeshStandardMaterial;
+        Brown_3: MeshStandardMaterial;
+        Brown_4: MeshStandardMaterial;
+        Gray_Blue: MeshStandardMaterial;
+        Gray: MeshStandardMaterial;
+        Light_Gray: MeshStandardMaterial;
+        material: MeshStandardMaterial;
+        Yellow_2: MeshStandardMaterial;
+
+        Gray: MeshStandardMaterial;
+        Light_Gray: MeshStandardMaterial;
+        Yellow: MeshStandardMaterial;
+
+        Gray: MeshStandardMaterial;
+        Light_Gray: MeshStandardMaterial;
+        Yellow: MeshStandardMaterial;
+
+        Brown_3: MeshStandardMaterial;
+        Brown_4: MeshStandardMaterial;
+
+        Forest_Green: MeshStandardMaterial;
+        Yellow_2: MeshStandardMaterial;
+
+        Dark_Gray: MeshStandardMaterial;
+
+        Brown_4: MeshStandardMaterial;
+        Gray: MeshStandardMaterial;
+        Light_Gray: MeshStandardMaterial;
+
+        Dark_Gray: MeshStandardMaterial;
+        Gray_Blue: MeshStandardMaterial;
+        Green: MeshStandardMaterial;
+        material: MeshStandardMaterial;
+        Yellow: MeshStandardMaterial;
+
+        Dark_Gray: MeshStandardMaterial;
+        Gray_Blue: MeshStandardMaterial;
+        Green: MeshStandardMaterial;
+        material: MeshStandardMaterial;
+        Yellow: MeshStandardMaterial;
+
+        Brown_2: MeshStandardMaterial;
+        Brown_4: MeshStandardMaterial;
+        Dark_Gray: MeshStandardMaterial;
+        Forest_Green: MeshStandardMaterial;
+        Yellow_2: MeshStandardMaterial;
+
+        Brown_2: MeshStandardMaterial;
+        Forest_Green: MeshStandardMaterial;
+        material: MeshStandardMaterial;
+
+        Brown_2: MeshStandardMaterial;
+        Grass_Green: MeshStandardMaterial;
+
+        Brown_2: MeshStandardMaterial;
+        Dark_Gray: MeshStandardMaterial;
+        Forest_Green: MeshStandardMaterial;
+
+        Brown_2: MeshStandardMaterial;
+        Forest_Green: MeshStandardMaterial;
+
+        Brown_2: MeshStandardMaterial;
+        Brown: MeshStandardMaterial;
+        Dark_Gray: MeshStandardMaterial;
+        Forest_Green: MeshStandardMaterial;
+
+        Brown: MeshStandardMaterial;
+        Gold: MeshStandardMaterial;
+        Orange: MeshStandardMaterial;
+
+        Brown_2: MeshStandardMaterial;
+        Brown_3: MeshStandardMaterial;
+        Brown_4: MeshStandardMaterial;
+        Brown: MeshStandardMaterial;
+
+        Brown_3: MeshStandardMaterial;
+        Brown_4: MeshStandardMaterial;
+
+        Brown_4: MeshStandardMaterial;
+        Gray: MeshStandardMaterial;
     };
     animations: any[];
 };
