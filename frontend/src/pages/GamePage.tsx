@@ -457,7 +457,7 @@ export default function GamePage() {
             ) : (
                 <></>
             )}
-            <div className="absolute flex flex-col top-1 left-1 w-[25s%] h-[50%] bg-black bg-opacity-20 p-[0.4vw]">
+            <div className="absolute flex flex-col top-1 left-1 w-[25s%] h-auto bg-black bg-opacity-20 p-[0.4vw]">
                 <div className="flex items-center">
                     <img className="w-[40px] px-[0.2vw]" src={keyW} alt="" />
                     <img className="w-[40px] px-[0.2vw]" src={keyA} alt="" />

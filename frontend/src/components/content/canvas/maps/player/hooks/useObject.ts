@@ -338,209 +338,32 @@ type GLTFResult = GLTF & {
     materials: {
         Cartoon_Room_Mat: MeshStandardMaterial;
         ['Cartoon_Room_Mat.002']: MeshStandardMaterial;
-        Brown_4: MeshStandardMaterial;
-        Gray: MeshStandardMaterial;
 
         Dark_Gray: MeshStandardMaterial;
         Light_Gray: MeshStandardMaterial;
         material: MeshStandardMaterial;
-
         Brown_3: MeshStandardMaterial;
         Gray: MeshStandardMaterial;
-
         Brown_4: MeshStandardMaterial;
         Brown: MeshStandardMaterial;
-
-        Brown_4: MeshStandardMaterial;
-        Brown: MeshStandardMaterial;
-
         Forest_Green: MeshStandardMaterial;
         Gold: MeshStandardMaterial;
-        material: MeshStandardMaterial;
-
-        Forest_Green: MeshStandardMaterial;
         Grass_Green: MeshStandardMaterial;
-        material: MeshStandardMaterial;
         Yellow: MeshStandardMaterial;
-
-        Forest_Green: MeshStandardMaterial;
-        Grass_Green: MeshStandardMaterial;
-
-        Forest_Green: MeshStandardMaterial;
-        Grass_Green: MeshStandardMaterial;
-
-        Grass_Green: MeshStandardMaterial;
         Pink: MeshStandardMaterial;
-        Yellow: MeshStandardMaterial;
-
-        Grass_Green: MeshStandardMaterial;
-        Pink: MeshStandardMaterial;
-
-        Forest_Green: MeshStandardMaterial;
-        Grass_Green: MeshStandardMaterial;
-
-        Grass_Green: MeshStandardMaterial;
         Orange: MeshStandardMaterial;
-
         Brown_2: MeshStandardMaterial;
-        Dark_Gray: MeshStandardMaterial;
-
-        Brown_2: MeshStandardMaterial;
-        Brown_3: MeshStandardMaterial;
-        Brown_4: MeshStandardMaterial;
         Gray_Blue: MeshStandardMaterial;
         Yellow_2: MeshStandardMaterial;
-
-        Dark_Gray: MeshStandardMaterial;
-        Forest_Green: MeshStandardMaterial;
-
-        Light_Gray: MeshStandardMaterial;
-
-        Brown_4: MeshStandardMaterial;
-        Gray: MeshStandardMaterial;
-
-        Grass_Green: MeshStandardMaterial;
-
-        Brown_2: MeshStandardMaterial;
-        Gray_Blue: MeshStandardMaterial;
-        Light_Gray: MeshStandardMaterial;
-
-        Brown_2: MeshStandardMaterial;
-        Gray_Blue: MeshStandardMaterial;
-        Light_Gray: MeshStandardMaterial;
-
-        Brown_2: MeshStandardMaterial;
-        Yellow: MeshStandardMaterial;
-
         Blue: MeshStandardMaterial;
-        Brown_2: MeshStandardMaterial;
-        Brown_3: MeshStandardMaterial;
-        Brown_4: MeshStandardMaterial;
-        Brown: MeshStandardMaterial;
-        Gray_Blue: MeshStandardMaterial;
-        Gray: MeshStandardMaterial;
-
         Black: MeshStandardMaterial;
-        Brown: MeshStandardMaterial;
         Dark_Blue: MeshStandardMaterial;
         Gray_Blue_12: MeshStandardMaterial;
-        Gray: MeshStandardMaterial;
-        Light_Gray: MeshStandardMaterial;
         Purple_2: MeshStandardMaterial;
         Purple_3: MeshStandardMaterial;
         Purple_4: MeshStandardMaterial;
-
         Blue_2: MeshStandardMaterial;
-        Brown_2: MeshStandardMaterial;
-        Brown_3: MeshStandardMaterial;
-        Gray: MeshStandardMaterial;
-        Light_Gray: MeshStandardMaterial;
-        material: MeshStandardMaterial;
-        Yellow_2: MeshStandardMaterial;
-
-        Blue_2: MeshStandardMaterial;
-        Brown_2: MeshStandardMaterial;
-        Gray_Blue: MeshStandardMaterial;
-        material: MeshStandardMaterial;
-        Yellow_2: MeshStandardMaterial;
-
-        Black: MeshStandardMaterial;
-        Blue_2: MeshStandardMaterial;
-        Brown_2: MeshStandardMaterial;
-        Brown_3: MeshStandardMaterial;
-        Gray_Blue: MeshStandardMaterial;
-        Gray: MeshStandardMaterial;
-        material: MeshStandardMaterial;
-        Yellow_2: MeshStandardMaterial;
-
-        Blue: MeshStandardMaterial;
-        Brown_2: MeshStandardMaterial;
-        Brown_3: MeshStandardMaterial;
-        Brown_4: MeshStandardMaterial;
-        Gray: MeshStandardMaterial;
-        Light_Gray: MeshStandardMaterial;
-
-        Blue: MeshStandardMaterial;
-        Brown_2: MeshStandardMaterial;
-        Brown_3: MeshStandardMaterial;
-        Brown_4: MeshStandardMaterial;
-        Gray_Blue: MeshStandardMaterial;
-        Gray: MeshStandardMaterial;
-        Light_Gray: MeshStandardMaterial;
-        material: MeshStandardMaterial;
-        Yellow_2: MeshStandardMaterial;
-
-        Gray: MeshStandardMaterial;
-        Light_Gray: MeshStandardMaterial;
-        Yellow: MeshStandardMaterial;
-
-        Gray: MeshStandardMaterial;
-        Light_Gray: MeshStandardMaterial;
-        Yellow: MeshStandardMaterial;
-
-        Brown_3: MeshStandardMaterial;
-        Brown_4: MeshStandardMaterial;
-
-        Forest_Green: MeshStandardMaterial;
-        Yellow_2: MeshStandardMaterial;
-
-        Dark_Gray: MeshStandardMaterial;
-
-        Brown_4: MeshStandardMaterial;
-        Gray: MeshStandardMaterial;
-        Light_Gray: MeshStandardMaterial;
-
-        Dark_Gray: MeshStandardMaterial;
-        Gray_Blue: MeshStandardMaterial;
         Green: MeshStandardMaterial;
-        material: MeshStandardMaterial;
-        Yellow: MeshStandardMaterial;
-
-        Dark_Gray: MeshStandardMaterial;
-        Gray_Blue: MeshStandardMaterial;
-        Green: MeshStandardMaterial;
-        material: MeshStandardMaterial;
-        Yellow: MeshStandardMaterial;
-
-        Brown_2: MeshStandardMaterial;
-        Brown_4: MeshStandardMaterial;
-        Dark_Gray: MeshStandardMaterial;
-        Forest_Green: MeshStandardMaterial;
-        Yellow_2: MeshStandardMaterial;
-
-        Brown_2: MeshStandardMaterial;
-        Forest_Green: MeshStandardMaterial;
-        material: MeshStandardMaterial;
-
-        Brown_2: MeshStandardMaterial;
-        Grass_Green: MeshStandardMaterial;
-
-        Brown_2: MeshStandardMaterial;
-        Dark_Gray: MeshStandardMaterial;
-        Forest_Green: MeshStandardMaterial;
-
-        Brown_2: MeshStandardMaterial;
-        Forest_Green: MeshStandardMaterial;
-
-        Brown_2: MeshStandardMaterial;
-        Brown: MeshStandardMaterial;
-        Dark_Gray: MeshStandardMaterial;
-        Forest_Green: MeshStandardMaterial;
-
-        Brown: MeshStandardMaterial;
-        Gold: MeshStandardMaterial;
-        Orange: MeshStandardMaterial;
-
-        Brown_2: MeshStandardMaterial;
-        Brown_3: MeshStandardMaterial;
-        Brown_4: MeshStandardMaterial;
-        Brown: MeshStandardMaterial;
-
-        Brown_3: MeshStandardMaterial;
-        Brown_4: MeshStandardMaterial;
-
-        Brown_4: MeshStandardMaterial;
-        Gray: MeshStandardMaterial;
     };
     animations: any[];
 };
@@ -604,7 +427,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
 
     const { scene: scene, materials } = useGLTF(
         (() => {
-            if (roomState.roomMap === 'richRoom') {
+            if (roomState.roomMap === 'richroom') {
                 switch (modelIndex) {
                     case 0:
                         return '/models/object/Barrel.glb';
@@ -828,90 +651,88 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     case 6:
                         return '/models/object/Bridge_2.glb';
                     case 7:
-                        return '/models/object/Bridge_3.glb';
-                    case 8:
                         return '/models/object/Bush_1.glb';
-                    case 9:
+                    case 8:
                         return '/models/object/Bush_2.glb';
-                    case 10:
+                    case 9:
                         return '/models/object/Bush_3.glb';
-                    case 11:
+                    case 10:
                         return '/models/object/Bush_4.glb';
-                    case 12:
+                    case 11:
                         return '/models/object/Bush_5.glb';
-                    case 13:
+                    case 12:
                         return '/models/object/Bush_6.glb';
-                    case 14:
+                    case 13:
                         return '/models/object/Bush.glb';
-                    case 15:
+                    case 14:
                         return '/models/object/Carrot.glb';
-                    case 16:
+                    case 15:
                         return '/models/object/Chalk_Board.glb';
-                    case 17:
+                    case 16:
                         return '/models/object/Chicken_coop.glb';
-                    case 18:
+                    case 17:
                         return '/models/object/Dumpster.glb';
-                    case 19:
+                    case 18:
                         return '/models/object/Fence.glb';
-                    case 20:
+                    case 19:
                         return '/models/object/Fork_2.glb';
-                    case 21:
+                    case 20:
                         return '/models/object/Grass.glb';
-                    case 22:
+                    case 21:
                         return '/models/object/Grave_1.glb';
-                    case 23:
+                    case 22:
                         return '/models/object/Grave_2.glb';
-                    case 24:
+                    case 23:
                         return '/models/object/Hay_1.glb';
-                    case 25:
+                    case 24:
                         return '/models/object/House_1.glb';
-                    case 26:
+                    case 25:
                         return '/models/object/House_2.glb';
-                    case 27:
+                    case 26:
                         return '/models/object/House_3.glb';
-                    case 28:
+                    case 27:
                         return '/models/object/House_4.glb';
-                    case 29:
+                    case 28:
                         return '/models/object/House_5.glb';
-                    case 30:
+                    case 29:
                         return '/models/object/House_6.glb';
-                    case 31:
+                    case 30:
                         return '/models/object/House_7.glb';
-                    case 32:
+                    case 31:
                         return '/models/object/Light_pole_1.glb';
-                    case 33:
+                    case 32:
                         return '/models/object/Light_pole_2.glb';
-                    case 34:
+                    case 33:
                         return '/models/object/Logs.glb';
-                    case 35:
+                    case 34:
                         return '/models/object/Pumpkin.glb';
-                    case 36:
+                    case 35:
                         return '/models/object/Rock.glb';
-                    case 37:
+                    case 36:
                         return '/models/object/Scythe.glb';
-                    case 38:
+                    case 37:
                         return '/models/object/Traffic_light_1.glb';
-                    case 39:
+                    case 38:
                         return '/models/object/Traffic_light_2.glb';
-                    case 40:
+                    case 39:
                         return '/models/object/Tree_1.glb';
-                    case 41:
+                    case 40:
                         return '/models/object/Tree_2.glb';
-                    case 42:
+                    case 41:
                         return '/models/object/Tree_4.glb';
-                    case 43:
+                    case 42:
                         return '/models/object/Tree_5.glb';
-                    case 44:
+                    case 43:
                         return '/models/object/Tree_6.glb';
-                    case 45:
+                    case 44:
                         return '/models/object/Tree_7.glb';
-                    case 46:
+                    case 45:
                         return '/models/object/Tree_9.glb';
-                    case 47:
+                    case 46:
                         return '/models/object/Tree_house_trunk.glb';
-                    case 48:
+                    case 47:
                         return '/models/object/Tree_trunk.glb';
-                    case 49:
+                    case 48:
                         return '/models/object/Wooden_box.glb';
                     default:
                         return '/models/object/Tree_1.glb';
@@ -1650,8 +1471,9 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             });
         }
 
-        if (meInfo.isDead && !meInfo.isSeeker) {
-            // if (meInfo.isSeeker === true) return; 
+        if (meInfo.isDead) {
+            if (meInfo.isSeeker === true) return;
+
             if (observedPlayerIndex === roomState.roomPlayers.length) {
                 // 자유시점 모드
                 store.dispatch(observerState('자유시점'));
@@ -1729,7 +1551,8 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     observerState('관전 중 : ' + observedPlayer.nickname)
                 );
                 if (observedPlayer) {
-                    camera.position.set( 
+                    camera.position.set(
+                        //
                         observedPlayer.position[0] +
                             Math.sin(observerRef.current.viewLR) * 20,
                         observedPlayer.position[1] + 10,
@@ -1772,7 +1595,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     };
 
     function returnMaterial(num: number | undefined) {
-        if (roomState.roomMap === 'richRoom') {
+        if (roomState.roomMap === 'richroom') {
             if (num === undefined || num < 19) {
                 return [materials['Cartoon_Room_Mat.002']];
             } else {
@@ -1792,6 +1615,230 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     ];
                 case 3:
                     return [materials.Brown_4, materials.Gray];
+                case 4:
+                    return [materials.Brown_3, materials.Gray];
+
+                case 5:
+                    return [materials.Brown_4, materials.Brown];
+                case 6:
+                    return [materials.Brown_4, materials.Brown];
+                case 7:
+                    return [
+                        materials.Forest_Green,
+                        materials.Gold,
+                        materials.material,
+                    ];
+                case 8:
+                    return [
+                        materials.Forest_Green,
+                        materials.Grass_Green,
+                        materials.material,
+                        materials.Yellow,
+                    ];
+                case 9:
+                    return [materials.Forest_Green, materials.Grass_Green];
+                case 10:
+                    return [materials.Forest_Green, materials.Grass_Green];
+                case 11:
+                    return [
+                        materials.Grass_Green,
+                        materials.Pink,
+                        materials.Yellow,
+                    ];
+                case 12:
+                    return [materials.Grass_Green, materials.Pink];
+                case 13:
+                    return [materials.Forest_Green, materials.Grass_Green];
+                case 14:
+                    return [materials.Grass_Green, materials.Orange];
+                case 15:
+                    return [materials.Brown_2, materials.Dark_Gray];
+                case 16:
+                    return [
+                        materials.Brown_2,
+                        materials.Brown_3,
+                        materials.Brown_4,
+                        materials.Gray_Blue,
+                        materials.Yellow_2,
+                    ];
+                case 17:
+                    return [materials.Dark_Gray, materials.Forest_Green];
+                case 18:
+                    return [materials.Light_Gray];
+                case 19:
+                    return [materials.Brown_4, materials.Gray];
+                case 20:
+                    return [materials.Grass_Green];
+                case 21:
+                    return [
+                        materials.Brown_2,
+                        materials.Gray_Blue,
+                        materials.Light_Gray,
+                    ];
+                case 22:
+                    return [
+                        materials.Brown_2,
+                        materials.Gray_Blue,
+                        materials.Light_Gray,
+                    ];
+                case 23:
+                    return [materials.Brown_2, materials.Yellow];
+                case 24:
+                    return [
+                        materials.Blue,
+                        materials.Brown_2,
+                        materials.Brown_3,
+                        materials.Brown_4,
+                        materials.Brown,
+                        materials.Gray_Blue,
+                        materials.Gray,
+                    ];
+                case 25:
+                    return [
+                        materials.Black,
+                        materials.Brown,
+                        materials.Dark_Blue,
+                        materials.Gray_Blue,
+                        materials.Gray,
+                        materials.Light_Gray,
+                        materials.Purple_2,
+                        materials.Purple_3,
+                        materials.Purple_4,
+                    ];
+                case 26:
+                    return [
+                        materials.Blue_2,
+                        materials.Brown_2,
+                        materials.Brown_3,
+                        materials.Gray,
+                        materials.Light_Gray,
+                        materials.material,
+                        materials.Yellow_2,
+                    ];
+                case 27:
+                    return [
+                        materials.Blue_2,
+                        materials.Brown_2,
+                        materials.Gray_Blue,
+                        materials.material,
+                        materials.Yellow_2,
+                    ];
+                case 28:
+                    return [
+                        materials.Black,
+                        materials.Blue_2,
+                        materials.Brown_2,
+                        materials.Brown_3,
+                        materials.Gray_Blue,
+                        materials.Gray,
+                        materials.material,
+                        materials.Yellow_2,
+                    ];
+                case 29:
+                    return [
+                        materials.Blue,
+                        materials.Brown_2,
+                        materials.Brown_3,
+                        materials.Brown_4,
+                        materials.Gray,
+                        materials.Light_Gray,
+                    ];
+                case 30:
+                    return [
+                        materials.Blue,
+                        materials.Brown_2,
+                        materials.Brown_3,
+                        materials.Brown_4,
+                        materials.Gray_Blue,
+                        materials.Gray,
+                        materials.Light_Gray,
+                        materials.material,
+                        materials.Yellow_2,
+                    ];
+                case 31:
+                    return [
+                        materials.Gray,
+                        materials.Light_Gray,
+                        materials.Yellow,
+                    ];
+                case 32:
+                    return [
+                        materials.Gray,
+                        materials.Light_Gray,
+                        materials.Yellow,
+                    ];
+                case 33:
+                    return [materials.Brown_3, materials.Brown_4];
+                case 34:
+                    return [materials.Forest_Green, materials.Yellow_2];
+                case 35:
+                    return [materials.Dark_Gray];
+                case 36:
+                    return [
+                        materials.Brown_4,
+                        materials.Gray,
+                        materials.Light_Gray,
+                    ];
+                case 37:
+                    return [
+                        materials.Dark_Gray,
+                        materials.Gray_Blue,
+                        materials.Green,
+                        materials.material,
+                        materials.Yellow,
+                    ];
+                case 38:
+                    return [
+                        materials.Dark_Gray,
+                        materials.Gray_Blue,
+                        materials.Green,
+                        materials.material,
+                        materials.Yellow,
+                    ];
+                case 39:
+                    return [
+                        materials.Brown_2,
+                        materials.Brown_4,
+                        materials.Dark_Gray,
+                        materials.Forest_Green,
+                        materials.Yellow_2,
+                    ];
+                case 40:
+                    return [
+                        materials.Brown_2,
+                        materials.Forest_Green,
+                        materials.material,
+                    ];
+                case 41:
+                    return [materials.Brown_2, materials.Grass_Green];
+                case 42:
+                    return [
+                        materials.Brown_2,
+                        materials.Dark_Gray,
+                        materials.Forest_Green,
+                    ];
+                case 43:
+                    return [materials.Brown_2, materials.Forest_Green];
+                case 44:
+                    return [
+                        materials.Brown_2,
+                        materials.Brown,
+                        materials.Dark_Gray,
+                        materials.Forest_Green,
+                    ];
+                case 45:
+                    return [materials.Brown, materials.Gold, materials.Orange];
+                case 46:
+                    return [
+                        materials.Brown_2,
+                        materials.Brown_3,
+                        materials.Brown_4,
+                        materials.Brown,
+                    ];
+                case 47:
+                    return [materials.Brown_3, materials.Brown_4];
+                case 48:
+                    return [materials.Brown_4, materials.Gray];
                 default:
                     return [materials.Brown_4, materials.Gray];
             }
@@ -1799,7 +1846,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         return [materials['Cartoon_Room_Mat.002']];
     }
     function returnNode(num: number | undefined) {
-        if (roomState.roomMap === 'richRoom') {
+        if (roomState.roomMap === 'richroom') {
             switch (num) {
                 case 0:
                     return [(nodes.Barrel_1 as SkinnedMesh).geometry];
@@ -2039,6 +2086,303 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                         (nodes.Barrel_Brown_4_0 as SkinnedMesh).geometry,
                         (nodes.Barrel_Gray_0 as SkinnedMesh).geometry,
                     ];
+                case 4:
+                    return [
+                        (nodes.Bench_2_Brown_3_0 as SkinnedMesh).geometry,
+                        (nodes.Bench_2_Gray_0 as SkinnedMesh).geometry,
+                    ];
+                case 5:
+                    return [
+                        (nodes.Bridge_1_Brown_4_0 as SkinnedMesh).geometry,
+                        (nodes.Bridge_1_Brown__0 as SkinnedMesh).geometry,
+                    ];
+                case 6:
+                    return [
+                        (nodes.Bridge_2_Brown_4_0 as SkinnedMesh).geometry,
+                        (nodes.Bridge_2_Brown__0 as SkinnedMesh).geometry,
+                    ];
+                case 7:
+                    return [
+                        (nodes.Bush001_Forest_Green_0 as SkinnedMesh).geometry,
+                        (nodes.Bush001_Gold__0 as SkinnedMesh).geometry,
+                        (nodes.Bush001_Red_0 as SkinnedMesh).geometry,
+                    ];
+                case 8:
+                    return [
+                        (nodes.Bush002_Forest_Green_0 as SkinnedMesh).geometry,
+                        (nodes.Bush002_Grass_Green_0 as SkinnedMesh).geometry,
+                        (nodes.Bush002_Red_0 as SkinnedMesh).geometry,
+                        (nodes.Bush002_Yellow_0 as SkinnedMesh).geometry,
+                    ];
+                case 9:
+                    return [
+                        (nodes.Bush003_Forest_Green_0 as SkinnedMesh).geometry,
+                        (nodes.Bush003_Grass_Green_0 as SkinnedMesh).geometry,
+                    ];
+                case 10:
+                    return [
+                        (nodes.Bush004_Forest_Green_0 as SkinnedMesh).geometry,
+                        (nodes.Bush004_Grass_Green_0 as SkinnedMesh).geometry,
+                    ];
+                case 11:
+                    return [
+                        (nodes.Bush005_Grass_Green_0 as SkinnedMesh).geometry,
+                        (nodes.Bush005_Pink_0 as SkinnedMesh).geometry,
+                        (nodes.Bush005_Yellow_0 as SkinnedMesh).geometry,
+                    ];
+                case 12:
+                    return [
+                        (nodes.Bush006_Grass_Green_0 as SkinnedMesh).geometry,
+                        (nodes.Bush006_Pink_0 as SkinnedMesh).geometry,
+                    ];
+                case 13:
+                    return [
+                        (nodes.Bush_Forest_Green_0 as SkinnedMesh).geometry,
+                        (nodes.Bush_Grass_Green_0 as SkinnedMesh).geometry,
+                    ];
+                case 14:
+                    return [
+                        (nodes.Carrot_Grass_Green_0 as SkinnedMesh).geometry,
+                        (nodes.Carrot_Orange_0 as SkinnedMesh).geometry,
+                    ];
+                case 15:
+                    return [
+                        (nodes.Chalk_Board_Brown_2_0 as SkinnedMesh).geometry,
+                        (nodes.Chalk_Board_Dark_Gray_0 as SkinnedMesh).geometry,
+                    ];
+                case 16:
+                    return [
+                        (nodes.Chicken_coop_Brown_2_0 as SkinnedMesh).geometry,
+                        (nodes.Chicken_coop_Brown_3_0 as SkinnedMesh).geometry,
+                        (nodes.Chicken_coop_Brown_4_0 as SkinnedMesh).geometry,
+                        (nodes.Chicken_coop_Gray_Blue_0 as SkinnedMesh)
+                            .geometry,
+                        (nodes.Chicken_coop_Yellow_2_0 as SkinnedMesh).geometry,
+                    ];
+                case 17:
+                    return [
+                        (nodes.Dumpster_Dark_Gray_0 as SkinnedMesh).geometry,
+                        (nodes.Dumpster_Forest_Green_0 as SkinnedMesh).geometry,
+                    ];
+                case 18:
+                    return [(nodes.Fence_Light_Gray_0 as SkinnedMesh).geometry];
+                case 19:
+                    return [
+                        (nodes.Fork_Brown_4_0 as SkinnedMesh).geometry,
+                        (nodes.Fork_Gray_0 as SkinnedMesh).geometry,
+                    ];
+                case 20:
+                    return [
+                        (nodes.Grass_Grass_Green_0 as SkinnedMesh).geometry,
+                    ];
+                case 21:
+                    return [
+                        (nodes.Grave_1_Brown_2_0 as SkinnedMesh).geometry,
+                        (nodes.Grave_1_Gray_Blue_0 as SkinnedMesh).geometry,
+                        (nodes.Grave_1_Light_Gray_0 as SkinnedMesh).geometry,
+                    ];
+                case 22:
+                    return [
+                        (nodes.Grave_2_Brown_2_0 as SkinnedMesh).geometry,
+                        (nodes.Grave_2_Gray_Blue_0 as SkinnedMesh).geometry,
+                        (nodes.Grave_2_Light_Gray_0 as SkinnedMesh).geometry,
+                    ];
+                case 23:
+                    return [
+                        (nodes.Hay_bale_1_Brown_2_0 as SkinnedMesh).geometry,
+                        (nodes.Hay_bale_1_Yellow_0 as SkinnedMesh).geometry,
+                    ];
+                case 24:
+                    return [
+                        (nodes.House_1_Blue_0 as SkinnedMesh).geometry,
+                        (nodes.House_1_Brown_2_0 as SkinnedMesh).geometry,
+                        (nodes.House_1_Brown_3_0 as SkinnedMesh).geometry,
+                        (nodes.House_1_Brown_4_0 as SkinnedMesh).geometry,
+                        (nodes.House_1_Brown__0 as SkinnedMesh).geometry,
+                        (nodes.House_1_Gray_Blue_0 as SkinnedMesh).geometry,
+                        (nodes.House_1_Gray_0 as SkinnedMesh).geometry,
+                    ];
+                case 25:
+                    return [
+                        (nodes.House_2_Black_0 as SkinnedMesh).geometry,
+                        (nodes.House_2_Brown__0 as SkinnedMesh).geometry,
+                        (nodes.House_2_Dark_Blue__0 as SkinnedMesh).geometry,
+                        (nodes.House_2_Gray_Blue__0 as SkinnedMesh).geometry,
+                        (nodes.House_2_Gray_0 as SkinnedMesh).geometry,
+                        (nodes.House_2_Light_Gray_0 as SkinnedMesh).geometry,
+                        (nodes.House_2_Purple_2_0 as SkinnedMesh).geometry,
+                        (nodes.House_2_Purple_3_0 as SkinnedMesh).geometry,
+                        (nodes.House_2_Purple_4_0 as SkinnedMesh).geometry,
+                    ];
+                case 26:
+                    return [
+                        (nodes.House_3_Blue_2_0 as SkinnedMesh).geometry,
+                        (nodes.House_3_Brown_2_0 as SkinnedMesh).geometry,
+                        (nodes.House_3_Brown_3_0 as SkinnedMesh).geometry,
+                        (nodes.House_3_Gray_0 as SkinnedMesh).geometry,
+                        (nodes.House_3_Light_Gray_0 as SkinnedMesh).geometry,
+                        (nodes.House_3_Red_0 as SkinnedMesh).geometry,
+                        (nodes.House_3_Yellow_2_0 as SkinnedMesh).geometry,
+                    ];
+                case 27:
+                    return [
+                        (nodes.House_4_Blue_2_0 as SkinnedMesh).geometry,
+                        (nodes.House_4_Brown_2_0 as SkinnedMesh).geometry,
+                        (nodes.House_4_Gray_Blue_0 as SkinnedMesh).geometry,
+                        (nodes.House_4_Red_0 as SkinnedMesh).geometry,
+                        (nodes.House_4_Yellow_2_0 as SkinnedMesh).geometry,
+                    ];
+                case 28:
+                    return [
+                        (nodes.House_5_Black_0 as SkinnedMesh).geometry,
+                        (nodes.House_5_Blue_2_0 as SkinnedMesh).geometry,
+                        (nodes.House_5_Brown_2_0 as SkinnedMesh).geometry,
+                        (nodes.House_5_Brown_3_0 as SkinnedMesh).geometry,
+                        (nodes.House_5_Gray_Blue_0 as SkinnedMesh).geometry,
+                        (nodes.House_5_Gray_0 as SkinnedMesh).geometry,
+                        (nodes.House_5_Red_0 as SkinnedMesh).geometry,
+                        (nodes.House_5_Yellow_2_0 as SkinnedMesh).geometry,
+                    ];
+                case 29:
+                    return [
+                        (nodes.House_6_Blue_0 as SkinnedMesh).geometry,
+                        (nodes.House_6_Brown_2_0 as SkinnedMesh).geometry,
+                        (nodes.House_6_Brown_3_0 as SkinnedMesh).geometry,
+                        (nodes.House_6_Brown_4_0 as SkinnedMesh).geometry,
+                        (nodes.House_6_Gray_0 as SkinnedMesh).geometry,
+                        (nodes.House_6_Light_Gray_0 as SkinnedMesh).geometry,
+                    ];
+                case 30:
+                    return [
+                        (nodes.House_7_Blue_0 as SkinnedMesh).geometry,
+                        (nodes.House_7_Brown_2_0 as SkinnedMesh).geometry,
+                        (nodes.House_7_Brown_3_0 as SkinnedMesh).geometry,
+                        (nodes.House_7_Brown_4_0 as SkinnedMesh).geometry,
+                        (nodes.House_7_Gray_Blue_0 as SkinnedMesh).geometry,
+                        (nodes.House_7_Gray_0 as SkinnedMesh).geometry,
+                        (nodes.House_7_Light_Gray_0 as SkinnedMesh).geometry,
+                        (nodes.House_7_Red_0 as SkinnedMesh).geometry,
+                        (nodes.House_7_Yellow_2_0 as SkinnedMesh).geometry,
+                    ];
+                case 31:
+                    return [
+                        (nodes.Light_pole_1_Gray_0 as SkinnedMesh).geometry,
+                        (nodes.Light_pole_1_Light_Gray_0 as SkinnedMesh)
+                            .geometry,
+                        (nodes.Light_pole_1_Yellow_0 as SkinnedMesh).geometry,
+                    ];
+                case 32:
+                    return [
+                        (nodes.Light_pole_2_Gray_0 as SkinnedMesh).geometry,
+                        (nodes.Light_pole_2_Light_Gray_0 as SkinnedMesh)
+                            .geometry,
+                        (nodes.Light_pole_2_Yellow_0 as SkinnedMesh).geometry,
+                    ];
+                case 33:
+                    return [
+                        (nodes.Logs_Brown_3_0 as SkinnedMesh).geometry,
+                        (nodes.Logs_Brown_4_0 as SkinnedMesh).geometry,
+                    ];
+                case 34:
+                    return [
+                        (nodes.Pumpkin_Forest_Green_0 as SkinnedMesh).geometry,
+                        (nodes.Pumpkin_Yellow_2_0 as SkinnedMesh).geometry,
+                    ];
+                case 35:
+                    return [(nodes.Rock_Dark_Gray_0 as SkinnedMesh).geometry];
+                case 36:
+                    return [
+                        (nodes.Scythe_Brown_4_0 as SkinnedMesh).geometry,
+                        (nodes.Scythe_Gray_0 as SkinnedMesh).geometry,
+                        (nodes.Scythe_Light_Gray_0 as SkinnedMesh).geometry,
+                    ];
+                case 37:
+                    return [
+                        (nodes.Traffic_light_1_Dark_Gray_0 as SkinnedMesh)
+                            .geometry,
+                        (nodes.Traffic_light_1_Gray_Blue_0 as SkinnedMesh)
+                            .geometry,
+                        (nodes.Traffic_light_1_Green_0 as SkinnedMesh).geometry,
+                        (nodes.Traffic_light_1_Red_0 as SkinnedMesh).geometry,
+                        (nodes.Traffic_light_1_Yellow_0 as SkinnedMesh)
+                            .geometry,
+                    ];
+                case 38:
+                    return [
+                        (nodes.Traffic_light_2_Dark_Gray_0 as SkinnedMesh)
+                            .geometry,
+                        (nodes.Traffic_light_2_Gray_Blue_0 as SkinnedMesh)
+                            .geometry,
+                        (nodes.Traffic_light_2_Green_0 as SkinnedMesh).geometry,
+                        (nodes.Traffic_light_2_Red_0 as SkinnedMesh).geometry,
+                        (nodes.Traffic_light_2_Yellow_0 as SkinnedMesh)
+                            .geometry,
+                    ];
+                case 39:
+                    return [
+                        (nodes.Tree_1_Brown_2_0 as SkinnedMesh).geometry,
+                        (nodes.Tree_1_Brown_4_0 as SkinnedMesh).geometry,
+                        (nodes.Tree_1_Dark_Gray_0 as SkinnedMesh).geometry,
+                        (nodes.Tree_1_Forest_Green_0 as SkinnedMesh).geometry,
+                        (nodes.Tree_1_Yellow_2_0 as SkinnedMesh).geometry,
+                    ];
+                case 40:
+                    return [
+                        (nodes.Tree_2_Brown_2_0 as SkinnedMesh).geometry,
+                        (nodes.Tree_2_Forest_Green_0 as SkinnedMesh).geometry,
+                        (nodes.Tree_2_Red_0 as SkinnedMesh).geometry,
+                    ];
+                case 41:
+                    return [
+                        (nodes.Tree_4_Brown_2_0 as SkinnedMesh).geometry,
+                        (nodes.Tree_4_Grass_Green_0 as SkinnedMesh).geometry,
+                    ];
+                case 42:
+                    return [
+                        (nodes.Tree_5_Brown_2_0 as SkinnedMesh).geometry,
+                        (nodes.Tree_5_Dark_Gray_0 as SkinnedMesh).geometry,
+                        (nodes.Tree_5_Forest_Green_0 as SkinnedMesh).geometry,
+                    ];
+                case 43:
+                    return [
+                        (nodes.Tree_6_Brown_2_0 as SkinnedMesh).geometry,
+                        (nodes.Tree_6_Forest_Green_0 as SkinnedMesh).geometry,
+                    ];
+                case 44:
+                    return [
+                        (nodes.Tree_7_Brown_2_0 as SkinnedMesh).geometry,
+                        (nodes.Tree_7_Brown__0 as SkinnedMesh).geometry,
+                        (nodes.Tree_7_Dark_Gray_0 as SkinnedMesh).geometry,
+                        (nodes.Tree_7_Forest_Green_0 as SkinnedMesh).geometry,
+                    ];
+                case 45:
+                    return [
+                        (nodes.Tree_9_Brown__0 as SkinnedMesh).geometry,
+                        (nodes.Tree_9_Gold__0 as SkinnedMesh).geometry,
+                        (nodes.Tree_9_Orange_0 as SkinnedMesh).geometry,
+                    ];
+                case 46:
+                    return [
+                        (nodes.Tree_house_trunk__Brown_2_0 as SkinnedMesh)
+                            .geometry,
+                        (nodes.Tree_house_trunk__Brown_3_0 as SkinnedMesh)
+                            .geometry,
+                        (nodes.Tree_house_trunk__Brown_4_0 as SkinnedMesh)
+                            .geometry,
+                        (nodes.Tree_house_trunk__Brown__0 as SkinnedMesh)
+                            .geometry,
+                    ];
+                case 47:
+                    return [
+                        (nodes.Tree_trunk_1_Brown_3_0 as SkinnedMesh).geometry,
+                        (nodes.Tree_trunk_1_Brown_4_0 as SkinnedMesh).geometry,
+                    ];
+                case 48:
+                    return [
+                        (nodes.Wooden_box_Brown_4_0 as SkinnedMesh).geometry,
+                        (nodes.Wooden_box_Gray_0 as SkinnedMesh).geometry,
+                    ];
+
                 default:
                     return [(nodes.Cabinet_18 as SkinnedMesh).geometry];
             }
