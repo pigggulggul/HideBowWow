@@ -540,14 +540,14 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         true
     ) as GLTFResult;
     const getScaleByModelIndex = (modelIndex: number | undefined) => {
-        if (modelIndex === undefined) {
-            return 0.025;
-        } else if (modelIndex < 0) return 0.025;
-        else if (modelIndex > 100) {
+        if (roomState.roomMap === 'richRoom') {
+            if (modelIndex === undefined) {
+                return 0.025;
+            } else return 0.025;
+        } else if (roomState.roomMap === 'farm') {
             return 2;
-        } else {
-            return 0.025;
         }
+        return 1;
     };
     const { scene: defaultScene } = useGLTF('/models/object/Barrel.glb');
     const scale = getScaleByModelIndex(modelIndex);
@@ -1640,6 +1640,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     return [materials.Brown_4, materials.Gray];
             }
         }
+        return [materials['Cartoon_Room_Mat.002']];
     }
     function returnNode(num: number | undefined) {
         if (roomState.roomMap === 'richRoom') {
@@ -2183,136 +2184,150 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     return [(nodes.Cabinet_18 as SkinnedMesh).geometry];
             }
         }
+        return [(nodes.Cabinet_18 as SkinnedMesh).geometry];
     }
     function returnHeightSize(num: number | undefined) {
-        switch (num) {
-            case 0:
-            case 4:
-            case 13:
-            case 16:
-            case 15:
-                return 0;
-            case 14:
-                return 0.1;
-            case 88:
-            case 2:
-            case 3:
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-            case 10:
-            case 11:
-            case 12:
-            case 17:
-            case 18:
-                return 0.2;
-            case 77:
-            case 78:
-            case 1:
-                return 0.25;
-            case 34:
-            case 81:
-            case 44:
-                return 0.3;
-            case 94:
-            case 48:
-            case 39:
-            case 40:
-                return 0.4;
-            case 38:
-            case 49:
-            case 93:
-            case 26:
-            case 45:
-            case 46:
-                return 0.5;
-            case 82:
-                return 0.6;
-            case 56:
-            case 43:
-                return 0.7;
-            case 74:
-            case 76:
-            case 41:
-                return 0.8;
-            case 21:
-            case 27:
-            case 28:
-            case 29:
-            case 30:
-            case 31:
-            case 32:
-            case 33:
-            case 35:
-            case 36:
-            case 37:
-            case 50:
-            case 51:
-            case 64:
-            case 68:
-            case 70:
-            case 75:
-            case 79:
-            case 80:
-            case 83:
-            case 84:
-            case 85:
-            case 86:
-            case 90:
-            case 100:
-            case 19:
-            case 20:
-            case 22:
-            case 23:
-            case 52:
-            case 87:
-            case 91:
-            case 92:
-            case 95:
-            case 42:
-            case 47:
-                return 1;
-            case 58:
-            case 60:
-            case 61:
-                return 1.3;
-            case 59:
-                return 1.4;
-            case 57:
-            case 62:
-            case 69:
-            case 53:
-                return 1.5;
-            case 71:
-                return 1.6;
-            case 63:
-            case 65:
-            case 66:
-            case 67:
-            case 89:
-                return 1.8;
-            case 24:
-                return 2;
-            case 96:
-                return 2.25;
-            case 97:
-                return 2.45;
-            case 55:
-                return 2.5;
-            case 54:
-            case 73:
-            case 25:
-                return 3;
-            case 98:
-                return 3.5;
-            case 72:
-                return 4.25;
-            case 99:
-                return 5;
-            default:
-                return 1;
+        if (roomState.roomMap === 'richRoom') {
+            switch (num) {
+                case 0:
+                case 4:
+                case 13:
+                case 16:
+                case 15:
+                    return 0;
+                case 14:
+                    return 0.1;
+                case 88:
+                case 2:
+                case 3:
+                case 5:
+                case 6:
+                case 7:
+                case 8:
+                case 9:
+                case 10:
+                case 11:
+                case 12:
+                case 17:
+                case 18:
+                    return 0.2;
+                case 77:
+                case 78:
+                case 1:
+                    return 0.25;
+                case 34:
+                case 81:
+                case 44:
+                    return 0.3;
+                case 94:
+                case 48:
+                case 39:
+                case 40:
+                    return 0.4;
+                case 38:
+                case 49:
+                case 93:
+                case 26:
+                case 45:
+                case 46:
+                    return 0.5;
+                case 82:
+                    return 0.6;
+                case 56:
+                case 43:
+                    return 0.7;
+                case 74:
+                case 76:
+                case 41:
+                    return 0.8;
+                case 21:
+                case 27:
+                case 28:
+                case 29:
+                case 30:
+                case 31:
+                case 32:
+                case 33:
+                case 35:
+                case 36:
+                case 37:
+                case 50:
+                case 51:
+                case 64:
+                case 68:
+                case 70:
+                case 75:
+                case 79:
+                case 80:
+                case 83:
+                case 84:
+                case 85:
+                case 86:
+                case 90:
+                case 100:
+                case 19:
+                case 20:
+                case 22:
+                case 23:
+                case 52:
+                case 87:
+                case 91:
+                case 92:
+                case 95:
+                case 42:
+                case 47:
+                    return 1;
+                case 58:
+                case 60:
+                case 61:
+                    return 1.3;
+                case 59:
+                    return 1.4;
+                case 57:
+                case 62:
+                case 69:
+                case 53:
+                    return 1.5;
+                case 71:
+                    return 1.6;
+                case 63:
+                case 65:
+                case 66:
+                case 67:
+                case 89:
+                    return 1.8;
+                case 24:
+                    return 2;
+                case 96:
+                    return 2.25;
+                case 97:
+                    return 2.45;
+                case 55:
+                    return 2.5;
+                case 54:
+                case 73:
+                case 25:
+                    return 3;
+                case 98:
+                    return 3.5;
+                case 72:
+                    return 4.25;
+                case 99:
+                    return 5;
+                default:
+                    return 1;
+            }
+        } else if (roomState.roomMap === 'farm') {
+            switch (num) {
+                case 0:
+                case 1:
+                    return 2;
+                case 2:
+                    return 8;
+                default:
+                    return 1;
+            }
         }
+        return 1;
     }
 };
