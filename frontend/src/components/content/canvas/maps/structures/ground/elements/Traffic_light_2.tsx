@@ -33,8 +33,8 @@ export function Traffic_light_2(props: ObjectSettingType) {
   ) as GLTFResult;
 
   const [ref] = useBox<THREE.Mesh>(() => ({
-    args: [4, 1, 6.5],
-
+    
+    args : [0.5, 0.5,6],
     mass: 0.1,
 
     position: props.position,

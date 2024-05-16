@@ -28,7 +28,7 @@ export function Bed_1(props: ObjectSettingType) {
         position: props.position,
         rotation: props.rotation,
         linearFactor: [0, 0, 0], // 모든 축에 대해 이동 제한
-        angularFactor: [0, 0, 0], // 모든 축에 대해 회전 제한
+        angularFactor: [0, 0, 0], // 모든 aa축에 대해 회전 제한
     }));
     return (
         <group position={[0, 0, 0]} dispose={null}>

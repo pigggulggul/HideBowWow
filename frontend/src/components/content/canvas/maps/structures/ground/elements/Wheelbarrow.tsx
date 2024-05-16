@@ -28,7 +28,7 @@ export function Wheelbarrow(props: ObjectSettingType) {
     ) as GLTFResult;
 
     const [ref] = useBox<THREE.Mesh>(() => ({
-        args: [3, 5, 3],
+        args: [2.8, 3.3, 3],
 
         mass: 0.1,
 
@@ -41,7 +41,7 @@ export function Wheelbarrow(props: ObjectSettingType) {
         angularFactor: [0, 0, 0], // 모든 축에 대해 회전 제한
     }));
     return (
-        <group position={[0, 0, 0]} dispose={null}>
+        <group position={[0, 0, -0.6]} dispose={null}>
             <group>
                 <mesh
                     ref={ref}
