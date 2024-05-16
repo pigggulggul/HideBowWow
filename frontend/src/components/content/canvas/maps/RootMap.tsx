@@ -73,7 +73,7 @@ export function RootMap() {
                                                 player.position[2]
                                             )
                                         }
-                                        selectedIndex={player.selectedIndex}
+                                        selectedIndex={3}
                                     />
                                 </>
                             );
