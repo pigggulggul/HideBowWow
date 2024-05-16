@@ -47,16 +47,18 @@ public class RoomSocketService {
     public void gameInit(StompPayload<Room> message){
         Room room = roomRepository.findRoomByRoomId(message.getRoomId());
         room.setRoomTime(gameProperties.getTime().getWaiting());
-        room.setRoomState(1);
 
         // 맵 판단해서 적용
         GameProperties.GameMap gameMap;
-        if(room.getRoomMap().equals("richRoom")){
+        if(room.getRoomMap().equals("richRoom") || room.getRoomMap().equals("richroom")){
             gameMap = gameProperties.getRichRoom();
+            room.setRoomState(1);
         } else if (room.getRoomMap().equals("farm")) {
             gameMap = gameProperties.getFarm();
+            room.setRoomState(1);
         } else{
             log.error("{}에 해당하는 맵이 없어 시작할 수 없습니다.", room.getRoomMap());
+            room.setRoomState(0);
             return;
         }
 
