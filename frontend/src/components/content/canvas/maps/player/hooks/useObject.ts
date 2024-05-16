@@ -130,12 +130,157 @@ type GLTFResult = GLTF & {
         Plant_17: Mesh;
         Axe_Brown_4_0: Mesh;
         Axe_Gray_0: Mesh;
+
+        Barn_Dark_Gray_0: Mesh;
+        Barn_Light_Gray_0: Mesh;
+        Barn_Red_0: Mesh;
+
+        Barrel_Brown_4_0: Mesh;
+        Barrel_Gray_0: Mesh;
+
+        Bench_2_Brown_3_0: Mesh;
+        Bench_2_Gray_0: Mesh;
+
+        Bridge_1_Brown_4_0: Mesh;
+        Bridge_1_Brown__0: Mesh;
+
+        Bridge_2_Brown_4_0: Mesh;
+        Bridge_2_Brown__0: Mesh;
+
+        Bush001_Forest_Green_0: Mesh;
+        Bush001_Gold__0: Mesh;
+        Bush001_Red_0: Mesh;
+
+        Bush002_Forest_Green_0: Mesh;
+        Bush002_Grass_Green_0: Mesh;
+        Bush002_Red_0: Mesh;
+        Bush002_Yellow_0: Mesh;
+
+        Bush003_Forest_Green_0: Mesh;
+        Bush003_Grass_Green_0: Mesh;
+
+        Bush004_Forest_Green_0: Mesh;
+        Bush004_Grass_Green_0: Mesh;
+
+        Bush005_Grass_Green_0: Mesh;
+        Bush005_Pink_0: Mesh;
+        Bush005_Yellow_0: Mesh;
+
+        Bush006_Grass_Green_0: Mesh;
+        Bush006_Pink_0: Mesh;
+
+        Bush_Forest_Green_0: Mesh;
+        Bush_Grass_Green_0: Mesh;
+
+        Carrot_Grass_Green_0: Mesh;
+        Carrot_Orange_0: Mesh;
+
+        Chalk_Board_Brown_2_0: Mesh;
+        Chalk_Board_Dark_Gray_0: Mesh;
+
+        Chicken_coop_Brown_2_0: Mesh;
+        Chicken_coop_Brown_3_0: Mesh;
+        Chicken_coop_Brown_4_0: Mesh;
+        Chicken_coop_Gray_Blue_0: Mesh;
+        Chicken_coop_Yellow_2_0: Mesh;
+
+        Dumpster_Dark_Gray_0: Mesh;
+        Dumpster_Forest_Green_0: Mesh;
+
+        Fence_Light_Gray_0: Mesh;
+
+        Fork_Brown_4_0: Mesh;
+        Fork_Gray_0: Mesh;
+
+        Grass_Grass_Green_0: Mesh;
+
+        Grave_1_Brown_2_0: Mesh;
+        Grave_1_Gray_Blue_0: Mesh;
+        Grave_1_Light_Gray_0: Mesh;
+
+        Grave_2_Brown_2_0: Mesh;
+        Grave_2_Gray_Blue_0: Mesh;
+        Grave_2_Light_Gray_0: Mesh;
+
+        Hay_bale_1_Brown_2_0: Mesh;
+        Hay_bale_1_Yellow_0: Mesh;
     };
     materials: {
         Cartoon_Room_Mat: MeshStandardMaterial;
         ['Cartoon_Room_Mat.002']: MeshStandardMaterial;
         Brown_4: MeshStandardMaterial;
         Gray: MeshStandardMaterial;
+
+        Dark_Gray: MeshStandardMaterial;
+        Light_Gray: MeshStandardMaterial;
+        material: MeshStandardMaterial;
+
+        Brown_3: MeshStandardMaterial;
+        Gray: MeshStandardMaterial;
+
+        Brown_4: MeshStandardMaterial;
+        Brown: MeshStandardMaterial;
+
+        Brown_4: MeshStandardMaterial;
+        Brown: MeshStandardMaterial;
+
+        Forest_Green: MeshStandardMaterial;
+        Gold: MeshStandardMaterial;
+        material: MeshStandardMaterial;
+
+        Forest_Green: MeshStandardMaterial;
+        Grass_Green: MeshStandardMaterial;
+        material: MeshStandardMaterial;
+        Yellow: MeshStandardMaterial;
+
+        Forest_Green: MeshStandardMaterial;
+        Grass_Green: MeshStandardMaterial;
+
+        Forest_Green: MeshStandardMaterial;
+        Grass_Green: MeshStandardMaterial;
+
+        Grass_Green: MeshStandardMaterial;
+        Pink: MeshStandardMaterial;
+        Yellow: MeshStandardMaterial;
+
+        Grass_Green: MeshStandardMaterial;
+        Pink: MeshStandardMaterial;
+
+        Forest_Green: MeshStandardMaterial;
+        Grass_Green: MeshStandardMaterial;
+
+        Grass_Green: MeshStandardMaterial;
+        Orange: MeshStandardMaterial;
+
+        Brown_2: MeshStandardMaterial;
+        Dark_Gray: MeshStandardMaterial;
+
+        Brown_2: MeshStandardMaterial;
+        Brown_3: MeshStandardMaterial;
+        Brown_4: MeshStandardMaterial;
+        Gray_Blue: MeshStandardMaterial;
+        Yellow_2: MeshStandardMaterial;
+
+        Dark_Gray: MeshStandardMaterial;
+        Forest_Green: MeshStandardMaterial;
+
+        Light_Gray: MeshStandardMaterial;
+
+        Brown_4: MeshStandardMaterial;
+        Gray: MeshStandardMaterial;
+
+        Grass_Green: MeshStandardMaterial;
+
+        Brown_2: MeshStandardMaterial;
+        Gray_Blue: MeshStandardMaterial;
+        Light_Gray: MeshStandardMaterial;
+
+        Brown_2: MeshStandardMaterial;
+        Gray_Blue: MeshStandardMaterial;
+        Light_Gray: MeshStandardMaterial;
+
+        Brown_2: MeshStandardMaterial;
+        Yellow: MeshStandardMaterial;
     };
     animations: any[];
 };
@@ -694,7 +839,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     }, []);
 
     useEffect(() => {
-        if(meInfo.nickname !== playerNickname) return; 
+        if (meInfo.nickname !== playerNickname) return;
         const handleMouseMove = (event: MouseEvent) => {
             // 마우스 포인터가 고정된 상태에서의 마우스 이동량을 감지합니다.
             if (meInfo?.nickname === playerNickname) {
@@ -722,7 +867,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         };
     }, [meInfo, meInfo.isDead]);
 
-    useEffect(() => { 
+    useEffect(() => {
         if (playerRef.current) {
             // if (ref.current) {
             //     ref.current.name = playerNickname;
@@ -750,7 +895,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
 
     // 키 입력
     useEffect(() => {
-        if(meInfo.nickname !== playerNickname) return; 
+        if (meInfo.nickname !== playerNickname) return;
         const handleKeyDown = (event: any) => {
             if (!chatFlag) {
                 keyState.current[event.key] = true;
@@ -802,7 +947,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     // }, [chatFlag]);
 
     useEffect(() => {
-        if(meInfo.nickname !== playerNickname) return; 
+        if (meInfo.nickname !== playerNickname) return;
         const handleJumpDown = (event: any) => {
             if (event.code === 'Space' && !jumpFlag && !chatFlag) {
                 setIsJumping(1);
@@ -1381,6 +1526,14 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     return [materials.Brown_4, materials.Gray];
                 case 1:
                     return [materials.Brown_4, materials.Gray];
+                case 2:
+                    return [
+                        materials.Dark_Gray,
+                        materials.Light_Gray,
+                        materials.material,
+                    ];
+                case 3:
+                    return [materials.Brown_4, materials.Gray];
                 default:
                     return [materials.Brown_4, materials.Gray];
             }
@@ -1602,11 +1755,6 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     return [(nodes.Tree_1 as SkinnedMesh).geometry];
                 case 100:
                     return [(nodes.Plant_17 as SkinnedMesh).geometry];
-                case 101:
-                    return [
-                        (nodes.Axe_Brown_4_0 as SkinnedMesh).geometry,
-                        (nodes.Axe_Gray_0 as SkinnedMesh).geometry,
-                    ];
                 default:
                     return [(nodes.Cabinet_18 as SkinnedMesh).geometry];
             }
@@ -1621,6 +1769,17 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     return [
                         (nodes.Axe_Brown_4_0 as SkinnedMesh).geometry,
                         (nodes.Axe_Gray_0 as SkinnedMesh).geometry,
+                    ];
+                case 2:
+                    return [
+                        (nodes.Barn_Dark_Gray_0 as SkinnedMesh).geometry,
+                        (nodes.Barn_Light_Gray_0 as SkinnedMesh).geometry,
+                        (nodes.Barn_Red_0 as SkinnedMesh).geometry,
+                    ];
+                case 3:
+                    return [
+                        (nodes.Barrel_Brown_4_0 as SkinnedMesh).geometry,
+                        (nodes.Barrel_Gray_0 as SkinnedMesh).geometry,
                     ];
                 default:
                     return [(nodes.Cabinet_18 as SkinnedMesh).geometry];
