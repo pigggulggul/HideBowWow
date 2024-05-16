@@ -9,18 +9,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 //@FeignClient(name = "member-service", url = "http://localhost:8001/api/member-service")
-@FeignClient(name = "game-service", url = "${server.domain}/api/game-service")
+@FeignClient(name = "game-service", url = "${server.domain}/api/game-service/ch")
 public interface GameServiceClient {
 
-    @GetMapping("/rooms/channel")
-    Channel channelInfo();
-
-    @DeleteMapping("rooms/player/{nickname}")
-    void deletePlayer(@PathVariable("nickname") String nickname);
-
-    @DeleteMapping("ch/{channelId}/channel/rooms/player/{nickname}")
+    @DeleteMapping("/{channelId}/rooms/player/{nickname}")
     void deletePlayer(@PathVariable("channelId") int channelId, @PathVariable("nickname") String nickname);
-    @GetMapping("ch/{channelId}/rooms/channel")
+
+    @GetMapping("/{channelId}/rooms/channel")
     Channel channelInfoKube(@PathVariable("channelId") int channelId);
 
 }
