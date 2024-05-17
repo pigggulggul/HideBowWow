@@ -36,6 +36,8 @@ export default function RoomPage() {
     });
     const [mapIndex, setMapIndex] = useState<number>(0);
     const [mapthumb, setMapThumb] = useState<string>(RichMap);
+    const [modifyTitle, setModifyTitle] = useState<string>('');
+    const [modifyPassword, setModifyPassword] = useState<string>('');
     const stompClient = StompClient.getInstance();
     const { state } = useLocation();
     const navigate = useNavigate();
@@ -105,7 +107,7 @@ export default function RoomPage() {
                     maxX: 40,
                     minZ: -40,
                     maxZ: 90,
-                    minY: -3,
+                    minY: -1,
                     maxY: 8,
                 })
             );
@@ -159,7 +161,12 @@ export default function RoomPage() {
         // console.log('바뀐정보', room);
     }, [room]);
     useEffect(() => {
-        if (room.roomId && room.roomTitle && room.roomPlayers) {
+        if (
+            currentRoom.roomAdmin === meName &&
+            room.roomId &&
+            room.roomTitle &&
+            room.roomPlayers
+        ) {
             stompClient.sendMessage(
                 `/room.modify`,
                 JSON.stringify({
@@ -249,33 +256,68 @@ export default function RoomPage() {
             setBotCount(botCount > 0 ? botCount - 1 : 0);
     };
 
+    const changeRoomState = () => {
+        if (modifyTitle === '') {
+            alert('제목을 입력해주세요');
+        } else {
+            stompClient.sendMessage(
+                `/room.modify`,
+                JSON.stringify({
+                    type: 'room.modify',
+                    roomId: currentRoom.roomId,
+                    sender: meName,
+                    data: {
+                        roomId: room.roomId,
+                        roomAdmin: room.roomAdmin,
+                        roomTitle: modifyTitle,
+                        roomPassword: modifyPassword,
+                        roomState: room.roomState,
+                        roomTime: room.roomTime,
+                        roomMap: mapInfo[mapIndex],
+                        roomPlayers: room.roomPlayers,
+                        botCnt: botCount,
+                    },
+                })
+            );
+            setModifyTitle('');
+            setModifyPassword('');
+            changeSettingRoomFlag();
+        }
+    };
+
     return (
         <section
             className="relative w-full h-full flex flex-col items-center justify-center"
             style={{
                 backgroundImage: `url(${backgroundImage})`,
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover',
             }}
         >
-            <div className="relative w-[80%] h-[90%] p-[1vw] flex justify-between border-[0.3vw] rounded-[0.6vw] border-white bg-sky-300 ">
+            <div className="relative w-[80%] h-[90%] p-[0.6vw] flex justify-between border-[0.3vw] rounded-[0.6vw] border-white bg-sky-300 ">
                 <div className="w-[60%] h-full flex-col justify-center">
-                    <div className="w-full h-[14%] flex justify-between items-center mx-auto my-[1vw] px-[1vw] py-[1.2vw] text-[1.2vw] border-[0.2vw] bg-white border-white rounded-[0.6vw] ">
+                    <div className="w-full h-[12%] flex justify-between items-center mx-auto my-[1vw] px-[1vw] py-[0.8vw] text-[1.2vw] border-[0.2vw] bg-white border-white rounded-[0.6vw] ">
                         <p>{room?.roomTitle}</p>
-                        <p
-                            className="cursor-pointer"
-                            onClick={() => {
-                                changeSettingRoomFlag();
-                            }}
-                        >
-                            변경
-                        </p>
+                        {room?.roomAdmin === meName ? (
+                            <p
+                                className="cursor-pointer"
+                                onClick={() => {
+                                    changeSettingRoomFlag();
+                                }}
+                            >
+                                변경
+                            </p>
+                        ) : (
+                            <></>
+                        )}
                     </div>
                     <div className="w-full h-[86%] flex flex-wrap content-start ">
-                        <div className="w-full h-[60%] flex flex-wrap content-start ">
+                        <div className="w-full h-[60%] flex flex-wrap content-start overflow-auto">
                             {room?.roomPlayers.map((item, index) => {
                                 return (
                                     <div
                                         key={'currentPeople' + index}
-                                        className="w-[45%] h-[15%] px-[1vw] my-[0.6vw] mx-[0.4vw] flex justify-between items-center border-[0.3vw] rounded-[0.6vw] cursor-pointer border-white bg-sky-400 text-white hover:bg-sky-500 "
+                                        className="w-[45%] h-[15%] px-[1vw] my-[0.3vw] mx-[0.4vw] flex justify-between items-center border-[0.3vw] rounded-[0.6vw] cursor-pointer border-white bg-sky-400 text-white hover:bg-sky-500 "
                                         style={
                                             item.nickname === meName
                                                 ? {
@@ -391,69 +433,81 @@ export default function RoomPage() {
                         <p className="text-white">봇의 개수</p>
                     </div>
 
-                    <div className="w-full flex justify-between">
+                    <div className="w-full flex justify-center">
                         <div
-                            className="w-[45%] h-full px-[1vw] bg-rose-400 text-white py-[1vw] border-[0.3vw] rounded-[0.6vw] border-white cursor-pointer hover:bg-red-500 hover:text-white hover:border-red-500 "
+                            className="w-[45%] h-full mx-[1vw] px-[1vw] bg-rose-400 text-white py-[1vw] border-[0.3vw] rounded-[0.6vw] border-white cursor-pointer hover:bg-red-500 hover:text-white hover:border-red-500 "
                             onClick={() => {
                                 outRoom();
                             }}
                         >
                             <p className="text-[1.4vw]">나가기</p>
                         </div>
-                        <div
-                            className="w-[45%] h-full px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] border-white bg-sky-400 cursor-pointer hover:bg-sky-500 hover:text-white hover:border-sky-500"
-                            onClick={() => {
-                                playGame();
-                            }}
-                        >
-                            <p className="text-[1.4vw] text-white ">게임시작</p>
-                        </div>
+                        {room?.roomAdmin === meName ? (
+                            <div
+                                className="w-[45%] h-full mx-[1vw] px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] border-white bg-sky-400 cursor-pointer hover:bg-sky-500 hover:text-white hover:border-sky-500"
+                                onClick={() => {
+                                    playGame();
+                                }}
+                            >
+                                <p className="text-[1.4vw] text-white ">
+                                    게임시작
+                                </p>
+                            </div>
+                        ) : (
+                            <></>
+                        )}
                     </div>
                 </div>
             </div>
             {settingRoomFlag ? (
-                <div className="absolute w-[40%] h-[40%] flex flex-col items-center justify-between border-[0.3vw] rounded-[0.6vw] border-white bg-sky-300 overflow-y-auto">
+                <div className="absolute w-[40%]  flex flex-col items-center justify-between border-[0.3vw] rounded-[0.6vw] border-white bg-sky-400 text-white overflow-y-auto">
                     <div className="w-full flex flex-col items-center">
-                        <p className="text-[1.8vw] my-[1vw]">방 수정하기</p>
+                        <p className="text-3xl my-[1vw]">방 수정하기</p>
                         <div className="relative w-[90%] flex justify-start items-center my-[0.4vw]">
-                            <p className="w-[40%] text-[1.6vw]">제목 수정 : </p>
+                            <p className="w-[40%] text-2xl">제목 수정 : </p>
                             <input
                                 className="w-[60%] border-[0.2vw] border-white px-[1vw] py-[0.4vw] mx-[1vw]"
                                 type="text"
                                 name=""
                                 id=""
+                                value={modifyTitle}
+                                onChange={(e) => {
+                                    setModifyTitle(e.target.value);
+                                }}
                             />
                         </div>
                         <div className="relative w-[90%] flex justify-start items-center my-[0.4vw]">
-                            <p className="w-[40%] text-[1.6vw]">
-                                비밀번호 수정 :{' '}
-                            </p>
+                            <p className="w-[40%] text-2xl">비밀번호 수정 : </p>
                             <input
                                 className="w-[60%] border-[0.2vw] border-white px-[1vw] py-[0.4vw] mx-[1vw]"
                                 type="text"
                                 name=""
                                 id=""
+                                value={modifyPassword}
+                                onChange={(e) => {
+                                    setModifyPassword(e.target.value);
+                                }}
                             />
                         </div>
                     </div>
 
                     <div className="relative w-[90%] flex justify-between items-center my-[1vw]">
-                        <p
+                        <div
                             className="w-[30%] h-full px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] border-white cursor-pointer hover:bg-sky-500 hover:text-white hover:border-sky-500"
                             onClick={() => {
-                                changeSettingRoomFlag();
+                                changeRoomState();
                             }}
                         >
                             <p className="text-[1.4vw]">수정하기</p>
-                        </p>
-                        <p
+                        </div>
+                        <div
                             className="w-[30%] h-full px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] border-white cursor-pointer hover:bg-sky-500 hover:text-white hover:border-sky-500"
                             onClick={() => {
                                 changeSettingRoomFlag();
                             }}
                         >
                             <p className="text-[1.4vw]">취소</p>
-                        </p>
+                        </div>
                     </div>
                 </div>
             ) : (

@@ -25,7 +25,7 @@ export default function GuestLoginPage() {
                 dispatch(userNicknameState(guestLoginInfo.nickname));
                 navigate('/selectchannel');
             } else {
-                alert("로그인에 실패하였습니다.")
+                alert('로그인에 실패하였습니다.');
                 // console.log('로그인 실패');
             }
         }
@@ -40,6 +40,8 @@ export default function GuestLoginPage() {
             className="w-full h-full flex flex-col items-center justify-center"
             style={{
                 backgroundImage: `url(${backgroundImage})`,
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover',
             }}
         >
             <img src={textLoginQuest} alt="" />

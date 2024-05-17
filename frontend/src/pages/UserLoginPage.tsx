@@ -29,7 +29,7 @@ export default function UserLoginPage() {
                 dispatch(userNicknameState(userLoginInfo.nickname));
                 navigate('/selectchannel');
             } else {
-                alert("로그인에 실패하였습니다.");
+                alert('로그인에 실패하였습니다.');
                 // console.log('로그인 실패');
             }
         }
@@ -38,8 +38,7 @@ export default function UserLoginPage() {
         <section
             className="w-full h-full flex flex-col items-center justify-center"
             style={{
-                backgroundImage:
-                `url(${backgroundImage})`,
+                backgroundImage: `url(${backgroundImage})`,
             }}
         >
             <img src={textLoginUser} alt="" />

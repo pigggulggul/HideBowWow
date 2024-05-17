@@ -35,6 +35,8 @@ export default function MainPage() {
             className="w-full h-full flex flex-col items-center justify-center"
             style={{
                 backgroundImage: `url(${backgroundImage})`,
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover',
             }}
         >
             <img src={textTitleSub} alt="" />
