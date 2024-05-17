@@ -4,8 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChatType, CurrentPlayersInfo, ThumbnailType } from '../types/GameType';
-import { chatFlagState, heartState, observserModeState } from '../store/user-slice';
-import { store } from '../store/store'; 
+import { chatFlagState, heartState, observserModeState } from '../store/user-slice'; 
 import StompClient from '../websocket/StompClient';
 import {
     startRecording,
