@@ -18,7 +18,7 @@ import RichMap from '../assets/images/bg/map-Rich.png';
 import farmMap from '../assets/images/bg/map-Farm.png';
 
 export default function RoomPage() {
-    const mapInfo = ['richRoom'];
+    const mapInfo = ['richRoom', 'farm'];
     const [settingRoomFlag, setSettingRoomFlag] = useState<boolean>(false);
     const [botCount, setBotCount] = useState(0);
     const [room, setRoom] = useState<RoomInfo>({
@@ -159,7 +159,12 @@ export default function RoomPage() {
         // console.log('바뀐정보', room);
     }, [room]);
     useEffect(() => {
-        if (room.roomId && room.roomTitle && room.roomPlayers) {
+        if (
+            currentRoom.roomAdmin === meName &&
+            room.roomId &&
+            room.roomTitle &&
+            room.roomPlayers
+        ) {
             stompClient.sendMessage(
                 `/room.modify`,
                 JSON.stringify({
