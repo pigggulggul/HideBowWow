@@ -249,12 +249,14 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
         if (meInfo?.nickname === playerNickname) {
             const intervalId = setInterval(() => {
                 console.log(
-                    '초당 평균 프레임 :',
+                    '송신 프레임 :',
                     callsInLastSecondRef.current / 3
                 );
                 setCallsInLastSecond(0); // 85 ~ 95
-                if (callsInLastSecondRef.current > 95) {
-                    setDelay((preDelay) => preDelay + 0.00001);
+                if (callsInLastSecondRef.current > 150) {
+                    setDelay((preDelay) => preDelay + 0.00005); 
+                } else if (callsInLastSecondRef.current > 95) {
+                    setDelay((preDelay) => preDelay + 0.00001); 
                     // console.log('딜레이 값을 올리겠습니다.');
                 } else if (callsInLastSecondRef.current < 85) {
                     setDelay((preDelay) => preDelay - 0.00001);
