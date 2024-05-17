@@ -91,8 +91,7 @@ export function ObjectPlayer({
                 position={memoizedPosition}
                 name={playerNickname ?? ''}
                 dispose={null}
-                scale={scale}
-                rotation={initialRotation}
+                scale={scale} 
             >
                 <mesh
                     geometry={node[0]}
