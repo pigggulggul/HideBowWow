@@ -19,6 +19,7 @@ import farmMap from '../assets/images/bg/map-Farm.png';
 
 export default function RoomPage() {
     const mapInfo = ['richRoom'];
+    const mapKoreanInfo = ['저택'];
     const [settingRoomFlag, setSettingRoomFlag] = useState<boolean>(false);
     const [botCount, setBotCount] = useState(0);
     const [room, setRoom] = useState<RoomInfo>({
@@ -87,7 +88,7 @@ export default function RoomPage() {
                     minZ: -40,
                     maxZ: 90,
                     minY: -1,
-                    maxY: 8,
+                    maxY: 10,
                 })
             );
         } else if (currentRoom.roomMap === 'farm') {
@@ -109,7 +110,7 @@ export default function RoomPage() {
                     minZ: -40,
                     maxZ: 90,
                     minY: -1,
-                    maxY: 8,
+                    maxY: 10,
                 })
             );
         }
@@ -415,7 +416,9 @@ export default function RoomPage() {
                             alt=""
                             style={{ aspectRatio: 1 / 1 }}
                         />
-                        <p className="text-[1.6vw]">{mapInfo[mapIndex]}</p>
+                        <p className="text-[1.6vw]">
+                            {mapKoreanInfo[mapIndex]}
+                        </p>
                     </div>
 
                     <div className="w-[90%] h-[30%] flex flex-col items-center color-text-black border-[0.2vw] border-white my-[1vw] px-[0.4vw] bg-white bg-opacity-30 rounded-[0.8vw]">
@@ -435,7 +438,7 @@ export default function RoomPage() {
                                 ) : (
                                     <></>
                                 )}
-                                <p>{mapInfo[mapIndex]}</p>
+                                <p>{mapKoreanInfo[mapIndex]}</p>
                                 {currentRoom.roomAdmin === meName ? (
                                     <p
                                         className="mx-[1vw] cursor-pointer"

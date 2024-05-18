@@ -31,7 +31,7 @@ export function Barrel(props: ObjectSettingType) {
         angularFactor: [0, 0, 0], // 모든 축에 대해 회전 제한
     }));
     return (
-        <group position={[0,0.6,0]} dispose={null}>
+        <group position={[0, 0.6, 0]} dispose={null}>
             <mesh
                 ref={ref}
                 geometry={nodes.Barrel_1.geometry}
