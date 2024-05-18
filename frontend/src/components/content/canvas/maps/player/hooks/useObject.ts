@@ -21,9 +21,11 @@ import { store } from '../../../../../../store/store';
 import {
     removeCollideObjectState,
     observerState,
-    observserModeState,
-    cameraPositionState,
+    observserModeState, 
+    cameraPositionState, 
+    currentRoomState, 
 } from '../../../../../../store/user-slice';
+import { current } from '@reduxjs/toolkit';
 
 // interface GLTFAction extends AnimationClip {
 //     name: ActionName;
@@ -551,7 +553,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 return 0.025;
             } else return 0.025;
         } else if (roomState.roomMap === 'farm') {
-            switch(modelIndex){
+            switch (modelIndex) {
                 case 23:
                 case 46:
                     return 3;
@@ -569,10 +571,8 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     // }, [scene_, modelIndex]);
     const objectMap = useGraph(scene);
     const nodes = objectMap.nodes;
-    const material =
-        scene && scene.visible ? returnMaterial(modelIndex) : returnMaterial(0);
-    const node =
-        scene && scene.visible ? returnNode(modelIndex) : returnNode(0);
+    const material = returnMaterial(modelIndex);
+    const node = returnNode(modelIndex);
 
     // console.log(
     //     'scale : ',
@@ -870,7 +870,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         return () => {
             document.removeEventListener('keydown', handleJumpDown);
         };
-    }, [isJumping, chatFlag]); 
+    }, [isJumping, chatFlag]);
 
     useFrame(({ camera, clock }) => {
         if (!player || !playerRef.current) return;
@@ -1508,7 +1508,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         node,
         material,
         initialHeight,
-        initialRotation
+        initialRotation,
     };
 
     function returnMaterial(num: number | undefined) {
@@ -2441,11 +2441,11 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             switch (num) {
                 case 0:
                 case 1:
-                case 36:  
+                case 36:
                     return 0.8;
                 case 34:
                 case 35:
-                    case 48:
+                case 48:
                     return 0.6;
                 case 14:
                 case 19:
@@ -2453,24 +2453,22 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 case 21:
                 case 22:
                     return 1;
-            
             }
             return 0.5;
         }
         return 1;
     }
 
-    function returnRotation(num:number | undefined): Euler {
+    function returnRotation(num: number | undefined): Euler {
         let cnt = 1;
         if (roomState.roomMap === 'farm') {
             switch (num) {
-                case 36 :
-                case 14 :
+                case 36:
+                case 14:
                     cnt = 0.5;
                     break;
             }
         }
-        return new Euler(cnt*Math.PI, 0, 0);
+        return new Euler(cnt * Math.PI, 0, 0);
     }
 };
-
