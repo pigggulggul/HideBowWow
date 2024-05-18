@@ -28,6 +28,19 @@ export default function SelectChannelPage() {
             });
         };
         channel();
+        const interval = setInterval(() => {
+            // console.log('방 조회'); // value의 현재 값인 vaule.current를 가져오도록 한다.
+            channel();
+            if (!window.location.pathname.includes('selectchannel')) {
+                clearInterval(interval);
+            }
+        }, 5000);
+
+        return () => {
+            // console.log('방 조회 제거');
+            clearInterval(interval);
+        };
+
     }, []);
 
     const goChannel = (num: number) => {
