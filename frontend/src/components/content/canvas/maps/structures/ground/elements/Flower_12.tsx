@@ -66,4 +66,4 @@ function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
     );
 }
 
-export default React.memo(Flower_12Component, areEqual);
+export const Flower_12 = React.memo(Flower_12Component, areEqual);

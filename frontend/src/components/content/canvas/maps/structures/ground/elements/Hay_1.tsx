@@ -72,6 +72,6 @@ function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
         prevProps.position[1] === nextProps.position[1] &&
         prevProps.position[2] === nextProps.position[2]
     );
-}   
+}
 
-export default React.memo(Hay_1Component, areEqual);
+export const Hay_1 = React.memo(Hay_1Component, areEqual);

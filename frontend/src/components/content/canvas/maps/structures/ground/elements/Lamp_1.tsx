@@ -66,4 +66,4 @@ function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
     );
 }
 
-export default React.memo(Lamp_1Component, areEqual);
+export const Lamp_1 = React.memo(Lamp_1Component, areEqual);

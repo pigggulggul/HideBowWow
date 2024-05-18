@@ -64,7 +64,6 @@ function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
         prevProps.position[1] === nextProps.position[1] &&
         prevProps.position[2] === nextProps.position[2]
     );
-  }
+}
 
-
-export default React.memo(Lamp_2Component, areEqual);
+export const Lamp_2 = React.memo(Lamp_2Component, areEqual);

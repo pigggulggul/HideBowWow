@@ -71,4 +71,4 @@ function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
     );
 }
 
-export React.memo(PumpkinComponent, areEqual);
+export const Pumpkin = React.memo(PumpkinComponent, areEqual);

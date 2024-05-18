@@ -68,8 +68,8 @@ function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
     return (
         prevProps.position[0] === nextProps.position[0] &&
         prevProps.position[1] === nextProps.position[1] &&
-        prevProps.position[2] === nextProps.position[2] &&
+        prevProps.position[2] === nextProps.position[2]
     );
 }
 
-export default React.memo(Tree_trunkComponent, areEqual);
+export const Tree_trunk = React.memo(Tree_trunkComponent, areEqual);

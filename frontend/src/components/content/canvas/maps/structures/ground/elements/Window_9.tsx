@@ -66,4 +66,4 @@ function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
     );
 }
 
-export default React.memo(Window_9Component, areEqual);
+export const Window_9 = React.memo(Window_9Component, areEqual);

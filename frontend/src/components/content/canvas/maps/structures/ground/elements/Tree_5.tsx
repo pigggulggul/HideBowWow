@@ -72,15 +72,12 @@ function Tree_5Component(props: ObjectSettingType) {
 
 useGLTF.preload('/models/object/Tree_5.glb');
 
-function areEqual(
-    prevProps: ObjectSettingType,
-    nextProps: ObjectSettingType
-) {
+function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
     return (
         prevProps.position[0] === nextProps.position[0] &&
         prevProps.position[1] === nextProps.position[1] &&
         prevProps.position[2] === nextProps.position[2]
     );
-}       
+}
 
-export default React.memo(Tree_5Component, areEqual);
+export const Tree_5 = React.memo(Tree_5Component, areEqual);
