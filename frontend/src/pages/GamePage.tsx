@@ -376,7 +376,7 @@ export default function GamePage() {
                 <></>
             )}
             {currentRoom.roomState === 4 ? (
-                <div className="absolute flex flex-col items-center justify-center">
+                <div className="absolute flex flex-col items-center justify-center z-20">
                     <img src={winnerSeeker} alt="" />
                     <p className="text-[2vw] text-black">
                         {currentRoom.roomTime}초 후 로비로 복귀합니다.
@@ -386,7 +386,7 @@ export default function GamePage() {
                 <></>
             )}
             {currentRoom.roomState === 5 ? (
-                <div className="absolute flex flex-col items-center justify-center">
+                <div className="absolute flex flex-col items-center justify-center z-20">
                     <img src={winnerHider} alt="" />
                     <p className="text-[2vw] text-black">
                         {currentRoom.roomTime}초 후 로비로 복귀합니다.
@@ -395,20 +395,24 @@ export default function GamePage() {
             ) : (
                 <></>
             )}
-            {currentRoom.roomState === 4 || currentRoom.roomState === 5 ? (
-                <div className="absolute w-full flex justify-center bottom-4">
+            {currentRoom.roomState === 4 ||
+            currentRoom.roomState === 5 ||
+            true ? (
+                <div className="absolute w-full h-[28%] flex justify-center bottom-4">
                     {currentRoom.roomPlayers.map(
                         (item: CurrentPlayersInfo, pIndex: number) => {
                             if (!item.isSeeker) {
                                 return (
                                     <div
-                                        className="w-[15%] h-[30%] flex flex-col border-[0.4vw] border-sky-300 bg-white p-[1vw] rounded-[0.6vw] mx-[1vw]"
+                                        className="w-[12%] h-[full] flex flex-col items-center border-[0.4vw] color-border-main bg-white p-[0.6vw] rounded-[0.6vw] mx-[1vw] text-[1vw]"
                                         key={'result-' + pIndex}
                                     >
-                                        <p>{item.nickname}</p>
+                                        <p className="w-full h-[15%] whitespace-nowrap overflow-hidden overflow-ellipsis">
+                                            {item.nickname}
+                                        </p>
                                         {item.selectedIndex ? (
                                             <img
-                                                className="relative w-50 h-40 object-fill"
+                                                className="relative w-40 h-[70%] object-fill"
                                                 src={
                                                     thumbnailInfo[
                                                         item.selectedIndex
@@ -420,7 +424,7 @@ export default function GamePage() {
                                             <></>
                                         )}
                                         {item.selectedIndex ? (
-                                            <p>
+                                            <p className="h-[15%]">
                                                 {
                                                     thumbnailInfo[
                                                         item.selectedIndex
@@ -575,7 +579,7 @@ export default function GamePage() {
             </div>
             <div
                 className={
-                    'absolute flex flex-col bottom-20 left-1 w-[30%] h-[30%]  p-[0.4vw] overflow-auto '
+                    'absolute flex flex-col bottom-20 left-1 w-[30%] h-[30%]  p-[0.4vw] overflow-y-auto'
                 }
                 style={
                     toggleChat
@@ -583,7 +587,7 @@ export default function GamePage() {
                         : {}
                 }
             >
-                <div className="w-[full] h-[90%] p-[0.4vw] overflow-auto">
+                <div className="w-[full] h-[90%] p-[0.4vw] overflow-y-auto overflow-x-hidden text-[1.2vw]">
                     {chatList.map((item: ChatType, index: number) => {
                         if (item.nickname === '<SYSTEM>') {
                             return (
@@ -591,10 +595,10 @@ export default function GamePage() {
                                     className="w-full flex justify-start my-1 text-red-500"
                                     key={'chat key : ' + index}
                                 >
-                                    <p className="w-[auto] max-w-[25%]">
+                                    <p className="w-[auto] max-w-[30%] whitespace-nowrap overflow-hidden overflow-ellipsis">
                                         {item.nickname} :
                                     </p>
-                                    <p className="w-[auto] max-w-[75%] text-start">
+                                    <p className="w-[auto] max-w-[70%] text-start ">
                                         {item.content}
                                     </p>
                                 </div>
@@ -644,11 +648,8 @@ export default function GamePage() {
                 <></>
             )}
 
-            {/* 관전 중 자막 */}
-            {!isObserver &&
-            observerState &&
-            !meInfo.isSeeker &&
-            (currentRoom.roomState === 2 || currentRoom.roomState === 3) ? (
+            {/* 관전 중 자막 */} 
+            {!isObserver && observerState && !meInfo.isSeeker && !meInfo.isDead && (currentRoom.roomState === 2 || currentRoom.roomState === 3)? (
                 <div className="absolute flex flex-col bottom-20 justify-center">
                     <div className="flex justify-center items-center text-[2vw]">
                         <img className="px-[0.2vw]" src={keyLeft} alt="" />
@@ -660,11 +661,13 @@ export default function GamePage() {
                 <></>
             )}
 
-            {/* 관전 중 자막 */} 
-            {meInfo.isDead && !meInfo.isSeeker &&  currentRoom.roomState === 3 ? (
+            {/* 관전 중 자막 */}
+            {meInfo.isDead &&
+            !meInfo.isSeeker &&
+            currentRoom.roomState === 3 ? (
                 <div className="absolute flex flex-col bottom-20 justify-center">
-                    <div className="flex justify-center items-center text-[2vw]"> 
-                        <p className="mx-[2vw]">당신은 술래에게 잡혔습니다!</p>  
+                    <div className="flex justify-center items-center text-[2vw]">
+                        <p className="mx-[2vw]">당신은 술래에게 잡혔습니다!</p>
                     </div>
                 </div>
             ) : (

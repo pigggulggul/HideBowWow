@@ -17,7 +17,7 @@ import { Provider } from 'react-redux';
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-            <Heartbeat/>
+            <Heartbeat />
             <BrowserRouter>
                 <Routes>
                     <Route index element={<MainPage />}></Route>
