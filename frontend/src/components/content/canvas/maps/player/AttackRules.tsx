@@ -94,7 +94,8 @@ export function AttackRules() {
                                     getParentNames(closestObject);
                                 if (
                                     !item.isDead &&
-                                    parentNames.includes(item.nickname)
+                                    parentNames.includes(item.nickname) &&
+                                    !item.isSeeker
                                 ) {
                                     // console.log('죽인다 빵야빵야');
                                     killFlag = true;
