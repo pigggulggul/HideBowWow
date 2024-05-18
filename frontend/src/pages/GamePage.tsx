@@ -122,6 +122,8 @@ export default function GamePage() {
                 state: currentRoom.roomId,
             });
         } else if (currentRoom.roomState === 3 && !roundStart) {
+            setChangeMusicFlag(false);
+            changeMusic(ingameMusic);
             startRound();
         } else if (currentRoom.roomState === 1) {
             dispatch(observserModeState(true));
@@ -142,12 +144,20 @@ export default function GamePage() {
     }, [currentRoom.roomPlayers]);
     useEffect(() => {
         if (
+            currentRoom.roomState === 2 &&
+            currentRoom.roomTime <= 10 &&
+            !changeMusicFlag
+        ) {
+            setChangeMusicFlag(true);
+            changeMusic(hurryUpMusic);
+        }
+        if (
             currentRoom.roomState === 3 &&
             currentRoom.roomTime <= 30 &&
             !changeMusicFlag
         ) {
             setChangeMusicFlag(true);
-            changeMusic();
+            changeMusic(hurryUpMusic);
         }
     }, [currentRoom.roomTime]);
     useEffect(() => {
@@ -304,12 +314,12 @@ export default function GamePage() {
             setRoundStart(false);
         }, 4000); // 0.5초 후에 isRed 상태를 false로 변경
     };
-    const changeMusic = () => {
+    const changeMusic = (newMusic: string) => {
         // 기존 Audio 객체 정리
         cleanupAudio(audio);
 
         // 새로운 Audio 객체 생성 및 설정
-        setAudio(new Audio(hurryUpMusic));
+        setAudio(new Audio(newMusic));
     };
 
     const cleanupAudio = (audioInstance: HTMLAudioElement) => {
