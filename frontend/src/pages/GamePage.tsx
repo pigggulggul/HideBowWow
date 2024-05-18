@@ -253,20 +253,20 @@ export default function GamePage() {
         // c나 m을 누르면 음성채널과 마이크 동작 실행
         const handleKeyPress = (event: KeyboardEvent) => {
             if (event.key == 'c' || event.key == 'C') {
-                if (!getStream()) {
-                    stompClient.enterVoiceChannel(
-                        currentRoom.roomId,
-                        meInfo.nickname
-                    );
-                } else {
-                    stompClient.exitVoiceChannel();
-                }
+                // if (!getStream()) {
+                //     stompClient.enterVoiceChannel(
+                //         currentRoom.roomId,
+                //         meInfo.nickname
+                //     );
+                // } else {
+                //     stompClient.exitVoiceChannel();
+                // }
             } else if (event.key == 'm' || event.key == 'M') {
-                if (!getInterval()) {
-                    startRecording();
-                } else {
-                    stopRecording();
-                }
+                // if (!getInterval()) {
+                //     startRecording();
+                // } else {
+                //     stopRecording();
+                // }
             } else if (event.key === 'Enter') {
                 setToggleChat((prev) => !prev);
             } else if (event.key === 'Escape') {
