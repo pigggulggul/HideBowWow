@@ -245,8 +245,8 @@ export default function LobbyPage() {
                                     </div>
                                     <div className="w-[70%] h-[70%] mx-[1vw] flex flex-col justify-between">
                                         <div className="bg-white color-text-black rounded-[0.6vw] px-[0.4vw] py-[0.4vw]">
-                                            <div className="text-[1.5vw] flex items-center justify-between">
-                                                <p>
+                                            <div className="text-[1.3vw] flex items-center justify-between ">
+                                                <p className="whitespace-nowrap overflow-hidden overflow-ellipsis">
                                                     {index + 1}.{item.roomTitle}
                                                 </p>
                                                 {item.isPublic ? (
