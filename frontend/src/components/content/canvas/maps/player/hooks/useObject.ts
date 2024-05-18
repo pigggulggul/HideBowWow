@@ -8,6 +8,7 @@ import {
     SkinnedMesh,
     Vector3,
     Quaternion,
+    Euler,
 } from 'three';
 import { GLTF, SkeletonUtils } from 'three-stdlib';
 import {
@@ -21,7 +22,10 @@ import {
     removeCollideObjectState,
     observerState,
     observserModeState,
+    cameraPositionState,
+    currentRoomState,
 } from '../../../../../../store/user-slice';
+import { current } from '@reduxjs/toolkit';
 
 // interface GLTFAction extends AnimationClip {
 //     name: ActionName;
@@ -208,6 +212,9 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     );
     const chatFlag = useSelector(
         (state: any) => state.reduxFlag.userSlice.chatFlag
+    );
+    const myCameraPosition = useSelector(
+        (state: any) => state.reduxFlag.userSlice.cameraPosition
     );
 
     const initialHeight = returnHeightSize(modelIndex);
@@ -545,6 +552,11 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 return 0.025;
             } else return 0.025;
         } else if (roomState.roomMap === 'farm') {
+            switch (modelIndex) {
+                case 23:
+                case 46:
+                    return 3;
+            }
             return 1;
         }
         return 1;
@@ -558,10 +570,8 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     // }, [scene_, modelIndex]);
     const objectMap = useGraph(scene);
     const nodes = objectMap.nodes;
-    const material =
-        scene && scene.visible ? returnMaterial(modelIndex) : returnMaterial(0);
-    const node =
-        scene && scene.visible ? returnNode(modelIndex) : returnNode(0);
+    const material = returnMaterial(modelIndex);
+    const node = returnNode(modelIndex);
 
     // console.log(
     //     'scale : ',
@@ -696,13 +706,22 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         callsInLastSecondRef.current = callsInLastSecond;
     }, [callsInLastSecond]);
 
+    // useEffect(() => {
+    //     if(meInfo.isDead) {
+    //         store.dispatch(observserModeState(true))
+    //         console.log("사망!!!!! @@@ :" + isObserver);
+    //     }
+    // },[meInfo.isDead])
+
     useEffect(() => {
         // 3초마다 호출
         if (meInfo?.nickname === playerNickname) {
             const intervalId = setInterval(() => {
-                console.log('평균 프레임 :', callsInLastSecondRef.current / 3);
+                console.log('송신 프레임 :', callsInLastSecondRef.current / 3);
                 setCallsInLastSecond(0); // 85 ~ 95
-                if (callsInLastSecondRef.current > 95) {
+                if (callsInLastSecondRef.current > 150) {
+                    setDelay((preDelay) => preDelay + 0.00005);
+                } else if (callsInLastSecondRef.current > 95) {
                     setDelay((preDelay) => preDelay + 0.00001);
                     // console.log('딜레이 값을 올리겠습니다.');
                 } else if (callsInLastSecondRef.current < 85) {
@@ -776,7 +795,11 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         const handleKeyDown = (event: any) => {
             if (!chatFlag) {
                 keyState.current[event.key] = true;
-                if (event.key === 'r' || event.key === 'R') {
+                if (
+                    event.key === 'r' ||
+                    event.key === 'R' ||
+                    event.key === 'ㄱ'
+                ) {
                     toggleFreeViewMode();
                 }
             }
@@ -847,7 +870,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         return () => {
             document.removeEventListener('keydown', handleJumpDown);
         };
-    }, [isJumping, chatFlag]); 
+    }, [isJumping, chatFlag]);
 
     useFrame(({ camera, clock }) => {
         if (!player || !playerRef.current) return;
@@ -893,11 +916,19 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                                 : 0) // 수정: 위쪽이면 1, 아래쪽이면 -1
                     );
 
-                    if (keyState.current['q']) {
+                    if (
+                        keyState.current['q'] ||
+                        keyState.current['Q'] ||
+                        keyState.current['ㅂ']
+                    ) {
                         playerRef.current.rotation.y += 0.025;
                     }
 
-                    if (keyState.current['e']) {
+                    if (
+                        keyState.current['e'] ||
+                        keyState.current['E'] ||
+                        keyState.current['ㄷ']
+                    ) {
                         playerRef.current.rotation.y -= 0.025;
                     }
 
@@ -1226,6 +1257,106 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     }
                 }
             }
+            // 사망 시
+            if (
+                meInfo.isDead &&
+                !meInfo.isSeeker &&
+                meInfo.nickname === playerNickname
+            ) {
+                console.log('!!사망상태 : ' + observedPlayerIndex);
+                if (observedPlayerIndex === roomState.roomPlayers.length) {
+                    // 자유시점 모드w
+                    store.dispatch(observerState('자유시점'));
+                    const moveVector = new Vector3(
+                        (keyState.current['d'] ||
+                        keyState.current['D'] ||
+                        keyState.current['ㅇ']
+                            ? 1
+                            : 0) -
+                            (keyState.current['a'] ||
+                            keyState.current['A'] ||
+                            keyState.current['ㅁ']
+                                ? 1
+                                : 0),
+                        0,
+                        (keyState.current['w'] ||
+                        keyState.current['W'] ||
+                        keyState.current['ㅈ']
+                            ? 1
+                            : 0) -
+                            (keyState.current['s'] ||
+                            keyState.current['S'] ||
+                            keyState.current['ㄴ']
+                                ? 1
+                                : 0)
+                    );
+
+                    if (!moveVector.equals(new Vector3(0, 0, 0))) {
+                        // lockPointer();
+                        moveVector.normalize().multiplyScalar(0.35); // 속도조절
+
+                        const forward = new Vector3(
+                            Math.sin(observerRef.current.viewLR), // viewLR 값으로 삼각함수를 통해 x 값을 설정
+                            Math.sin(observerRef.current.viewUpDown),
+                            Math.cos(observerRef.current.viewLR) // viewLR 값으로 삼각함수를 통해 z 값을 설정
+                        ).normalize(); // 벡터를 정규화하여 길이를 1로 만듭니다.
+
+                        const moveDirection = forward
+                            .clone()
+                            .multiplyScalar(moveVector.z)
+                            .add(
+                                new Vector3(
+                                    -forward.z,
+                                    0,
+                                    forward.x
+                                ).multiplyScalar(moveVector.x)
+                            );
+
+                        observerRef.current.position.add(moveDirection);
+                    }
+
+                    // 프리뷰 카메라 설정
+                    const observerDirection = new Vector3( // 플레이어가 바라보는 곳
+                        Math.sin(observerRef.current.viewLR),
+                        observerRef.current.viewUpDown, // 아래 위
+                        Math.cos(observerRef.current.viewLR)
+                    );
+                    const cameraTarget = observerRef.current.position
+                        .clone()
+                        .add(observerDirection.multiplyScalar(3));
+
+                    camera.position.set(
+                        observerRef.current.position.x,
+                        observerRef.current.position.y,
+                        observerRef.current.position.z
+                    );
+                    camera.lookAt(cameraTarget);
+                } else {
+                    // 관전모드
+                    // lockPointer();
+                    const observedPlayer =
+                        roomState.roomPlayers[observedPlayerIndex];
+
+                    store.dispatch(
+                        observerState('관전 중 : ' + observedPlayer.nickname)
+                    );
+                    if (observedPlayer) {
+                        camera.position.set(
+                            //ㅈ
+                            observedPlayer.position[0] +
+                                Math.sin(observerRef.current.viewLR) * 20,
+                            observedPlayer.position[1] + 10,
+                            observedPlayer.position[2] +
+                                Math.cos(observerRef.current.viewLR) * 20
+                        );
+                        camera.lookAt(
+                            observedPlayer.position[0],
+                            observedPlayer.position[1],
+                            observedPlayer.position[2]
+                        );
+                    }
+                }
+            }
         } else {
             // 다른 플레이어의 캐릭터
             roomState.roomPlayers.forEach((otherPlayer: any) => {
@@ -1268,103 +1399,105 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             });
         }
 
-        if (meInfo.isDead) {
-            if (meInfo.isSeeker === true) return;
+        // if (meInfo.isDead && !meInfo.isSeeker && meInfo.nickname === playerNickname) {
+        //     console.log("!!사망상태 : " + observedPlayerIndex);
+        //     if (observedPlayerIndex === roomState.roomPlayers.length) {
+        //         // 자유시점 모드w
+        //         store.dispatch(observerState('자유시점'));
+        //         const moveVector = new Vector3(
+        //             (keyState.current['d'] ||
+        //             keyState.current['D'] ||
+        //             keyState.current['ㅇ']
+        //                 ? 1
+        //                 : 0) -
+        //                 (keyState.current['a'] ||
+        //                 keyState.current['A'] ||
+        //                 keyState.current['ㅁ']
+        //                     ? 1
+        //                     : 0),
+        //             0,
+        //             (keyState.current['w'] ||
+        //             keyState.current['W'] ||
+        //             keyState.current['ㅈ']
+        //                 ? 1
+        //                 : 0) -
+        //                 (keyState.current['s'] ||
+        //                 keyState.current['S'] ||
+        //                 keyState.current['ㄴ']
+        //                     ? 1
+        //                     : 0)
+        //         );
 
-            if (observedPlayerIndex === roomState.roomPlayers.length) {
-                // 자유시점 모드
-                store.dispatch(observerState('자유시점'));
-                const moveVector = new Vector3(
-                    (keyState.current['d'] ||
-                    keyState.current['D'] ||
-                    keyState.current['ㅇ']
-                        ? 1
-                        : 0) -
-                        (keyState.current['a'] ||
-                        keyState.current['A'] ||
-                        keyState.current['ㅁ']
-                            ? 1
-                            : 0),
-                    0,
-                    (keyState.current['w'] ||
-                    keyState.current['W'] ||
-                    keyState.current['ㅈ']
-                        ? 1
-                        : 0) -
-                        (keyState.current['s'] ||
-                        keyState.current['S'] ||
-                        keyState.current['ㄴ']
-                            ? 1
-                            : 0)
-                );
+        //         if (!moveVector.equals(new Vector3(0, 0, 0))) {
+        //             // lockPointer();
+        //             moveVector.normalize().multiplyScalar(0.35); // 속도조절
 
-                if (!moveVector.equals(new Vector3(0, 0, 0))) {
-                    // lockPointer();
-                    moveVector.normalize().multiplyScalar(0.35); // 속도조절
+        //             const forward = new Vector3(
+        //                 Math.sin(observerRef.current.viewLR), // viewLR 값으로 삼각함수를 통해 x 값을 설정
+        //                 Math.sin(observerRef.current.viewUpDown),
+        //                 Math.cos(observerRef.current.viewLR) // viewLR 값으로 삼각함수를 통해 z 값을 설정
+        //             ).normalize(); // 벡터를 정규화하여 길이를 1로 만듭니다.
 
-                    const forward = new Vector3(
-                        Math.sin(observerRef.current.viewLR), // viewLR 값으로 삼각함수를 통해 x 값을 설정
-                        Math.sin(observerRef.current.viewUpDown),
-                        Math.cos(observerRef.current.viewLR) // viewLR 값으로 삼각함수를 통해 z 값을 설정
-                    ).normalize(); // 벡터를 정규화하여 길이를 1로 만듭니다.
+        //             const moveDirection = forward
+        //                 .clone()
+        //                 .multiplyScalar(moveVector.z)
+        //                 .add(
+        //                     new Vector3(
+        //                         -forward.z,
+        //                         0,
+        //                         forward.x
+        //                     ).multiplyScalar(moveVector.x)
+        //                 );
 
-                    const moveDirection = forward
-                        .clone()
-                        .multiplyScalar(moveVector.z)
-                        .add(
-                            new Vector3(
-                                -forward.z,
-                                0,
-                                forward.x
-                            ).multiplyScalar(moveVector.x)
-                        );
+        //             observerRef.current.position.add(moveDirection);
+        //         }
 
-                    observerRef.current.position.add(moveDirection);
-                }
+        //         // 프리뷰 카메라 설정
+        //         const observerDirection = new Vector3( // 플레이어가 바라보는 곳
+        //             Math.sin(observerRef.current.viewLR),
+        //             observerRef.current.viewUpDown, // 아래 위
+        //             Math.cos(observerRef.current.viewLR)
+        //         );
+        //         const cameraTarget = observerRef.current.position
+        //             .clone()
+        //             .add(observerDirection.multiplyScalar(3));
 
-                // 프리뷰 카메라 설정
-                const observerDirection = new Vector3( // 플레이어가 바라보는 곳
-                    Math.sin(observerRef.current.viewLR),
-                    observerRef.current.viewUpDown, // 아래 위
-                    Math.cos(observerRef.current.viewLR)
-                );
-                const cameraTarget = observerRef.current.position
-                    .clone()
-                    .add(observerDirection.multiplyScalar(3));
+        //         camera.position.set(
+        //             observerRef.current.position.x,
+        //             observerRef.current.position.y,
+        //             observerRef.current.position.z
+        //         );
+        //         camera.lookAt(cameraTarget);
+        //     } else {
+        //         // 관전모드
+        //         // lockPointer();
+        //         const observedPlayer =
+        //             roomState.roomPlayers[observedPlayerIndex];
 
-                camera.position.set(
-                    observerRef.current.position.x,
-                    observerRef.current.position.y,
-                    observerRef.current.position.z
-                );
-                camera.lookAt(cameraTarget);
-            } else {
-                // 관전모드
-                // lockPointer();
-                const observedPlayer =
-                    roomState.roomPlayers[observedPlayerIndex];
+        //         store.dispatch(
+        //             observerState('관전 중 : ' + observedPlayer.nickname)
+        //         );
+        //         if (observedPlayer) {
+        //             camera.position.set(
+        //                 //
+        //                 observedPlayer.position[0] +
+        //                     Math.sin(observerRef.current.viewLR) * 20,
+        //                 observedPlayer.position[1] + 10,
+        //                 observedPlayer.position[2] +
+        //                     Math.cos(observerRef.current.viewLR) * 20
+        //             );
+        //             camera.lookAt(
+        //                 observedPlayer.position[0],
+        //                 observedPlayer.position[1],
+        //                 observedPlayer.position[2]
+        //             );
+        //         }
+        //     }
+        // }
 
-                store.dispatch(
-                    observerState('관전 중 : ' + observedPlayer.nickname)
-                );
-                if (observedPlayer) {
-                    camera.position.set(
-                        //
-                        observedPlayer.position[0] +
-                            Math.sin(observerRef.current.viewLR) * 20,
-                        observedPlayer.position[1] + 10,
-                        observedPlayer.position[2] +
-                            Math.cos(observerRef.current.viewLR) * 20
-                    );
-                    camera.lookAt(
-                        observedPlayer.position[0],
-                        observedPlayer.position[1],
-                        observedPlayer.position[2]
-                    );
-                }
-            }
-        }
-
+        // if(meInfo.nickname === playerNickname) {
+        //     store.dispatch(cameraPositionState(camera.position.clone()))
+        // }
         if (meInfo.isSeeker === false) {
             // 사물만 사물의 이름을 식별할 수 있다
             if (nicknameRef.current) {
@@ -1373,6 +1506,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     playerRef.current.position.y + 3,
                     playerRef.current.position.z
                 );
+                // nicknameRef.current.lookAt(myCameraPosition);
                 nicknameRef.current.lookAt(camera.position);
             }
         }
@@ -2321,8 +2455,11 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             switch (num) {
                 case 0:
                 case 1:
-                    return 2;
-                case 2:
+                case 36:
+                    return 0.8;
+                case 34:
+                case 35:
+                case 48:
                     return 0.6;
                 case 4:
                     return 0.8;
@@ -2331,5 +2468,18 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
             }
         }
         return 1;
+    }
+
+    function returnRotation(num: number | undefined): Euler {
+        let cnt = 1;
+        if (roomState.roomMap === 'farm') {
+            switch (num) {
+                case 36:
+                case 14:
+                    cnt = 0.5;
+                    break;
+            }
+        }
+        return new Euler(cnt * Math.PI, 0, 0);
     }
 };

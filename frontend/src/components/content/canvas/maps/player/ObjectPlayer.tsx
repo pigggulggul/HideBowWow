@@ -24,11 +24,11 @@ export function ObjectPlayer({
     const [_, boxApi] = useBox(
         () => ({
             mass: 0,
-            args: [1.6, 1.6, 1.6],
+            args: [1, 1, 1],
             type: 'Kinematic',
             position: [0, 0, 0], // 초기 위치를 useRef의 현재 값으로 설정
             onCollide: (e) => {
-                console.log('충돌', e);
+                // console.log('충돌', e);
                 if (playerRef.current) {
                     const bounds = calculateBoundingBox(e.body);
                     // console.log(`X 좌표 범위: ${bounds.minX} ~ ${bounds.maxX}`);
@@ -58,11 +58,12 @@ export function ObjectPlayer({
         position,
         modelIndex,
     });
+
     useFrame(() => {
         if (playerRef.current) {
             const { x, y, z } = playerRef.current.position;
             boxApi.position.set(x, y, z); // 물리 바디의 속도를 업데이트
-            // console.log(playerRef.current.position);
+            // console.log(x, y, z);
         }
     });
     function calculateBoundingBox(mesh: any) {
