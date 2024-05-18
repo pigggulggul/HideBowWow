@@ -22,6 +22,7 @@ import {
     removeCollideObjectState,
     observerState,
     observserModeState,
+    cameraPositionState,
 } from '../../../../../../store/user-slice';
 
 // interface GLTFAction extends AnimationClip {
@@ -209,6 +210,9 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     );
     const chatFlag = useSelector(
         (state: any) => state.reduxFlag.userSlice.chatFlag
+    );
+    const myCameraPosition = useSelector(
+        (state: any) => state.reduxFlag.userSlice.cameraPosition
     );
  
     const initialHeight = returnHeightSize(modelIndex);
@@ -1474,8 +1478,11 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         //             );
         //         }
         //     }
-        // }
-
+        // } 
+        
+        // if(meInfo.nickname === playerNickname) {
+        //     store.dispatch(cameraPositionState(camera.position.clone()))
+        // } 
         if (meInfo.isSeeker === false) {
             // 사물만 사물의 이름을 식별할 수 있다
             if (nicknameRef.current) {
@@ -1483,7 +1490,8 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     playerRef.current.position.x,
                     playerRef.current.position.y + 3,
                     playerRef.current.position.z
-                );
+                ); 
+                // nicknameRef.current.lookAt(myCameraPosition);
                 nicknameRef.current.lookAt(camera.position);
             }
         }

@@ -6,6 +6,7 @@ import {
     MapSize,
     RoomInfo,
 } from '../types/GameType';
+import { Vector3 } from 'three'
 
 export interface UserState {
     //닉네임
@@ -24,6 +25,7 @@ export interface UserState {
     rerollTime: number; 
     observserMode: boolean;
     observer: string;
+    cameraPosition: Vector3;
 }
 const initialState: UserState = {
     userNickname: '',
@@ -48,7 +50,7 @@ const initialState: UserState = {
         position: [0, 0, 0],
         direction: [0, 0, 0],
         isDead: null,
-        isSeeker: null,
+        isSeeker: null, 
     },
     collideObj: [],
     meHeart: 0,
@@ -67,6 +69,7 @@ const initialState: UserState = {
     chatFlag: false,
     channelIndex :1,
     rerollTime: 0,
+    cameraPosition : new Vector3(0,0,0),
 };
 
 export const userSlice = createSlice({
@@ -128,7 +131,7 @@ export const userSlice = createSlice({
         },
         meDead: (state, action) => {
             state.meInfo.isDead = action.payload;
-        },
+        }, 
         collideObjectState: (state, action) => {
             state.collideObj = action.payload;
         },
@@ -179,6 +182,9 @@ export const userSlice = createSlice({
         channelIndexState: (state, action) => {
             state.channelIndex = action.payload; 
         },
+        cameraPositionState: (state, action) => {
+            state.cameraPosition = action.payload; 
+        },
     },
 });
 export const {
@@ -206,5 +212,6 @@ export const {
     rerollState, 
     observserModeState, 
     channelIndexState, 
+    cameraPositionState,
 } = userSlice.actions;
 export default userSlice.reducer;
