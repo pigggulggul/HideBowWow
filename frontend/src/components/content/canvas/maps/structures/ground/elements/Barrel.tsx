@@ -8,6 +8,7 @@ import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import { ObjectSettingType } from '../../../../../../../types/GameType';
 import { useBox } from '@react-three/cannon';
+import React from 'react';
 
 type GLTFResult = GLTF & {
     nodes: {
@@ -18,7 +19,7 @@ type GLTFResult = GLTF & {
     };
 };
 
-export function Barrel(props: ObjectSettingType) {
+function BarrelComponent(props: ObjectSettingType) {
     const { nodes, materials } = useGLTF(
         '/models/object/Barrel.glb'
     ) as GLTFResult;
@@ -45,3 +46,13 @@ export function Barrel(props: ObjectSettingType) {
 }
 
 useGLTF.preload('/models/object/Barrel.glb');
+
+function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
+    return (
+        prevProps.position[0] === nextProps.position[0] &&
+        prevProps.position[1] === nextProps.position[1] &&
+        prevProps.position[2] === nextProps.position[2]
+    );
+  }
+  
+export const Barrel = React.memo(BarrelComponent, areEqual);

@@ -8,6 +8,7 @@ import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import { ObjectSettingType } from '../../../../../../../types/GameType';
 import { useBox } from '@react-three/cannon';
+import React from 'react';
 
 type GLTFResult = GLTF & {
     nodes: {
@@ -20,7 +21,7 @@ type GLTFResult = GLTF & {
     };
 };
 
-export function Wall_blue_window(props: ObjectSettingType) {
+function Wall_blue_windowComponent(props: ObjectSettingType) {
     const { nodes, materials } = useGLTF('/Wall_blue_window.glb') as GLTFResult;
     const [ref] = useBox<THREE.Mesh>(() => ({
         args: [10, 1, 8],
@@ -52,3 +53,14 @@ export function Wall_blue_window(props: ObjectSettingType) {
 }
 
 useGLTF.preload('/models/object/Wall_blue_window.glb');
+
+
+function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
+    return (
+        prevProps.position[0] === nextProps.position[0] &&
+        prevProps.position[1] === nextProps.position[1] &&
+        prevProps.position[2] === nextProps.position[2]
+    );
+}
+
+export default React.memo(Wall_blue_windowComponent, areEqual);

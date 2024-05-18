@@ -8,6 +8,7 @@ import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import { ObjectSettingType } from '../../../../../../../types/GameType';
 import { useBox } from '@react-three/cannon';
+import React from 'react';
 
 type GLTFResult = GLTF & {
     nodes: {
@@ -18,7 +19,7 @@ type GLTFResult = GLTF & {
     };
 };
 
-export function Wall_white_Side(props: ObjectSettingType) {
+function Wall_whiteComponent(props: ObjectSettingType) {
     const { nodes, materials } = useGLTF(
         '/models/object/Wall_white.glb'
     ) as GLTFResult;
@@ -51,3 +52,13 @@ export function Wall_white_Side(props: ObjectSettingType) {
 }
 
 useGLTF.preload('/models/object/Wall_white.glb');
+
+function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
+    return (
+        prevProps.position[0] === nextProps.position[0] &&
+        prevProps.position[1] === nextProps.position[1] &&
+        prevProps.position[2] === nextProps.position[2]
+    );
+}
+
+export default React.memo(Wall_whiteComponent, areEqual);

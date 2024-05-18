@@ -9,7 +9,7 @@ import { GLTF } from 'three-stdlib';
 import { ObjectSettingType } from '../../../../../../../types/GameType';
 
 import { useBox } from '@react-three/cannon';
-
+import React from 'react';
 type GLTFResult = GLTF & {
     nodes: {
         Pumpkin_Forest_Green_0: THREE.Mesh;
@@ -21,7 +21,7 @@ type GLTFResult = GLTF & {
     };
 };
 
-export function Pumpkin(props: ObjectSettingType) {
+function PumpkinComponent(props: ObjectSettingType) {
     const { nodes, materials } = useGLTF(
         '/models/object/Pumpkin.glb'
     ) as GLTFResult;
@@ -62,3 +62,13 @@ export function Pumpkin(props: ObjectSettingType) {
 }
 
 useGLTF.preload('/models/object/Pumpkin.glb');
+
+function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
+    return (
+        prevProps.position[0] === nextProps.position[0] &&
+        prevProps.position[1] === nextProps.position[1] &&
+        prevProps.position[2] === nextProps.position[2]
+    );
+}
+
+export React.memo(PumpkinComponent, areEqual);

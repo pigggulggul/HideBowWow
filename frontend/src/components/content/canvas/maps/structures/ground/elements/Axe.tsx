@@ -8,6 +8,8 @@ import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import { ObjectSettingType } from '../../../../../../../types/GameType';
 import { useBox } from '@react-three/cannon';
+import React from 'react';
+
 type GLTFResult = GLTF & {
     nodes: {
         Axe_Brown_4_0: THREE.Mesh;
@@ -19,7 +21,7 @@ type GLTFResult = GLTF & {
     };
 };
 
-export function Axe(props: ObjectSettingType) {
+function AxeComponent(props: ObjectSettingType) {
     const { nodes, materials } = useGLTF(
         '/models/object/Axe.glb'
     ) as GLTFResult;
@@ -54,3 +56,13 @@ export function Axe(props: ObjectSettingType) {
 }
 
 useGLTF.preload('/models/object/Axe.glb');
+
+function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
+    return (
+        prevProps.position[0] === nextProps.position[0] &&
+        prevProps.position[1] === nextProps.position[1] &&
+        prevProps.position[2] === nextProps.position[2]
+    );
+}
+
+export const Axe = React.memo(AxeComponent, areEqual);

@@ -9,6 +9,7 @@ import { GLTF } from "three-stdlib";
 import { ObjectSettingType } from "../../../../../../../types/GameType";
 
 import { useBox } from "@react-three/cannon";
+import React from "react";
 type GLTFResult = GLTF & {
   nodes: {
     Sheep_Black_0: THREE.Mesh;
@@ -20,7 +21,7 @@ type GLTFResult = GLTF & {
   };
 };
 
-export function Sheep(props: ObjectSettingType) {
+function SheepComponent(props: ObjectSettingType) {
   const { nodes, materials } = useGLTF(
     "/models/object/Sheep.glb"
   ) as GLTFResult;
@@ -61,3 +62,13 @@ export function Sheep(props: ObjectSettingType) {
 }
 
 useGLTF.preload("/models/object/Sheep.glb");
+
+function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
+  return (
+    prevProps.position[0] === nextProps.position[0] &&
+    prevProps.position[1] === nextProps.position[1] &&
+    prevProps.position[2] === nextProps.position[2]
+  );
+}
+
+export default React.memo(SheepComponent, areEqual);

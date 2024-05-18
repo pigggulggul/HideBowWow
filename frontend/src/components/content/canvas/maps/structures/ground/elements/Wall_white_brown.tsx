@@ -8,6 +8,7 @@ import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import { ObjectSettingType } from '../../../../../../../types/GameType';
 import { useBox } from '@react-three/cannon';
+import React from 'react';
 
 type GLTFResult = GLTF & {
     nodes: {
@@ -18,7 +19,7 @@ type GLTFResult = GLTF & {
     };
 };
 
-export function Wall_white_brown(props: ObjectSettingType) {
+function Wall_white_brownComponent(props: ObjectSettingType) {
     const { nodes, materials } = useGLTF(
         '/models/object/Wall_white_brown.glb'
     ) as GLTFResult;
@@ -45,3 +46,13 @@ export function Wall_white_brown(props: ObjectSettingType) {
 }
 
 useGLTF.preload('/models/object/Wall_white_brown.glb');
+
+function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
+    return (
+        prevProps.position[0] === nextProps.position[0] &&
+        prevProps.position[1] === nextProps.position[1] &&
+        prevProps.position[2] === nextProps.position[2]
+    );
+}
+
+export const Wall_white_brown = React.memo(Wall_white_brownComponent, areEqual);

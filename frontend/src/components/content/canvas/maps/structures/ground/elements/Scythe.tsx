@@ -10,7 +10,7 @@ import { GLTF } from 'three-stdlib';
 import { ObjectSettingType } from '../../../../../../../types/GameType';
 
 import { useBox } from '@react-three/cannon';
-
+import React from 'react';
 type GLTFResult = GLTF & {
     nodes: {
         Scythe_Brown_4_0: THREE.Mesh;
@@ -24,7 +24,7 @@ type GLTFResult = GLTF & {
     };
 };
 
-export function Scythe(props: ObjectSettingType) {
+function ScytheComponent(props: ObjectSettingType) {
     const { nodes, materials } = useGLTF(
         '/models/object/Scythe.glb'
     ) as GLTFResult;
@@ -72,3 +72,13 @@ export function Scythe(props: ObjectSettingType) {
 }
 
 useGLTF.preload('/models/object/Scythe.glb');
+
+function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
+    return (
+        prevProps.position[0] === nextProps.position[0] &&
+        prevProps.position[1] === nextProps.position[1] &&
+        prevProps.position[2] === nextProps.position[2]
+    );
+}
+
+export default React.memo(ScytheComponent, areEqual);
