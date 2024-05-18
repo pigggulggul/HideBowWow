@@ -395,9 +395,7 @@ export default function GamePage() {
             ) : (
                 <></>
             )}
-            {currentRoom.roomState === 4 ||
-            currentRoom.roomState === 5 ||
-            true ? (
+            {currentRoom.roomState === 4 || currentRoom.roomState === 5 ? (
                 <div className="absolute w-full h-[28%] flex justify-center bottom-4">
                     {currentRoom.roomPlayers.map(
                         (item: CurrentPlayersInfo, pIndex: number) => {
