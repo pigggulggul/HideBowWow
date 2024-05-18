@@ -72,4 +72,4 @@ function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
     );
 }
 
-export default React.memo(Wooden_boxComponent, areEqual);
+export const Wooden_box = React.memo(Wooden_boxComponent, areEqual);

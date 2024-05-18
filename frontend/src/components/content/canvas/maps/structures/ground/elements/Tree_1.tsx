@@ -34,7 +34,7 @@ function Tree_1Component(props: ObjectSettingType) {
     ) as GLTFResult;
 
     const [ref] = useBox<THREE.Mesh>(() => ({
-        args: [1 , 2, 10],
+        args: [1, 2, 10],
 
         mass: 0.1,
 
@@ -91,13 +91,12 @@ function Tree_1Component(props: ObjectSettingType) {
 
 useGLTF.preload('/models/object/Tree_1.glb');
 
-
 function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
     return (
-      prevProps.position[0] === nextProps.position[0] &&
-      prevProps.position[1] === nextProps.position[1] &&
-      prevProps.position[2] === nextProps.position[2]
+        prevProps.position[0] === nextProps.position[0] &&
+        prevProps.position[1] === nextProps.position[1] &&
+        prevProps.position[2] === nextProps.position[2]
     );
-  } 
+}
 
-export default React.memo(Tree_1Component, areEqual);
+export const Tree_1 = React.memo(Tree_1Component, areEqual);

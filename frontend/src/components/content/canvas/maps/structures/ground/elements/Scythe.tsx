@@ -81,4 +81,4 @@ function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
     );
 }
 
-export default React.memo(ScytheComponent, areEqual);
+export const Scythe = React.memo(ScytheComponent, areEqual);

@@ -60,4 +60,4 @@ function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
     );
 }
 
-export default React.memo(RockComponent, areEqual);
+export const Rock = React.memo(RockComponent, areEqual);

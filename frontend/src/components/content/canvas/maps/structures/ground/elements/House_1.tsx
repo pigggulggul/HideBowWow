@@ -115,6 +115,6 @@ function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
         prevProps.position[1] === nextProps.position[1] &&
         prevProps.position[2] === nextProps.position[2]
     );
-}   
+}
 
-export default React.memo(House_1Component, areEqual);
+export const House_1 = React.memo(House_1Component, areEqual);

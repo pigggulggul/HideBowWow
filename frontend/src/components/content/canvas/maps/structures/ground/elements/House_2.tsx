@@ -135,4 +135,4 @@ function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
     );
 }
 
-export default React.memo(House_2Component, areEqual);
+export const House_2 = React.memo(House_2Component, areEqual);

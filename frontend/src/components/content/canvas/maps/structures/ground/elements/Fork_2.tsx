@@ -66,4 +66,4 @@ function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
     );
 }
 
-export default React.memo(Fork_2Component, areEqual);
+export const Fork_2 = React.memo(Fork_2Component, areEqual);

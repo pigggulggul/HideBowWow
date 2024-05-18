@@ -75,4 +75,4 @@ function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
     );
 }
 
-export default React.memo(Grave_1Component, areEqual);
+export const Grave_1 = React.memo(Grave_1Component, areEqual);
