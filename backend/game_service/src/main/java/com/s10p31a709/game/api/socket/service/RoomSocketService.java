@@ -71,6 +71,21 @@ public class RoomSocketService {
         while (seekerNumber3 != -1 && (seekerNumber1 == seekerNumber3 || seekerNumber2 == seekerNumber3)){
             seekerNumber3 = new Random().nextInt(room.getRoomPlayers().size());
         }
+
+        // 시연때 술래를 방제목으로 지정
+        if(room.getRoomTitle().startsWith("시연")){
+            String[] nums = room.getRoomTitle().split("_");
+            if(nums.length >= 2 ){
+                seekerNumber1 = Integer.parseInt(nums[1]);
+            }
+            if(nums.length >= 3){
+                seekerNumber2 = Integer.parseInt(nums[2]);
+            }
+            if(nums.length >= 4){
+                seekerNumber3 = Integer.parseInt(nums[2]);
+            }
+            log.info("시연용 술래 지정: {}, {}, {}",seekerNumber1, seekerNumber2, seekerNumber3);
+        }
         log.info("room.getRoomPlayers().size(): {}", room.getRoomPlayers().size());
         log.info("seekerNumber1: {}", seekerNumber1);
         log.info("seekerNumber2: {}", seekerNumber2);
