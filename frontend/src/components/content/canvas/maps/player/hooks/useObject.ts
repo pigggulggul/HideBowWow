@@ -1323,7 +1323,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     );
                     if (observedPlayer) {
                         camera.position.set(
-                            //
+                            //ㅈ
                             observedPlayer.position[0] +
                                 Math.sin(observerRef.current.viewLR) * 20,
                             observedPlayer.position[1] + 10,
