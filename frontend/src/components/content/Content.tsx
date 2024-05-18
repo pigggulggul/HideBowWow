@@ -180,7 +180,7 @@ export function Content() {
             rerollChoice = [
                 Math.floor(Math.random() * 100),
                 Math.floor(Math.random() * 100),
-                Math.floor(Math.random() * 100),
+                Math.floor(99),
             ];
         } else if (roomState.roomMap === 'farm') {
             rerollChoice = [
