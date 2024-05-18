@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import {
     collideObjectState,
     currentRoomState,
+    meInfoState,
     readyState,
     roomIdState,
     userNicknameState,
@@ -16,6 +17,16 @@ export default function MainPage() {
     dispatch(readyState(false));
     dispatch(roomIdState(''));
     dispatch(userNicknameState(''));
+    dispatch(
+        meInfoState({
+            nickname: '',
+            selectedIndex: null,
+            position: [0, 0, 0],
+            direction: [0, 0, 0],
+            isDead: null,
+            isSeeker: null,
+        })
+    );
     dispatch(
         currentRoomState({
             isPublic: true,
