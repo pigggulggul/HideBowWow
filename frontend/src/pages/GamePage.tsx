@@ -631,7 +631,7 @@ export default function GamePage() {
             )}
 
             {/* 관전 중 자막 */} 
-            {!isObserver && observerState && !meInfo.isSeeker && (currentRoom.roomState === 2 || currentRoom.roomState === 3)? (
+            {!isObserver && observerState && !meInfo.isSeeker && !meInfo.isDead && (currentRoom.roomState === 2 || currentRoom.roomState === 3)? (
                 <div className="absolute flex flex-col bottom-20 justify-center">
                     <div className="flex justify-center items-center text-[2vw]">
                         <img className="px-[0.2vw]" src={keyLeft} alt="" /> 
