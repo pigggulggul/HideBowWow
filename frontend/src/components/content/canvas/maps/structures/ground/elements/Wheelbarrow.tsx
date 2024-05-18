@@ -49,7 +49,7 @@ function WheelbarrowComponent(props: ObjectSettingType) {
                     material={materials.Brown_4}
                     position={props.position}
                     rotation={props.rotation}
-                    scale={[2,2,2]}
+                    scale={[2, 2, 2]}
                 />
                 <mesh
                     ref={ref}
@@ -57,7 +57,7 @@ function WheelbarrowComponent(props: ObjectSettingType) {
                     material={materials.Brown}
                     position={props.position}
                     rotation={props.rotation}
-                    scale={[2,2,2]}
+                    scale={[2, 2, 2]}
                 />
             </group>
         </group>
@@ -74,4 +74,4 @@ function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
     );
 }
 
-export default React.memo(WheelbarrowComponent, areEqual);
+export const Wheelbarrow = React.memo(WheelbarrowComponent, areEqual);

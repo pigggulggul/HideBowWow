@@ -73,4 +73,4 @@ function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
     );
 }
 
-export default React.memo(Tree_6Component, areEqual);
+export const Tree_6 = React.memo(Tree_6Component, areEqual);

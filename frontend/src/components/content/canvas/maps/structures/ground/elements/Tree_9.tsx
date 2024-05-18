@@ -81,4 +81,4 @@ function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
     );
 }
 
-export default React.memo(Tree_9Component, areEqual);
+export const Tree_9 = React.memo(Tree_9Component, areEqual);

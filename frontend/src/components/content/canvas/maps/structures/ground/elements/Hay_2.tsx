@@ -74,4 +74,4 @@ function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
     );
 }
 
-export default React.memo(Hay_2Component, areEqual);
+export const Hay_2 = React.memo(Hay_2Component, areEqual);
