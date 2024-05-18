@@ -1,6 +1,5 @@
 import { useGLTF } from '@react-three/drei';
 import { useFrame, useGraph } from '@react-three/fiber';
-import { Euler } from 'three';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
     Group,
@@ -9,6 +8,7 @@ import {
     SkinnedMesh,
     Vector3,
     Quaternion,
+    Euler,
 } from 'three';
 import { GLTF, SkeletonUtils } from 'three-stdlib';
 import {
@@ -21,9 +21,9 @@ import { store } from '../../../../../../store/store';
 import {
     removeCollideObjectState,
     observerState,
-    observserModeState, 
-    cameraPositionState, 
-    currentRoomState, 
+    observserModeState,
+    cameraPositionState,
+    currentRoomState,
 } from '../../../../../../store/user-slice';
 import { current } from '@reduxjs/toolkit';
 
@@ -216,9 +216,8 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     const myCameraPosition = useSelector(
         (state: any) => state.reduxFlag.userSlice.cameraPosition
     );
- 
+
     const initialHeight = returnHeightSize(modelIndex);
-    const initialRotation = returnRotation(modelIndex);
     position.y = initialHeight;
 
     const memoizedPosition = useMemo(() => position, []);
@@ -705,28 +704,25 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
 
     useEffect(() => {
         callsInLastSecondRef.current = callsInLastSecond;
-    }, [callsInLastSecond]); 
+    }, [callsInLastSecond]);
 
     // useEffect(() => {
-    //     if(meInfo.isDead) { 
-    //         store.dispatch(observserModeState(true)) 
+    //     if(meInfo.isDead) {
+    //         store.dispatch(observserModeState(true))
     //         console.log("사망!!!!! @@@ :" + isObserver);
     //     }
-    // },[meInfo.isDead]) 
-    
+    // },[meInfo.isDead])
+
     useEffect(() => {
         // 3초마다 호출
         if (meInfo?.nickname === playerNickname) {
             const intervalId = setInterval(() => {
-                console.log(
-                    '송신 프레임 :',
-                    callsInLastSecondRef.current / 3
-                );
+                console.log('송신 프레임 :', callsInLastSecondRef.current / 3);
                 setCallsInLastSecond(0); // 85 ~ 95
                 if (callsInLastSecondRef.current > 150) {
-                    setDelay((preDelay) => preDelay + 0.00005); 
+                    setDelay((preDelay) => preDelay + 0.00005);
                 } else if (callsInLastSecondRef.current > 95) {
-                    setDelay((preDelay) => preDelay + 0.00001); 
+                    setDelay((preDelay) => preDelay + 0.00001);
                     // console.log('딜레이 값을 올리겠습니다.');
                 } else if (callsInLastSecondRef.current < 85) {
                     setDelay((preDelay) => preDelay - 0.00001);
@@ -799,7 +795,11 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         const handleKeyDown = (event: any) => {
             if (!chatFlag) {
                 keyState.current[event.key] = true;
-                if (event.key === 'r' || event.key === 'R' || event.key === 'ㄱ') {
+                if (
+                    event.key === 'r' ||
+                    event.key === 'R' ||
+                    event.key === 'ㄱ'
+                ) {
                     toggleFreeViewMode();
                 }
             }
@@ -875,10 +875,13 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
     useFrame(({ camera, clock }) => {
         if (!player || !playerRef.current) return;
         if (!observerRef.current) return;
-        if ( (roomState.roomState == 1 || roomState.roomState == 2) && meInfo.isSeeker === true) {
+        if (
+            (roomState.roomState == 1 || roomState.roomState == 2) &&
+            meInfo.isSeeker === true
+        ) {
             playerRef.current.position.set(-100, -100, -100);
             return;
-        } 
+        }
 
         if (meInfo?.nickname === playerNickname) {
             lockPointer();
@@ -913,11 +916,19 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                                 : 0) // 수정: 위쪽이면 1, 아래쪽이면 -1
                     );
 
-                    if (keyState.current['q'] || keyState.current['Q'] || keyState.current['ㅂ']) {
+                    if (
+                        keyState.current['q'] ||
+                        keyState.current['Q'] ||
+                        keyState.current['ㅂ']
+                    ) {
                         playerRef.current.rotation.y += 0.025;
                     }
 
-                    if (keyState.current['e'] || keyState.current['E'] || keyState.current['ㄷ']) {
+                    if (
+                        keyState.current['e'] ||
+                        keyState.current['E'] ||
+                        keyState.current['ㄷ']
+                    ) {
                         playerRef.current.rotation.y -= 0.025;
                     }
 
@@ -1245,10 +1256,14 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                         }
                     }
                 }
-            } 
+            }
             // 사망 시
-            if (meInfo.isDead && !meInfo.isSeeker && meInfo.nickname === playerNickname) {   
-                console.log("!!사망상태 : " + observedPlayerIndex);
+            if (
+                meInfo.isDead &&
+                !meInfo.isSeeker &&
+                meInfo.nickname === playerNickname
+            ) {
+                console.log('!!사망상태 : ' + observedPlayerIndex);
                 if (observedPlayerIndex === roomState.roomPlayers.length) {
                     // 자유시점 모드w
                     store.dispatch(observerState('자유시점'));
@@ -1275,17 +1290,17 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                                 ? 1
                                 : 0)
                     );
-    
+
                     if (!moveVector.equals(new Vector3(0, 0, 0))) {
                         // lockPointer();
                         moveVector.normalize().multiplyScalar(0.35); // 속도조절
-    
+
                         const forward = new Vector3(
                             Math.sin(observerRef.current.viewLR), // viewLR 값으로 삼각함수를 통해 x 값을 설정
                             Math.sin(observerRef.current.viewUpDown),
                             Math.cos(observerRef.current.viewLR) // viewLR 값으로 삼각함수를 통해 z 값을 설정
                         ).normalize(); // 벡터를 정규화하여 길이를 1로 만듭니다.
-    
+
                         const moveDirection = forward
                             .clone()
                             .multiplyScalar(moveVector.z)
@@ -1296,10 +1311,10 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                                     forward.x
                                 ).multiplyScalar(moveVector.x)
                             );
-    
+
                         observerRef.current.position.add(moveDirection);
                     }
-    
+
                     // 프리뷰 카메라 설정
                     const observerDirection = new Vector3( // 플레이어가 바라보는 곳
                         Math.sin(observerRef.current.viewLR),
@@ -1309,7 +1324,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     const cameraTarget = observerRef.current.position
                         .clone()
                         .add(observerDirection.multiplyScalar(3));
-    
+
                     camera.position.set(
                         observerRef.current.position.x,
                         observerRef.current.position.y,
@@ -1321,7 +1336,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     // lockPointer();
                     const observedPlayer =
                         roomState.roomPlayers[observedPlayerIndex];
-    
+
                     store.dispatch(
                         observerState('관전 중 : ' + observedPlayer.nickname)
                     );
@@ -1341,7 +1356,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                         );
                     }
                 }
-            } 
+            }
         } else {
             // 다른 플레이어의 캐릭터
             roomState.roomPlayers.forEach((otherPlayer: any) => {
@@ -1383,8 +1398,8 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 }
             });
         }
- 
-        // if (meInfo.isDead && !meInfo.isSeeker && meInfo.nickname === playerNickname) {   
+
+        // if (meInfo.isDead && !meInfo.isSeeker && meInfo.nickname === playerNickname) {
         //     console.log("!!사망상태 : " + observedPlayerIndex);
         //     if (observedPlayerIndex === roomState.roomPlayers.length) {
         //         // 자유시점 모드w
@@ -1478,11 +1493,11 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         //             );
         //         }
         //     }
-        // } 
-        
+        // }
+
         // if(meInfo.nickname === playerNickname) {
         //     store.dispatch(cameraPositionState(camera.position.clone()))
-        // } 
+        // }
         if (meInfo.isSeeker === false) {
             // 사물만 사물의 이름을 식별할 수 있다
             if (nicknameRef.current) {
@@ -1490,7 +1505,7 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                     playerRef.current.position.x,
                     playerRef.current.position.y + 3,
                     playerRef.current.position.z
-                ); 
+                );
                 // nicknameRef.current.lookAt(myCameraPosition);
                 nicknameRef.current.lookAt(camera.position);
             }
@@ -1508,7 +1523,6 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
         node,
         material,
         initialHeight,
-        initialRotation,
     };
 
     function returnMaterial(num: number | undefined) {
@@ -2447,14 +2461,11 @@ export const useObject = ({ player, position, modelIndex }: PlayerInitType) => {
                 case 35:
                 case 48:
                     return 0.6;
-                case 14:
-                case 19:
-                case 20:
-                case 21:
-                case 22:
+                case 4:
+                    return 0.8;
+                default:
                     return 1;
             }
-            return 0.5;
         }
         return 1;
     }

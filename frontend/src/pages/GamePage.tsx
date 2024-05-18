@@ -4,7 +4,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChatType, CurrentPlayersInfo, ThumbnailType } from '../types/GameType';
-import { chatFlagState, heartState, observserModeState } from '../store/user-slice'; 
+import {
+    chatFlagState,
+    heartState,
+    observserModeState,
+} from '../store/user-slice';
+import { store } from '../store/store';
 import StompClient from '../websocket/StompClient';
 import {
     startRecording,
@@ -29,6 +34,7 @@ import keyEsc from '../assets/images/icon/key_esc.png';
 import keyRight from '../assets/images/icon/key_arrowR.png';
 import keyLeft from '../assets/images/icon/key_arrowL.png';
 import keySpace from '../assets/images/icon/key_space.png';
+import keyEnter from '../assets/images/icon/key_Enter.png';
 import ingameMusic from '../assets/bgm/ingame_music.mp3';
 import RichRoomInfo from '../json/RichRoomInfo.json';
 import FarmInfo from '../json/FarmInfo.json';
@@ -115,8 +121,8 @@ export default function GamePage() {
             });
         } else if (currentRoom.roomState === 3 && !roundStart) {
             startRound();
-        } else if(currentRoom.roomState === 1) {
-            dispatch(observserModeState(true))
+        } else if (currentRoom.roomState === 1) {
+            dispatch(observserModeState(true));
         }
     }, [currentRoom.roomState]);
     useEffect(() => {
@@ -132,15 +138,15 @@ export default function GamePage() {
             setHiderNum(hider);
         });
     }, [currentRoom.roomPlayers]);
-    useEffect(() => {               
+    useEffect(() => {
         if (meInfo) {
-            if (meInfo.isSeeker) { 
+            if (meInfo.isSeeker) {
                 dispatch(heartState(7));
             } else {
                 dispatch(heartState(1));
             }
         }
-    }, [meInfo.isSeeker]); 
+    }, [meInfo.isSeeker]);
     useEffect(() => {
         if (meHeart < 7 && meHeart >= 0) {
             handleShot();
@@ -530,9 +536,17 @@ export default function GamePage() {
                     />
                     <p className="px-[0.4vw] text-[1.4vw]">마우스 고정 해제</p>
                 </div>
+                <div className="flex items-center mb-[1vw]">
+                    <img
+                        className="w-[80px] px-[0.2vw]"
+                        src={keyEnter}
+                        alt="key_enter.png"
+                    />
+                    <p className="px-[0.4vw] text-[1.4vw]">채팅</p>
+                </div>
 
                 {/* 음성채팅 입, 퇴장 관련 키 가이드 */}
-                <div className="flex items-center">
+                {/* <div className="flex items-center">
                     <img
                         className="w-[40px] px-[0.2vw]"
                         src={keyC}
@@ -541,10 +555,10 @@ export default function GamePage() {
                     <p className="px-[0.4vw] text-[1.4vw]">
                         {stream ? '음성채팅 퇴장' : '음성채팅 입장'}
                     </p>
-                </div>
+                </div> */}
 
                 {/* 마이크 ON, OFF 관련 키 가이드. 음성채팅에 들어와야 보인다 */}
-                {stream ? (
+                {/* {stream ? (
                     <div className="flex items-center">
                         <img
                             className="w-[40px] px-[0.2vw]"
@@ -557,7 +571,7 @@ export default function GamePage() {
                     </div>
                 ) : (
                     <></>
-                )}
+                )} */}
             </div>
             <div
                 className={
@@ -634,8 +648,8 @@ export default function GamePage() {
             {!isObserver && observerState && !meInfo.isSeeker && !meInfo.isDead && (currentRoom.roomState === 2 || currentRoom.roomState === 3)? (
                 <div className="absolute flex flex-col bottom-20 justify-center">
                     <div className="flex justify-center items-center text-[2vw]">
-                        <img className="px-[0.2vw]" src={keyLeft} alt="" /> 
-                        <p className="mx-[2vw]">{observerState}</p> 
+                        <img className="px-[0.2vw]" src={keyLeft} alt="" />
+                        <p className="mx-[2vw]">{observerState}</p>
                         <img className="px-[0.2vw]" src={keyRight} alt="" />
                     </div>
                 </div>

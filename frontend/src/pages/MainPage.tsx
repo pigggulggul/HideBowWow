@@ -9,7 +9,7 @@ import {
 } from '../store/user-slice';
 import backgroundImage from '../assets/images/bg/background-main.png';
 import textTitleSub from '../assets/images/text/text_title_sub.png';
-import textTitle from '../assets/images/text/text_title.png';
+import textTitle from '../assets/images/text/text_title_brown.png';
 
 export default function MainPage() {
     const dispatch = useDispatch();
@@ -39,12 +39,12 @@ export default function MainPage() {
                 backgroundSize: 'cover',
             }}
         >
-            <img src={textTitleSub} alt="" />
-            <img src={textTitle} alt="" />
+            <img className="w-[30%]" src={textTitleSub} alt="" />
+            <img className="w-[35%]" src={textTitle} alt="" />
             <div className="flex justify-center w-[40%]">
                 <Link
                     to={'/guestlogin'}
-                    className="border-[0.3vw] color-border-main rounded-[0.6vw] px-[2vw] py-[0.4vw] color-text-main bg-white text-[2.6vw] cursor-pointer hover:color-bg-main hover:text-white btn-animation"
+                    className=" w-[35%] border-[0.3vw] color-border-main rounded-[0.6vw] px-[2vw] py-[0.4vw] color-text-main bg-white text-[2.6vw] cursor-pointer hover:color-bg-main hover:text-white btn-animation"
                 >
                     Guest
                 </Link>

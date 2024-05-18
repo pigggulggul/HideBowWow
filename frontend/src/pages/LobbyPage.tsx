@@ -8,6 +8,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { currentRoomState, roomIdState } from '../store/user-slice';
 import StompClient from '../websocket/StompClient';
 import backgroundImage from '../assets/images/bg/background-main.png';
+import RichMap from '../assets/images/bg/map-Rich.png';
+import farmMap from '../assets/images/bg/map-Farm.png';
+import textWait from '../assets/images/text/text_lobby_wait.png';
+import textGame from '../assets/images/text/text_lobby_game.png';
+import iconLock from '../assets/images/icon/icon_lobby_lock.png';
 
 export default function LobbyPage() {
     const [makeRoomFlag, setMakeRoomFlag] = useState<boolean>(false);
@@ -157,7 +162,7 @@ export default function LobbyPage() {
             if (!window.location.pathname.includes('lobby')) {
                 clearInterval(interval);
             }
-        }, 5000);
+        }, 1000);
 
         return () => {
             // console.log('방 조회 제거');
@@ -191,13 +196,13 @@ export default function LobbyPage() {
                 backgroundSize: 'cover',
             }}
         >
-            <div className="relative w-[80%] h-[90%] flex justify-between border-[0.3vw] rounded-[0.6vw] border-white bg-sky-50 overflow-y-auto">
+            <div className="relative w-[80%] h-[90%] flex justify-between border-[0.3vw] rounded-[0.6vw] border-white color-bg-sublight overflow-y-auto">
                 <div className="w-[15%]">
-                    {/* <p className="w-[80%] mx-auto my-[1vw] px-[1vw] py-[1.2vw] text-[1.2vw] border-[0.2vw] border-white bg-sky-400 text-white rounded-[0.6vw] hover:color-bg-main cursor-pointer">
+                    {/* <p className="w-[80%] mx-auto my-[1vw] px-[1vw] py-[1.2vw] text-[1.2vw] border-[0.2vw] border-white color-bg-main text-white rounded-[0.6vw] hover:color-bg-subbold cursor-pointer">
                         빠른시작
                     </p> */}
                     <p
-                        className="w-[80%] mx-auto my-[1vw] px-[0.6vw] py-[1.2vw] text-[1.1vw] border-[0.2vw] border-white bg-sky-400 text-white rounded-[0.6vw] hover:color-bg-main cursor-pointer"
+                        className="w-[80%] mx-auto my-[1vw] px-[0.6vw] py-[1.2vw] text-[1.1vw] border-[0.2vw] border-white color-bg-main text-white rounded-[0.6vw] hover:color-bg-subbold cursor-pointer"
                         onClick={() => {
                             goChannel();
                         }}
@@ -205,7 +210,7 @@ export default function LobbyPage() {
                         ← 채널선택
                     </p>
                     <p
-                        className="w-[80%] mx-auto my-[1vw] px-[1vw] py-[1.2vw] text-[1.1vw] border-[0.2vw] border-white bg-sky-400 text-white rounded-[0.6vw] hover:color-bg-main cursor-pointer"
+                        className="w-[80%] mx-auto my-[1vw] px-[1vw] py-[1.2vw] text-[1.1vw] border-[0.2vw] border-white color-bg-main text-white rounded-[0.6vw] hover:color-bg-subbold cursor-pointer"
                         onClick={() => {
                             changeMakeRoomFlag();
                         }}
@@ -213,7 +218,7 @@ export default function LobbyPage() {
                         방 만들기
                     </p>
                     {/* <p
-                        className="w-[80%] mx-auto my-[1vw] px-[1vw] py-[1.2vw] text-[1.2vw] border-[0.2vw] border-white bg-sky-400 text-white rounded-[0.6vw] hover:color-bg-main cursor-pointer"
+                        className="w-[80%] mx-auto my-[1vw] px-[1vw] py-[1.2vw] text-[1.2vw] border-[0.2vw] border-white color-bg-main text-white rounded-[0.6vw] hover:color-bg-subbold cursor-pointer"
                         onClick={() => {
                             changeSearchRoomFlag();
                         }}
@@ -227,38 +232,53 @@ export default function LobbyPage() {
                             return (
                                 <div
                                     key={'public-room-' + index}
-                                    className="w-[45%] h-[20%] px-[1vw] my-[0.6vw] mx-[0.4vw] flex justify-between items-center border-[0.3vw] rounded-[0.6vw] border-white bg-sky-400 text-white cursor-pointer hover:bg-sky-500 "
+                                    className="w-[45%] h-[25%] px-[1vw] my-[0.6vw] mx-[0.4vw] flex justify-between items-center border-[0.3vw] rounded-[0.6vw] border-white color-bg-main text-white cursor-pointer hover:color-bg-subbold "
                                     onClick={() => {
                                         checkPublicRoom(item.roomId);
                                     }}
                                 >
-                                    <div className="text-[1.8vw] flex items-center">
-                                        <p>
-                                            {index}.{item.roomTitle}
-                                        </p>
-                                        {item.isPublic ? (
-                                            <p className="mx-[1vw] text-[1vw]">
-                                                공개
-                                            </p>
-                                        ) : (
-                                            <p className="mx-[1vw] text-[1vw]">
-                                                비공개
-                                            </p>
-                                        )}
+                                    <div className="w-[25%] h-[70%] bg-white rounded-[1vw]">
+                                        <img
+                                            className="w-full h-full"
+                                            src={RichMap}
+                                        ></img>
                                     </div>
-                                    <div className="flex flex-col">
-                                        <p className="text-[1.6vw]">
-                                            {item.roomPlayers.length}/12
-                                        </p>
-                                        {item.roomState === 0 ? (
-                                            <p className="text-[1.6vw] text-white">
-                                                대기중
+                                    <div className="w-[70%] h-[70%] mx-[1vw] flex flex-col justify-between">
+                                        <div className="bg-white color-text-black rounded-[0.6vw] px-[0.4vw] py-[0.4vw]">
+                                            <div className="text-[1.3vw] flex items-center justify-between ">
+                                                <p className="whitespace-nowrap overflow-hidden overflow-ellipsis">
+                                                    {index + 1}.{item.roomTitle}
+                                                </p>
+                                                {item.isPublic ? (
+                                                    <></>
+                                                ) : (
+                                                    <img
+                                                        className="w-[10%]"
+                                                        src={iconLock}
+                                                        alt=""
+                                                    />
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        <div className="flex justify-between items-center">
+                                            {item.roomState === 0 ? (
+                                                <img
+                                                    src={textWait}
+                                                    className="w-[30%]"
+                                                    alt=""
+                                                />
+                                            ) : (
+                                                <img
+                                                    src={textGame}
+                                                    className="w-[35%]"
+                                                    alt=""
+                                                />
+                                            )}
+                                            <p className="text-[1.6vw] color-text-black">
+                                                {item.roomPlayers.length}/12
                                             </p>
-                                        ) : (
-                                            <p className="text-[1.6vw] text-red-600">
-                                                게임중
-                                            </p>
-                                        )}
+                                        </div>
                                     </div>
                                 </div>
                             );
@@ -266,38 +286,53 @@ export default function LobbyPage() {
                             return (
                                 <div
                                     key={'public-room-' + index}
-                                    className="w-[45%] h-[20%] px-[1vw] my-[0.6vw] mx-[0.4vw] flex justify-between items-center border-[0.3vw] rounded-[0.6vw] border-white bg-sky-400 text-white cursor-pointer hover:bg-sky-500 "
+                                    className="w-[45%] h-[25%] px-[1vw] my-[0.6vw] mx-[0.4vw] flex justify-between items-center border-[0.3vw] rounded-[0.6vw] border-white color-bg-main text-white cursor-pointer hover:color-bg-subbold "
                                     onClick={() => {
                                         checkPrivateRoom(item.roomId);
                                     }}
                                 >
-                                    <div className="text-[1.8vw] flex items-center">
-                                        <p>
-                                            {index}.{item.roomTitle}
-                                        </p>
-                                        {item.isPublic ? (
-                                            <p className="mx-[1vw] text-[1vw]">
-                                                공개
-                                            </p>
-                                        ) : (
-                                            <p className="mx-[1vw] text-[1vw]">
-                                                비공개
-                                            </p>
-                                        )}
+                                    <div className="w-[25%] h-[70%] bg-white rounded-[1vw]">
+                                        <img
+                                            className="w-full h-full"
+                                            src={RichMap}
+                                        ></img>
                                     </div>
-                                    <div className="flex flex-col">
-                                        <p className="text-[1.6vw]">
-                                            {item.roomPlayers.length}/6
-                                        </p>
-                                        {item.roomState === 0 ? (
-                                            <p className="text-[1.6vw] text-white">
-                                                대기중
+                                    <div className="w-[70%] h-[70%] mx-[1vw] flex flex-col justify-between">
+                                        <div className="bg-white color-text-black rounded-[0.6vw] px-[0.4vw] py-[0.4vw]">
+                                            <div className="text-[1.5vw] flex items-center justify-between">
+                                                <p>
+                                                    {index + 1}.{item.roomTitle}
+                                                </p>
+                                                {item.isPublic ? (
+                                                    <></>
+                                                ) : (
+                                                    <img
+                                                        className="w-[10%]"
+                                                        src={iconLock}
+                                                        alt=""
+                                                    />
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        <div className="flex justify-between items-center">
+                                            {item.roomState === 0 ? (
+                                                <img
+                                                    src={textWait}
+                                                    className="w-[30%]"
+                                                    alt=""
+                                                />
+                                            ) : (
+                                                <img
+                                                    src={textGame}
+                                                    className="w-[35%]"
+                                                    alt=""
+                                                />
+                                            )}
+                                            <p className="text-[1.6vw] color-text-black">
+                                                {item.roomPlayers.length}/12
                                             </p>
-                                        ) : (
-                                            <p className="text-[1.6vw] text-red-600">
-                                                게임중
-                                            </p>
-                                        )}
+                                        </div>
                                     </div>
                                 </div>
                             );
@@ -306,7 +341,7 @@ export default function LobbyPage() {
                 </div>
             </div>
             {makeRoomFlag ? (
-                <div className="absolute w-[40%]  flex flex-col items-center justify-between border-[0.3vw] rounded-[0.6vw] border-white bg-sky-400 text-white overflow-y-auto">
+                <div className="absolute w-[40%]  flex flex-col items-center justify-between border-[0.3vw] rounded-[0.6vw] border-white color-bg-main text-white overflow-y-auto">
                     <div className="w-full flex flex-col items-center">
                         <p className="text-[1.8vw] my-[1vw]">방 만들기</p>
                         <div className="relative w-[90%] flex justify-start items-center my-[0.4vw]">
@@ -341,7 +376,7 @@ export default function LobbyPage() {
                             <p>비밀방</p>
                             <div
                                 className={`w-[1.4vw] h-[1.4vw] border-[0.2vw] mx-[0.4vw] color-border-main bg-white cursor-pointer ${
-                                    makeRoomIsPublic ? '' : 'color-bg-main'
+                                    makeRoomIsPublic ? '' : 'color-bg-subbold'
                                 }`}
                                 onClick={() => {
                                     setMakeRoomIsPublic(!makeRoomIsPublic);
@@ -352,7 +387,7 @@ export default function LobbyPage() {
 
                     <div className="relative w-[90%] flex justify-between items-center my-[1vw]">
                         <div
-                            className="w-[30%] h-full px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] border-white cursor-pointer hover:bg-sky-500 hover:text-white hover:border-sky-500"
+                            className="w-[30%] h-full px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] border-white cursor-pointer hover:color-bg-subbold hover:text-white hover:color-border-subbold"
                             onClick={() => {
                                 makeRoom();
                             }}
@@ -360,7 +395,7 @@ export default function LobbyPage() {
                             <p className="text-[1.4vw]">방 만들기</p>
                         </div>
                         <div
-                            className="w-[30%] h-full px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] border-white cursor-pointer hover:bg-sky-500 hover:text-white hover:border-sky-500"
+                            className="w-[30%] h-full px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] border-white cursor-pointer hover:color-bg-subbold hover:text-white hover:color-border-subbold"
                             onClick={() => {
                                 changeMakeRoomFlag();
                             }}
@@ -378,7 +413,7 @@ export default function LobbyPage() {
                     <div className="relative w-[90%] flex justify-start items-center my-[0.4vw]">
                         <p className="w-[40%] text-[1.6vw]">방 번호 : </p>
                         <input
-                            className="w-[60%] border-[0.2vw] border-black px-[1vw] py-[0.4vw] mx-[1vw]"
+                            className="w-[60%] border-[0.2vw] color-border-subbold px-[1vw] py-[0.4vw] mx-[1vw]"
                             type="text"
                             name=""
                             id=""
@@ -387,7 +422,7 @@ export default function LobbyPage() {
 
                     <div className="relative w-[90%] flex justify-between items-center my-[1vw]">
                         <p
-                            className="w-[40%] h-full px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] border-black cursor-pointer hover:bg-sky-500 hover:text-white hover:border-sky-500"
+                            className="w-[40%] h-full px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] color-border-subbold cursor-pointer hover:color-bg-subbold hover:text-white hover:color-border-subbold"
                             onClick={() => {
                                 changeSearchRoomFlag();
                             }}
@@ -395,7 +430,7 @@ export default function LobbyPage() {
                             <p className="text-[1.4vw]">방 입장하기</p>
                         </p>
                         <p
-                            className="w-[40%] h-full px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] border-black cursor-pointer hover:bg-sky-500 hover:text-white hover:border-sky-500"
+                            className="w-[40%] h-full px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] color-border-subbold cursor-pointer hover:color-bg-subbold hover:text-white hover:color-border-subbold"
                             onClick={() => {
                                 changeSearchRoomFlag();
                             }}
@@ -408,10 +443,10 @@ export default function LobbyPage() {
                 <></>
             )} */}
             {privateRoomFlag ? (
-                <div className="absolute w-[40%] h-[40%] flex flex-col items-center justify-center border-[0.3vw] rounded-[0.6vw] border-gray-950 bg-white overflow-y-auto">
+                <div className="absolute w-[40%] h-[40%] flex flex-col items-center justify-around border-[0.3vw] rounded-[0.6vw] border-white color-bg-main text-white overflow-y-auto">
                     <p className="text-[2vw]">비밀번호입력</p>
                     <input
-                        className="w-[80%] border-[0.2vw] border-black px-[1vw] py-[0.4vw] mx-[1vw]"
+                        className="w-[80%] border-[0.2vw] color-text-black color-border-subbold px-[1vw] py-[0.4vw] mx-[1vw]"
                         type="password"
                         name=""
                         id=""
@@ -422,7 +457,7 @@ export default function LobbyPage() {
                     />
                     <div className="relative w-[90%] flex justify-between items-center my-[1vw]">
                         <p
-                            className="w-[40%] h-full px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] border-black cursor-pointer hover:bg-sky-500 hover:text-white hover:border-sky-500"
+                            className="w-[40%] h-full px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] border-white cursor-pointer hover:color-bg-subbold hover:text-white hover:color-border-subbold"
                             onClick={() => {
                                 checkPrivateRoomAPI();
                             }}
@@ -430,7 +465,7 @@ export default function LobbyPage() {
                             <p className="text-[1.4vw]">방 입장하기</p>
                         </p>
                         <p
-                            className="w-[40%] h-full px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] border-black cursor-pointer hover:bg-sky-500 hover:text-white hover:border-sky-500"
+                            className="w-[40%] h-full px-[1vw] py-[1vw] border-[0.3vw] rounded-[0.6vw] border-white cursor-pointer hover:color-bg-subbold hover:text-white hover:color-border-subbold"
                             onClick={() => {
                                 closePrivateRoom();
                             }}
