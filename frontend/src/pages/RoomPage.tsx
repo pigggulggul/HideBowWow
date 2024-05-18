@@ -322,7 +322,9 @@ export default function RoomPage() {
             <div className="relative w-[80%] h-[90%] p-[0.6vw] flex justify-between border-[0.3vw] rounded-[0.6vw] border-white color-bg-sublight ">
                 <div className="w-[60%] h-full flex-col justify-center">
                     <div className="w-full h-[12%] flex justify-between items-center mx-auto my-[1vw] px-[1vw] py-[0.8vw] text-[1.2vw] border-[0.2vw] bg-white border-white rounded-[0.6vw] ">
-                        <p>{room?.roomTitle}</p>
+                        <p className="w-[80%] text-start whitespace-nowrap overflow-hidden overflow-ellipsis">
+                            {room?.roomTitle}
+                        </p>
                         {room?.roomAdmin === meName ? (
                             <p
                                 className="cursor-pointer"
@@ -346,8 +348,9 @@ export default function RoomPage() {
                                         style={
                                             item.nickname === meName
                                                 ? {
-                                                      borderColor: '2e2e2e',
-                                                      color: '2e2e2e',
+                                                      borderColor: '#2e2e2e',
+                                                      color: '#2e2e2e',
+                                                      backgroundColor: '#fff',
                                                   }
                                                 : {}
                                         }
