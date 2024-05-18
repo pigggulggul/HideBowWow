@@ -24,6 +24,7 @@ export function Carpet_1(props: ObjectSettingType) {
     ) as GLTFResult;
     const [ref] = useBox<THREE.Mesh>(() => ({
         args: [8.6, 5, 0.1],
+        type: "Static",
         mass: 0.1,
         position: props.position,
         rotation: props.rotation,
@@ -31,7 +32,7 @@ export function Carpet_1(props: ObjectSettingType) {
         angularFactor: [0, 0, 0], // 모든 축에 대해 회전 제한
     }));
     return (
-        <group dispose={null}>
+        <group position={[0,-0.3,0]} dispose={null}>
             <mesh
                 ref={ref}
                 geometry={nodes.Carpet_16.geometry}
