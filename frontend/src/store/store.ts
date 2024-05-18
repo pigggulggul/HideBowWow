@@ -6,7 +6,6 @@ import userSlice from './user-slice';
 const persistConfig = {
     key: 'root',
     storage,
-    blacklist: ['reduxflag'],
 };
 
 const rootSlice = combineReducers({
