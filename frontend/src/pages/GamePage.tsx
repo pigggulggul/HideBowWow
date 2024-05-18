@@ -660,6 +660,17 @@ export default function GamePage() {
                 <></>
             )}
 
+            {/* 관전 중 자막 */} 
+            {meInfo.isDead && !meInfo.isSeeker &&  currentRoom.roomState === 3 ? (
+                <div className="absolute flex flex-col bottom-20 justify-center">
+                    <div className="flex justify-center items-center text-[2vw]"> 
+                        <p className="mx-[2vw]">당신은 술래에게 잡혔습니다!</p>  
+                    </div>
+                </div>
+            ) : (
+                <></>
+            )}
+
             {shot ? (
                 <div className="absolute w-full h-full bg-red-400 opacity-35"></div>
             ) : (

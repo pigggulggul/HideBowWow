@@ -19,6 +19,7 @@ import { useSelector } from 'react-redux';
 import { GLTF, SkeletonUtils } from 'three-stdlib';
 import {
     removeCollideObjectState, 
+    cameraPositionState,
 } from '../../../../../../store/user-slice';
 import { store } from '../../../../../../store/store';
 
@@ -108,6 +109,9 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     const mapState = useSelector(
         (state: any) => state.reduxFlag.userSlice.mapSize
     );
+    const myCameraPosition = useSelector(
+        (state: any) => state.reduxFlag.userSlice.cameraPosition
+    );
 
     const stompClient = StompClient.getInstance();
 
@@ -115,7 +119,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
     const playerRef = useRef<PlayerRef>(null);
     const nicknameRef = useRef<Group>(null);
     const prevPosition = useRef<Vector3 | null>(null);
-    // const isFirstFrame = useRef(true);
+    const isFirstFrame = useRef(true);
     const observerRef = useRef<Observer | null>(null);
     const accumulatedTimeRef = useRef(0.0);
     const callsInLastSecondRef = useRef(callsInLastSecond);
@@ -348,12 +352,12 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
 
     // Frame
     useFrame(({ camera, clock }) => {
-        // if (isFirstFrame.current) {
-        //     isFirstFrame.current = false;
-        //     prevPosition.current = playerRef.current
-        //         ? playerRef.current.position.clone()
-        //         : null; // 처음 프레임에만 이전 포지션 초기화
-        // }
+        if (isFirstFrame.current) {
+            isFirstFrame.current = false;
+            prevPosition.current = playerRef.current
+                ? playerRef.current.position.clone()
+                : null; // 처음 프레임에만 이전 포지션 초기화
+        }
 
         if (!player || !playerRef.current) return;
 
@@ -740,13 +744,16 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                 }
             }  
         } 
-         
+        // if(meInfo.nickname === playerNickname) {
+        //     store.dispatch(cameraPositionState(camera.position.clone()))
+        // }
         if (nicknameRef.current) {
             nicknameRef.current.position.set(
                 playerRef.current.position.x,
                 playerRef.current.position.y + 3,
                 playerRef.current.position.z
-            );
+            ); 
+            // nicknameRef.current.lookAt(myCameraPosition);
             nicknameRef.current.lookAt(camera.position);
         }
     });
