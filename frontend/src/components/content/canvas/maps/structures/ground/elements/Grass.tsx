@@ -10,7 +10,7 @@ import { GLTF } from 'three-stdlib';
 import { ObjectSettingType } from '../../../../../../../types/GameType';
 
 import { useBox } from '@react-three/cannon';
-
+import React from 'react';
 type GLTFResult = GLTF & {
     nodes: {
         Grass_Grass_Green_0: THREE.Mesh;
@@ -20,7 +20,7 @@ type GLTFResult = GLTF & {
     };
 };
 
-export function Grass(props: ObjectSettingType) {
+function GrassComponent(props: ObjectSettingType) {
     const { nodes, materials } = useGLTF('/models/object/Grass.glb') as GLTFResult;
     const [ref] = useBox<THREE.Mesh>(() => ({
         args: [0.5, 0.5, 0.5],
@@ -44,3 +44,13 @@ export function Grass(props: ObjectSettingType) {
 }
 
 useGLTF.preload('/models/object/Grass.glb');
+
+function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
+    return (
+        prevProps.position[0] === nextProps.position[0] &&
+        prevProps.position[1] === nextProps.position[1] &&
+        prevProps.position[2] === nextProps.position[2]
+    );
+}
+
+export const Grass = React.memo(GrassComponent, areEqual);

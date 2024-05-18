@@ -10,7 +10,7 @@ import { GLTF } from 'three-stdlib';
 import { ObjectSettingType } from '../../../../../../../types/GameType';
 
 import { useBox } from '@react-three/cannon';
-
+import React from 'react';
 type GLTFResult = GLTF & {
     nodes: {
         Wheelbarrow_Brown_4_0: THREE.Mesh;
@@ -22,7 +22,7 @@ type GLTFResult = GLTF & {
     };
 };
 
-export function Wheelbarrow(props: ObjectSettingType) {
+function WheelbarrowComponent(props: ObjectSettingType) {
     const { nodes, materials } = useGLTF(
         '/models/object/Wheelbarrow.glb'
     ) as GLTFResult;
@@ -49,7 +49,7 @@ export function Wheelbarrow(props: ObjectSettingType) {
                     material={materials.Brown_4}
                     position={props.position}
                     rotation={props.rotation}
-                    scale={[2,2,2]}
+                    scale={[2, 2, 2]}
                 />
                 <mesh
                     ref={ref}
@@ -57,7 +57,7 @@ export function Wheelbarrow(props: ObjectSettingType) {
                     material={materials.Brown}
                     position={props.position}
                     rotation={props.rotation}
-                    scale={[2,2,2]}
+                    scale={[2, 2, 2]}
                 />
             </group>
         </group>
@@ -65,3 +65,13 @@ export function Wheelbarrow(props: ObjectSettingType) {
 }
 
 useGLTF.preload('/models/object/Wheelbarrow.glb');
+
+function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
+    return (
+        prevProps.position[0] === nextProps.position[0] &&
+        prevProps.position[1] === nextProps.position[1] &&
+        prevProps.position[2] === nextProps.position[2]
+    );
+}
+
+export const Wheelbarrow = React.memo(WheelbarrowComponent, areEqual);

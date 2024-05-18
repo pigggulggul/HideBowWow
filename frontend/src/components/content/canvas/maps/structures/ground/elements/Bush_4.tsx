@@ -8,6 +8,7 @@ import { useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
 import { ObjectSettingType } from "../../../../../../../types/GameType";
 import { useBox } from "@react-three/cannon";
+import React from 'react';
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -20,7 +21,7 @@ type GLTFResult = GLTF & {
   };
 };
 
-export function Bush_4(props: ObjectSettingType) {
+function Bush_4Component(props: ObjectSettingType) {
   const { nodes, materials } = useGLTF(
     "/models/object/Bush_4.glb"
   ) as GLTFResult;
@@ -55,3 +56,13 @@ export function Bush_4(props: ObjectSettingType) {
 }
 
 useGLTF.preload("/models/object/Bush_4.glb");
+
+function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
+  return (
+      prevProps.position[0] === nextProps.position[0] &&
+      prevProps.position[1] === nextProps.position[1] &&
+      prevProps.position[2] === nextProps.position[2]
+  );
+}
+
+export const Bush_4 = React.memo(Bush_4Component, areEqual);

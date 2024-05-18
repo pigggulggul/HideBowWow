@@ -36,6 +36,7 @@ import keyLeft from '../assets/images/icon/key_arrowL.png';
 import keySpace from '../assets/images/icon/key_space.png';
 import keyEnter from '../assets/images/icon/key_Enter.png';
 import ingameMusic from '../assets/bgm/ingame_music.mp3';
+import hurryUpMusic from '../assets/bgm/ingame_music_fast.mp3';
 import RichRoomInfo from '../json/RichRoomInfo.json';
 import FarmInfo from '../json/FarmInfo.json';
 
@@ -73,7 +74,7 @@ export default function GamePage() {
     const [microphone, setMicrophone] = useState<any>();
 
     const [playing, setPlaying] = useState<boolean>(false);
-    const [audio] = useState(new Audio(ingameMusic));
+    const [audio, setAudio] = useState(new Audio(ingameMusic));
 
     const [toggleChat, setToggleChat] = useState<boolean>(false);
     const [roundStart, setRoundStart] = useState<boolean>(false);
@@ -81,6 +82,7 @@ export default function GamePage() {
     const [chatContent, setChatContent] = useState<string>('');
     const [thumbnailInfo, setThumbnailInfo] =
         useState<ThumbnailType[]>(RichRoomInfo);
+    const [changeMusicFlag, setChangeMusicFlag] = useState<boolean>(false);
     //공격
     const [shot, setShot] = useState<boolean>(false);
 
@@ -120,6 +122,8 @@ export default function GamePage() {
                 state: currentRoom.roomId,
             });
         } else if (currentRoom.roomState === 3 && !roundStart) {
+            setChangeMusicFlag(false);
+            changeMusic(ingameMusic);
             startRound();
         } else if (currentRoom.roomState === 1) {
             dispatch(observserModeState(true));
@@ -138,6 +142,24 @@ export default function GamePage() {
             setHiderNum(hider);
         });
     }, [currentRoom.roomPlayers]);
+    useEffect(() => {
+        if (
+            currentRoom.roomState === 2 &&
+            currentRoom.roomTime <= 10 &&
+            !changeMusicFlag
+        ) {
+            setChangeMusicFlag(true);
+            changeMusic(hurryUpMusic);
+        }
+        if (
+            currentRoom.roomState === 3 &&
+            currentRoom.roomTime <= 30 &&
+            !changeMusicFlag
+        ) {
+            setChangeMusicFlag(true);
+            changeMusic(hurryUpMusic);
+        }
+    }, [currentRoom.roomTime]);
     useEffect(() => {
         if (meInfo) {
             if (meInfo.isSeeker) {
@@ -290,7 +312,22 @@ export default function GamePage() {
         setRoundStart(true);
         setTimeout(() => {
             setRoundStart(false);
-        }, 5000); // 0.5초 후에 isRed 상태를 false로 변경
+        }, 4000); // 0.5초 후에 isRed 상태를 false로 변경
+    };
+    const changeMusic = (newMusic: string) => {
+        // 기존 Audio 객체 정리
+        cleanupAudio(audio);
+
+        // 새로운 Audio 객체 생성 및 설정
+        setAudio(new Audio(newMusic));
+    };
+
+    const cleanupAudio = (audioInstance: HTMLAudioElement) => {
+        if (audioInstance) {
+            audioInstance.pause();
+            audioInstance.src = '';
+            audioInstance.load();
+        }
     };
     // const closeSetting = () => {
     //     setToggleSetting(false);
@@ -646,8 +683,12 @@ export default function GamePage() {
                 <></>
             )}
 
-            {/* 관전 중 자막 */} 
-            {!isObserver && observerState && !meInfo.isSeeker && !meInfo.isDead && (currentRoom.roomState === 2 || currentRoom.roomState === 3)? (
+            {/* 관전 중 자막 */}
+            {!isObserver &&
+            observerState &&
+            !meInfo.isSeeker &&
+            !meInfo.isDead &&
+            (currentRoom.roomState === 2 || currentRoom.roomState === 3) ? (
                 <div className="absolute flex flex-col bottom-20 justify-center">
                     <div className="flex justify-center items-center text-[2vw]">
                         <img className="px-[0.2vw]" src={keyLeft} alt="" />

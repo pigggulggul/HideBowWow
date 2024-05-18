@@ -7,7 +7,7 @@ import * as THREE from 'three';
 import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import { ObjectSettingType } from '../../../../../../../types/GameType';
-
+import React from 'react';
 type GLTFResult = GLTF & {
     nodes: {
         Table_11: THREE.Mesh;
@@ -17,7 +17,7 @@ type GLTFResult = GLTF & {
     };
 };
 
-export function Table_purple(props: ObjectSettingType) {
+function Table_purpleComponent(props: ObjectSettingType) {
     const { nodes, materials } = useGLTF(
         '/models/object/Table_purple.glb'
     ) as GLTFResult;
@@ -35,3 +35,13 @@ export function Table_purple(props: ObjectSettingType) {
 }
 
 useGLTF.preload('/models/object/Table_purple.glb');
+
+function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
+    return (
+        prevProps.position[0] === nextProps.position[0] &&
+        prevProps.position[1] === nextProps.position[1] &&
+        prevProps.position[2] === nextProps.position[2]
+    );
+}
+
+export const Table_purple = React.memo(Table_purpleComponent, areEqual);

@@ -8,7 +8,7 @@ import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import { useBox } from '@react-three/cannon';
 import { ObjectSettingType } from '../../../../../../../types/GameType';
-
+import React from 'react';
 type GLTFResult = GLTF & {
     nodes: {
         Floor_4: THREE.Mesh;
@@ -18,7 +18,7 @@ type GLTFResult = GLTF & {
     };
 };
 
-export function Floor_navy(props: ObjectSettingType) {
+function Floor_navyComponent(props: ObjectSettingType) {
     const { nodes, materials } = useGLTF(
         '/models/object/Floor_navy.glb'
     ) as GLTFResult;
@@ -48,3 +48,13 @@ export function Floor_navy(props: ObjectSettingType) {
 }
 
 useGLTF.preload('/models/object/Floor_navy.glb');
+
+function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
+    return (
+        prevProps.position[0] === nextProps.position[0] &&
+        prevProps.position[1] === nextProps.position[1] &&
+        prevProps.position[2] === nextProps.position[2]
+    );
+}
+
+export const Floor_navy = React.memo(Floor_navyComponent, areEqual);

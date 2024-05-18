@@ -9,6 +9,7 @@ import { GLTF } from "three-stdlib";
 import { ObjectSettingType } from "../../../../../../../types/GameType";
 
 import { useBox } from "@react-three/cannon";
+import React from 'react';
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -23,7 +24,7 @@ type GLTFResult = GLTF & {
   };
 };
 
-export function Barn(props: ObjectSettingType) {
+function BarnComponent(props: ObjectSettingType) {
   const { nodes, materials } = useGLTF("/models/object/Barn.glb") as GLTFResult;
   const [ref] = useBox<THREE.Mesh>(() => ({
     args: [6, 10, 11],
@@ -63,3 +64,13 @@ export function Barn(props: ObjectSettingType) {
 }
 
 useGLTF.preload("/models/object/Barn.glb");
+
+function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
+  return (
+      prevProps.position[0] === nextProps.position[0] &&
+      prevProps.position[1] === nextProps.position[1] &&
+      prevProps.position[2] === nextProps.position[2]
+  );
+}
+
+export const Barn = React.memo(BarnComponent, areEqual);

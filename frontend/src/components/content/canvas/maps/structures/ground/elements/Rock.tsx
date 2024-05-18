@@ -9,7 +9,7 @@ import { GLTF } from 'three-stdlib';
 import { ObjectSettingType } from '../../../../../../../types/GameType';
 
 import { useBox } from '@react-three/cannon';
-
+import React from 'react';
 type GLTFResult = GLTF & {
     nodes: {
         Rock_Dark_Gray_0: THREE.Mesh;
@@ -19,7 +19,7 @@ type GLTFResult = GLTF & {
     };
 };
 
-export function Rock(props: ObjectSettingType) {
+function RockComponent(props: ObjectSettingType) {
     const { nodes, materials } = useGLTF(
         '/models/object/Rock.glb'
     ) as GLTFResult;
@@ -51,3 +51,13 @@ export function Rock(props: ObjectSettingType) {
 }
 
 useGLTF.preload('/models/object/Rock.glb');
+
+function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
+    return (
+        prevProps.position[0] === nextProps.position[0] &&
+        prevProps.position[1] === nextProps.position[1] &&
+        prevProps.position[2] === nextProps.position[2]
+    );
+}
+
+export const Rock = React.memo(RockComponent, areEqual);
