@@ -58,14 +58,14 @@ export default function SelectChannelPage() {
             }}
         >
             <div className="w-[80%] h-[90%] py-[1.4vw] flex flex-col items-center border-[0.3vw] rounded-[0.6vw] border-white bg-gray-400 bg-opacity-30 overflow-y-auto">
-                <img src={textChannelSelect} alt="" />
+                <img className="w-[20%]" src={textChannelSelect} alt="" />
                 <div className="w-full h-full flex flex-wrap justify-between content-start px-[8vw] overflow-y-auto">
                     {channelCount.map((item: number, index: number) => {
                         return (
                             <Link
                                 key={'channel :' + index}
                                 to={'/lobby'}
-                                className="w-[40%] h-[20%] px-[1.6vw] my-[1vw] text-white flex justify-between items-center border-[0.3vw] rounded-[0.6vw] border-white bg-sky-400 cursor-pointer hover:bg-sky-500 "
+                                className="w-[40%] h-[20%] px-[1.6vw] my-[1vw] text-white flex justify-between items-center border-[0.3vw] rounded-[0.6vw] border-white color-bg-main cursor-pointer hover:color-bg-subbold "
                                 onClick={() => {
                                     goChannel(index + 1);
                                 }}
