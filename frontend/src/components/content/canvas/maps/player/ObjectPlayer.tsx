@@ -52,7 +52,7 @@ export function ObjectPlayer({
         material,
         scale,
         initialHeight,
-        initialRotation,
+        // initialRotation,
     } = useObject({
         player,
         position,
