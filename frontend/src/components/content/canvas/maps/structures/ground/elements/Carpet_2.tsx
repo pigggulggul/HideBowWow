@@ -7,7 +7,7 @@ import * as THREE from 'three';
 import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import { ObjectSettingType } from '../../../../../../../types/GameType';
-
+import React from 'react';
 type GLTFResult = GLTF & {
     nodes: {
         Carpet_8: THREE.Mesh;
@@ -17,7 +17,7 @@ type GLTFResult = GLTF & {
     };
 };
 
-export function Carpet_2(props: ObjectSettingType) {
+function Carpet_2Component(props: ObjectSettingType) {
     const { nodes, materials } = useGLTF(
         '/models/object/Carpet_2.glb'
     ) as GLTFResult;
@@ -36,3 +36,13 @@ export function Carpet_2(props: ObjectSettingType) {
 }
 
 useGLTF.preload('/models/object/Carpet_2.glb');
+
+function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
+    return (
+        prevProps.position[0] === nextProps.position[0] &&
+        prevProps.position[1] === nextProps.position[1] &&
+        prevProps.position[2] === nextProps.position[2]
+    );
+  }
+  
+  export const Carpet_2 = React.memo(Carpet_2Component, areEqual);

@@ -10,6 +10,7 @@ import { GLTF } from 'three-stdlib';
 import { ObjectSettingType } from '../../../../../../../types/GameType';
 
 import { useBox } from '@react-three/cannon';
+import React from 'react';
 type GLTFResult = GLTF & {
     nodes: {
         Tree_2_Brown_2_0: THREE.Mesh;
@@ -23,7 +24,7 @@ type GLTFResult = GLTF & {
     };
 };
 
-export function Tree_2(props: ObjectSettingType) {
+function Tree_2Component(props: ObjectSettingType) {
     const { nodes, materials } = useGLTF(
         '/models/object/Tree_2.glb'
     ) as GLTFResult;
@@ -71,3 +72,13 @@ export function Tree_2(props: ObjectSettingType) {
 }
 
 useGLTF.preload('/models/object/Tree_2.glb');
+
+function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
+    return (
+      prevProps.position[0] === nextProps.position[0] &&
+      prevProps.position[1] === nextProps.position[1] &&
+      prevProps.position[2] === nextProps.position[2]
+    );
+  } 
+
+export default React.memo(Tree_2Component, areEqual);

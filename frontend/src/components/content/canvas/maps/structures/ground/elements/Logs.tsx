@@ -10,7 +10,7 @@ import { GLTF } from "three-stdlib";
 import { ObjectSettingType } from "../../../../../../../types/GameType";
 
 import { useBox } from "@react-three/cannon";
-
+import React from "react";
 type GLTFResult = GLTF & {
   nodes: {
     Logs_Brown_3_0: THREE.Mesh;
@@ -22,7 +22,7 @@ type GLTFResult = GLTF & {
   };
 };
 
-export function Logs(props: ObjectSettingType) {
+function LogsComponent(props: ObjectSettingType) {
   const { nodes, materials } = useGLTF("/models/object/Logs.glb") as GLTFResult;
   const [ref] = useBox<THREE.Mesh>(() => ({
     args: [1.8, 3.4, 2.3],
@@ -60,3 +60,13 @@ export function Logs(props: ObjectSettingType) {
 }
 
 useGLTF.preload("/models/object/Logs.glb");
+
+function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
+  return (
+    prevProps.position[0] === nextProps.position[0] &&
+    prevProps.position[1] === nextProps.position[1] &&
+    prevProps.position[2] === nextProps.position[2]
+  );
+} 
+
+export default React.memo(Light_pole_2Component, areEqual);

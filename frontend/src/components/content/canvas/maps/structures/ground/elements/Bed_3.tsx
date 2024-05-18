@@ -8,7 +8,7 @@ import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import { ObjectSettingType } from '../../../../../../../types/GameType';
 import { useBox } from '@react-three/cannon';
-
+import React from 'react';
 type GLTFResult = GLTF & {
     nodes: {
         Bed_3: THREE.Mesh;
@@ -18,7 +18,7 @@ type GLTFResult = GLTF & {
     };
 };
 
-export function Bed_3(props: ObjectSettingType) {
+function Bed_3Component(props: ObjectSettingType) {
     const { nodes, materials } = useGLTF(
         '/models/object/Bed_3.glb'
     ) as GLTFResult;
@@ -45,3 +45,13 @@ export function Bed_3(props: ObjectSettingType) {
 }
 
 useGLTF.preload('/models/object/Bed_3.glb');
+
+function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
+    return (
+        prevProps.position[0] === nextProps.position[0] &&
+        prevProps.position[1] === nextProps.position[1] &&
+        prevProps.position[2] === nextProps.position[2]
+    );
+  }
+  
+export const Bed_3 = React.memo(Bed_3Component, areEqual);

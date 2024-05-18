@@ -10,7 +10,7 @@ import { GLTF } from "three-stdlib";
 import { ObjectSettingType } from "../../../../../../../types/GameType";
 
 import { useBox } from "@react-three/cannon";
-
+import React from "react";
 type GLTFResult = GLTF & {
   nodes: {
     House_7_Blue_0: THREE.Mesh;
@@ -36,7 +36,7 @@ type GLTFResult = GLTF & {
   };
 };
 
-export function House_7(props: ObjectSettingType) {
+function House_7Component(props: ObjectSettingType) {
   const { nodes, materials } = useGLTF(
     "/models/object/House_7.glb"
   ) as GLTFResult;
@@ -126,3 +126,13 @@ export function House_7(props: ObjectSettingType) {
 }
 
 useGLTF.preload("/models/object/House_7.glb");
+
+function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
+  return (
+    prevProps.position[0] === nextProps.position[0] &&
+    prevProps.position[1] === nextProps.position[1] &&
+    prevProps.position[2] === nextProps.position[2]
+  );
+}   
+
+export default React.memo(House_7Component, areEqual);

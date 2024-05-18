@@ -8,6 +8,7 @@ import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import { ObjectSettingType } from '../../../../../../../types/GameType';
 import { useBox } from '@react-three/cannon';
+import React from 'react';
 
 type GLTFResult = GLTF & {
     nodes: {
@@ -18,7 +19,7 @@ type GLTFResult = GLTF & {
     };
 };
 
-export function Tv(props: ObjectSettingType) {
+function TvComponent(props: ObjectSettingType) {
     const { nodes, materials } = useGLTF('/models/object/Tv.glb') as GLTFResult;
     const [ref] = useBox<THREE.Mesh>(() => ({
         args: [3, 1, 2],
@@ -43,3 +44,14 @@ export function Tv(props: ObjectSettingType) {
 }
 
 useGLTF.preload('/models/object/Tv.glb');
+
+
+function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
+    return (
+        prevProps.position[0] === nextProps.position[0] &&
+        prevProps.position[1] === nextProps.position[1] &&
+        prevProps.position[2] === nextProps.position[2]
+    );
+}
+
+export const Tv = React.memo(TvComponent, areEqual);

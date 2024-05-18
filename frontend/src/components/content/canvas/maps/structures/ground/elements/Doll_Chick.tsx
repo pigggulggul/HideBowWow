@@ -8,6 +8,7 @@ import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 import { ObjectSettingType } from '../../../../../../../types/GameType';
 import { useBox } from '@react-three/cannon';
+import React from 'react';
 
 type GLTFResult = GLTF & {
     nodes: {
@@ -18,7 +19,7 @@ type GLTFResult = GLTF & {
     };
 };
 
-export function Doll_Chick(props: ObjectSettingType) {
+function Doll_ChickComponent(props: ObjectSettingType) {
     const { nodes, materials } = useGLTF(
         '/models/object/Doll_Chick.glb'
     ) as GLTFResult;
@@ -45,3 +46,13 @@ export function Doll_Chick(props: ObjectSettingType) {
 }
 
 useGLTF.preload('/models/object/Doll_Chick.glb');
+
+function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
+    return (
+        prevProps.position[0] === nextProps.position[0] &&
+        prevProps.position[1] === nextProps.position[1] &&
+        prevProps.position[2] === nextProps.position[2]
+    );
+  }
+  
+export const Doll_Chick= React.memo(Doll_ChickComponent, areEqual);
