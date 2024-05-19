@@ -152,6 +152,12 @@
 
 # ✨ 기술 스택 ✨
 # FrontEnd
+## Three js
+
+![](./assets/skills/threejs.png)
+
+> Three.js는 웹 브라우저에서 3차원 컴퓨터 그래픽스 애니메이션 응용을 만들고 표현하기 위해 사용되는 자바스크립트 라이브러리입니다. 바닐라 자바스크립트 만으로도 웹에서 3D를 구현할 수 있으며 "숨구멍"은 Three.js를 통해 렌더하며, 3D 객체를 생성하고, 조작하고, 애니메이션을 적용하고, 렌더링하는데 사용되었습니다.
+
 ## React
 <img src="./assets/skills/react-logo.png" width="150" height="150">
 
@@ -332,7 +338,7 @@ ELK 스택의 문제: 들어오는 데이터의 급증으로 인해 Elasticsearc
 
 ![](./assets/skills/architecture.png)
 
-# 기술 특이점
+# 🐝 팀원 소개 🐝
 
 | 이름 | 역할 | Git|
 |---|---|---|
