@@ -1,6 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import {
+    channelIndexState,
     collideObjectState,
     currentRoomState,
     meInfoState,
@@ -40,6 +41,7 @@ export default function MainPage() {
         })
     );
     dispatch(collideObjectState([]));
+    dispatch(channelIndexState(0));
 
     return (
         <section

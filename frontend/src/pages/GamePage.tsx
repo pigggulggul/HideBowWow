@@ -122,8 +122,6 @@ export default function GamePage() {
                 state: currentRoom.roomId,
             });
         } else if (currentRoom.roomState === 3 && !roundStart) {
-            setChangeMusicFlag(false);
-            changeMusic(ingameMusic);
             startRound();
         } else if (currentRoom.roomState === 1) {
             dispatch(observserModeState(true));
@@ -144,22 +142,18 @@ export default function GamePage() {
     }, [currentRoom.roomPlayers]);
     useEffect(() => {
         if (
-            currentRoom.roomState === 2 &&
-            currentRoom.roomTime <= 10 &&
-            !changeMusicFlag
-        ) {
-            setChangeMusicFlag(true);
-            changeMusic(hurryUpMusic);
-        }
-        if (
             currentRoom.roomState === 3 &&
             currentRoom.roomTime <= 30 &&
             !changeMusicFlag
         ) {
             setChangeMusicFlag(true);
-            changeMusic(hurryUpMusic);
         }
     }, [currentRoom.roomTime]);
+    useEffect(() => {
+        if (changeMusicFlag) {
+            changeMusic(hurryUpMusic);
+        }
+    }, [changeMusicFlag]);
     useEffect(() => {
         if (meInfo) {
             if (meInfo.isSeeker) {
