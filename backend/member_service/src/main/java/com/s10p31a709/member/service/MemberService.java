@@ -81,7 +81,7 @@ public class MemberService {
         member.setUpdatedTime(LocalDateTime.now());
     }
 
-    @Scheduled(fixedRate = 1000)
+    @Scheduled(fixedRate = 5000)
     public void checkConnectMember(){
         List<Member> list = memberRepository.findAll();
 
@@ -90,7 +90,7 @@ public class MemberService {
 
             LocalDateTime now = LocalDateTime.now();
             Duration duration = Duration.between(now, member.getUpdatedTime());
-            if (Math.abs(duration.getSeconds()) > 10){
+            if (Math.abs(duration.getSeconds()) > 75){
                 deleteGuest(member.getNickname());
                 log.info("heartbeat 시간만료: {}", member);
 
