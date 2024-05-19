@@ -1354,7 +1354,7 @@ export function BarElement() {
                 rotation={[Math.PI / 2, 0, 0]}
             />
             <LongTable_white
-                position={[-53, 1, 10]}
+                position={[-52.5, 1, 10]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
 
@@ -1389,20 +1389,20 @@ export function BarElement() {
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
             <Drawer_brown_3
-                position={[-53.4, 1.2, 20]}
+                position={[-52.8, 1.2, 20]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
 
             <Drawer_brown_3
-                position={[-53.4, 1.5, 26]}
+                position={[-52.8, 1.5, 26]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
             <Drawer_brown_4
-                position={[-53.4, 1.5, 29]}
+                position={[-52.8, 1.5, 29]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
             <Drawer_brown_5
-                position={[-53.4, 1.5, 32.5]}
+                position={[-52.8, 1.5, 32.5]}
                 rotation={[Math.PI / 2, 0, -Math.PI / 2]}
             />
 
