@@ -255,7 +255,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                 console.log('송신 프레임 :', callsInLastSecondRef.current / 3);
                 setCallsInLastSecond(0); // 85 ~ 95
                 if (callsInLastSecondRef.current > 150) {
-                    setDelay((preDelay) => preDelay + 0.00005);
+                    setDelay((preDelay) => preDelay + 0.00007);
                 } else if (callsInLastSecondRef.current > 95) {
                     setDelay((preDelay) => preDelay + 0.00001);
                     // console.log('딜레이 값을 올리겠습니다.');
@@ -479,7 +479,7 @@ export const useAnimal = ({ player, position, modelIndex }: PlayerInitType) => {
                 ) {
                     // lockPointer();
                     // 이동중
-                    moveVector.normalize().multiplyScalar(0.35); // 속도조절
+                    moveVector.normalize().multiplyScalar(0.2); // 속도조절
                     setIsWalking(true);
                     setAnimation('Walk');
                     // 캐릭터가 바라보는 방향으로 이동 벡터를 회전시킵니다.

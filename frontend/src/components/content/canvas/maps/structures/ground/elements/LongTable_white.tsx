@@ -24,7 +24,7 @@ function LongTable_whiteComponent(props: ObjectSettingType) {
         '/models/object/LongTable_white.glb'
     ) as GLTFResult;
     const [ref] = useBox<THREE.Mesh>(() => ({
-        args: [6, 4, 2],
+        args: [6, 3.3, 2],
         mass: 0.1,
         position: props.position,
         rotation: props.rotation,
@@ -53,6 +53,6 @@ function areEqual(prevProps: ObjectSettingType, nextProps: ObjectSettingType) {
         prevProps.position[1] === nextProps.position[1] &&
         prevProps.position[2] === nextProps.position[2]
     );
-  }
+}
 
 export const LongTable_white = React.memo(LongTable_whiteComponent, areEqual);

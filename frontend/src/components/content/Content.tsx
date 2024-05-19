@@ -178,8 +178,8 @@ export function Content() {
 
         if (roomState.roomMap === 'richRoom') {
             rerollChoice = [
-                Math.floor(Math.random() * 100),
-                Math.floor(Math.random() * 100),
+                Math.floor(Math.random() * 98 + 2),
+                Math.floor(Math.random() * 98 + 2),
                 Math.floor(99),
             ];
         } else if (roomState.roomMap === 'farm') {
@@ -190,9 +190,9 @@ export function Content() {
             ];
         } else {
             rerollChoice = [
-                Math.floor(Math.random() * 100),
-                Math.floor(Math.random() * 100),
-                Math.floor(Math.random() * 100),
+                Math.floor(Math.random() * 98 + 2),
+                Math.floor(Math.random() * 98 + 2),
+                Math.floor(Math.random() * 98 + 2),
             ];
         }
         // console.log('숫자 배정', randomChoice);
