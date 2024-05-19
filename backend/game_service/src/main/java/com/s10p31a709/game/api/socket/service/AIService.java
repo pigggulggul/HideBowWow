@@ -34,4 +34,28 @@ public class AIService {
         return list;
     }
 
+    public List<Player> demonstration(){
+        List<Player> list = new ArrayList<>();
+
+        Player com1 = new Player();
+        com1.setSelectedIndex(99);
+        com1.setNickname("Computer_"+new Random().nextInt(100000));
+        com1.setPosition(new Double[]{-24.701041635551533,4.92,32.43351354008555});
+        com1.setDirection(new Double[]{0.04158066243329759,0.0,-0.9991351502732791});
+        com1.setIsDead(false);
+        com1.setIsSeeker(false);
+        list.add(com1);
+
+        Player com2 = new Player();
+        com2.setSelectedIndex(30);
+        com2.setNickname("Computer_"+new Random().nextInt(100000));
+        com2.setPosition(new Double[]{33.45538077172444,0.92,5.997428140330845});
+        com2.setDirection(new Double[]{-0.9989515314916587,0.0,0.045780320340398604});
+        com2.setIsDead(false);
+        com2.setIsSeeker(false);
+        list.add(com2);
+
+        return list;
+    }
+
 }

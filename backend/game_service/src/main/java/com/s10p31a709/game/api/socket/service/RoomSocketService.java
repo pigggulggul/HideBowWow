@@ -113,6 +113,11 @@ public class RoomSocketService {
         if (room.getBotCnt() != null && !room.getBotCnt().equals(0)){
             log.info("botCnt: {}", room.getBotCnt());
             List<Player> list = aiService.hideLocationComputer(room.getBotCnt(), room.getRoomMap());
+            
+            // 시연시 지정된 봇2명 추가
+            if(room.getRoomTitle().startsWith("시연")){
+                list = aiService.demonstration();
+            }
             log.info("컴퓨터 추가! : {}", list);
             room.getRoomPlayers().addAll(list);
             log.info("players: {}", room.getRoomPlayers());
