@@ -18,7 +18,7 @@
 
 # 포팅 가이드라인
 
-이 문서는 `Zigeum` 서비스 `Front`, `Back`, `Infra`의 빌드 및 배포를 위한 문서입니다.
+이 문서는 `숨구멍` 서비스  `Infra`, `k8s`의 빌드 및 배포를 위한 문서입니다.
 
 # 프로젝트 버전 정보
 
@@ -32,13 +32,14 @@
 |          |               | aws-iam-authenticator | 1.29.0 |
 |          |               | awscli                | 2.2.47 |
 |          |               | argocd                | 2.1.3  |
-
-
+|          |               | helm                  | 3.7.0  |
+|          |               | cert-manager          | 1.9.1  |
 
 ---
 
 # EKS CLUSTER 구축
 ## kubectl 설치 
+- kubectl은 쿠버네티스 클러스터와 통신하기 위한 CLI 도구이다.
 ```bash
 curl -LO "https://dl.k8s.io/release/v1.29.0/bin/linux/amd64/kubectl"
 chmod +x ./kubectl
@@ -48,6 +49,7 @@ kubectl version --short --client
 ```
 
 ## IAM Authenticator 설치
+- IAM Authenticator는 AWS IAM을 사용하여 쿠버네티스 클러스터에 인증하는 도구이다.
 ```bash
 curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.14.6/2019-08-22/bin/linux/amd64/aws-iam-authenticator
 chmod +x ./aws-iam-authenticator
@@ -57,6 +59,7 @@ aws-iam-authenticator help
 ```
 
 ## awscli 설치
+- AWS CLI는 AWS 서비스와 상호 작용하기 위한 명령줄 도구이다.
 ```bash
 sudo apt-get update
 #sudo apt-get install awscli
@@ -72,12 +75,14 @@ sudo ./aws/install
 ```
 
 ## eksctl 설치
+- eksctl은 EKS 클러스터를 쉽게 생성하고 관리할 수 있는 도구이다.
 ```shell
 curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
 sudo mv /tmp/eksctl /usr/local/bin
 eksctl version
 ```
 ## kubeconfig 생성
+- AWS CLI를 사용하여 EKS 클러스터에 대한 kubeconfig 파일을 생성한다.
 ```shell
 IAM 사용자
 아이디 : k709manager
@@ -97,6 +102,7 @@ export KUBECONFIG=/home/ubuntu/.kube/config
 kubectl get svc
 ```
 ## EKS role, IAM 설정
+- EKS 클러스터를 생성하기 위한 IAM 역할을 생성하고, 워커 노드에 할당할 IAM 역할을 생성한다.
 ```shell
 cat > eks-cluster-role.json << EOF
 {
@@ -300,6 +306,7 @@ aws iam attach-role-policy --role-name eks-worker-role --policy-arn arn:aws:iam:
 ![](../assets/readme/potting/potting10.png)
 
 # Helm 설치
+- Helm은 쿠버네티스의 패키지 매니저로, 쿠버네티스 애플리케이션을 손쉽게 배포하고 관리할 수 있도록 도와준다.
 ```shell
 curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > get_helm.sh
 chmod 700 get_helm.sh
@@ -318,6 +325,7 @@ source <(helm completion bash)
 ```
 
 # HTTPS 인증 (CertManager)
+- cert-manager는 쿠버네티스 클러스터 내에서 인증기관에게 인증서를 만들어 줄 것을 요청하고, 인증기관의 challenge에 응답하는 역할을 수행한다.
 ## 적용 순서
 
 1.개인 dns 발행 (가비아 사용) → hidebowwow.site
@@ -406,6 +414,7 @@ kubectl get challenge
 ```
 이 다음에는 어떤 인증기관에다가 인증서 생성을 요청해야할지 정의하면 된다. `cert-manager`는 내부적으로 CRD 리소스인 `Issuer`를 사용하는데, 이 `Issuer`리소스가 바로 ‘어떻게 `cert-manager`가 TLS 인증서를 요청할지’를 정의하게 된다.
 # argocd 설치
+- ArgoCD는 GitOps를 지원하는 CD 도구로, GitOps는 Git을 단일 소스 오브 진실로 사용하여 애플리케이션의 배포 및 운영을 자동화하는 방법이다.
 ```shell
 sudo curl -sSL -o /usr/local/bin/argocd https://github.com/argoproj/argo-cd/releases/download/$VERSION/argocd-linux-amd64
 
@@ -430,6 +439,7 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 ![](../assets/readme/potting/potting13.png)
 
 # Nginx Ingress Controller 설치
+- Ingress Controller는 클러스터 외부에서 클러스터 내부로 트래픽을 전달하는 역할을 한다. Ingress Controller는 클러스터 외부에서 클러스터 내부로 트래픽을 전달하는 역할을 한다. Ingress Controller는 클러스터 외부에서 클러스터 내부로 트래픽을 전달하는 역할을 한다.
 ```shell
 helm upgrade --install ingress-nginx ingress-nginx \
   --repo https://kubernetes.github.io/ingress-nginx \
