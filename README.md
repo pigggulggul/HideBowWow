@@ -436,7 +436,20 @@ Kafka를 ELK 앞단에 추가함
 
 ELK 스택의 문제: 들어오는 데이터의 급증으로 인해 Elasticsearch가 용량 제한에 도달하면 데이터 손실 위험이 있음. Elasticsearch가 신속하게 데이터를 인덱싱할 수 없으면 새 데이터를 거부할 수 있음. 그러므로 Kafka와 같은 버퍼를 두어 Elasticsearch가 데이터를 처리할 준비가 될 때까지 데이터를 보관할 수 있는 중간 저장소가 역할을 하도록함
 ```
+## k6
+> k6는 오픈소스로 제공되는 성능 테스트 도구입니다.
+> 
+> k6를 사용하면 웹사이트나 API의 성능을 측정하고, 부하 테스트를 수행할 수 있습니다.
+> 
 
+### 적용
+<img src="./assets/skills/k6-logo.png" width="150" height="150">
+
+- **부하 테스트**
+![](./assets/skills/k6-test.png)
+    - 한 게임에 12명 쉬지않고 움직일 시 2분30초동안 서버로 약 17MB (95KB/s) 전송, 서버에서 유저들에게  133MB (737KB/s) 전송하는 부하가 발생
+    - 결과: <span style="color:red">**400명**</span>의 유저가 웹소켓 연결후 게임을 진행하면 EC2서버의 CPU 사용률이 90% 초과
+    - EC2 spec : c5.2xlarge - 4cpu, 16GB RAM
 # 🐴 서비스 아키텍처
 
 ![](./assets/skills/architecture.png)
