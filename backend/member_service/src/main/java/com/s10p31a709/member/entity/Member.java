@@ -10,7 +10,6 @@ import jakarta.persistence.Id;
 @ToString
 @Setter
 @Getter
-@Where(clause = "state in (0)")
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor

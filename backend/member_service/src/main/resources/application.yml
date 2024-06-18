@@ -1,20 +1,26 @@
 server:
   port: 8001
-  domain: http://jongbum.site
+#  domain: https://hidebowwow.site
+  domain: ${SERVER_DOMAIN:https://k10a709.p.ssafy.io}
   servlet:
-    contextPath: "/api/member-service/"
+    contextPath: "/api/member-service"
     encoding:
       charset: UTF-8
       enabled: true
       force: true
-
+  count: 4
 spring:
   application:
     name: member-service
   devtools:
     livereload:
       enabled: true
-  datasource:
+  datasource: 
+#    hikari:
+#      driver-class-name: org.mariadb.jdbc.Driver
+#      username: S10P31A709
+#      password: 2xAVwVzvO7
+#    url: jdbc:mariadb://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S10P31A709?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
     hikari:
       driver-class-name: org.mariadb.jdbc.Driver
       username: bum
@@ -27,6 +33,7 @@ spring:
       naming:
         implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
       ddl-auto: update
+      dialect: org.hibernate.dialect.MariaDBDialect
     properties:
       hibernate:
         default_batch_fetch_size: 1000
@@ -38,6 +45,7 @@ spring:
 logging:
   level:
     org:
-      springframework.web: DEBUG
-      hibernate.orm.jdbc.bind: TRACE
-    com.s10p31a709.member.aop: TRACE
+      springframework.web: INFO
+      hibernate.orm.jdbc.bind: INFO
+    com.s10p31a709.member.aop: INFO
+
