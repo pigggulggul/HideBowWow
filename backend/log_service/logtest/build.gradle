@@ -1,0 +1,45 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.2.5'
+	id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com.s10p31a709'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '17'
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// swagger
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+
+	// kafka 관련 설정
+	implementation 'org.springframework.kafka:spring-kafka'
+
+	// Kafka에 로그를 전송하기 위해 Logback에 Kafka Appender를 추가
+	implementation 'com.github.danielwegener:logback-kafka-appender:0.1.0'
+
+	// Logstash에서 처리할 수 있는 JSON 형식으로 로그 메시지를 인코딩
+	implementation 'net.logstash.logback:logstash-logback-encoder:6.2'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
