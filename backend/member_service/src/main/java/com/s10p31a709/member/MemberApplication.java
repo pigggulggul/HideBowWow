@@ -1,5 +1,6 @@
 package com.s10p31a709.member;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
@@ -20,15 +21,25 @@ public class MemberApplication {
 		SpringApplication.run(MemberApplication.class, args);
 	}
 
+
+	@Value("${server.domain}")
+	private String domain;
+
+	@Value("${server.port}")
+	private String port;
+
+	@Value("${server.servlet.contextPath}")
+	private String contextPath;
+
 	@Bean
 	public OpenAPI customOpenAPI() {
 		return new OpenAPI()
-				.addServersItem(new Server().url("http://jongbum.site:8001/api/member-service").description("종범 서버"))
-				.addServersItem(new Server().url("http://localhost:8001/api/member-service").description("로컬 서버"))
+				.addServersItem(new Server().url(domain+":"+port+contextPath).description("종범 서버"))
+				.addServersItem(new Server().url("http://localhost:"+port+contextPath).description("로컬 서버"))
 				.info(new Info()
 						.title("Member-Service")
 						.version("1.0")
-						.description("회원기능")
+						.description("회원 기능")
 						.contact(new Contact().name("김종범").email("")));
 	}
 

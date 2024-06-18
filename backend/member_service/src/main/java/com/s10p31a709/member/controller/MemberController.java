@@ -20,6 +20,12 @@ public class MemberController {
         return BaseResponse.success(200, "회원정보 반환 성공", memberService.getMember(nickname));
     }
 
+    @PostMapping("/guest")
+    @Operation(summary = "게스트 로그인", description = "nickname 을 보내주면 중복여부 확인")
+    public ResponseEntity<?> guestLogin(@RequestBody Member member){
+        return BaseResponse.success(200, "로그인 성공", memberService.guestLogin(member.getNickname()));
+    }
+
     @PostMapping("/login")
     @Operation(summary = "로그인")
     public ResponseEntity<?> login(@RequestBody Member member){
@@ -36,6 +42,13 @@ public class MemberController {
     @Operation(summary = "회원탈퇴")
     public ResponseEntity<?> deleteMember(@PathVariable String nickname){
         memberService.deleteMember(nickname);
+        return BaseResponse.success(200, "삭제 성공");
+    }
+
+    @DeleteMapping("/guest/{nickname}")
+    @Operation(summary = "게스트 로그아웃")
+    public ResponseEntity<?> deleteGuest(@PathVariable String nickname){
+        memberService.deleteGuest(nickname);
         return BaseResponse.success(200, "삭제 성공");
     }
 
